@@ -6,11 +6,35 @@ action ANULLACTION 0
 ///////////////////////////////////// N O T E S////////////////////////////////////////////////
 
 /*
-Heres the indicator
 FIRST PRIORITY:
 Hvis solo skal man ikke have bleed out counter
 Kunne købe noget til 50 og det var en væg
 auto revive duer ikke i singleplayer fordi resetplayer restarter spillet
+Ved instakill gør dem unblockable
+Når duke er død lad ham være unblockable og unhitable
+Tjek i doonce: hvis alle er isdead så skriv gameover og skriv samlet score
+Kommer ind til rød via gul (os)
+Lad dem dø instant ved freezer
+Monster stuck i rød uden at rød var åben, men gul var
+Man skal ikke få round bonus hvis man er deadforgood
+Hvis man er død skal man ikke få fuld ammo
+Mysteryboks skal sige en rumlyd når man er tæt på dem
+Nuclear forsvinder hurtigere end de andre
+Lyd ved revive
+De bliver altid stuck i det lille hus
+Nuclear pal skal komme senere end hpregen
+At købe ammo mens der er infinity gør ingenting ved ammo da den resetter konstant
+Ved instakill dør de to gange lol -> killit plus effekt fx teleporter
+Infinity ammo trækker 1 hvis man køber nyt våben
+Nuclear duede ikke ordentligt
+Man skal ikke kunne samle pipes op
+Fix do no cross bånd udenfor
+Ved gul kort lav et hjørne mindre
+Ændre chaingun eller tilføj overheat (den er for god som den er nu og at den ligger udenfor
+gør at den det bedste våben)
+Rpg skal skade fucking meget
+Monster blev stuck...
+Monsterdrop: penge, ammo til våben/våbene og double penge over tid
 
 SECOND PRIORITY:
 indfør at man skal have samlet et hvis antal bolde eller have no hit bonuses for at man kan
@@ -26,17 +50,7 @@ ved en bestemt runde ændrer newbeast karakter og kan fx hoppe eller slår hurti
 sørg for at monstrene kun spawner mht hvor mange kort der er aktive og ikke med 50%
 
 CHANGES:
-har gjort sådan at selvom der er intermission så bliver man ikke genoplivet men bløder man ud
-så mister man alt, man mister perks når man ryger ned
-har fikset at shots og hits er byttet rundt men vi må lige kigge på om den viser forkert mht
-de andre
-fjernet at man bliver blå ved udødelig
-drop rate på perks fra 999 til 1999
-man kan nu gå fra badeværelset til biograf gennem trappen
-fikset at man ikke kan blive revivet når man har autorevive
-ved ikke om autorevive duer ordentligt...
-double money gjort til en fjerdedel
-freezer nakker instant
+
 */
 
 //////////////////////////////////// S U R V I V A L /////////////////////////////////////////////////
@@ -44,8 +58,8 @@ freezer nakker instant
 ////////////////////DEFINES/////////////////
 definegamefuncname 13 Add_Money
 definegamefuncname 30 Debugging
-definegamefuncname 31	God_Mode
-definegamefuncname 32	Log
+definegamefuncname 31 God_Mode
+definegamefuncname 32 Log
 definegamefuncname 34 Score_Overlay
 definegamefuncname 48 Reload
 ////////////////////GAMEVARS/////////////////
@@ -76,6 +90,11 @@ gamevar monsterslefttospawn 0 0
 gamevar totalmonsters 0 0
 gamevar monsterhp 0 0
 gamevar maxmonstersallowed 5 0
+
+//Reference vars (read only!)
+gamevar downtimervar 600 4096
+gamevar autorevivetimervar 150 4096
+gamevar invincibletimervar 150 4096
 
 gamevar temp 0 0
 gamevar temptwo 0 0
@@ -119,7 +138,7 @@ gamevar buycooldownvar 15 0
 gamevar hpregencountervar 180 0
 gamevar debugvalue 0 1
 gamevar debugvaluetwo 0 1 
-gamevar hasjustbeenrevived 0 1
+gamevar gotrevivedbyintermission 0 1
 gamevar showoverlay 0 1
 gamevar moneyspent 0 1
 gamevar damagedealt 0 1
@@ -143,10 +162,12 @@ gamevar gothit -1 1
 gamevar nohittimer 0 1
 gamevar revivetimer 0 1
 gamevar downtimer 0 1
-gamevar isdeadforgood 0 1
+gamevar isdead 0 1
+gamevar isdown 0 1
 gamevar idofdyingduke -1 0
 gamevar powershotkills 0 1
 gamevar activemysterybox -1 0
+gamevar gotrevivedbyplayer 0 1
 
 gamevar ammoamountone 0 1
 gamevar ammoamounttwo 0 1
@@ -474,8 +495,80 @@ state weaponswitchfix
 	}
 ends
 
+state autoreviveeffects
+	ifvare autorevivetimer 30 {
+		sound 83
+		palfrom 30 0 0 64
+		spawn TRANSPORTERSTAR
+	} else ifvare autorevivetimer 60 {
+		sound 83
+		palfrom 30 0 0 64
+		spawn TRANSPORTERSTAR
+	} else ifvare autorevivetimer 90 {
+		sound 83
+		palfrom 30 0 0 64
+		spawn TRANSPORTERSTAR
+	} 
+ends
+
 state handlepowershot
 	ifvare gotpowershot 1 ifvarl powershotcd 150 addvar powershotcd 1
+ends
+
+state respawnfromintermission
+	getplayer[THISACTOR].posx MY_X
+	getplayer[THISACTOR].posy MY_Y
+	getplayer[THISACTOR].posz MY_Z
+	setvar gotrevivedbyintermission 1
+	resetplayer
+	setplayer[THISACTOR].posx MY_X
+	setplayer[THISACTOR].posy MY_Y
+	setplayer[THISACTOR].posz MY_Z
+	setvar showoverlay 0
+ends
+
+state respawnfromautorevive
+	getplayer[THISACTOR].ammo_amount primaryweapon primaryammo
+	getplayer[THISACTOR].ammo_amount secondaryweapon secondaryammo
+	getplayer[THISACTOR].ammo_amount tertiaryweapon tertiaryammo
+	getplayer[THISACTOR].posx MY_X
+	getplayer[THISACTOR].posy MY_Y
+	getplayer[THISACTOR].posz MY_Z
+	resetplayer
+	setplayer[THISACTOR].posx MY_X
+	setplayer[THISACTOR].posy MY_Y
+	setplayer[THISACTOR].posz MY_Z
+	setplayer[THISACTOR].ammo_amount primaryweapon primaryammo
+	setplayer[THISACTOR].ammo_amount secondaryweapon secondaryammo
+	setplayer[THISACTOR].ammo_amount tertiaryweapon tertiaryammo
+	setplayer[THISACTOR].gotweapon primaryweapon 1
+	setplayer[THISACTOR].gotweapon secondaryweapon 1
+	setplayer[THISACTOR].gotweapon tertiaryweapon 1
+	setplayer[THISACTOR].curr_weapon primaryweapon
+	setvar showoverlay 0
+	setvarvar invincibletimer invincibletimervar
+ends
+
+state respawnfromplayerrevive
+	getplayer[THISACTOR].ammo_amount primaryweapon primaryammo
+	getplayer[THISACTOR].ammo_amount secondaryweapon secondaryammo
+	getplayer[THISACTOR].ammo_amount tertiaryweapon tertiaryammo
+	getplayer[THISACTOR].posx MY_X
+	getplayer[THISACTOR].posy MY_Y
+	getplayer[THISACTOR].posz MY_Z
+	resetplayer
+	setplayer[THISACTOR].posx MY_X
+	setplayer[THISACTOR].posy MY_Y
+	setplayer[THISACTOR].posz MY_Z
+	setplayer[THISACTOR].ammo_amount primaryweapon primaryammo
+	setplayer[THISACTOR].ammo_amount secondaryweapon secondaryammo
+	setplayer[THISACTOR].ammo_amount tertiaryweapon tertiaryammo
+	setplayer[THISACTOR].gotweapon primaryweapon 1
+	setplayer[THISACTOR].gotweapon secondaryweapon 1
+	setplayer[THISACTOR].gotweapon tertiaryweapon 1
+	setplayer[THISACTOR].curr_weapon primaryweapon
+	setvar showoverlay 0
+	setvarvar invincibletimer invincibletimervar
 ends
 
 state handlemonsterdrops
@@ -898,7 +991,7 @@ state showinformation
 						else digitalnumberz 2837 160 135 150 0 2 0 0 0 xdim ydim 50000
 					} else {
 						getactor[HITSPRITE].yvel temp
-						getplayervar[temp].isdeadforgood temptwo
+						getplayervar[temp].isdead temptwo
 						ifvare temptwo 0 ifvare revivetimer 0 gametextz STARTALPHANUM 320 125 183 0 2 0 0 0 xdim ydim 50000
 					}
 					break
@@ -1132,12 +1225,12 @@ ends
 
 onevent EVENT_DISPLAYREST
 
-	//Debug
-	//getactor[HITSPRITE].hitag temp
+	//Debuggg
+	//getactor[THISACTOR].extra temp
 	//digitalnumberz 2930 0 40 downtimer 0 0 0 0 0 xdim ydim 58000
-	//digitalnumberz 2930 0 60 idofdyingduke 0 0 0 0 0 xdim ydim 58000
-	//digitalnumberz 2930 0 80 idtwo 0 0 0 0 0 xdim ydim 58000
-	//digitalnumberz 2930 0 100 temptwo 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2930 0 60 isdown 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2930 0 80 temp 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2930 0 100 isdead 0 0 0 0 0 xdim ydim 58000
 	
 	//Overlay information
 	ifvare showdebugging 1 {
@@ -1518,7 +1611,7 @@ onevent EVENT_HOLODUKEON
 	addlogvar hpregencountervar
 	addlogvar debugvalue
 	addlogvar debugvaluetwo
-	addlogvar hasjustbeenrevived
+	addlogvar gotrevivedbyintermission
 	addlogvar showoverlay
 	addlogvar moneyspent
 	addlogvar damagedealt
@@ -2059,14 +2152,14 @@ onevent EVENT_USE
 							}
 						} else {
 							getactor[HITSPRITE].yvel temp
-							getplayervar[temp].isdeadforgood tempthree
+							getplayervar[temp].isdead tempthree
 							ifvare tempthree 0 {
 								addvar revivetimer 3
 								getplayervar[temp].downtimer tempfour
 								addvar tempfour 1
 								setplayervar[temp].downtimer tempfour
 								ifvarg revivetimer 150 {
-									setplayervar[temp].autorevivetimer 1 
+									setplayervar[temp].gotrevivedbyplayer 1 
 									setvar revivetimer 0
 									setvar buycooldown 60
 								}
@@ -2131,8 +2224,8 @@ onevent EVENT_RESETPLAYER
 		setplayer[THISACTOR].gotweapon 8 0
 		setplayer[THISACTOR].gotweapon 9 0
 		setplayer[THISACTOR].gotweapon 11 0
-	  ifvare hasjustbeenrevived 1 {
-	  	setvar hasjustbeenrevived 0
+	  ifvare gotrevivedbyintermission 1 {
+	  	setvar gotrevivedbyintermission 0
 	  	setplayer[THISACTOR].ammo_amount 1 1
 	  } else setplayer[THISACTOR].ammo_amount 1 101
 	  setplayer[THISACTOR].ammo_amount 2 1
@@ -5530,8 +5623,7 @@ ends
 move PGROWINGPOP        // Used only as a variable
 
 actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
-	ifvare isdeadforgood 1 cstat 32768
-	else cstat 257
+
 	state handlenegativeammodevastator
 	state calculatetotalpoints
 	state movementspeed
@@ -5548,96 +5640,80 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 	state hpregen //Pal
 	state handlemonsterdrops //Pal
 	state gotmoneyfromteammate //Pal
-	ifp palive {
-		setvar downtimer 600
-		setvar isdeadforgood 0
-	} 
-	ifvarl downtimer 600 {
-		getplayer[THISACTOR].i temptwo
-		getactor[temptwo].yvel temp
-		ifvare isdeadforgood 0 setvarvar idofdyingduke temp
-	}
-	ifvarg revivetimer 0 subvar revivetimer 2
-	ifvarl revivetimer 0 setvar revivetimer 0
 	
+	ifp palive {
+		setvarvar downtimer downtimervar
+		setvar isdown 0
+		setvar isdead 0
+		ifvarg invincibletimer 0 {
+			subvar invincibletimer 1
+			setactor[THISACTOR].extra 50
+			palfrom 20 0 0 20
+		}
 
-	ifvarg intermission 0 { //Intermission
-		ifvare gothit 0 {
-			setvarvar temp round
-			mulvar temp 50
-			subvar temp 50
-			addvarvar playermoneybonus temp
-			addvarvar bonuses temp 
-			setvar gothit -1
-			setvar nohittimer 60
-		} else ifvarg nohittimer 0 subvar nohittimer 1
-		ifvare intermission 1 setvar gothit 0
-		ifphealthl 1 {
-			ifvare isdeadforgood 1 {
-				getplayer[THISACTOR].posx MY_X
-				getplayer[THISACTOR].posy MY_Y
-				getplayer[THISACTOR].posz MY_Z
-				setvar hasjustbeenrevived 1
-				resetplayer
+		//Intermission
+		ifvarg intermission 0 { 
+			ifvare gothit 0 {
+				setvarvar temp round
+				mulvar temp 50
+				subvar temp 50
+				addvarvar playermoneybonus temp
+				addvarvar bonuses temp 
+				setvar gothit -1
+				setvar nohittimer 60
+			} else ifvarg nohittimer 0 subvar nohittimer 1
+			ifvare intermission 1 setvar gothit 0
+		} else { //Intermission over
+			getplayer[THISACTOR].max_player_health temp
+			getactor[THISACTOR].extra temptwo
+			ifvarvarl temptwo temp setvar gothit 1
+		} 
+	}
+
+	ifdead { //Handle revive and perks and stuff
+		ifvarg revivetimer 0 subvar revivetimer 2 //Always reduce revivetimer bar
+		ifvarl revivetimer 0 setvar revivetimer 0 //Make sure its not negative
+		ifvare isdead 0 { //If duke is NOT entirely dead
+			cstat 1 //Blockable
+			
+			//Autorevive perk
+			ifvare gotautorevive 1 {
+    		setvar gotautorevive 0
+    		setvarvar autorevivetimer autorevivetimervar
+    	} 
+    	ifvarg autorevivetimer 0 {
+    		setvar isdown 0 //Duke is not down bc he is about to respawn from autorevive
+				subvar autorevivetimer 1
+				state autoreviveeffects
+				ifvare autorevivetimer 1 {
+					state respawnfromautorevive
+					action PSTAND
+				}
+			} else setvar isdown 1 //If duke has no autorevive duke is down
+   		ifvare isdown 1 {
+   			subvar downtimer 1
+   			ifvare gotrevivedbyplayer 1 {
+   				state respawnfromplayerrevive
+   				action PSTAND
+   			}
+   		} 
+
+   		ifvarvarl downtimer downtimervar {
+				getplayer[THISACTOR].i temp
+				getactor[temp].yvel temptwo
+				setvarvar idofdyingduke temptwo
+				ifvare downtimer 0 setvar isdead 1
+			}
+		} else { //Duke is entirely dead
+			cstat 32768 //Invisible
+			setvar isdown 0
+			setvar showoverlay 1
+			ifvarg intermission 0 { //If duke is dead but there's intermission, respawn
+				state respawnfromintermission
 				action PSTAND
-				setplayer[THISACTOR].posx MY_X
-				setplayer[THISACTOR].posy MY_Y
-				setplayer[THISACTOR].posz MY_Z
-				setvar showoverlay 0
 			}
 		}
-	} else { //Intermission over
-		getplayer[THISACTOR].max_player_health temp
-		getactor[THISACTOR].extra temptwo
-		ifvarvarl temptwo temp setvar gothit 1
-		ifvare autorevivetimer 1 {
-		getplayer[THISACTOR].ammo_amount primaryweapon primaryammo
-		getplayer[THISACTOR].ammo_amount secondaryweapon secondaryammo
-		getplayer[THISACTOR].ammo_amount tertiaryweapon tertiaryammo
-		getplayer[THISACTOR].posx MY_X
-		getplayer[THISACTOR].posy MY_Y
-		getplayer[THISACTOR].posz MY_Z
-		resetplayer
-		action PSTAND
-		setplayer[THISACTOR].posx MY_X
-		setplayer[THISACTOR].posy MY_Y
-		setplayer[THISACTOR].posz MY_Z
-		setplayer[THISACTOR].ammo_amount primaryweapon primaryammo
-		setplayer[THISACTOR].ammo_amount secondaryweapon secondaryammo
-		setplayer[THISACTOR].ammo_amount tertiaryweapon tertiaryammo
-		setplayer[THISACTOR].gotweapon primaryweapon 1
-		setplayer[THISACTOR].gotweapon secondaryweapon 1
-		setplayer[THISACTOR].gotweapon tertiaryweapon 1
-		setplayer[THISACTOR].curr_weapon primaryweapon
-		setvar showoverlay 0
-		setvar invincibletimer 150
-		}
-	} 
-
-	ifvarg invincibletimer 0 {
-		subvar invincibletimer 1
-		setactor[THISACTOR].extra 50
-		palfrom 20 0 0 20
 	}
-
-	ifvarg autorevivetimer 0 {
-		subvar autorevivetimer 1
-		ifvare autorevivetimer 30 {
-			sound 83
-			palfrom 30 0 0 64
-			spawn TRANSPORTERSTAR
-		} 
-		ifvare autorevivetimer 60 {
-			sound 83
-			palfrom 30 0 0 64
-			spawn TRANSPORTERSTAR
-		} 
-		ifvare autorevivetimer 90 {
-			sound 83
-			palfrom 30 0 0 64
-			spawn TRANSPORTERSTAR
-		} 
-	} 
 
   ifaction 0
     action PSTAND
@@ -5703,24 +5779,6 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 
   ifdead
   {
-  	ifvare gotautorevive 1 {
-    	setvar gotautorevive 0
-    	setvar autorevivetimer 150
-    } else ifvarl downtimer 1 ifvare isdeadforgood 0 {
-  		setvar isdeadforgood 1
-  		setvar idofdyingduke -1
-  		action PEXPLODE
-      state standard_pjibs
-      sound SQUISHED
-      sound DUKE_DEAD
-    }
-    
-    ifvare autorevivetimer 0 ifvarg downtimer 0 {
-    	cstat 1
-    	subvar downtimer 1
-    } 
-    ifvare gotautorevive 0 ifvare autorevivetimer 0 setvar showoverlay 1
-    
     ifaction PGROWING
     {
       ifmove PGROWINGPOP
@@ -5873,6 +5931,8 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
     state random_ooz
     break
   }
+
+
 
   ifp ponsteroids
   {
