@@ -55,17 +55,17 @@ define DEFAULTVISIBILITY        512
 define FROZENQUICKKICKDIST      980
 
 define GENERICIMPACTDAMAGE      10
-                                  //DMG  AMMO TOTALDMG  BUY  BUYDMG PRICE
-define MAXPISTOLAMMO           401 //7 * 400   = 2800 | 100    700    500 => 1000 
-define MAXSHOTGUNAMMO           61 //80 * 60   = 3200 |  15   1200   1000 => 2000
-define MAXCHAINGUNAMMO         401 //15 * 400  = 6000 | 100   1500   1350 => 2700
-define MAXRPGAMMO               41 //120 * 40  = 4800 |  10   1200   1750 => 3000
-define MAXHANDBOMBAMMO          21 //120 * 20  = 2400 |   5   1200   1750 => 3000
+                                  //DMG  AMMO  TOTALDMG  BUY  BUYDMG  PRICE
+define MAXPISTOLAMMO           401 //7 * 400   =  2800 | 100    700    500 => 1000 
+define MAXSHOTGUNAMMO           61 //80 * 60   =  3200 |  15   1200   1000 => 2000
+define MAXCHAINGUNAMMO         401 //15 * 400  =  6000 | 100   1500   1350 => 2700
+define MAXRPGAMMO               41 //450 * 40  = 18000 |  10   4500   2000 => 4000
+define MAXHANDBOMBAMMO          21 //120 * 20  =  2400 |   5   1200   3000 => 6000
 define MAXSHRINKERAMMO          41 //?
-define MAXGROWAMMO             201 //15 * 200  = 3000 |  50   1500   2000 => 4000 ?
-define MAXDEVISTATORAMMO       301 //15 * 300  = 4500 |  75   1125   1500 => 3000
-define MAXFREEZEAMMO           201 //40 * 200  = 8000 |  50   2000   1750 => 3500
-define MAXTRIPBOMBAMMO          21 //100 * 20  = 3000 |   5    500    500 => 1000
+define MAXGROWAMMO             201 //15 * 200  =  3000 |  50   1500   2000 => 4000 ?
+define MAXDEVISTATORAMMO       301 //15 * 300  =  4500 |  75   1125   1500 => 3000
+define MAXFREEZEAMMO           201 //40 * 200  =  8000 |  50   2000   1750 => 3500
+define MAXTRIPBOMBAMMO          21 //100 * 20  =  3000 |   5    500    500 => 1000
 define TRIPBOMBLASERMODE        0     // 0 = always visable
                                       // 1 = transluscense
                                       // 2 = invisible w/o IR goggles
@@ -135,7 +135,7 @@ define HANDBOMB_WEAPON_STRENGTH        140
 // damage values depend on distance. The
 // further, the weaker.
 
-define RPG_WEAPON_STRENGTH              140
+define RPG_WEAPON_STRENGTH             450
 
 
 define SHRINKER_WEAPON_STRENGTH          0
