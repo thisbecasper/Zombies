@@ -15,8 +15,7 @@ Man skal ikke få round bonus hvis man er deadforgood
 Hvis man er død skal man ikke få fuld ammo
 
 De bliver altid stuck i det lille hus
----Nuclear pal skal komme senere end hpregen
-At købe ammo mens der er infinity gør ingenting ved ammo da den resetter konstant
+---At købe ammo mens der er infinity gør ingenting ved ammo da den resetter konstant
 Infinity ammo trækker 1 hvis man køber nyt våben
 Nuclear duede ikke ordentligt
 Man skal ikke kunne samle pipes op
@@ -111,7 +110,7 @@ gamevar maxammo 0 2
 gamevar maxammotimer 0 1
 gamevar instakill 0 2
 gamevar instakilltimer 0 1
-gamevar instakillduration 1000 1
+gamevar instakillduration 0 1
 gamevar powershotcd 0 1
 gamevar infinityammo 0 2
 gamevar infinityammotimer 0 1
@@ -1798,6 +1797,7 @@ onevent EVENT_USE
 						ifvarvare temp temptwo break
 						setplayer[THISACTOR].gotweapon 1 1
 						addammo 1 100
+						ifvarg infinityammoduration 0 addvar ammoamountone 100
 						ifvare primaryweapon 1 state buyandsetcdammo
 						else ifvare tertiaryweapon 1 state buyandsetcdammo
 						else ifvare secondaryweapon 1 state buyandsetcdammo
@@ -1829,6 +1829,7 @@ onevent EVENT_USE
 						ifvarvare temp temptwo break
 						setplayer[THISACTOR].gotweapon 2 1
 						addammo 2 15
+						ifvarg infinityammoduration 0 addvar ammoamounttwo 15
 						ifvare primaryweapon 2 state buyandsetcdammo
 						else ifvare tertiaryweapon 2 state buyandsetcdammo
 						else ifvare secondaryweapon 2 state buyandsetcdammo
@@ -1860,6 +1861,7 @@ onevent EVENT_USE
 						ifvarvare temp temptwo break
 						setplayer[THISACTOR].gotweapon 3 1
 						addammo 3 100
+						ifvarg infinityammoduration 0 addvar ammoamountthree 100
 						ifvare primaryweapon 3 state buyandsetcdammo
 						else ifvare tertiaryweapon 3 state buyandsetcdammo
 						else ifvare secondaryweapon 3 state buyandsetcdammo
@@ -1891,6 +1893,7 @@ onevent EVENT_USE
 						ifvarvare temp temptwo break
 						setplayer[THISACTOR].gotweapon 4 1
 						addammo 4 10
+						ifvarg infinityammoduration 0 addvar ammoamountfour 10
 						ifvare primaryweapon 4 state buyandsetcdammo
 						else ifvare tertiaryweapon 4 state buyandsetcdammo
 						else ifvare secondaryweapon 4 state buyandsetcdammo
@@ -1922,6 +1925,7 @@ onevent EVENT_USE
 						ifvarvare temp temptwo break
 						setplayer[THISACTOR].gotweapon 5 1
 						addammo 5 5
+						ifvarg infinityammoduration 0 addvar ammoamountfive 5
 						ifvare primaryweapon 5 state buyandsetcdammo
 						else ifvare tertiaryweapon 5 state buyandsetcdammo
 						else ifvare secondaryweapon 5 state buyandsetcdammo
@@ -1953,6 +1957,7 @@ onevent EVENT_USE
 						ifvarvare temp temptwo break
 						setplayer[THISACTOR].gotweapon 6 1
 						addammo 6 10
+						ifvarg infinityammoduration 0 addvar ammoamountsix 10
 						ifvare primaryweapon 6 state buyandsetcdammo
 						else ifvare tertiaryweapon 6 state buyandsetcdammo
 						else ifvare secondaryweapon 6 state buyandsetcdammo
@@ -1984,6 +1989,7 @@ onevent EVENT_USE
 						ifvarvare temp temptwo break
 						setplayer[THISACTOR].gotweapon 11 1
 						addammo 11 75
+						ifvarg infinityammoduration 0 addvar ammoamounteleven 75
 						ifvare primaryweapon 11 state buyandsetcdammo
 						else ifvare tertiaryweapon 11 state buyandsetcdammo
 						else ifvare secondaryweapon 11 state buyandsetcdammo
@@ -2015,6 +2021,7 @@ onevent EVENT_USE
 						ifvarvare temp temptwo break
 						setplayer[THISACTOR].gotweapon 7 1
 						addammo 7 75
+						ifvarg infinityammoduration 0 addvar ammoamountseven 75
 						ifvare primaryweapon 7 state buyandsetcdammo
 						else ifvare tertiaryweapon 7 state buyandsetcdammo
 						else ifvare secondaryweapon 7 state buyandsetcdammo
@@ -2046,6 +2053,7 @@ onevent EVENT_USE
 						ifvarvare temp temptwo break
 						setplayer[THISACTOR].gotweapon 8 1
 						addammo 8 5
+						ifvarg infinityammoduration 0 addvar ammoamounteight 5
 						ifvare primaryweapon 8 state buyandsetcdammo
 						else ifvare tertiaryweapon 8 state buyandsetcdammo
 						else ifvare secondaryweapon 8 state buyandsetcdammo
@@ -2077,6 +2085,7 @@ onevent EVENT_USE
 						ifvarvare temp temptwo break
 						setplayer[THISACTOR].gotweapon 9 1
 						addammo 9 50
+						ifvarg infinityammoduration 0 addvar ammoamountnine 50
 						ifvare primaryweapon 9 state buyandsetcdammo
 						else ifvare tertiaryweapon 9 state buyandsetcdammo
 						else ifvare secondaryweapon 9 state buyandsetcdammo
@@ -5665,7 +5674,6 @@ ends
 move PGROWINGPOP        // Used only as a variable
 
 actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
-	
 	state endgame
 	state handlenegativeammodevastator
 	state calculatetotalpoints
@@ -10777,13 +10785,13 @@ state checknewbeasthit
     killit
   }
 */
-  ifdead //DROPS
+  ifdead //mosnterdrops
   {
-    randvar temp 249
-    ifvare temp 0 spawn BATTERYAMMO
+    randvar temp 0
+    ifvare temp 3 spawn BATTERYAMMO
     else ifvare temp 1 spawn ATOMICHEALTH
     else ifvare temp 2 spawn BADGUYICON
-    else ifvare temp 3 spawn 2530
+    else ifvare temp 0 spawn 2530
 
     randvar temp 1999
   	ifvare temp 0 spawn SHIELD
