@@ -7,12 +7,9 @@ action ANULLACTION 0
 
 /*
 FIRST PRIORITY:
-Når man er invincible så kan man dø af rpg fordi man hurtigt trigger isdown...
 Kunne købe noget til 50 og det var en væg
-auto revive duer ikke i singleplayer fordi resetplayer restarter spillet
 Ved instakill gør dem unblockable
 Når duke er død lad ham være unblockable og unhitable
-Tjek i doonce: hvis alle er isdead så skriv gameover og skriv samlet score
 Kommer ind til rød via gul (os)
 Lad dem dø instant ved freezer
 Monster stuck i rød uden at rød var åben, men gul var
@@ -37,6 +34,8 @@ Monster blev stuck...
 Monsterdrop: penge, ammo til våben/våbene og double penge over tid
 
 SECOND PRIORITY:
+tilføj noget ved eog screen
+
 indfør at man skal have samlet et hvis antal bolde eller have no hit bonuses for at man kan
 klare banen eller sådan noget
 
@@ -50,7 +49,7 @@ ved en bestemt runde ændrer newbeast karakter og kan fx hoppe eller slår hurti
 sørg for at monstrene kun spawner mht hvor mange kort der er aktive og ikke med 50%
 
 CHANGES:
-Hvis begge er nede så eog.
+
 */
 
 //////////////////////////////////// S U R V I V A L /////////////////////////////////////////////////
@@ -94,7 +93,6 @@ gamevar maxmonstersallowed 5 0
 //Reference vars (read only!)
 gamevar downtimervar 100 4096
 gamevar autorevivetimervar 150 4096
-gamevar invincibletimervar 150 4096
 
 gamevar temp 0 0
 gamevar temptwo 0 0
@@ -157,7 +155,6 @@ gamevar owner -1 2
 gamevar totalpoints 0 1
 gamevar moneyrecieved 0 1
 gamevar gamedurationseconds 0 1
-gamevar invincibletimer 0 1
 gamevar moneydonated 0 1
 gamevar gothit -1 1
 gamevar nohittimer 0 1
@@ -545,9 +542,8 @@ ends
 
 state respawnfromautorevive
 	subvar autorevivetimer 1
-	setactor[THISACTOR].extra 50
+	setactor[THISACTOR].extra 500 //God mode hp
 	setvar showoverlay 0
-	setvarvar invincibletimer invincibletimervar
 	state loseperks
 	/*
 	getplayer[THISACTOR].ammo_amount primaryweapon primaryammo
@@ -589,7 +585,6 @@ state respawnfromplayerrevive
 	setplayer[THISACTOR].gotweapon tertiaryweapon 1
 	setplayer[THISACTOR].curr_weapon primaryweapon
 	setvar showoverlay 0
-	setvarvar invincibletimer invincibletimervar
 ends
 
 state endgame
@@ -1157,11 +1152,11 @@ state doonce
 	  whilevarn temp -1 {
 	  	getactor[temp].picnum tempthree
 	  	ifvare tempthree APLAYER {
-	  		getactor[temp].yvel tempfour
-	  		getplayervar[tempfour].isdown tempfive
-	  		subvarvar playersalive tempfive
-	  		getplayervar[tempfour].isdead tempfive
-	  		subvarvar playersalive tempfive
+  			getactor[temp].yvel tempfour
+  			getplayervar[tempfour].isdown tempfive
+  			subvarvar playersalive tempfive
+  			getplayervar[tempfour].isdead tempfive
+  			subvarvar playersalive tempfive
 	  	}
 	  	nextspritestat temp temp
 	  	ifvarvare temp temptwo setvar temp -1
@@ -1198,9 +1193,14 @@ state hpregen
 	} else subvar hpregencounter 1
 	getactor[THISACTOR].extra temptwo
 	ifvare temptwo 0 nullop
-	else ifvarg temptwo 10 {
-		ifvarl temptwo 35 palfrom 15 24 0 0
-	} else ifvarl temptwo 11 {
+	else ifvarg temptwo 400 palfrom 20 0 0 40
+	else ifvarg temptwo 300 palfrom 20 0 0 30
+	else ifvarg temptwo 200 palfrom 20 0 0 20
+	else ifvarg temptwo MAXPLAYERHEALTH palfrom 20 0 0 15
+	else ifvarg temptwo 34 nullop // normal screen - duke has 35-50(70) hp
+	else ifvarg temptwo 10 palfrom 15 24 0 0
+	else ifvarg temptwo 10 ifvarl temptwo 35 palfrom 15 24 0 0
+	else { //HP is 10 or less
     ifvarn temptwo 0 {
       ifcount 20 {
       	palfrom 43 30 0 0
@@ -1251,8 +1251,8 @@ ends
 onevent EVENT_DISPLAYREST
 
 	//Debuggg
-	//getactor[THISACTOR].extra temp
-	//digitalnumberz 2930 0 40 playersalive 0 0 0 0 0 xdim ydim 58000
+	getactor[THISACTOR].extra temp
+	digitalnumberz 2930 0 40 temp 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2930 0 60 isdown 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2930 0 80 isdead 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2930 0 100 downtimer 0 0 0 0 0 xdim ydim 58000
@@ -1648,7 +1648,6 @@ onevent EVENT_HOLODUKEON
 	addlogvar damagedealt
 	addlogvar bonuses
 	addlogvar doublemoneygained
-	addlogvar invincibletimer
 	addlogvar hits
 	addlogvar shots
 	addlogvar showdebugging
@@ -5677,12 +5676,11 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 		setvarvar downtimer downtimervar
 		setvar isdown 0
 		setvar isdead 0
-		ifvarg invincibletimer 0 {
-			subvar invincibletimer 1
-			setactor[THISACTOR].extra 50
-			palfrom 20 0 0 20
+		getactor[THISACTOR].extra temp
+		ifvarg temp MAXPLAYERHEALTH {
+			subvar temp 1
+			setactor[THISACTOR].extra temp
 		}
-
 		//Intermission
 		ifvarg intermission 0 { 
 			ifvare gothit 0 {
@@ -5701,7 +5699,6 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 			ifvarvarl temptwo temp setvar gothit 1
 		} 
 	}
-
 	ifdead { //Handle revive and perks and stuff
 		ifvarg revivetimer 0 subvar revivetimer 2 //Always reduce revivetimer bar
 		ifvarl revivetimer 0 setvar revivetimer 0 //Make sure its not negative
@@ -5721,7 +5718,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 					state respawnfromautorevive
 					action PSTAND
 				}
-			} else setvar isdown 1 //If duke has no autorevive duke is down
+			} else setvar isdown 1 //If duke has no autorevive he is down
    		ifvare isdown 1 {
    			subvar downtimer 1
    			ifvare gotrevivedbyplayer 1 {
