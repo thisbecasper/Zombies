@@ -409,6 +409,7 @@ definequote 180       MONEY DONATED:
 definequote 181       MONEY RECIVED:
 definequote 182       NO HIT BONUS!
 definequote 183       REVIVE
+definequote 184		  G A M E   O V E R
 
 // Volume titles cannot excede 32 characters.
 

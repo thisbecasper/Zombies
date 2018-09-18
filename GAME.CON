@@ -50,7 +50,7 @@ ved en bestemt runde ændrer newbeast karakter og kan fx hoppe eller slår hurti
 sørg for at monstrene kun spawner mht hvor mange kort der er aktive og ikke med 50%
 
 CHANGES:
-
+Når alle er døde så kommer der game over screen
 */
 
 //////////////////////////////////// S U R V I V A L /////////////////////////////////////////////////
@@ -92,7 +92,7 @@ gamevar monsterhp 0 0
 gamevar maxmonstersallowed 5 0
 
 //Reference vars (read only!)
-gamevar downtimervar 600 4096
+gamevar downtimervar 100 4096
 gamevar autorevivetimervar 150 4096
 gamevar invincibletimervar 150 4096
 
@@ -131,6 +131,7 @@ gamevar orbtimer 0 0
 gamevar moneycounter 0 1
 gamevar bonusmoneycounter 0 1
 gamevar monstersalive 0 0
+gamevar playersalive 0 0
 gamevar instakillhpset 0 2
 gamevar playermoney 0 1
 gamevar playermoneybonus 0 1
@@ -168,6 +169,7 @@ gamevar idofdyingduke -1 0
 gamevar powershotkills 0 1
 gamevar activemysterybox -1 0
 gamevar gotrevivedbyplayer 0 1
+gamevar eog 0 0
 
 gamevar ammoamountone 0 1
 gamevar ammoamounttwo 0 1
@@ -527,6 +529,20 @@ state respawnfromintermission
 	setvar showoverlay 0
 ends
 
+state dieeffects
+	setvar idofdyingduke -1
+	guts JIBS1 1
+  guts JIBS3 2
+  guts JIBS4 1
+  guts JIBS5 1
+  guts JIBS6 2
+  guts DUKETORSO 1
+  guts DUKELEG 2
+  guts DUKEGUN 1
+	sound SQUISHED
+	sound DUKE_DEAD
+ends
+
 state respawnfromautorevive
 	getplayer[THISACTOR].ammo_amount primaryweapon primaryammo
 	getplayer[THISACTOR].ammo_amount secondaryweapon secondaryammo
@@ -569,6 +585,12 @@ state respawnfromplayerrevive
 	setplayer[THISACTOR].curr_weapon primaryweapon
 	setvar showoverlay 0
 	setvarvar invincibletimer invincibletimervar
+ends
+
+state endgame
+	ifvare eog 1 {
+
+	}
 ends
 
 state handlemonsterdrops
@@ -1080,22 +1102,22 @@ state nextround
 ends
 
 state doonce
-	ifvare id -1 {
+	ifvare id -1 { //Set id of the first player
 		getplayer[THISACTOR].i temp
 		getactor[temp].yvel temptwo
 		setvarvar id temptwo
-	} else ifvare idtwo -1 {
+	} else ifvare idtwo -1 { //Set id of the second player
 		getplayer[THISACTOR].i temp
 		getactor[temp].yvel temptwo
 		setvarvar idtwo temptwo
 	}
-	getactor[THISACTOR].yvel temp
+	getactor[THISACTOR].yvel temp //For the first player only, do this
 	ifvarvare temp id {
-		ifvarg intermission 0 subvar intermission 1
-		ifvarg roundcompletetimer 0 subvar roundcompletetimer 1
-		ifvarg rushroundtimer 0 subvar rushroundtimer 1
+		ifvarg intermission 0 subvar intermission 1 //Decrement intermission
+		ifvarg roundcompletetimer 0 subvar roundcompletetimer 1 //Decrement roundcompletetimer
+		ifvarg rushroundtimer 0 subvar rushroundtimer 1 //Decrement rushroundtimer
 
-		//Spawners
+		//Calculate amount of spawners on the map
 		ifvare spawners -1 {
 			headspritestat temp 1
 		  setvarvar temptwo temp
@@ -1106,8 +1128,9 @@ state doonce
 		  	ifvarvare temp temptwo setvar temp -1
 		  }
 		}
+		ifvarg orbtimer 0 subvar orbtimer 1
 
-		//Currently alive
+		//Calculate monsters currently alive
 		setvar monstersalive 0
 		headspritestat temp 1
 	  setvarvar temptwo temp
@@ -1117,31 +1140,26 @@ state doonce
 	  		getactor[temp].extra tempfour
 	  		ifvarg tempfour 0 addvar monstersalive 1
 	  	}
-	  	ifvare tempthree DRONE {
-	  		getactor[temp].extra tempfour
-	  		ifvarg tempfour 0 addvar monstersalive 1
+	  	nextspritestat temp temp
+	  	ifvarvare temp temptwo setvar temp -1
+	  }
+	  ifvare monsterslefttospawn 0 ifvare monstersalive 0 state nextround
+
+	  //Calculate players currently alive
+		setvarvar playersalive numplayers 
+		headspritestat temp 10
+	  setvarvar temptwo temp
+	  whilevarn temp -1 {
+	  	getactor[temp].picnum tempthree
+	  	ifvare tempthree APLAYER {
+	  		getactor[temp].yvel tempfour
+	  		getplayervar[tempfour].isdead tempfive
+	  		ifvare tempfive 1 subvar playersalive 1
 	  	}
 	  	nextspritestat temp temp
 	  	ifvarvare temp temptwo setvar temp -1
 	  }
-	  /*headspritestat temp 2
-	  setvarvar temptwo temp
-	  whilevarn temp -1 {
-	  	getactor[temp].picnum tempthree
-	  	ifvare tempthree NEWBEAST {
-	  		getactor[temp].extra tempfour
-	  		ifvarg tempfour 0 addvar monstersalive 1
-	  	}
-	  	ifvare tempthree DRONE {
-	  		getactor[temp].extra tempfour
-	  		ifvarg tempfour 0 addvar monstersalive 1
-	  	}
-	  	nextspritestat temp temp
-	  	ifvarvare temp temptwo setvar temp -1
-	  }*/
-	  ifvare monsterslefttospawn 0 ifvare monstersalive 0 state nextround
-
-	  ifvarg orbtimer 0 subvar orbtimer 1
+	  ifvare playersalive 0 setvar eog 1 //Toggle endofgame
 	}
 ends
 
@@ -1227,11 +1245,239 @@ onevent EVENT_DISPLAYREST
 
 	//Debuggg
 	//getactor[THISACTOR].extra temp
-	//digitalnumberz 2930 0 40 downtimer 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2930 0 40 playersalive 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2930 0 60 isdown 0 0 0 0 0 xdim ydim 58000
-	//digitalnumberz 2930 0 80 temp 0 0 0 0 0 xdim ydim 58000
-	//digitalnumberz 2930 0 100 isdead 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2930 0 80 isdead 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2930 0 100 downtimer 0 0 0 0 0 xdim ydim 58000
 	
+	ifvare eog 1 {
+		rotatesprite 160 100 500000 0 862 0 4 1 0 0 xdim ydim
+		gametextz STARTALPHANUM 320 30 184 0 2 0 0 0 xdim ydim 80000
+		setvar showoverlay 1
+	} else {
+		//Reviving
+		ifvarg revivetimer 0 {
+			setvar temptwo 110
+			setvar temp 100
+			whilevarn temp 0 {
+	      rotatesprite temptwo 145 65536 0 3163 0 2 49 0 0 xdim ydim 
+	      addvar temptwo 1 
+	      subvar temp 1
+	    }
+	    setvar temptwo 110
+			setvarvar temp revivetimer
+			mulvar temp 2
+			divvar temp 3
+			whilevarn temp 0 {
+	      rotatesprite temptwo 145 65536 0 3163 0 2 16 0 0 xdim ydim 
+	      addvar temptwo 1 
+	      subvar temp 1
+	    }
+		}
+
+		ifvarn idofdyingduke -1 {
+			getplayervar[idofdyingduke].downtimer temp
+			divvar temp 30
+			addvar temp 1
+			digitalnumberz 2930 170 30 temp 0 0 0 0 0 xdim ydim 58000
+			rotatesprite 142 31 43000 0 2452 0 0 0 0 0 xdim ydim
+		}
+
+		//Intermission clock
+		ifvarn intermission 0 {
+			setvarvar temp intermission
+			divvar temp 30
+			addvar temp 1
+			digitalnumberz 2930 300 20 temp 0 0 0 0 0 xdim ydim 58000
+		}
+
+		//Show access cards
+	  getplayer[THISACTOR].got_access temp
+	  ifvarg temp 3 {
+	    rotatesprite 0 140 25000 0 60 0 23 16 0 0 xdim ydim
+	    subvar temp 4
+	  }
+	  ifvarg temp 1 {
+	    rotatesprite -5 140 25000 0 60 0 21 16 0 0 xdim ydim
+	    subvar temp 2
+	  }
+	  ifvarg temp 0 {
+	    rotatesprite -10 140 25000 0 60 0 0 16 0 0 xdim ydim
+	    subvar temp 1
+	  }
+	  
+	  //Magazine and ammo
+	  ifvare PWEAPON PISTOL_WEAPON {
+	  	ifvarg PISTOLMAGAZINE -1 {
+				digitalnumberz 2837 192 108 PISTOLMAGAZINE 0 0 0 0 0 xdim ydim 40000
+	  	} else {
+	  		digitalnumberz 2837 192 108 0 0 0 0 0 0 xdim ydim 40000
+	  	} 
+	  }
+	  ifvare PWEAPON PISTOL_WEAPON setvar temp 25
+	  ifvare PWEAPON SHOTGUN_WEAPON setvar temp 6
+	  ifvare PWEAPON CHAINGUN_WEAPON setvar temp 31
+	  ifvare PWEAPON RPG_WEAPON setvar temp 4
+	  ifvare PWEAPON HANDBOMB_WEAPON setvar temp 4
+	  ifvare PWEAPON HANDREMOTE_WEAPON setvar temp 4
+	  ifvare PWEAPON SHRINKER_WEAPON setvar temp 6
+	  ifvare PWEAPON GROW_WEAPON setvar temp 11
+	  ifvare PWEAPON DEVISTATOR_WEAPON setvar temp 31
+	  ifvare PWEAPON TRIPBOMB_WEAPON setvar temp 3
+	  ifvare PWEAPON FREEZE_WEAPON setvar temp 31
+	  getplayer[THISACTOR].ammo_amount PWEAPON tempthree
+	  getplayer[THISACTOR].ammo_amount HANDBOMB_WEAPON temptwo
+	  ifvare PWEAPON HANDREMOTE_WEAPON setvarvar tempthree temptwo
+	  subvar tempthree 1
+	  ifvarvarl tempthree temp digitalnumberz 2837 180 108 tempthree 0 2 0 0 0 xdim ydim 40000
+
+		//Round number
+		rotatesprite -47 20 58000 0 2957 0 0 0 0 0 xdim ydim
+		rotatesprite -36 20 58000 0 2954 0 0 0 0 0 xdim ydim
+		rotatesprite -25 20 58000 0 2960 0 0 0 0 0 xdim ydim
+		rotatesprite -13 20 58000 0 2953 0 0 0 0 0 xdim ydim
+		rotatesprite -2 20 58000 0 2943 0 0 0 0 0 xdim ydim
+		digitalnumberz 2930 25 20 round 0 0 0 0 0 xdim ydim 58000
+
+		//Perks
+		ifvare gotarmor 1 rotatesprite 341 181 35000 0 54 0 0 0 0 0 xdim ydim
+		ifvare gotdoublemoney 1 {
+			rotatesprite 319 181 19000 0 1234 0 0 0 0 0 xdim ydim
+			digitalnumberz 2837 321 188 doublemoneygained 0 16 0 0 0 xdim ydim 35000
+		} 
+		ifvare gotboots 1 rotatesprite 295 183 40000 0 61 0 0 0 0 0 xdim ydim
+		ifvare gotperkprotection 1 rotatesprite 341 165 35000 0 4371 0 0 0 0 0 xdim ydim
+		ifvare gotbackpack 1 rotatesprite 320 163 35000 0 57 0 0 0 0 0 xdim ydim
+		ifvare gotpowershot 1 rotatesprite 305 166 20000 0 1667 0 0 0 0 0 xdim ydim
+		ifvare gotautorevive 1 rotatesprite 272 183 16500 0 HOLODUKE 0 0 0 0 0 xdim ydim
+
+		//Powershot
+		ifvare gotpowershot 1 {
+			setvar temptwo 135
+			setvar temp 50
+			whilevarn temp 0 {
+	      rotatesprite temptwo 185 65536 0 3163 0 0 49 0 0 xdim ydim 
+	      addvar temptwo 1 
+	      subvar temp 1
+	    }
+	    
+	    setvar temptwo 135
+			setvarvar temp powershotcd
+			ifvare powershotcd 150 {
+				divvar temp 3
+				whilevarn temp 0 {
+	        rotatesprite temptwo 185 65536 0 3163 0 2 16 0 0 xdim ydim 
+	        addvar temptwo 1 
+	        subvar temp 1
+	      }
+			} else {
+				divvar temp 3
+				whilevarn temp 0 {
+	        rotatesprite temptwo 185 65536 0 3163 0 0 16 0 0 xdim ydim 
+	        addvar temptwo 1 
+	        subvar temp 1
+	      }
+			}
+
+			digitalnumberz 2837 160 185 powershotkills 0 0 16 0 0 xdim ydim 43000
+		}
+
+		//Money
+		ifvare gotdoublemoney 1 digitalnumberz 2837 315 96 finalplayermoney 0 7 0 0 0 xdim ydim 58000
+		else digitalnumberz 2837 315 96 finalplayermoney 0 0 0 0 0 xdim ydim 58000
+		ifvarn playermoney 0 digitalnumberz 2837 315 88 playermoney 0 8 0 0 0 xdim ydim 58000
+		ifvarn playermoneybonus 0 digitalnumberz 2837 315 80 playermoneybonus 0 16 0 0 0 xdim ydim 58000
+
+		//Information
+		ifvare buycooldown 0 state showinformation
+
+		ifvarg roundcompletetimer 0 gametextz STARTALPHANUM 320 50 128 0 10 0 0 0 xdim ydim 65000
+		else ifvarl rushroundtimer 180 ifvarg rushroundtimer 0 gametextz STARTALPHANUM 320 50 175 0 2 0 0 0 xdim ydim 65000
+		
+		ifvarg nohittimer 0 gametextz STARTALPHANUM 320 60 182 0 16 0 0 0 xdim ydim 65000
+		else ifvarg instakilltimer 0 gametextz STARTALPHANUM 320 60 125 0 20 0 0 0 xdim ydim 65000
+		else ifvarg infinityammotimer 0 gametextz STARTALPHANUM 320 60 154 0 20 0 0 0 xdim ydim 65000
+		else ifvarg nucleartimer 0 gametextz STARTALPHANUM 320 60 127 0 7 0 0 0 xdim ydim 65000
+		else ifvarg maxammotimer 0 gametextz STARTALPHANUM 320 60 126 0 8 0 0 0 xdim ydim 65000
+		else ifvarg orbtimer 0 gametextz STARTALPHANUM 320 60 155 0 16 0 0 0 xdim ydim 65000
+		else ifvare round 25 gametextz STARTALPHANUM 320 60 178 0 2 0 0 0 xdim ydim 65000
+
+		ifvarg instakillduration 0 {
+			setvarvar temp instakillduration
+			divvar temp 30
+			addvar temp 1
+			digitalnumberz 2930 325 135 temp 0 0 0 0 0 xdim ydim 50000
+			rotatesprite 303 130 50000 0 BADGUYICON 0 0 0 0 0 xdim ydim
+		}
+		ifvarg infinityammoduration 0 {
+			setvarvar temp infinityammoduration
+			divvar temp 30
+			addvar temp 1
+			digitalnumberz 2930 325 116 temp 0 0 0 0 0 xdim ydim 50000
+			rotatesprite 304 111 14000 0 2530 0 0 0 0 0 xdim ydim
+		}
+		ifvarg autorevivetimer 0 {
+			setvarvar temp autorevivetimer
+			divvar temp 30
+			addvar temp 1
+			digitalnumberz 2930 167 106 temp 0 1 0 0 0 xdim ydim 80000
+		}
+
+		//Weaponicons
+		getplayer[THISACTOR].ammo_amount primaryweapon temp
+		subvar temp 1
+		digitalnumberz 2837 20 162 temp 0 0 0 0 0 xdim ydim 58000
+		getplayer[THISACTOR].ammo_amount secondaryweapon temp
+		subvar temp 1
+		ifvarn secondaryweapon 0 digitalnumberz 2837 4 177 temp 0 0 0 0 0 xdim ydim 35000
+		getplayer[THISACTOR].ammo_amount tertiaryweapon temp
+		subvar temp 1
+		ifvarn tertiaryweapon 0 digitalnumberz 2837 4 187 temp 0 0 0 0 0 xdim ydim 35000
+		
+		getplayer[THISACTOR].max_ammo_amount primaryweapon temp
+		subvar temp 1
+		digitalnumberz 2837 54 162 temp 0 0 0 0 0 xdim ydim 58000
+		getplayer[THISACTOR].max_ammo_amount secondaryweapon temp
+		subvar temp 1
+		ifvarn secondaryweapon 0 digitalnumberz 2837 24 177 temp 0 0 0 0 0 xdim ydim 35000
+		getplayer[THISACTOR].max_ammo_amount tertiaryweapon temp
+		subvar temp 1
+		ifvarn tertiaryweapon 0 digitalnumberz 2837 24 187 temp 0 0 0 0 0 xdim ydim 35000
+		
+		rotatesprite 32 162 58000 0 2836 0 0 0 0 0 xdim ydim
+		ifvarn secondaryweapon 0 rotatesprite 11 177 35000 0 2836 0 0 0 0 0 xdim ydim
+		ifvarn tertiaryweapon 0 rotatesprite 11 187 35000 0 2836 0 0 0 0 0 xdim ydim
+		
+		ifvare primaryweapon 1 rotatesprite -20 157 35000 0 21 0 0 0 0 0 xdim ydim
+		ifvare primaryweapon 2 rotatesprite -20 160 35000 0 28 0 0 0 0 0 xdim ydim
+		ifvare primaryweapon 3 rotatesprite -20 157 35000 0 22 0 0 0 0 0 xdim ydim
+		ifvare primaryweapon 4 rotatesprite -20 157 35000 0 23 0 0 0 0 0 xdim ydim
+		ifvare primaryweapon 5 rotatesprite -20 157 35000 0 47 0 0 0 0 0 xdim ydim
+		ifvare primaryweapon 6 rotatesprite -20 157 35000 0 25 0 0 0 0 0 xdim ydim
+		ifvare primaryweapon 7 rotatesprite -20 160 35000 0 29 0 0 0 0 0 xdim ydim
+		ifvare primaryweapon 8 rotatesprite -20 157 35000 0 27 0 0 0 0 0 xdim ydim
+		ifvare primaryweapon 9 rotatesprite -20 157 35000 0 24 0 0 0 0 0 xdim ydim
+		ifvare secondaryweapon 1 rotatesprite -20 175 20000 0 21 0 0 0 0 0 xdim ydim
+		ifvare secondaryweapon 2 rotatesprite -20 177 20000 0 28 0 0 0 0 0 xdim ydim
+		ifvare secondaryweapon 3 rotatesprite -20 175 20000 0 22 0 0 0 0 0 xdim ydim
+		ifvare secondaryweapon 4 rotatesprite -20 175 20000 0 23 0 0 0 0 0 xdim ydim
+		ifvare secondaryweapon 5 rotatesprite -20 175 20000 0 47 0 0 0 0 0 xdim ydim
+		ifvare secondaryweapon 6 rotatesprite -20 175 20000 0 25 0 0 0 0 0 xdim ydim
+		ifvare secondaryweapon 7 rotatesprite -20 175 20000 0 29 0 0 0 0 0 xdim ydim
+		ifvare secondaryweapon 8 rotatesprite -20 175 20000 0 27 0 0 0 0 0 xdim ydim
+		ifvare secondaryweapon 9 rotatesprite -20 175 20000 0 24 0 0 0 0 0 xdim ydim
+		ifvare tertiaryweapon 1 rotatesprite -20 185 20000 0 21 0 0 0 0 0 xdim ydim
+		ifvare tertiaryweapon 2 rotatesprite -20 187 20000 0 28 0 0 0 0 0 xdim ydim
+		ifvare tertiaryweapon 3 rotatesprite -20 185 20000 0 22 0 0 0 0 0 xdim ydim
+		ifvare tertiaryweapon 4 rotatesprite -20 185 20000 0 23 0 0 0 0 0 xdim ydim
+		ifvare tertiaryweapon 5 rotatesprite -20 185 20000 0 47 0 0 0 0 0 xdim ydim
+		ifvare tertiaryweapon 6 rotatesprite -20 185 20000 0 25 0 0 0 0 0 xdim ydim
+		ifvare tertiaryweapon 7 rotatesprite -20 185 20000 0 29 0 0 0 0 0 xdim ydim
+		ifvare tertiaryweapon 8 rotatesprite -20 185 20000 0 27 0 0 0 0 0 xdim ydim
+		ifvare tertiaryweapon 9 rotatesprite -20 185 20000 0 24 0 0 0 0 0 xdim ydim
+		
+		ifvare invalidgame 1 gametextz STARTALPHANUM 320 60 174 0 2 0 0 0 xdim ydim 65000
+	}
 	//Overlay information
 	ifvare showdebugging 1 {
 		rotatesprite -106 40 140000 0 862 0 4 49 0 0 xdim ydim
@@ -1252,8 +1498,8 @@ onevent EVENT_DISPLAYREST
 		digitalnumberz 2837 82 87 spawncounter 0 0 0 0 0 xdim ydim 55000
 		digitalnumberz 2837 82 95 activespawners 0 0 0 0 0 xdim ydim 55000
 	}	else ifvare showoverlay 1 {
-		rotatesprite -160 40 175000 0 862 0 4 49 0 0 xdim ydim
-		rotatesprite -3 40 175000 0 862 0 4 49 0 0 xdim ydim
+		ifvare eog 0 rotatesprite -160 40 175000 0 862 0 4 49 0 0 xdim ydim
+		ifvare eog 0 rotatesprite -3 40 175000 0 862 0 4 49 0 0 xdim ydim
 		gametextz STARTALPHANUM -23 50 160 0 0 0 0 0 xdim ydim 55000
 		gametextz STARTALPHANUM -50 58 158 0 0 0 0 0 xdim ydim 55000
 		gametextz STARTALPHANUM -33 66 159 0 0 0 0 0 xdim ydim 55000
@@ -1303,228 +1549,6 @@ onevent EVENT_DISPLAYREST
 			gametextz STARTALPHANUM 283 117 165 0 2 0 0 0 xdim ydim 55000
 		}
 	}
-	//Reviving
-	ifvarg revivetimer 0 {
-		setvar temptwo 110
-		setvar temp 100
-		whilevarn temp 0 {
-      rotatesprite temptwo 145 65536 0 3163 0 2 49 0 0 xdim ydim 
-      addvar temptwo 1 
-      subvar temp 1
-    }
-    setvar temptwo 110
-		setvarvar temp revivetimer
-		mulvar temp 2
-		divvar temp 3
-		whilevarn temp 0 {
-      rotatesprite temptwo 145 65536 0 3163 0 2 16 0 0 xdim ydim 
-      addvar temptwo 1 
-      subvar temp 1
-    }
-	}
-
-	ifvarn idofdyingduke -1 {
-		getplayervar[idofdyingduke].downtimer temp
-		divvar temp 30
-		addvar temp 1
-		digitalnumberz 2930 170 30 temp 0 0 0 0 0 xdim ydim 58000
-		rotatesprite 142 31 43000 0 2452 0 0 0 0 0 xdim ydim
-	}
-
-	//Intermission clock
-	ifvarn intermission 0 {
-		setvarvar temp intermission
-		divvar temp 30
-		addvar temp 1
-		digitalnumberz 2930 300 20 temp 0 0 0 0 0 xdim ydim 58000
-	}
-
-	//Show access cards
-  getplayer[THISACTOR].got_access temp
-  ifvarg temp 3 {
-    rotatesprite 0 140 25000 0 60 0 23 16 0 0 xdim ydim
-    subvar temp 4
-  }
-  ifvarg temp 1 {
-    rotatesprite -5 140 25000 0 60 0 21 16 0 0 xdim ydim
-    subvar temp 2
-  }
-  ifvarg temp 0 {
-    rotatesprite -10 140 25000 0 60 0 0 16 0 0 xdim ydim
-    subvar temp 1
-  }
-  
-  //Magazine and ammo
-  ifvare PWEAPON PISTOL_WEAPON {
-  	ifvarg PISTOLMAGAZINE -1 {
-			digitalnumberz 2837 192 108 PISTOLMAGAZINE 0 0 0 0 0 xdim ydim 40000
-  	} else {
-  		digitalnumberz 2837 192 108 0 0 0 0 0 0 xdim ydim 40000
-  	} 
-  }
-  ifvare PWEAPON PISTOL_WEAPON setvar temp 25
-  ifvare PWEAPON SHOTGUN_WEAPON setvar temp 6
-  ifvare PWEAPON CHAINGUN_WEAPON setvar temp 31
-  ifvare PWEAPON RPG_WEAPON setvar temp 4
-  ifvare PWEAPON HANDBOMB_WEAPON setvar temp 4
-  ifvare PWEAPON HANDREMOTE_WEAPON setvar temp 4
-  ifvare PWEAPON SHRINKER_WEAPON setvar temp 6
-  ifvare PWEAPON GROW_WEAPON setvar temp 11
-  ifvare PWEAPON DEVISTATOR_WEAPON setvar temp 31
-  ifvare PWEAPON TRIPBOMB_WEAPON setvar temp 3
-  ifvare PWEAPON FREEZE_WEAPON setvar temp 31
-  getplayer[THISACTOR].ammo_amount PWEAPON tempthree
-  getplayer[THISACTOR].ammo_amount HANDBOMB_WEAPON temptwo
-  ifvare PWEAPON HANDREMOTE_WEAPON setvarvar tempthree temptwo
-  subvar tempthree 1
-  ifvarvarl tempthree temp digitalnumberz 2837 180 108 tempthree 0 2 0 0 0 xdim ydim 40000
-
-	//Round number
-	rotatesprite -47 20 58000 0 2957 0 0 0 0 0 xdim ydim
-	rotatesprite -36 20 58000 0 2954 0 0 0 0 0 xdim ydim
-	rotatesprite -25 20 58000 0 2960 0 0 0 0 0 xdim ydim
-	rotatesprite -13 20 58000 0 2953 0 0 0 0 0 xdim ydim
-	rotatesprite -2 20 58000 0 2943 0 0 0 0 0 xdim ydim
-	digitalnumberz 2930 25 20 round 0 0 0 0 0 xdim ydim 58000
-
-	//Perks
-	ifvare gotarmor 1 rotatesprite 341 181 35000 0 54 0 0 0 0 0 xdim ydim
-	ifvare gotdoublemoney 1 {
-		rotatesprite 319 181 19000 0 1234 0 0 0 0 0 xdim ydim
-		digitalnumberz 2837 321 188 doublemoneygained 0 16 0 0 0 xdim ydim 35000
-	} 
-	ifvare gotboots 1 rotatesprite 295 183 40000 0 61 0 0 0 0 0 xdim ydim
-	ifvare gotperkprotection 1 rotatesprite 341 165 35000 0 4371 0 0 0 0 0 xdim ydim
-	ifvare gotbackpack 1 rotatesprite 320 163 35000 0 57 0 0 0 0 0 xdim ydim
-	ifvare gotpowershot 1 rotatesprite 305 166 20000 0 1667 0 0 0 0 0 xdim ydim
-	ifvare gotautorevive 1 rotatesprite 272 183 16500 0 HOLODUKE 0 0 0 0 0 xdim ydim
-
-	//Powershot
-	ifvare gotpowershot 1 {
-		setvar temptwo 135
-		setvar temp 50
-		whilevarn temp 0 {
-      rotatesprite temptwo 185 65536 0 3163 0 0 49 0 0 xdim ydim 
-      addvar temptwo 1 
-      subvar temp 1
-    }
-    
-    setvar temptwo 135
-		setvarvar temp powershotcd
-		ifvare powershotcd 150 {
-			divvar temp 3
-			whilevarn temp 0 {
-        rotatesprite temptwo 185 65536 0 3163 0 2 16 0 0 xdim ydim 
-        addvar temptwo 1 
-        subvar temp 1
-      }
-		} else {
-			divvar temp 3
-			whilevarn temp 0 {
-        rotatesprite temptwo 185 65536 0 3163 0 0 16 0 0 xdim ydim 
-        addvar temptwo 1 
-        subvar temp 1
-      }
-		}
-
-		digitalnumberz 2837 160 185 powershotkills 0 0 16 0 0 xdim ydim 43000
-	}
-
-	//Money
-	ifvare gotdoublemoney 1 digitalnumberz 2837 315 96 finalplayermoney 0 7 0 0 0 xdim ydim 58000
-	else digitalnumberz 2837 315 96 finalplayermoney 0 0 0 0 0 xdim ydim 58000
-	ifvarn playermoney 0 digitalnumberz 2837 315 88 playermoney 0 8 0 0 0 xdim ydim 58000
-	ifvarn playermoneybonus 0 digitalnumberz 2837 315 80 playermoneybonus 0 16 0 0 0 xdim ydim 58000
-
-	//Information
-	ifvare buycooldown 0 state showinformation
-
-	ifvarg roundcompletetimer 0 gametextz STARTALPHANUM 320 50 128 0 10 0 0 0 xdim ydim 65000
-	else ifvarl rushroundtimer 180 ifvarg rushroundtimer 0 gametextz STARTALPHANUM 320 50 175 0 2 0 0 0 xdim ydim 65000
-	
-	ifvarg nohittimer 0 gametextz STARTALPHANUM 320 60 182 0 16 0 0 0 xdim ydim 65000
-	else ifvarg instakilltimer 0 gametextz STARTALPHANUM 320 60 125 0 20 0 0 0 xdim ydim 65000
-	else ifvarg infinityammotimer 0 gametextz STARTALPHANUM 320 60 154 0 20 0 0 0 xdim ydim 65000
-	else ifvarg nucleartimer 0 gametextz STARTALPHANUM 320 60 127 0 7 0 0 0 xdim ydim 65000
-	else ifvarg maxammotimer 0 gametextz STARTALPHANUM 320 60 126 0 8 0 0 0 xdim ydim 65000
-	else ifvarg orbtimer 0 gametextz STARTALPHANUM 320 60 155 0 16 0 0 0 xdim ydim 65000
-	else ifvare round 25 gametextz STARTALPHANUM 320 60 178 0 2 0 0 0 xdim ydim 65000
-
-	ifvarg instakillduration 0 {
-		setvarvar temp instakillduration
-		divvar temp 30
-		addvar temp 1
-		digitalnumberz 2930 325 135 temp 0 0 0 0 0 xdim ydim 50000
-		rotatesprite 303 130 50000 0 BADGUYICON 0 0 0 0 0 xdim ydim
-	}
-	ifvarg infinityammoduration 0 {
-		setvarvar temp infinityammoduration
-		divvar temp 30
-		addvar temp 1
-		digitalnumberz 2930 325 116 temp 0 0 0 0 0 xdim ydim 50000
-		rotatesprite 304 111 14000 0 2530 0 0 0 0 0 xdim ydim
-	}
-	ifvarg autorevivetimer 0 {
-		setvarvar temp autorevivetimer
-		divvar temp 30
-		addvar temp 1
-		digitalnumberz 2930 167 106 temp 0 1 0 0 0 xdim ydim 80000
-	}
-
-	//Weaponicons
-	getplayer[THISACTOR].ammo_amount primaryweapon temp
-	subvar temp 1
-	digitalnumberz 2837 20 162 temp 0 0 0 0 0 xdim ydim 58000
-	getplayer[THISACTOR].ammo_amount secondaryweapon temp
-	subvar temp 1
-	ifvarn secondaryweapon 0 digitalnumberz 2837 4 177 temp 0 0 0 0 0 xdim ydim 35000
-	getplayer[THISACTOR].ammo_amount tertiaryweapon temp
-	subvar temp 1
-	ifvarn tertiaryweapon 0 digitalnumberz 2837 4 187 temp 0 0 0 0 0 xdim ydim 35000
-	
-	getplayer[THISACTOR].max_ammo_amount primaryweapon temp
-	subvar temp 1
-	digitalnumberz 2837 54 162 temp 0 0 0 0 0 xdim ydim 58000
-	getplayer[THISACTOR].max_ammo_amount secondaryweapon temp
-	subvar temp 1
-	ifvarn secondaryweapon 0 digitalnumberz 2837 24 177 temp 0 0 0 0 0 xdim ydim 35000
-	getplayer[THISACTOR].max_ammo_amount tertiaryweapon temp
-	subvar temp 1
-	ifvarn tertiaryweapon 0 digitalnumberz 2837 24 187 temp 0 0 0 0 0 xdim ydim 35000
-	
-	rotatesprite 32 162 58000 0 2836 0 0 0 0 0 xdim ydim
-	ifvarn secondaryweapon 0 rotatesprite 11 177 35000 0 2836 0 0 0 0 0 xdim ydim
-	ifvarn tertiaryweapon 0 rotatesprite 11 187 35000 0 2836 0 0 0 0 0 xdim ydim
-	
-	ifvare primaryweapon 1 rotatesprite -20 157 35000 0 21 0 0 0 0 0 xdim ydim
-	ifvare primaryweapon 2 rotatesprite -20 160 35000 0 28 0 0 0 0 0 xdim ydim
-	ifvare primaryweapon 3 rotatesprite -20 157 35000 0 22 0 0 0 0 0 xdim ydim
-	ifvare primaryweapon 4 rotatesprite -20 157 35000 0 23 0 0 0 0 0 xdim ydim
-	ifvare primaryweapon 5 rotatesprite -20 157 35000 0 47 0 0 0 0 0 xdim ydim
-	ifvare primaryweapon 6 rotatesprite -20 157 35000 0 25 0 0 0 0 0 xdim ydim
-	ifvare primaryweapon 7 rotatesprite -20 160 35000 0 29 0 0 0 0 0 xdim ydim
-	ifvare primaryweapon 8 rotatesprite -20 157 35000 0 27 0 0 0 0 0 xdim ydim
-	ifvare primaryweapon 9 rotatesprite -20 157 35000 0 24 0 0 0 0 0 xdim ydim
-	ifvare secondaryweapon 1 rotatesprite -20 175 20000 0 21 0 0 0 0 0 xdim ydim
-	ifvare secondaryweapon 2 rotatesprite -20 177 20000 0 28 0 0 0 0 0 xdim ydim
-	ifvare secondaryweapon 3 rotatesprite -20 175 20000 0 22 0 0 0 0 0 xdim ydim
-	ifvare secondaryweapon 4 rotatesprite -20 175 20000 0 23 0 0 0 0 0 xdim ydim
-	ifvare secondaryweapon 5 rotatesprite -20 175 20000 0 47 0 0 0 0 0 xdim ydim
-	ifvare secondaryweapon 6 rotatesprite -20 175 20000 0 25 0 0 0 0 0 xdim ydim
-	ifvare secondaryweapon 7 rotatesprite -20 175 20000 0 29 0 0 0 0 0 xdim ydim
-	ifvare secondaryweapon 8 rotatesprite -20 175 20000 0 27 0 0 0 0 0 xdim ydim
-	ifvare secondaryweapon 9 rotatesprite -20 175 20000 0 24 0 0 0 0 0 xdim ydim
-	ifvare tertiaryweapon 1 rotatesprite -20 185 20000 0 21 0 0 0 0 0 xdim ydim
-	ifvare tertiaryweapon 2 rotatesprite -20 187 20000 0 28 0 0 0 0 0 xdim ydim
-	ifvare tertiaryweapon 3 rotatesprite -20 185 20000 0 22 0 0 0 0 0 xdim ydim
-	ifvare tertiaryweapon 4 rotatesprite -20 185 20000 0 23 0 0 0 0 0 xdim ydim
-	ifvare tertiaryweapon 5 rotatesprite -20 185 20000 0 47 0 0 0 0 0 xdim ydim
-	ifvare tertiaryweapon 6 rotatesprite -20 185 20000 0 25 0 0 0 0 0 xdim ydim
-	ifvare tertiaryweapon 7 rotatesprite -20 185 20000 0 29 0 0 0 0 0 xdim ydim
-	ifvare tertiaryweapon 8 rotatesprite -20 185 20000 0 27 0 0 0 0 0 xdim ydim
-	ifvare tertiaryweapon 9 rotatesprite -20 185 20000 0 24 0 0 0 0 0 xdim ydim
-	
-	ifvare invalidgame 1 gametextz STARTALPHANUM 320 60 174 0 2 0 0 0 xdim ydim 65000
 endevent
 
 onevent EVENT_DISPLAYCROSSHAIR
@@ -5623,7 +5647,8 @@ ends
 move PGROWINGPOP        // Used only as a variable
 
 actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
-
+	
+	state endgame
 	state handlenegativeammodevastator
 	state calculatetotalpoints
 	state movementspeed
@@ -5702,7 +5727,10 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 				getplayer[THISACTOR].i temp
 				getactor[temp].yvel temptwo
 				setvarvar idofdyingduke temptwo
-				ifvare downtimer 0 setvar isdead 1
+				ifvare downtimer 0 {
+					setvar isdead 1
+					state dieeffects
+				} 
 			}
 		} else { //Duke is entirely dead
 			cstat 32768 //Invisible
