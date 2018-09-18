@@ -10,7 +10,6 @@ FIRST PRIORITY:
 Kommer ind til rød via gul (os)
 Monster stuck i rød uden at rød var åben, men gul var
 Man skal ikke få round bonus hvis man er deadforgood
-Hvis man er død skal man ikke få fuld ammo
 De bliver altid stuck i det lille hus
 Man skal ikke kunne samle pipes op
 Fix do no cross bånd udenfor
@@ -1056,16 +1055,20 @@ state nextround
 	headspritestat temp 10
   setvarvar temptwo temp
   setvar tempfour 50
-  mulvarvar tempfour round
+  mulvarvar tempfour round //Round bonus
   whilevarn temp -1 {
   	getactor[temp].yvel tempfive
-  	getplayervar[tempfive].playermoneybonus tempthree
-  	addvarvar tempthree tempfour
-  	setplayervar[tempfive].playermoneybonus tempthree //Money
-  	setplayervar[tempfive].bonusmoneycounter 60
-  	getplayervar[tempfive].bonuses tempthree
-  	addvarvar tempthree tempfour
-  	setplayervar[tempfive].bonuses tempthree
+  	getplayervar[tempfive].isdead tempsix //Check if player is not dead
+  	ifvare tempsix 0 getplayervar[tempfive].isdown tempsix //or down...
+  	ifvare tempsix 0 { //If the player is not dead by the end of the round then add round bonus
+  		getplayervar[tempfive].playermoneybonus tempthree
+	  	addvarvar tempthree tempfour
+	  	setplayervar[tempfive].playermoneybonus tempthree //Money
+	  	setplayervar[tempfive].bonusmoneycounter 60
+	  	getplayervar[tempfive].bonuses tempthree
+	  	addvarvar tempthree tempfour
+	  	setplayervar[tempfive].bonuses tempthree
+  	}
   	nextspritestat temp temp
   	ifvarvare temp temptwo setvar temp -1
   }
