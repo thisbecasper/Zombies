@@ -14,10 +14,8 @@ Monster stuck i rød uden at rød var åben, men gul var
 Man skal ikke få round bonus hvis man er deadforgood
 Hvis man er død skal man ikke få fuld ammo
 
-Nuclear forsvinder hurtigere end de andre
-Lyd ved revive
 De bliver altid stuck i det lille hus
-Nuclear pal skal komme senere end hpregen
+---Nuclear pal skal komme senere end hpregen
 At købe ammo mens der er infinity gør ingenting ved ammo da den resetter konstant
 Infinity ammo trækker 1 hvis man køber nyt våben
 Nuclear duede ikke ordentligt
@@ -574,7 +572,7 @@ state endgame
 	}
 ends
 
-state handlemonsterdrops
+state handlemonsterdropsinstant
 	ifvare nuclear 1 {
 		setvar nuclear 0
 		setvar nucleartimer 60
@@ -597,6 +595,9 @@ state handlemonsterdrops
 	} else {
 		ifvarg maxammotimer 0 subvar maxammotimer 1
 	}
+ends
+
+state handlemonsterdropswithduration
 	ifvare instakill 1 {
 		setvar instakill 0
 		setvar instakilltimer 60
@@ -5679,8 +5680,9 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 	state doonce
 	state handlepowershot
 	state jumpheight
+	state handlemonsterdropswithduration //Pal
 	state hpregen //Pal
-	state handlemonsterdrops //Pal
+	state handlemonsterdropsinstant //Pal
 	state gotmoneyfromteammate //Pal
 	
 	ifp palive {
