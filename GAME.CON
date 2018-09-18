@@ -7,8 +7,7 @@ action ANULLACTION 0
 
 /*
 FIRST PRIORITY:
-Kunne købe noget til 50 og det var en væg
-Ved instakill gør dem unblockable
+
 Kommer ind til rød via gul (os)
 Lad dem dø instant ved freezer
 Monster stuck i rød uden at rød var åben, men gul var
@@ -20,7 +19,6 @@ Lyd ved revive
 De bliver altid stuck i det lille hus
 Nuclear pal skal komme senere end hpregen
 At købe ammo mens der er infinity gør ingenting ved ammo da den resetter konstant
-Ved instakill dør de to gange lol -> killit plus effekt fx teleporter
 Infinity ammo trækker 1 hvis man køber nyt våben
 Nuclear duede ikke ordentligt
 Man skal ikke kunne samle pipes op
@@ -34,7 +32,7 @@ Monsterdrop: penge, ammo til våben/våbene og double penge over tid
 
 SECOND PRIORITY:
 tilføj noget ved eog screen
-
+Kunne købe noget til 50 og det var en væg
 indfør at man skal have samlet et hvis antal bolde eller have no hit bonuses for at man kan
 klare banen eller sådan noget
 Mysteryboks skal sige en rumlyd når man er tæt på dem
@@ -46,9 +44,6 @@ mystery box der spawner by a chance og så kan man have en hold-use mechanic,
 hvor en counter tæller op hvert tic hvis use, ellers sætter den til 0.
 ved en bestemt runde ændrer newbeast karakter og kan fx hoppe eller slår hurtigere
 sørg for at monstrene kun spawner mht hvor mange kort der er aktive og ikke med 50%
-
-CHANGES:
-refactor numplayers
 */
 
 //////////////////////////////////// S U R V I V A L /////////////////////////////////////////////////
@@ -118,7 +113,7 @@ gamevar maxammo 0 2
 gamevar maxammotimer 0 1
 gamevar instakill 0 2
 gamevar instakilltimer 0 1
-gamevar instakillduration 0 1
+gamevar instakillduration 1000 1
 gamevar powershotcd 0 1
 gamevar infinityammo 0 2
 gamevar infinityammotimer 0 1
@@ -10898,10 +10893,12 @@ state checknewbeasthit
   				setplayervar[temptwo].doublemoneygained tempfour
 				}*/
 				killit
-			} else ifvarg tempfour 0 {
-				ai AINEWBEASTDYING
-				strength 0
-				sound NEWBEAST_DYING
+			} else ifvarg tempfour 0 { //Instakill on newbeast
+				spawn TRANSPORTERSTAR
+				sound TELEPORTER
+				sound SQUISHED
+				state standard_jibs
+				killit
 			}
 		}
   }
