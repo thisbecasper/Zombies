@@ -48,7 +48,7 @@ ved en bestemt runde ændrer newbeast karakter og kan fx hoppe eller slår hurti
 sørg for at monstrene kun spawner mht hvor mange kort der er aktive og ikke med 50%
 
 CHANGES:
-
+refactor numplayers
 */
 
 //////////////////////////////////// S U R V I V A L /////////////////////////////////////////////////
@@ -167,6 +167,7 @@ gamevar powershotkills 0 1
 gamevar activemysterybox -1 0
 gamevar gotrevivedbyplayer 0 1
 gamevar eog 0 0
+gamevar numberofplayers -1 0
 
 gamevar ammoamountone 0 1
 gamevar ammoamounttwo 0 1
@@ -1104,6 +1105,7 @@ state doonce
 
 		//Calculate amount of spawners on the map
 		ifvare spawners -1 {
+			setvar spawners 0
 			headspritestat temp 1
 		  setvarvar temptwo temp
 		  whilevarn temp -1 {
@@ -1114,6 +1116,19 @@ state doonce
 		  }
 		}
 		ifvarg orbtimer 0 subvar orbtimer 1
+
+		//Calculate total players on the map
+		ifvare numberofplayers -1 {
+			setvar numberofplayers 0
+			headspritestat temp 10
+		  setvarvar temptwo temp
+		  whilevarn temp -1 {
+		  	getactor[temp].picnum tempthree
+		  	ifvare tempthree APLAYER addvar numberofplayers 1
+		  	nextspritestat temp temp
+		  	ifvarvare temp temptwo setvar temp -1
+		  }
+		}
 
 		//Calculate monsters currently alive
 		setvar monstersalive 0
@@ -1130,7 +1145,8 @@ state doonce
 	  }
 	  ifvare monsterslefttospawn 0 ifvare monstersalive 0 state nextround
 
-	  setvar tempsix numplayers //Amount of players not down
+	  //Calculate players not down
+	  setvarvar tempsix numberofplayers
 	  headspritestat temp 10
 	  setvarvar temptwo temp
 	  whilevarn temp -1 {
@@ -1143,10 +1159,10 @@ state doonce
 	  	nextspritestat temp temp
 	  	ifvarvare temp temptwo setvar temp -1
 	  }
-	  ifvare tempsix numplayers setvar idofdyingduke -1 //All players alive
+	  ifvarvare tempsix numberofplayers setvar idofdyingduke -1 //All players alive
 
 	  //Calculate players currently alive
-		setvarvar playersalive numplayers 
+		setvarvar playersalive numberofplayers
 		headspritestat temp 10
 	  setvarvar temptwo temp
 	  whilevarn temp -1 {
@@ -1253,7 +1269,7 @@ onevent EVENT_DISPLAYREST
 
 	//Debuggg
 	//getactor[THISACTOR].extra temp
-	digitalnumberz 2837 0 40 idofdyingduke 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 40 numberofplayers 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 60 isdown 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 80 isdead 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 100 downtimer 0 0 0 0 0 xdim ydim 58000
