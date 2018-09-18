@@ -9,13 +9,12 @@ action ANULLACTION 0
 FIRST PRIORITY:
 Kunne købe noget til 50 og det var en væg
 Ved instakill gør dem unblockable
-Når duke er død lad ham være unblockable og unhitable
 Kommer ind til rød via gul (os)
 Lad dem dø instant ved freezer
 Monster stuck i rød uden at rød var åben, men gul var
 Man skal ikke få round bonus hvis man er deadforgood
 Hvis man er død skal man ikke få fuld ammo
-Mysteryboks skal sige en rumlyd når man er tæt på dem
+
 Nuclear forsvinder hurtigere end de andre
 Lyd ved revive
 De bliver altid stuck i det lille hus
@@ -38,7 +37,7 @@ tilføj noget ved eog screen
 
 indfør at man skal have samlet et hvis antal bolde eller have no hit bonuses for at man kan
 klare banen eller sådan noget
-
+Mysteryboks skal sige en rumlyd når man er tæt på dem
 tilføj en bank - giver 110% interest pr runde, men det koster gebyr og de skal mindst være der
 i 5 runder eller sådan noget. eller juster withdraw prisen alt efter hvor lang tid de har været
 derinde. lav noget fed grafik til det.
@@ -91,7 +90,7 @@ gamevar monsterhp 0 0
 gamevar maxmonstersallowed 5 0
 
 //Reference vars (read only!)
-gamevar downtimervar 100 4096
+gamevar downtimervar 600 4096
 gamevar autorevivetimervar 150 4096
 
 gamevar temp 0 0
@@ -99,6 +98,7 @@ gamevar temptwo 0 0
 gamevar tempthree 0 0
 gamevar tempfour 0 0
 gamevar tempfive 0 0
+gamevar tempsix 0 0
 gamevar haltcounter 0 1
 gamevar spawncounter 0 2
 gamevar hpregencounter 0 1
@@ -527,7 +527,6 @@ state respawnfromintermission
 ends
 
 state dieeffects
-	setvar idofdyingduke -1
 	guts JIBS1 1
   guts JIBS3 2
   guts JIBS4 1
@@ -541,10 +540,10 @@ state dieeffects
 ends
 
 state respawnfromautorevive
+	state loseperks
 	subvar autorevivetimer 1
 	setactor[THISACTOR].extra 500 //God mode hp
 	setvar showoverlay 0
-	state loseperks
 	/*
 	getplayer[THISACTOR].ammo_amount primaryweapon primaryammo
 	getplayer[THISACTOR].ammo_amount secondaryweapon secondaryammo
@@ -567,23 +566,9 @@ state respawnfromautorevive
 ends
 
 state respawnfromplayerrevive
-	getplayer[THISACTOR].ammo_amount primaryweapon primaryammo
-	getplayer[THISACTOR].ammo_amount secondaryweapon secondaryammo
-	getplayer[THISACTOR].ammo_amount tertiaryweapon tertiaryammo
-	getplayer[THISACTOR].posx MY_X
-	getplayer[THISACTOR].posy MY_Y
-	getplayer[THISACTOR].posz MY_Z
-	resetplayer
-	setplayer[THISACTOR].posx MY_X
-	setplayer[THISACTOR].posy MY_Y
-	setplayer[THISACTOR].posz MY_Z
-	setplayer[THISACTOR].ammo_amount primaryweapon primaryammo
-	setplayer[THISACTOR].ammo_amount secondaryweapon secondaryammo
-	setplayer[THISACTOR].ammo_amount tertiaryweapon tertiaryammo
-	setplayer[THISACTOR].gotweapon primaryweapon 1
-	setplayer[THISACTOR].gotweapon secondaryweapon 1
-	setplayer[THISACTOR].gotweapon tertiaryweapon 1
-	setplayer[THISACTOR].curr_weapon primaryweapon
+	state loseperks
+	setactor[THISACTOR].extra 50
+	sound DUKE_GOTHEALTHATLOW
 	setvar showoverlay 0
 ends
 
@@ -1145,6 +1130,21 @@ state doonce
 	  }
 	  ifvare monsterslefttospawn 0 ifvare monstersalive 0 state nextround
 
+	  setvar tempsix numplayers //Amount of players not down
+	  headspritestat temp 10
+	  setvarvar temptwo temp
+	  whilevarn temp -1 {
+	  	getactor[temp].picnum tempthree
+	  	ifvare tempthree APLAYER {
+	  		getactor[temp].yvel tempfour
+  			getplayervar[tempfour].isdown tempfive
+  			subvarvar tempsix tempfive 
+	  	}
+	  	nextspritestat temp temp
+	  	ifvarvare temp temptwo setvar temp -1
+	  }
+	  ifvare tempsix numplayers setvar idofdyingduke -1 //All players alive
+
 	  //Calculate players currently alive
 		setvarvar playersalive numplayers 
 		headspritestat temp 10
@@ -1192,11 +1192,12 @@ state hpregen
 		}
 	} else subvar hpregencounter 1
 	getactor[THISACTOR].extra temptwo
+	getplayer[THISACTOR].max_player_health tempthree
 	ifvare temptwo 0 nullop
 	else ifvarg temptwo 400 palfrom 20 0 0 40
 	else ifvarg temptwo 300 palfrom 20 0 0 30
 	else ifvarg temptwo 200 palfrom 20 0 0 20
-	else ifvarg temptwo MAXPLAYERHEALTH palfrom 20 0 0 15
+	else ifvarvarg temptwo tempthree palfrom 20 0 0 15
 	else ifvarg temptwo 34 nullop // normal screen - duke has 35-50(70) hp
 	else ifvarg temptwo 10 palfrom 15 24 0 0
 	else ifvarg temptwo 10 ifvarl temptwo 35 palfrom 15 24 0 0
@@ -1251,11 +1252,11 @@ ends
 onevent EVENT_DISPLAYREST
 
 	//Debuggg
-	getactor[THISACTOR].extra temp
-	digitalnumberz 2930 0 40 temp 0 0 0 0 0 xdim ydim 58000
-	//digitalnumberz 2930 0 60 isdown 0 0 0 0 0 xdim ydim 58000
-	//digitalnumberz 2930 0 80 isdead 0 0 0 0 0 xdim ydim 58000
-	//digitalnumberz 2930 0 100 downtimer 0 0 0 0 0 xdim ydim 58000
+	//getactor[THISACTOR].extra temp
+	digitalnumberz 2837 0 40 idofdyingduke 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 60 isdown 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 80 isdead 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 100 downtimer 0 0 0 0 0 xdim ydim 58000
 	
 	ifvare eog 1 {
 		rotatesprite 160 100 500000 0 862 0 4 1 0 0 xdim ydim
@@ -2278,7 +2279,6 @@ onevent EVENT_RESETPLAYER
 	  }
   } else addammo 1 234
   state loseperks
-	setvar idofdyingduke -1
 endevent
 
 onevent EVENT_PRESSEDFIRE // when the player presses the fire button..
@@ -5673,6 +5673,9 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 	state gotmoneyfromteammate //Pal
 	
 	ifp palive {
+		cstat 257 //Blockable + hitable
+		ifvarg revivetimer 0 subvar revivetimer 2 //Always reduce revivetimer bar
+		ifvarl revivetimer 0 setvar revivetimer 0 //Make sure its not negative
 		setvarvar downtimer downtimervar
 		setvar isdown 0
 		setvar isdead 0
@@ -5700,8 +5703,6 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 		} 
 	}
 	ifdead { //Handle revive and perks and stuff
-		ifvarg revivetimer 0 subvar revivetimer 2 //Always reduce revivetimer bar
-		ifvarl revivetimer 0 setvar revivetimer 0 //Make sure its not negative
 		ifvare isdead 0 { //If duke is NOT entirely dead
 			cstat 1 //Blockable
 			
@@ -5719,23 +5720,21 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 					action PSTAND
 				}
 			} else setvar isdown 1 //If duke has no autorevive he is down
+   		
    		ifvare isdown 1 {
    			subvar downtimer 1
+				getactor[THISACTOR].yvel temptwo //Populating idofdyingduke
+				setvarvar idofdyingduke temptwo //Populating idofdyingduke
    			ifvare gotrevivedbyplayer 1 {
    				state respawnfromplayerrevive
    				action PSTAND
    			}
-   		} 
-
-   		ifvarvarl downtimer downtimervar {
-				getplayer[THISACTOR].i temp
-				getactor[temp].yvel temptwo
-				setvarvar idofdyingduke temptwo
-				ifvare downtimer 0 {
-					setvar isdead 1
-					state dieeffects
-				} 
-			}
+   		} 			
+			ifvare downtimer 0 {
+				setvar isdead 1
+				state dieeffects
+			} 
+			
 		} else { //Duke is entirely dead
 			cstat 32768 //Invisible
 			setvar isdown 0
