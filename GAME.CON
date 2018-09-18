@@ -7,25 +7,20 @@ action ANULLACTION 0
 
 /*
 FIRST PRIORITY:
-
 Kommer ind til rød via gul (os)
-Lad dem dø instant ved freezer
 Monster stuck i rød uden at rød var åben, men gul var
 Man skal ikke få round bonus hvis man er deadforgood
 Hvis man er død skal man ikke få fuld ammo
-
 De bliver altid stuck i det lille hus
-
 Man skal ikke kunne samle pipes op
 Fix do no cross bånd udenfor
 Ved gul kort lav et hjørne mindre
 Ændre chaingun eller tilføj overheat (den er for god som den er nu og at den ligger udenfor
 gør at den det bedste våben)
-Rpg skal skade fucking meget
 Monster blev stuck...
-Monsterdrop: penge, ammo til våben/våbene og double penge over tid
 
 SECOND PRIORITY:
+Monsterdrop: penge, ammo til våben/våbene og double penge over tid
 tilføj noget ved eog screen
 Kunne købe noget til 50 og det var en væg
 indfør at man skal have samlet et hvis antal bolde eller have no hit bonuses for at man kan
@@ -5686,9 +5681,9 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 	state doonce
 	state handlepowershot
 	state jumpheight
-	state handlemonsterdropswithduration //Pal
+	ifp palive state handlemonsterdropswithduration //Pal
 	state hpregen //Pal
-	state handlemonsterdropsinstant //Pal
+	ifp palive state handlemonsterdropsinstant //Pal
 	state gotmoneyfromteammate //Pal
 	
 	ifp palive {
