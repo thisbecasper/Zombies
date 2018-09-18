@@ -7,7 +7,6 @@ action ANULLACTION 0
 
 /*
 FIRST PRIORITY:
-Hvis solo skal man ikke have bleed out counter
 Kunne købe noget til 50 og det var en væg
 auto revive duer ikke i singleplayer fordi resetplayer restarter spillet
 Ved instakill gør dem unblockable
@@ -50,7 +49,7 @@ ved en bestemt runde ændrer newbeast karakter og kan fx hoppe eller slår hurti
 sørg for at monstrene kun spawner mht hvor mange kort der er aktive og ikke med 50%
 
 CHANGES:
-Når alle er døde så kommer der game over screen
+Hvis begge er nede så eog.
 */
 
 //////////////////////////////////// S U R V I V A L /////////////////////////////////////////////////
@@ -1153,8 +1152,10 @@ state doonce
 	  	getactor[temp].picnum tempthree
 	  	ifvare tempthree APLAYER {
 	  		getactor[temp].yvel tempfour
+	  		getplayervar[tempfour].isdown tempfive
+	  		subvarvar playersalive tempfive
 	  		getplayervar[tempfour].isdead tempfive
-	  		ifvare tempfive 1 subvar playersalive 1
+	  		subvarvar playersalive tempfive
 	  	}
 	  	nextspritestat temp temp
 	  	ifvarvare temp temptwo setvar temp -1
