@@ -15,9 +15,8 @@ Man skal ikke få round bonus hvis man er deadforgood
 Hvis man er død skal man ikke få fuld ammo
 
 De bliver altid stuck i det lille hus
----At købe ammo mens der er infinity gør ingenting ved ammo da den resetter konstant
-Infinity ammo trækker 1 hvis man køber nyt våben
-Nuclear duede ikke ordentligt
+
+---Nuclear duede ikke ordentligt
 Man skal ikke kunne samle pipes op
 Fix do no cross bånd udenfor
 Ved gul kort lav et hjørne mindre
@@ -10785,15 +10784,15 @@ state checknewbeasthit
     killit
   }
 */
-  ifdead //mosnterdrops
+  ifdead //monsterdrops
   {
-    randvar temp 0
-    ifvare temp 3 spawn BATTERYAMMO
+    randvar temp 240 //240
+    ifvare temp 0 spawn BATTERYAMMO
     else ifvare temp 1 spawn ATOMICHEALTH
     else ifvare temp 2 spawn BADGUYICON
-    else ifvare temp 0 spawn 2530
+    else ifvare temp 3 spawn 2530
 
-    randvar temp 1999
+    randvar temp 1999 //1999
   	ifvare temp 0 spawn SHIELD
   	else ifvare temp 1 spawn BOOTS
   	else ifvare temp 2 spawn 4371
@@ -11117,15 +11116,16 @@ useractor enemy NEWBEAST NEWBEASTSTRENGTH
 		}
   }
   
-  ifvare nuclear 1 {
+  ifvare nuclear 1 { //Handle monster nuclear
   	setvar nuclear 0
   	getactor[THISACTOR].extra temp
 		ifvarg temp 0 {
-			ai AINEWBEASTDYING
-			state newbeastdyingstate
-	  	spawn FIRE2
+			state standard_jibs
+			sound SQUISHED
 	  	sound FIRE_CRACKLE
-	  	sound 320
+	  	sound NEWBEAST_DYING
+	  	spawn FIRE2
+	  	killit
 		}
   }
   
