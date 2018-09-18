@@ -7,15 +7,11 @@ action ANULLACTION 0
 
 /*
 FIRST PRIORITY:
-Kommer ind til rød via gul (os)
-Monster stuck i rød uden at rød var åben, men gul var
-Man skal ikke få round bonus hvis man er deadforgood
-De bliver altid stuck i det lille hus
 Man skal ikke kunne samle pipes op
-Fix do no cross bånd udenfor
-Ved gul kort lav et hjørne mindre
 Ændre chaingun eller tilføj overheat (den er for god som den er nu og at den ligger udenfor
 gør at den det bedste våben)
+
+Monster stuck i rød uden at rød var åben, men gul var
 Monster blev stuck...
 
 SECOND PRIORITY:
@@ -28,7 +24,6 @@ Mysteryboks skal sige en rumlyd når man er tæt på dem
 tilføj en bank - giver 110% interest pr runde, men det koster gebyr og de skal mindst være der
 i 5 runder eller sådan noget. eller juster withdraw prisen alt efter hvor lang tid de har været
 derinde. lav noget fed grafik til det.
-
 mystery box der spawner by a chance og så kan man have en hold-use mechanic, 
 hvor en counter tæller op hvert tic hvis use, ellers sætter den til 0.
 ved en bestemt runde ændrer newbeast karakter og kan fx hoppe eller slår hurtigere
@@ -152,6 +147,8 @@ gamevar activemysterybox -1 0
 gamevar gotrevivedbyplayer 0 1
 gamevar eog 0 0
 gamevar numberofplayers -1 0
+gamevar chaingunheat 0 1
+gamevar hasoverheated 0 1
 
 gamevar ammoamountone 0 1
 gamevar ammoamounttwo 0 1
@@ -1260,8 +1257,8 @@ onevent EVENT_DISPLAYREST
 
 	//Debuggg
 	//getactor[THISACTOR].extra temp
-	//digitalnumberz 2837 0 40 numberofplayers 0 0 0 0 0 xdim ydim 58000
-	//digitalnumberz 2837 0 60 isdown 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 40 chaingunheat 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 60 hasoverheated 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 80 isdead 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 100 downtimer 0 0 0 0 0 xdim ydim 58000
 	
@@ -1395,6 +1392,41 @@ onevent EVENT_DISPLAYREST
 			}
 
 			digitalnumberz 2837 160 185 powershotkills 0 0 16 0 0 xdim ydim 43000
+		}
+
+		//Overheat bar
+		ifvare primaryweapon CHAINGUN_WEAPON {
+			setvar temptwo 135
+			setvar temp 50
+			whilevarn temp 0 {
+	      rotatesprite temptwo 179 65536 0 3163 0 0 49 0 0 xdim ydim 
+	      addvar temptwo 1 
+	      subvar temp 1
+	    }
+	    setvar temptwo 135
+			setvarvar temp chaingunheat
+			ifvare hasoverheated 1 {
+				divvar temp 5
+				whilevarn temp 0 {
+	        rotatesprite temptwo 179 65536 0 3163 0 2 16 0 0 xdim ydim 
+	        addvar temptwo 1 
+	        subvar temp 1
+	      }
+			} else ifvarg chaingunheat 150 {
+				divvar temp 5
+				whilevarn temp 0 {
+	        rotatesprite temptwo 179 65536 0 3163 0 2 16 0 0 xdim ydim 
+	        addvar temptwo 1 
+	        subvar temp 1
+	      }
+			} else {
+				divvar temp 5
+				whilevarn temp 0 {
+	        rotatesprite temptwo 179 65536 0 3163 0 0 16 0 0 xdim ydim 
+	        addvar temptwo 1 
+	        subvar temp 1
+	      }
+			}
 		}
 
 		//Money
@@ -2306,6 +2338,10 @@ onevent EVENT_PRESSEDFIRE // when the player presses the fire button..
 	  ifvare PWEAPON 1 // and he has the pistol armed...
 	    ifvarl PISTOLMAGAZINE 1
 	      setvar RETURN -1 // if his magazine is at zero, disable the firing key
+	}
+	ifvare temp CHAINGUN_WEAPON {
+		ifvare hasoverheated 0 addvar chaingunheat 4
+		else setvar RETURN -1
 	}
 endevent
 
@@ -5689,6 +5725,15 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 	ifp palive state handlemonsterdropsinstant //Pal
 	state gotmoneyfromteammate //Pal
 	
+	ifvarg chaingunheat 0 {
+		ifvarg chaingunheat 250 {
+			sound STEAM_HISSING
+			setvar hasoverheated 1
+		} 
+		ifvarg chaingunheat 150 subvar chaingunheat 1
+		else subvar chaingunheat 2
+	} else setvar hasoverheated 0
+
 	ifp palive {
 		cstat 257 //Blockable + hitable
 		ifvarg revivetimer 0 subvar revivetimer 2 //Always reduce revivetimer bar
