@@ -7,6 +7,7 @@ action ANULLACTION 0
 
 /*
 FIRST PRIORITY:
+Når man er invincible så kan man dø af rpg fordi man hurtigt trigger isdown...
 Kunne købe noget til 50 og det var en væg
 auto revive duer ikke i singleplayer fordi resetplayer restarter spillet
 Ved instakill gør dem unblockable
@@ -543,6 +544,12 @@ state dieeffects
 ends
 
 state respawnfromautorevive
+	subvar autorevivetimer 1
+	setactor[THISACTOR].extra 50
+	setvar showoverlay 0
+	setvarvar invincibletimer invincibletimervar
+	state loseperks
+	/*
 	getplayer[THISACTOR].ammo_amount primaryweapon primaryammo
 	getplayer[THISACTOR].ammo_amount secondaryweapon secondaryammo
 	getplayer[THISACTOR].ammo_amount tertiaryweapon tertiaryammo
@@ -560,8 +567,7 @@ state respawnfromautorevive
 	setplayer[THISACTOR].gotweapon secondaryweapon 1
 	setplayer[THISACTOR].gotweapon tertiaryweapon 1
 	setplayer[THISACTOR].curr_weapon primaryweapon
-	setvar showoverlay 0
-	setvarvar invincibletimer invincibletimervar
+	*/
 ends
 
 state respawnfromplayerrevive
