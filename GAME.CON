@@ -8,8 +8,6 @@ action ANULLACTION 0
 /*
 FIRST PRIORITY:
 Man skal ikke kunne samle pipes op
-Ændre chaingun eller tilføj overheat (den er for god som den er nu og at den ligger udenfor
-gør at den det bedste våben)
 
 Monster stuck i rød uden at rød var åben, men gul var
 Monster blev stuck...
@@ -1165,7 +1163,7 @@ state doonce
 	  	nextspritestat temp temp
 	  	ifvarvare temp temptwo setvar temp -1
 	  }
-	  ifvare playersalive 0 setvar eog 1 //Toggle endofgame
+	  ifvare playersalive 0 setvar //eog 1 //Toggle endofgame TODO
 	}
 ends
 
