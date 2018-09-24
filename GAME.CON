@@ -1163,7 +1163,7 @@ state doonce
 	  	nextspritestat temp temp
 	  	ifvarvare temp temptwo setvar temp -1
 	  }
-	  ifvare playersalive 0 setvar eog 0 //Toggle endofgame TODO: Setvar = 0
+	  ifvare playersalive 0 setvar eog 0 //Toggle endofgame TODO: Setvar = 1
 	}
 ends
 
@@ -5786,6 +5786,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 				getactor[THISACTOR].yvel temptwo //Populating idofdyingduke
 				setvarvar idofdyingduke temptwo //Populating idofdyingduke
    			ifvare gotrevivedbyplayer 1 {
+   				setvar gotrevivedbyplayer 0
    				state respawnfromplayerrevive
    				action PSTAND
    			}
