@@ -1163,7 +1163,7 @@ state doonce
 	  	nextspritestat temp temp
 	  	ifvarvare temp temptwo setvar temp -1
 	  }
-	  ifvare playersalive 0 setvar //eog 1 //Toggle endofgame TODO
+	  ifvare playersalive 0 setvar eog 0 //Toggle endofgame TODO: Setvar = 0
 	}
 ends
 
