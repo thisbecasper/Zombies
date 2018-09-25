@@ -11,7 +11,7 @@ Monster stuck i rød uden at rød var åben, men gul var
 Monster blev stuck...
 
 SECOND PRIORITY:
-Monsterdrop: penge, ammo til våben/våbene og double penge over tid
+Monsterdrop: ammo til våben/våbene og double penge over tid
 tilføj noget ved eog screen
 Mysteryboks skal sige en rumlyd når man er tæt på dem
 tilføj en bank - giver 110% interest pr runde, men det koster gebyr og de skal mindst være der
@@ -99,6 +99,7 @@ gamevar infinityammoduration 0 1
 gamevar havespawnedorb 0 0
 gamevar spawners -1 0
 gamevar orbtimer 0 0
+gamevar moneyfromdroptimer 0 1
 gamevar moneycounter 0 1
 gamevar bonusmoneycounter 0 1
 gamevar monstersalive 0 0
@@ -656,6 +657,8 @@ state handlemonsterdrops
 			}
 			ifvarg infinityammotimer 0 subvar infinityammotimer 1
 		}
+		//Double money
+		ifvarg moneyfromdroptimer 0 subvar moneyfromdroptimer 1
 	} else {
 		setvar nuclear 0
 		setvar maxammo 0
@@ -1484,11 +1487,12 @@ onevent EVENT_DISPLAYREST
 		else ifvarl rushroundtimer 180 ifvarg rushroundtimer 0 gametextz STARTALPHANUM 320 50 175 0 2 0 0 0 xdim ydim 65000
 		
 		ifvarg nohittimer 0 gametextz STARTALPHANUM 320 60 182 0 16 0 0 0 xdim ydim 65000
+		else ifvarg orbtimer 0 gametextz STARTALPHANUM 320 60 155 0 16 0 0 0 xdim ydim 65000
+		else ifvarg moneyfromdroptimer 0 gametextz STARTALPHANUM 320 60 185 0 7 0 0 0 xdim ydim 65000
+		else ifvarg maxammotimer 0 gametextz STARTALPHANUM 320 60 126 0 8 0 0 0 xdim ydim 65000
+		else ifvarg nucleartimer 0 gametextz STARTALPHANUM 320 60 127 0 7 0 0 0 xdim ydim 65000
 		else ifvarg instakilltimer 0 gametextz STARTALPHANUM 320 60 125 0 20 0 0 0 xdim ydim 65000
 		else ifvarg infinityammotimer 0 gametextz STARTALPHANUM 320 60 154 0 20 0 0 0 xdim ydim 65000
-		else ifvarg nucleartimer 0 gametextz STARTALPHANUM 320 60 127 0 7 0 0 0 xdim ydim 65000
-		else ifvarg maxammotimer 0 gametextz STARTALPHANUM 320 60 126 0 8 0 0 0 xdim ydim 65000
-		else ifvarg orbtimer 0 gametextz STARTALPHANUM 320 60 155 0 16 0 0 0 xdim ydim 65000
 		else ifvare round 25 gametextz STARTALPHANUM 320 60 178 0 2 0 0 0 xdim ydim 65000
 
 		ifvarg instakillduration 0 {
@@ -4360,6 +4364,7 @@ actor 2825 //Money
       {
         addvar playermoneybonus 2000
         setvar bonusmoneycounter 60
+        setvar moneyfromdroptimer 60
         palfrom 40 64 64 0
         sound DUKE_GET
         killit
