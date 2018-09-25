@@ -144,6 +144,12 @@ gamevar eog 0 0
 gamevar numberofplayers -1 0
 gamevar chaingunheat 0 1
 gamevar hasoverheated 0 1
+gamevar moneyfest 0 2
+gamevar moneyfesttimer 0 1
+gamevar moneyfestduration 0 1
+gamevar moneyfrommoneyfest 0 1
+gamevar moneyfrommoneyfestshow 0 1
+gamevar moneyfestshowtimer 0 1
 
 gamevar ammoamountone 0 1
 gamevar ammoamounttwo 0 1
@@ -589,9 +595,23 @@ state handlemonsterdrops
 			sound 195
 		} else {
 			ifvarg instakilltimer 0 subvar instakilltimer 1
-			ifvarg instakillduration 0 {
-				subvar instakillduration 1
-			} 
+			ifvarg instakillduration 0 subvar instakillduration 1
+			
+		}
+		//MONEYFEST
+		ifvare moneyfest 1 {
+			setvar moneyfest 0
+			setvar moneyfesttimer 60
+			setvar moneyfestduration 450
+		} else {
+			ifvarg moneyfesttimer 0 subvar moneyfesttimer 1
+			ifvarg moneyfestduration 0 subvar moneyfestduration 1
+			ifvarg moneyfestshowtimer 0 subvar moneyfestshowtimer 1
+			ifvare moneyfestduration 1 {
+				setvarvar moneyfrommoneyfestshow moneyfrommoneyfest
+				setvar moneyfrommoneyfest 0
+				setvar moneyfestshowtimer 60
+			}
 		}
 		//INFINITYAMMO
 		ifvare infinityammo 1 {
@@ -657,7 +677,7 @@ state handlemonsterdrops
 			}
 			ifvarg infinityammotimer 0 subvar infinityammotimer 1
 		}
-		//Double money
+		//MONEY FROM DROP
 		ifvarg moneyfromdroptimer 0 subvar moneyfromdroptimer 1
 	} else {
 		setvar nuclear 0
@@ -1277,6 +1297,7 @@ state newbeastdrops
   else ifvare temp 2 spawn BADGUYICON
   else ifvare temp 3 spawn 2530
   else ifvare temp 4 spawn 2825
+  else ifvare temp 5 spawn 4520
 
   randvar temp 1999 //1999
 	ifvarl temp 7 {
@@ -1302,7 +1323,7 @@ onevent EVENT_DISPLAYREST
 
 	//Debuggg
 	//getactor[THISACTOR].extra temp
-	//digitalnumberz 2837 0 40 playersalive 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 40 moneyfrommoneyfest 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 60 hasoverheated 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 80 isdead 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 100 downtimer 0 0 0 0 0 xdim ydim 58000
@@ -1487,11 +1508,13 @@ onevent EVENT_DISPLAYREST
 		else ifvarl rushroundtimer 180 ifvarg rushroundtimer 0 gametextz STARTALPHANUM 320 50 175 0 2 0 0 0 xdim ydim 65000
 		
 		ifvarg nohittimer 0 gametextz STARTALPHANUM 320 60 182 0 16 0 0 0 xdim ydim 65000
+		else ifvarg moneyfestshowtimer 0 digitalnumberz 2837 160 60 moneyfrommoneyfestshow 0 7 0 0 0 xdim ydim 65000
 		else ifvarg orbtimer 0 gametextz STARTALPHANUM 320 60 155 0 16 0 0 0 xdim ydim 65000
 		else ifvarg moneyfromdroptimer 0 gametextz STARTALPHANUM 320 60 185 0 7 0 0 0 xdim ydim 65000
 		else ifvarg maxammotimer 0 gametextz STARTALPHANUM 320 60 126 0 8 0 0 0 xdim ydim 65000
 		else ifvarg nucleartimer 0 gametextz STARTALPHANUM 320 60 127 0 7 0 0 0 xdim ydim 65000
 		else ifvarg instakilltimer 0 gametextz STARTALPHANUM 320 60 125 0 20 0 0 0 xdim ydim 65000
+		else ifvarg moneyfesttimer 0 gametextz STARTALPHANUM 320 60 186 0 7 0 0 0 xdim ydim 65000
 		else ifvarg infinityammotimer 0 gametextz STARTALPHANUM 320 60 154 0 20 0 0 0 xdim ydim 65000
 		else ifvare round 25 gametextz STARTALPHANUM 320 60 178 0 2 0 0 0 xdim ydim 65000
 
@@ -1508,6 +1531,13 @@ onevent EVENT_DISPLAYREST
 			addvar temp 1
 			digitalnumberz 2930 325 116 temp 0 0 0 0 0 xdim ydim 50000
 			rotatesprite 304 111 14000 0 2530 0 0 0 0 0 xdim ydim
+		}
+		ifvarg moneyfestduration 0 {
+			setvarvar temp moneyfestduration
+			divvar temp 30
+			addvar temp 1
+			digitalnumberz 2930 325 154 temp 0 0 0 0 0 xdim ydim 50000
+			rotatesprite 304 152 100000 0 2825 0 7 0 0 0 xdim ydim
 		}
 		ifvarg autorevivetimer 0 {
 			setvarvar temp autorevivetimer
@@ -4347,10 +4377,9 @@ actor BATTERYAMMO //Maxammo
       }
 enda
 
-actor 2825 //Money
+actor 4520 //Money
 	ifcount 300 killit
-	setactor[THISACTOR].pal 7
-	sizeat 100 100
+	sizeat 28 28
   fall
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
@@ -4367,6 +4396,32 @@ actor 2825 //Money
         setvar moneyfromdroptimer 60
         palfrom 40 64 64 0
         sound DUKE_GET
+        killit
+      }
+enda
+
+actor 2825 //Double money powerup moneyfest
+	ifcount 300 killit
+	setactor[THISACTOR].pal 7
+	sizeat 100 100
+  fall
+  ifmove RESPAWN_ACTOR_FLAG
+    state respawnit
+  else
+    ifp pshrunk nullop
+    else
+      ifp palive
+        ifpdistl RETRIEVEDISTANCE
+          ifcount 6
+            ifcanseetarget
+      {
+        headspritestat temp 10
+        setvarvar temptwo temp
+        whilevarn temp -1 {
+        	setactorvar[temp].moneyfest 1
+        	nextspritestat temp temp
+        	ifvarvare temp temptwo setvar temp -1
+        }
         killit
       }
 enda
@@ -11200,16 +11255,25 @@ useractor enemy NEWBEAST NEWBEASTSTRENGTH
 		getactor[THISACTOR].htowner temptwo
 		getactor[temptwo].yvel tempthree
 		ifvarn temp -1 {
+			//Normal money
 			getplayervar[tempthree].playermoney temptwo
-			addvarvar temptwo temp //money
-			setplayervar[tempthree].moneycounter 60
+			addvarvar temptwo temp
 			setplayervar[tempthree].playermoney temptwo
-			getplayervar[tempthree].damagedealt temptwo
-			addvarvar temptwo temp 
-			setplayervar[tempthree].damagedealt temptwo
-			getplayervar[tempthree].hits temptwo
-			addvar temptwo 1
-			setplayervar[tempthree].hits temptwo
+			setplayervar[tempthree].moneycounter 60
+			//Money fest
+			getplayervar[tempthree].moneyfestduration temptwo
+			ifvarg temptwo 0 {
+				setvarvar tempfour temp //Get dmg dealt
+				mulvar tempfour 2 //Double it and add (total money is 3x) 
+				getplayervar[tempthree].moneyfrommoneyfest tempsix
+				addvarvar tempsix tempfour
+				setplayervar[tempthree].moneyfrommoneyfest tempsix
+				setplayervar[tempthree].bonusmoneycounter 60
+				getplayervar[tempthree].playermoneybonus tempfive
+				addvarvar tempfive tempfour
+				setplayervar[tempthree].playermoneybonus tempfive
+			}
+			//Money multiplier
 			getplayervar[tempthree].gotdoublemoney temptwo
 			ifvare temptwo 1 { //gotdoublemoney
 				divvar temp 4 //Double money rate
@@ -11221,6 +11285,14 @@ useractor enemy NEWBEAST NEWBEASTSTRENGTH
   			addvarvar tempfour temp
   			setplayervar[tempthree].doublemoneygained tempfour
 			}
+			//Damage dealt
+			getplayervar[tempthree].damagedealt temptwo
+			addvarvar temptwo temp 
+			setplayervar[tempthree].damagedealt temptwo
+			//Hits
+			getplayervar[tempthree].hits temptwo
+			addvar temptwo 1
+			setplayervar[tempthree].hits temptwo
 		}
   }
   
