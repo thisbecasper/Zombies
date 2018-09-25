@@ -558,92 +558,73 @@ state endgame
 	}
 ends
 
-state handlemonsterdropsinstant
-	ifvare nuclear 1 {
-		setvar nuclear 0
-		setvar nucleartimer 60
-		palfrom 64 64 64 0
-		sound 9
-	} else {
-		ifvarg nucleartimer 0 subvar nucleartimer 1
-	}
-	ifvare maxammo 1 {
-		setvar maxammo 0
-		setvar maxammotimer 60
-		palfrom 20 0 64 0
-		sound 297
-		getplayer[THISACTOR].max_ammo_amount primaryweapon temp
-		setplayer[THISACTOR].ammo_amount primaryweapon temp
-		getplayer[THISACTOR].max_ammo_amount secondaryweapon temp
-		setplayer[THISACTOR].ammo_amount secondaryweapon temp
-		getplayer[THISACTOR].max_ammo_amount tertiaryweapon temp
-		setplayer[THISACTOR].ammo_amount tertiaryweapon temp
-	} else {
-		ifvarg maxammotimer 0 subvar maxammotimer 1
-	}
-ends
-
-state handlemonsterdropswithduration
-	ifvare instakill 1 {
-		setvar instakill 0
-		setvar instakilltimer 60
-		setvar instakillduration 450
-		sound 195
-	} else {
-		ifvarg instakilltimer 0 subvar instakilltimer 1
-		ifvarg instakillduration 0 {
-			subvar instakillduration 1
-		} 
-	}
-	ifvare infinityammo 1 {
-		addammo 1 1
-		addammo 2 1
-		addammo 3 1
-		addammo 4 1
-		addammo 5 1
-		addammo 6 1
-		addammo 7 1
-		addammo 8 1
-		addammo 9 1
-		addammo 11 1
-		getplayer[THISACTOR].ammo_amount 1 ammoamountone
-		getplayer[THISACTOR].ammo_amount 2 ammoamounttwo
-		getplayer[THISACTOR].ammo_amount 3 ammoamountthree
-		getplayer[THISACTOR].ammo_amount 4 ammoamountfour
-		getplayer[THISACTOR].ammo_amount 5 ammoamountfive
-		getplayer[THISACTOR].ammo_amount 6 ammoamountsix
-		getplayer[THISACTOR].ammo_amount 7 ammoamountseven
-		getplayer[THISACTOR].ammo_amount 8 ammoamounteight
-		getplayer[THISACTOR].ammo_amount 9 ammoamountnine
-		getplayer[THISACTOR].ammo_amount 11 ammoamounteleven
-		setvar infinityammo 0
-		setvar infinityammotimer 60
-		setvar infinityammoduration 450
-		sound 195
-	} else {
-		ifvarg infinityammoduration 0 {
-			subvar infinityammoduration 1
-			setplayer[THISACTOR].ammo_amount 1 ammoamountone
-			setplayer[THISACTOR].ammo_amount 2 ammoamounttwo
-			setplayer[THISACTOR].ammo_amount 3 ammoamountthree
-			setplayer[THISACTOR].ammo_amount 4 ammoamountfour
-			setplayer[THISACTOR].ammo_amount 5 ammoamountfive
-			setplayer[THISACTOR].ammo_amount 6 ammoamountsix
-			setplayer[THISACTOR].ammo_amount 7 ammoamountseven
-			setplayer[THISACTOR].ammo_amount 8 ammoamounteight
-			setplayer[THISACTOR].ammo_amount 9 ammoamountnine
-			setplayer[THISACTOR].ammo_amount 11 ammoamounteleven
-			ifvare infinityammoduration 1 {
-				subvar ammoamountone 1
-				subvar ammoamounttwo 1
-				subvar ammoamountthree 1
-				subvar ammoamountfour 1
-				subvar ammoamountfive 1
-				subvar ammoamountsix 1
-				subvar ammoamountseven 1
-				subvar ammoamounteight 1
-				subvar ammoamountnine 1
-				subvar ammoamounteleven 1
+state handlemonsterdrops
+	ifp palive {
+		//NUCLEAR
+		ifvare nuclear 1 {
+			setvar nuclear 0
+			setvar nucleartimer 60
+			palfrom 64 64 64 0
+			sound 9
+		} else {
+			ifvarg nucleartimer 0 subvar nucleartimer 1
+		}
+		//MAXAMMO
+		ifvare maxammo 1 {
+			setvar maxammo 0
+			setvar maxammotimer 60
+			palfrom 20 0 64 0
+			sound 297
+			getplayer[THISACTOR].max_ammo_amount primaryweapon temp
+			setplayer[THISACTOR].ammo_amount primaryweapon temp
+			getplayer[THISACTOR].max_ammo_amount secondaryweapon temp
+			setplayer[THISACTOR].ammo_amount secondaryweapon temp
+			getplayer[THISACTOR].max_ammo_amount tertiaryweapon temp
+			setplayer[THISACTOR].ammo_amount tertiaryweapon temp
+		} else {
+			ifvarg maxammotimer 0 subvar maxammotimer 1
+		}
+		//INSTAKILL
+		ifvare instakill 1 {
+			setvar instakill 0
+			setvar instakilltimer 60
+			setvar instakillduration 450
+			sound 195
+		} else {
+			ifvarg instakilltimer 0 subvar instakilltimer 1
+			ifvarg instakillduration 0 {
+				subvar instakillduration 1
+			} 
+		}
+		//INFINITYAMMO
+		ifvare infinityammo 1 {
+			addammo 1 1
+			addammo 2 1
+			addammo 3 1
+			addammo 4 1
+			addammo 5 1
+			addammo 6 1
+			addammo 7 1
+			addammo 8 1
+			addammo 9 1
+			addammo 11 1
+			getplayer[THISACTOR].ammo_amount 1 ammoamountone
+			getplayer[THISACTOR].ammo_amount 2 ammoamounttwo
+			getplayer[THISACTOR].ammo_amount 3 ammoamountthree
+			getplayer[THISACTOR].ammo_amount 4 ammoamountfour
+			getplayer[THISACTOR].ammo_amount 5 ammoamountfive
+			getplayer[THISACTOR].ammo_amount 6 ammoamountsix
+			getplayer[THISACTOR].ammo_amount 7 ammoamountseven
+			getplayer[THISACTOR].ammo_amount 8 ammoamounteight
+			getplayer[THISACTOR].ammo_amount 9 ammoamountnine
+			getplayer[THISACTOR].ammo_amount 11 ammoamounteleven
+			setvar infinityammo 0
+			setvar infinityammotimer 60
+			setvar infinityammoduration 450
+			sound 195
+		} else {
+			ifvarg infinityammoduration 0 {
+				subvar infinityammoduration 1
 				setplayer[THISACTOR].ammo_amount 1 ammoamountone
 				setplayer[THISACTOR].ammo_amount 2 ammoamounttwo
 				setplayer[THISACTOR].ammo_amount 3 ammoamountthree
@@ -654,9 +635,36 @@ state handlemonsterdropswithduration
 				setplayer[THISACTOR].ammo_amount 8 ammoamounteight
 				setplayer[THISACTOR].ammo_amount 9 ammoamountnine
 				setplayer[THISACTOR].ammo_amount 11 ammoamounteleven
+				ifvare infinityammoduration 1 {
+					subvar ammoamountone 1
+					subvar ammoamounttwo 1
+					subvar ammoamountthree 1
+					subvar ammoamountfour 1
+					subvar ammoamountfive 1
+					subvar ammoamountsix 1
+					subvar ammoamountseven 1
+					subvar ammoamounteight 1
+					subvar ammoamountnine 1
+					subvar ammoamounteleven 1
+					setplayer[THISACTOR].ammo_amount 1 ammoamountone
+					setplayer[THISACTOR].ammo_amount 2 ammoamounttwo
+					setplayer[THISACTOR].ammo_amount 3 ammoamountthree
+					setplayer[THISACTOR].ammo_amount 4 ammoamountfour
+					setplayer[THISACTOR].ammo_amount 5 ammoamountfive
+					setplayer[THISACTOR].ammo_amount 6 ammoamountsix
+					setplayer[THISACTOR].ammo_amount 7 ammoamountseven
+					setplayer[THISACTOR].ammo_amount 8 ammoamounteight
+					setplayer[THISACTOR].ammo_amount 9 ammoamountnine
+					setplayer[THISACTOR].ammo_amount 11 ammoamounteleven
+				}
 			}
+			ifvarg infinityammotimer 0 subvar infinityammotimer 1
 		}
-		ifvarg infinityammotimer 0 subvar infinityammotimer 1
+	} else {
+		setvar nuclear 0
+		setvar maxammo 0
+		setvar instakill 0
+		setvar infinityammo 0
 	}
 ends
 
@@ -1166,7 +1174,7 @@ state doonce
 	  	nextspritestat temp temp
 	  	ifvarvare temp temptwo setvar temp -1
 	  }
-	  ifvare playersalive 0 setvar eog 1 //Toggle endofgame TODO: Setvar = 1
+	  ifvare playersalive 0 setvar eog 1 //Toggle endofgame
 	}
 ends
 
@@ -5721,9 +5729,8 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 	state doonce
 	state handlepowershot
 	state jumpheight
-	ifp palive state handlemonsterdropswithduration //Pal
 	state hpregen //Pal
-	ifp palive state handlemonsterdropsinstant //Pal
+	state handlemonsterdrops //Pal
 	state gotmoneyfromteammate //Pal
 	
 	ifvarg chaingunheat 0 {
