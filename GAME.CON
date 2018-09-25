@@ -7,7 +7,7 @@ action ANULLACTION 0
 
 /*
 FIRST PRIORITY:
-Man skal ikke kunne samle pipes op
+Man skal ikke kunne samle pipes op (actor change, timer, new projectile, remove from inventory)
 
 Monster stuck i rød uden at rød var åben, men gul var
 Monster blev stuck...
@@ -26,6 +26,7 @@ mystery box der spawner by a chance og så kan man have en hold-use mechanic,
 hvor en counter tæller op hvert tic hvis use, ellers sætter den til 0.
 ved en bestemt runde ændrer newbeast karakter og kan fx hoppe eller slår hurtigere
 sørg for at monstrene kun spawner mht hvor mange kort der er aktive og ikke med 50%
+mellem hver runde effekter og highlight af stats for runden
 */
 
 //////////////////////////////////// S U R V I V A L /////////////////////////////////////////////////
@@ -1175,6 +1176,17 @@ state doonce
 	  	ifvarvare temp temptwo setvar temp -1
 	  }
 	  ifvare playersalive 0 setvar eog 1 //Toggle endofgame
+	}
+ends
+
+state preventhbombpickup
+	ifvarn primaryweapon HANDBOMB_WEAPON {
+		ifvarn secondaryweapon HANDBOMB_WEAPON {
+			ifvarn tertiaryweapon HANDBOMB_WEAPON {
+				setplayer[THISACTOR].ammo_amount HANDBOMB_WEAPON 1
+				setplayer[THISACTOR].gotweapon HANDBOMB_WEAPON 0
+			}
+		}
 	}
 ends
 
@@ -5740,7 +5752,9 @@ ends
 move PGROWINGPOP        // Used only as a variable
 
 actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
+  
 	state endgame
+	state preventhbombpickup
 	state handlenegativeammodevastator
 	state calculatetotalpoints
 	state movementspeed
