@@ -1154,16 +1154,19 @@ state doonce
 	  whilevarn temp -1 {
 	  	getactor[temp].picnum tempthree
 	  	ifvare tempthree APLAYER {
-  			getactor[temp].yvel tempfour
-  			getplayervar[tempfour].isdown tempfive
-  			subvarvar playersalive tempfive
-  			getplayervar[tempfour].isdead tempfive
-  			subvarvar playersalive tempfive
+  			getactor[temp].extra tempfour
+  			ifvarl tempfour 1 { //Check duke they are dead
+  				getactor[temp].yvel tempfive
+  				getplayervar[tempfive].autorevivetimer tempsix
+  				ifvare tempsix 0 { //And that he has not autorevive
+  					subvar playersalive 1
+  				}
+  			}
 	  	}
 	  	nextspritestat temp temp
 	  	ifvarvare temp temptwo setvar temp -1
 	  }
-	  ifvare playersalive 0 setvar eog 0 //Toggle endofgame TODO: Setvar = 1
+	  ifvare playersalive 0 setvar eog 1 //Toggle endofgame TODO: Setvar = 1
 	}
 ends
 
@@ -1255,7 +1258,7 @@ onevent EVENT_DISPLAYREST
 
 	//Debuggg
 	//getactor[THISACTOR].extra temp
-	digitalnumberz 2837 0 40 playersalive 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 40 playersalive 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 60 hasoverheated 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 80 isdead 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 100 downtimer 0 0 0 0 0 xdim ydim 58000
