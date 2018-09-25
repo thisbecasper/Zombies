@@ -7,17 +7,12 @@ action ANULLACTION 0
 
 /*
 FIRST PRIORITY:
-Man skal ikke kunne samle pipes op (actor change, timer, new projectile, remove from inventory)
-
 Monster stuck i rød uden at rød var åben, men gul var
 Monster blev stuck...
 
 SECOND PRIORITY:
 Monsterdrop: penge, ammo til våben/våbene og double penge over tid
 tilføj noget ved eog screen
-Kunne købe noget til 50 og det var en væg
-indfør at man skal have samlet et hvis antal bolde eller have no hit bonuses for at man kan
-klare banen eller sådan noget
 Mysteryboks skal sige en rumlyd når man er tæt på dem
 tilføj en bank - giver 110% interest pr runde, men det koster gebyr og de skal mindst være der
 i 5 runder eller sådan noget. eller juster withdraw prisen alt efter hvor lang tid de har været
@@ -1270,7 +1265,7 @@ ends
 
 state newbeastdrops
 	randvar temp 240 //240
-  ifvarl temp 4 {
+  ifvarl temp 5 {
 		spawn TRANSPORTERBEAM
 		sound TELEPORTER
 	}
@@ -1278,6 +1273,7 @@ state newbeastdrops
   else ifvare temp 1 spawn ATOMICHEALTH
   else ifvare temp 2 spawn BADGUYICON
   else ifvare temp 3 spawn 2530
+  else ifvare temp 4 spawn 2825
 
   randvar temp 1999 //1999
 	ifvarl temp 7 {
@@ -4167,8 +4163,10 @@ actor AIRTANK
       }
 enda
 
-//Actor Perks
-actor 4371
+
+
+//Actor Perks Useractors
+actor 4371 //Perk protector
 	fall
   cstat 1
   sizeat 38 38
@@ -4179,7 +4177,7 @@ actor 4371
   }
 enda
 
-actor 1667
+actor 1667 //Powershot
 	fall
   cstat 1
   sizeat 27 22
@@ -4221,7 +4219,7 @@ actor HOLODUKE 0 HOLODUKE_FRAMES
   }
 enda
 
-actor 1234
+actor 1234 //Money multiplier
 	fall
   cstat 1
   sizeat 24 24
@@ -4242,7 +4240,7 @@ actor JETPACK
   }
 enda
 
-actor GETICON
+actor GETICON //Spawner
 	fall
   cstat 32768
   sizeat 2 2
@@ -4270,6 +4268,167 @@ enda
 actor ACCESSCARD
   fall
 enda
+
+actor BADGUYICON //Instakill
+	ifcount 300 killit
+	sizeat 64 64
+  fall
+  ifmove RESPAWN_ACTOR_FLAG
+    state respawnit
+  else
+    ifp pshrunk nullop
+    else
+      ifp palive
+        ifpdistl RETRIEVEDISTANCE
+          ifcount 6
+            ifcanseetarget
+      {
+        headspritestat temp 10
+        setvarvar temptwo temp
+        whilevarn temp -1 {
+        	setactorvar[temp].instakill 1
+        	nextspritestat temp temp
+        	ifvarvare temp temptwo setvar temp -1
+        }
+        killit
+      }
+enda
+
+actor 2530 //Infinityammo
+	sizeat 19 19
+	ifcount 300 killit
+  fall
+  ifmove RESPAWN_ACTOR_FLAG
+    state respawnit
+  else
+    ifp pshrunk nullop
+    else
+      ifp palive
+        ifpdistl RETRIEVEDISTANCE
+          ifcount 6
+            ifcanseetarget
+      {
+        headspritestat temp 10
+        setvarvar temptwo temp
+        whilevarn temp -1 {
+        	setactorvar[temp].infinityammo 1
+        	nextspritestat temp temp
+        	ifvarvare temp temptwo setvar temp -1
+        }
+        killit
+      }
+enda
+
+actor BATTERYAMMO //Maxammo
+	ifcount 300 killit
+  fall
+  ifmove RESPAWN_ACTOR_FLAG
+    state respawnit
+  else
+    ifp pshrunk nullop
+    else
+      ifp palive
+        ifpdistl RETRIEVEDISTANCE
+          ifcount 6
+            ifcanseetarget
+      {
+        headspritestat temp 10
+        setvarvar temptwo temp
+        whilevarn temp -1 {
+        	setactorvar[temp].maxammo 1
+        	nextspritestat temp temp
+        	ifvarvare temp temptwo setvar temp -1
+        }
+        killit
+      }
+enda
+
+actor 2825 //Money
+	ifcount 300 killit
+	setactor[THISACTOR].pal 7
+	sizeat 100 100
+  fall
+  ifmove RESPAWN_ACTOR_FLAG
+    state respawnit
+  else
+    ifp pshrunk nullop
+    else
+      ifp palive
+        ifpdistl RETRIEVEDISTANCE
+          ifcount 6
+            ifcanseetarget
+      {
+        addvar playermoneybonus 2000
+        setvar bonusmoneycounter 60
+        palfrom 40 64 64 0
+        sound DUKE_GET
+        killit
+      }
+enda
+
+actor CRYSTALAMMO //Orb
+  ifvarn intermission 0 killit
+  ifcount 900 killit
+  sizeat 30 64
+  setactor[THISACTOR].pal 17
+  fall
+  ifmove RESPAWN_ACTOR_FLAG
+    state respawnit
+  else
+    ifp pshrunk nullop
+    else
+      ifp palive
+        ifpdistl RETRIEVEDISTANCE
+          ifcount 6
+            ifcanseetarget
+      {
+        setvar temp 50
+        mulvarvar temp round
+        addvarvar playermoneybonus temp //money
+        addvarvar bonuses temp
+        setvar bonusmoneycounter 60
+        palfrom 30 0 0 64
+        setvar orbtimer 60
+        sound 70
+        killit
+      }
+enda
+
+actor ATOMICHEALTH //Nuclear
+  ifcount 300 killit
+  fall
+  setactor[THISACTOR].pal 23
+  ifmove RESPAWN_ACTOR_FLAG
+    state respawnit
+  else
+    ifp pshrunk nullop
+    else
+      ifp palive
+        ifpdistl RETRIEVEDISTANCE
+          ifcount 6
+            ifcanseetarget
+      {
+        headspritestat temp 1
+        setvarvar temptwo temp
+        whilevarn temp -1 {
+        	setactorvar[temp].nuclear 1
+        	nextspritestat temp temp
+        	ifvarvare temp temptwo setvar temp -1
+        }
+        headspritestat temp 10
+        setvarvar temptwo temp
+        whilevarn temp -1 {
+        	setactorvar[temp].nuclear 1
+        	nextspritestat temp temp
+        	ifvarvare temp temptwo setvar temp -1
+        }
+        killit
+      }
+enda
+
+
+
+
 
 actor AMMO
   fall
@@ -4355,66 +4514,6 @@ actor AMMOLOTS
       }
 enda
 
-actor CRYSTALAMMO
-  ifvarn intermission 0 killit
-  ifcount 900 killit
-  sizeat 30 64
-  setactor[THISACTOR].pal 17
-  fall
-  ifmove RESPAWN_ACTOR_FLAG
-    state respawnit
-  else
-    ifp pshrunk nullop
-    else
-      ifp palive
-        ifpdistl RETRIEVEDISTANCE
-          ifcount 6
-            ifcanseetarget
-      {
-        setvar temp 50
-        mulvarvar temp round
-        addvarvar playermoneybonus temp //money
-        addvarvar bonuses temp
-        setvar bonusmoneycounter 60
-        palfrom 30 0 0 64
-        setvar orbtimer 60
-        sound 70
-        killit
-      }
-enda
-
-actor ATOMICHEALTH
-  ifcount 300 killit
-  fall
-  setactor[THISACTOR].pal 23
-  ifmove RESPAWN_ACTOR_FLAG
-    state respawnit
-  else
-    ifp pshrunk nullop
-    else
-      ifp palive
-        ifpdistl RETRIEVEDISTANCE
-          ifcount 6
-            ifcanseetarget
-      {
-        headspritestat temp 1
-        setvarvar temptwo temp
-        whilevarn temp -1 {
-        	setactorvar[temp].nuclear 1
-        	nextspritestat temp temp
-        	ifvarvare temp temptwo setvar temp -1
-        }
-        headspritestat temp 10
-        setvarvar temptwo temp
-        whilevarn temp -1 {
-        	setactorvar[temp].nuclear 1
-        	nextspritestat temp temp
-        	ifvarvare temp temptwo setvar temp -1
-        }
-        killit
-      }
-enda
-
 actor GROWAMMO
   fall
   ifmove RESPAWN_ACTOR_FLAG
@@ -4433,80 +4532,6 @@ actor GROWAMMO
           state getcode
         else
           state quikget
-      }
-enda
-
-actor BADGUYICON
-	ifcount 300 killit
-	sizeat 64 64
-  fall
-  ifmove RESPAWN_ACTOR_FLAG
-    state respawnit
-  else
-    ifp pshrunk nullop
-    else
-      ifp palive
-        ifpdistl RETRIEVEDISTANCE
-          ifcount 6
-            ifcanseetarget
-      {
-        headspritestat temp 10
-        setvarvar temptwo temp
-        whilevarn temp -1 {
-        	setactorvar[temp].instakill 1
-        	nextspritestat temp temp
-        	ifvarvare temp temptwo setvar temp -1
-        }
-        killit
-      }
-enda
-
-actor 2530
-	sizeat 19 19
-	ifcount 300 killit
-  fall
-  ifmove RESPAWN_ACTOR_FLAG
-    state respawnit
-  else
-    ifp pshrunk nullop
-    else
-      ifp palive
-        ifpdistl RETRIEVEDISTANCE
-          ifcount 6
-            ifcanseetarget
-      {
-        headspritestat temp 10
-        setvarvar temptwo temp
-        whilevarn temp -1 {
-        	setactorvar[temp].infinityammo 1
-        	nextspritestat temp temp
-        	ifvarvare temp temptwo setvar temp -1
-        }
-        killit
-      }
-enda
-
-actor BATTERYAMMO
-	ifcount 300 killit
-  fall
-  ifmove RESPAWN_ACTOR_FLAG
-    state respawnit
-  else
-    ifp pshrunk nullop
-    else
-      ifp palive
-        ifpdistl RETRIEVEDISTANCE
-          ifcount 6
-            ifcanseetarget
-      {
-        headspritestat temp 10
-        setvarvar temptwo temp
-        whilevarn temp -1 {
-        	setactorvar[temp].maxammo 1
-        	nextspritestat temp temp
-        	ifvarvare temp temptwo setvar temp -1
-        }
-        killit
       }
 enda
 
