@@ -1256,6 +1256,31 @@ state checkhitscan
   hitscan MY_X MY_Y MY_Z MY_SECTOR MY_COS MY_SIN MY_ZDIST HITSECTOR HITWALL HITSPRITE HITX HITY HITZ 4294901808
 ends
 
+state newbeastdrops
+	randvar temp 240 //240
+  ifvarl temp 4 {
+		spawn TRANSPORTERBEAM
+		sound TELEPORTER
+	}
+  ifvare temp 0 spawn BATTERYAMMO
+  else ifvare temp 1 spawn ATOMICHEALTH
+  else ifvare temp 2 spawn BADGUYICON
+  else ifvare temp 3 spawn 2530
+
+  randvar temp 1999 //1999
+	ifvarl temp 7 {
+		spawn TRANSPORTERBEAM
+		sound TELEPORTER
+	}
+	ifvare temp 0 spawn SHIELD
+	else ifvare temp 1 spawn BOOTS
+	else ifvare temp 2 spawn 4371
+	else ifvare temp 3 spawn 1667
+	else ifvare temp 4 spawn 1234
+	else ifvare temp 5 spawn HOLODUKE
+	else ifvare temp 6 spawn JETPACK
+ends
+
 state buy
 	ifvarg buycooldown 0 subvar buycooldown 1
 ends
@@ -10837,20 +10862,7 @@ state checknewbeasthit
 */
   ifdead //monsterdrops
   {
-    randvar temp 240 //240
-    ifvare temp 0 spawn BATTERYAMMO
-    else ifvare temp 1 spawn ATOMICHEALTH
-    else ifvare temp 2 spawn BADGUYICON
-    else ifvare temp 3 spawn 2530
-
-    randvar temp 1999 //1999
-  	ifvare temp 0 spawn SHIELD
-  	else ifvare temp 1 spawn BOOTS
-  	else ifvare temp 2 spawn 4371
-  	else ifvare temp 3 spawn 1667
-  	else ifvare temp 4 spawn 1234
-  	else ifvare temp 5 spawn HOLODUKE
-  	else ifvare temp 6 spawn JETPACK
+    state newbeastdrops
 
     ifwasweapon FREEZEBLAST
     {
@@ -10952,12 +10964,13 @@ state checknewbeasthit
   				addvarvar tempfour tempfive
   				setplayervar[temptwo].doublemoneygained tempfour
 				}*/
+				state newbeastdrops
 				killit
 			} else ifvarg tempfour 0 { //Instakill on newbeast
 				spawn TRANSPORTERSTAR
-				sound TELEPORTER
 				sound SQUISHED
 				state standard_jibs
+				state newbeastdrops
 				killit
 			}
 		}
@@ -11176,6 +11189,7 @@ useractor enemy NEWBEAST NEWBEASTSTRENGTH
 	  	sound FIRE_CRACKLE
 	  	sound NEWBEAST_DYING
 	  	spawn FIRE2
+	  	state newbeastdrops
 	  	killit
 		}
   }
