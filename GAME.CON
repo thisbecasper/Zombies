@@ -2466,24 +2466,28 @@ onevent EVENT_WEAPKEY10
 endevent
 
 onevent EVENT_NEXTWEAPON
-	ifvare PWEAPON 10 {
+	ifvare hasoverheated 1 {
 		setvar RETURN -1
-		break
-	}
-	getplayer[THISACTOR].kickback_pic temptwo
-	getplayer[THISACTOR].quick_kick temp
-	ifvare temp 0 {
-		ifvare temptwo 0 {
-			ifvarn secondaryweapon 0 {
-				ifvarn tertiaryweapon 0 {
-					setvarvar temp primaryweapon
-					setvarvar primaryweapon secondaryweapon
-					setvarvar secondaryweapon tertiaryweapon
-					setvarvar tertiaryweapon temp
-				} else {
-					setvarvar temp primaryweapon
-					setvarvar primaryweapon secondaryweapon
-					setvarvar secondaryweapon temp
+	} else {
+		ifvare PWEAPON 10 {
+			setvar RETURN -1
+			break
+		}
+		getplayer[THISACTOR].kickback_pic temptwo
+		getplayer[THISACTOR].quick_kick temp
+		ifvare temp 0 {
+			ifvare temptwo 0 {
+				ifvarn secondaryweapon 0 {
+					ifvarn tertiaryweapon 0 {
+						setvarvar temp primaryweapon
+						setvarvar primaryweapon secondaryweapon
+						setvarvar secondaryweapon tertiaryweapon
+						setvarvar tertiaryweapon temp
+					} else {
+						setvarvar temp primaryweapon
+						setvarvar primaryweapon secondaryweapon
+						setvarvar secondaryweapon temp
+					}
 				}
 			}
 		}
@@ -2491,24 +2495,28 @@ onevent EVENT_NEXTWEAPON
 endevent
 
 onevent EVENT_PREVIOUSWEAPON
-	ifvare PWEAPON 10 {
+	ifvare hasoverheated 1 {
 		setvar RETURN -1
-		break
-	}
-	getplayer[THISACTOR].kickback_pic temptwo
-	getplayer[THISACTOR].quick_kick temp
-	ifvare temp 0 {
-		ifvare temptwo 0 {
-			ifvarn secondaryweapon 0 {
-				ifvarn tertiaryweapon 0 {
-					setvarvar temp tertiaryweapon
-					setvarvar tertiaryweapon secondaryweapon
-					setvarvar secondaryweapon primaryweapon
-					setvarvar primaryweapon temp
-				} else {
-					setvarvar temp secondaryweapon
-					setvarvar secondaryweapon primaryweapon
-					setvarvar primaryweapon temp
+	} else {
+		ifvare PWEAPON 10 {
+			setvar RETURN -1
+			break
+		}
+		getplayer[THISACTOR].kickback_pic temptwo
+		getplayer[THISACTOR].quick_kick temp
+		ifvare temp 0 {
+			ifvare temptwo 0 {
+				ifvarn secondaryweapon 0 {
+					ifvarn tertiaryweapon 0 {
+						setvarvar temp tertiaryweapon
+						setvarvar tertiaryweapon secondaryweapon
+						setvarvar secondaryweapon primaryweapon
+						setvarvar primaryweapon temp
+					} else {
+						setvarvar temp secondaryweapon
+						setvarvar secondaryweapon primaryweapon
+						setvarvar primaryweapon temp
+					}
 				}
 			}
 		}
