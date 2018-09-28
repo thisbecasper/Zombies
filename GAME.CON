@@ -1699,7 +1699,6 @@ onevent EVENT_HOLODUKEON
 	quote 177
 	setvarvar gamedurationseconds totalclock
 	divvar gamedurationseconds 120
-	addlogvar gamedurationseconds
 	addlogvar finalplayermoney
 	addlogvar primaryweapon
 	addlogvar secondaryweapon
@@ -1714,6 +1713,7 @@ onevent EVENT_HOLODUKEON
 	addlogvar haltrunspeed
 	addlogvar playerrunspeed
 	addlogvar playerrunspeedboots
+	addlogvar mysteryboxcost
 	addlogvar intermission
 	addlogvar round
 	addlogvar monstertype
@@ -1722,11 +1722,14 @@ onevent EVENT_HOLODUKEON
 	addlogvar totalmonsters
 	addlogvar monsterhp
 	addlogvar maxmonstersallowed
+	addlogvar downtimervar
+	addlogvar autorevivetimervar
 	addlogvar temp
 	addlogvar temptwo
 	addlogvar tempthree
 	addlogvar tempfour
 	addlogvar tempfive
+	addlogvar tempsix
 	addlogvar haltcounter
 	addlogvar spawncounter
 	addlogvar hpregencounter
@@ -1752,12 +1755,13 @@ onevent EVENT_HOLODUKEON
 	addlogvar infinityammotimer
 	addlogvar infinityammoduration
 	addlogvar havespawnedorb
-	addlogvar spawners
+	addlogvar spawners 
 	addlogvar orbtimer
-	addlogvar downtimer
+	addlogvar moneyfromdroptimer
 	addlogvar moneycounter
 	addlogvar bonusmoneycounter
 	addlogvar monstersalive
+	addlogvar playersalive
 	addlogvar instakillhpset
 	addlogvar playermoney
 	addlogvar playermoneybonus
@@ -1778,13 +1782,32 @@ onevent EVENT_HOLODUKEON
 	addlogvar activespawners
 	addlogvar invalidgame
 	addlogvar rushroundtimer
-	addlogvar revivetimer
 	addlogvar autorevivetimer
 	addlogvar owner
 	addlogvar totalpoints
-	addlogvar gothit
-	addlogvar moneydonated
 	addlogvar moneyrecieved
+	addlogvar gamedurationseconds
+	addlogvar moneydonated
+	addlogvar gothit
+	addlogvar nohittimer
+	addlogvar revivetimer
+	addlogvar downtimer
+	addlogvar isdead
+	addlogvar isdown
+	addlogvar idofdyingduke
+	addlogvar powershotkills
+	addlogvar activemysterybox 
+	addlogvar gotrevivedbyplayer
+	addlogvar eog
+	addlogvar numberofplayers
+	addlogvar chaingunheat
+	addlogvar hasoverheated
+	addlogvar moneyfest
+	addlogvar moneyfesttimer
+	addlogvar moneyfestduration
+	addlogvar moneyfrommoneyfest
+	addlogvar moneyfrommoneyfestshow
+	addlogvar moneyfestshowtimer
 	addlogvar ammoamountone
 	addlogvar ammoamounttwo
 	addlogvar ammoamountthree
