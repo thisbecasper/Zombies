@@ -8,7 +8,7 @@ action ANULLACTION 0
 /*
 FIRST PRIORITY:
 Monster stuck i rød uden at rød var åben, men gul var
-Monster blev stuck...
+Monster blev stuck
 
 SECOND PRIORITY:
 Monsterdrop: ammo til våben/våbene og double penge over tid
