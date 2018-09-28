@@ -5748,7 +5748,6 @@ state standard_pjibs
   guts DUKETORSO 1
   guts DUKELEG 2
   guts DUKEGUN 1
-  ifrnd 16 money 1
 ends
 
 move DUKENOTMOVING
