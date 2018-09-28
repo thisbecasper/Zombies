@@ -574,16 +574,18 @@ state handlemonsterdrops
 		}
 		//MAXAMMO
 		ifvare maxammo 1 {
-			setvar maxammo 0
-			setvar maxammotimer 60
-			palfrom 20 0 64 0
-			sound 297
-			getplayer[THISACTOR].max_ammo_amount primaryweapon temp
-			setplayer[THISACTOR].ammo_amount primaryweapon temp
-			getplayer[THISACTOR].max_ammo_amount secondaryweapon temp
-			setplayer[THISACTOR].ammo_amount secondaryweapon temp
-			getplayer[THISACTOR].max_ammo_amount tertiaryweapon temp
-			setplayer[THISACTOR].ammo_amount tertiaryweapon temp
+			ifvare infinityammoduration 0 {
+				setvar maxammo 0
+				setvar maxammotimer 60
+				palfrom 20 0 64 0
+				sound 297
+				getplayer[THISACTOR].max_ammo_amount primaryweapon temp
+				setplayer[THISACTOR].ammo_amount primaryweapon temp
+				getplayer[THISACTOR].max_ammo_amount secondaryweapon temp
+				setplayer[THISACTOR].ammo_amount secondaryweapon temp
+				getplayer[THISACTOR].max_ammo_amount tertiaryweapon temp
+				setplayer[THISACTOR].ammo_amount tertiaryweapon temp
+			}
 		} else {
 			ifvarg maxammotimer 0 subvar maxammotimer 1
 		}
