@@ -6335,10 +6335,10 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
       palfrom 48 0 0 48
       ifdead
       {
-        sound SOMETHINGFROZE
-        spritepal 1
-        move 0
-        action PFROZEN
+        //sound SOMETHINGFROZE
+        //spritepal 1
+        //move 0
+        //action PFROZEN
         break
       }
     }
