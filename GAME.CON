@@ -33,6 +33,19 @@ definegamefuncname 31 God_Mode
 definegamefuncname 32 Log
 definegamefuncname 34 Score_Overlay
 definegamefuncname 48 Reload
+
+//SHRINKER
+defineprojectile 1660 PROJ_WORKSLIKE 36866 //2 + 4096 + 32768
+defineprojectile 1660 PROJ_SPAWNS SHRINKEREXPLOSION
+defineprojectile 1660 PROJ_ISOUND 158
+defineprojectile 1660 PROJ_VEL 840
+defineprojectile 1660 PROJ_HITRADIUS 0
+defineprojectile 1660	PROJ_EXTRA 101
+defineprojectile 1660 PROJ_XREPEAT 14
+defineprojectile 1660 PROJ_YREPEAT 14
+defineprojectile 1660 PROJ_CLIPDIST 30
+defineprojectile 1660 PROJ_PAL 8
+
 ////////////////////GAMEVARS/////////////////
 
 //Player specific
@@ -195,6 +208,14 @@ gamevar WEAPON1_CLIP 0 0
 state setupround
 	switch round
 		case 1 {
+			/*
+			setvar maxmonstersallowed 5
+			setvar monstertype 1
+			setvar spawnrate 5
+			setvar totalmonsters 50
+			setvar monsterhp 300
+			setvarvar monsterslefttospawn totalmonsters
+			*/
 			setvar maxmonstersallowed 5
 			setvar monstertype 1
 			setvar spawnrate 250
@@ -1859,6 +1880,19 @@ onevent EVENT_DOFIRE
 	addvar shots 1
 	getplayer[THISACTOR].curr_weapon temp
 	getplayer[THISACTOR].ammo_amount temp temptwo
+	ifvare temp 6 {
+  	setvarvar temp MY_ANGLE
+  	eshoot 1660
+  	setactor[RETURN].ang temp
+  	addvar temp 50
+  	eshoot 1660
+  	setactor[RETURN].ang temp
+  	eshoot 1660
+  	subvar temp 100 //Ændr projectile til noget cool, evt
+  	setactor[RETURN].ang temp
+  	subvar temptwo 1
+  	setplayer[THISACTOR].ammo_amount 6 temptwo 
+  }
   ifvarn temp 10 ifvarl temptwo 2 setvar RETURN -1
   ifvare PWEAPON 1 // if the player has the pistol selected when he fires a projectile...
     ifvarl PISTOLMAGAZINE 1

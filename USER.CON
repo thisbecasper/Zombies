@@ -59,12 +59,12 @@ define GENERICIMPACTDAMAGE      10
 define MAXPISTOLAMMO           401 //7 * 400   =  2800 | 100    700    500 => 1000 
 define MAXSHOTGUNAMMO           61 //80 * 60   =  3200 |  15   1200   1000 => 2000
 define MAXCHAINGUNAMMO         401 //15 * 400  =  6000 | 100   1500   1350 => 2700
-define MAXRPGAMMO               41 //450 * 40  = 18000 |  10   4500   2000 => 4000
-define MAXHANDBOMBAMMO          21 //120 * 20  =  2400 |   5   1200   3000 => 6000
+define MAXRPGAMMO               41 //450 * 40  = 18000 |  10   4500   1750 => 3500
+define MAXHANDBOMBAMMO          21 //120 * 20  =  2400 |   5   1200   1500 => 3000
 define MAXSHRINKERAMMO          41 //?
 define MAXGROWAMMO             201 //15 * 200  =  3000 |  50   1500   2000 => 4000 ?
-define MAXDEVISTATORAMMO       301 //15 * 300  =  4500 |  75   1125   1500 => 3000
-define MAXFREEZEAMMO           201 //40 * 200  =  8000 |  50   2000   1750 => 3500
+define MAXDEVISTATORAMMO       301 //100 * 300 = 30000 |  75   7500   3000 => 6000
+define MAXFREEZEAMMO           201 //40 * 200  =  8000 |  50   2000   1400 => 2800
 define MAXTRIPBOMBAMMO          21 //100 * 20  =  3000 |   5    500    500 => 1000
 define TRIPBOMBLASERMODE        0     // 0 = always visable
                                       // 1 = transluscense
@@ -366,10 +366,10 @@ definequote 137       SHOTGUN
 definequote 138       CHAINGUN
 definequote 139       RPG
 definequote 140       HANDBOMBS
-definequote 141       SHRINKER
+definequote 141       STINGER
 definequote 142       EXPANDER
 definequote 143       DEVASTATOR
-definequote 144       TRIPBOMB
+definequote 144       TRIPBOMBS
 definequote 145       FREEZER
 definequote 146       BACKPACK
 definequote 147       ARMOR
