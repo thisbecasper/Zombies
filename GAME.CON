@@ -65,6 +65,7 @@ gamevar maxmonstersallowed 5 0
 //Reference vars (read only!)
 gamevar downtimervar 600 4096
 gamevar autorevivetimervar 150 4096
+gamevar teleporttimervar 2700 4096
 
 gamevar temp 0 0
 gamevar temptwo 0 0
@@ -150,6 +151,7 @@ gamevar moneyfestduration 0 1
 gamevar moneyfrommoneyfest 0 1
 gamevar moneyfrommoneyfestshow 0 1
 gamevar moneyfestshowtimer 0 1
+gamevar teleporttimer 0 2
 
 gamevar ammoamountone 0 1
 gamevar ammoamounttwo 0 1
@@ -250,7 +252,7 @@ state setupround
 		case 7 {
 			setvar maxmonstersallowed 13
 			setvar monstertype 1
-			setvar spawnrate 250
+			setvar spawnrate 300
 			setvar totalmonsters 25
 			setvar monsterhp 80
 			setvar maxmonstersallowed 20
@@ -260,7 +262,7 @@ state setupround
 		case 8 {
 			setvar maxmonstersallowed 14
 			setvar monstertype 1
-			setvar spawnrate 250
+			setvar spawnrate 300
 			setvar totalmonsters 30
 			setvar monsterhp 90
 			setvarvar monsterslefttospawn totalmonsters
@@ -269,7 +271,7 @@ state setupround
 		case 9 {
 			setvar maxmonstersallowed 15
 			setvar monstertype 1
-			setvar spawnrate 250
+			setvar spawnrate 300
 			setvar totalmonsters 35
 			setvar monsterhp 100
 			setvarvar monsterslefttospawn totalmonsters
@@ -278,7 +280,7 @@ state setupround
 		case 10 {
 			setvar maxmonstersallowed 16
 			setvar monstertype 1
-			setvar spawnrate 250
+			setvar spawnrate 300
 			setvar totalmonsters 40
 			setvar monsterhp 110
 			setvarvar monsterslefttospawn totalmonsters
@@ -287,7 +289,7 @@ state setupround
 		case 11 {
 			setvar maxmonstersallowed 17
 			setvar monstertype 1
-			setvar spawnrate 250
+			setvar spawnrate 300
 			setvar totalmonsters 45
 			setvar monsterhp 120
 			setvarvar monsterslefttospawn totalmonsters
@@ -296,7 +298,7 @@ state setupround
 		case 12 {
 			setvar maxmonstersallowed 45
 			setvar monstertype 3
-			setvar spawnrate 100
+			setvar spawnrate 150
 			setvar totalmonsters 45
 			setvar monsterhp 75
 			setvarvar monsterslefttospawn totalmonsters
@@ -306,7 +308,7 @@ state setupround
 		case 13 {
 			setvar maxmonstersallowed 22
 			setvar monstertype 1
-			setvar spawnrate 325
+			setvar spawnrate 350
 			setvar totalmonsters 50
 			setvar monsterhp 135
 			setvarvar monsterslefttospawn totalmonsters
@@ -315,7 +317,7 @@ state setupround
 		case 14 {
 			setvar maxmonstersallowed 23
 			setvar monstertype 1
-			setvar spawnrate 325
+			setvar spawnrate 350
 			setvar totalmonsters 55
 			setvar monsterhp 150
 			setvarvar monsterslefttospawn totalmonsters
@@ -324,7 +326,7 @@ state setupround
 		case 15 {
 			setvar maxmonstersallowed 24
 			setvar monstertype 1
-			setvar spawnrate 325
+			setvar spawnrate 350
 			setvar totalmonsters 60
 			setvar monsterhp 165
 			setvarvar monsterslefttospawn totalmonsters
@@ -333,7 +335,7 @@ state setupround
 		case 16 {
 			setvar maxmonstersallowed 25
 			setvar monstertype 1
-			setvar spawnrate 325
+			setvar spawnrate 350
 			setvar totalmonsters 65
 			setvar monsterhp 180
 			setvarvar monsterslefttospawn totalmonsters
@@ -342,7 +344,7 @@ state setupround
 		case 17 {
 			setvar maxmonstersallowed 26
 			setvar monstertype 1
-			setvar spawnrate 325
+			setvar spawnrate 350
 			setvar totalmonsters 70
 			setvar monsterhp 195
 			setvarvar monsterslefttospawn totalmonsters
@@ -351,7 +353,7 @@ state setupround
 		case 18 {
 			setvar maxmonstersallowed 70
 			setvar monstertype 3
-			setvar spawnrate 100
+			setvar spawnrate 200
 			setvar totalmonsters 70
 			setvar monsterhp 100
 			setvarvar monsterslefttospawn totalmonsters
@@ -406,7 +408,7 @@ state setupround
 		case 24 {
 			setvar maxmonstersallowed 95
 			setvar monstertype 3
-			setvar spawnrate 100
+			setvar spawnrate 250
 			setvar totalmonsters 95
 			setvar monsterhp 125
 			setvarvar monsterslefttospawn totalmonsters
@@ -417,7 +419,7 @@ state setupround
 			//Sidste runde; sættes nede i displayrest mht 'last round' 
 			setvar maxmonstersallowed 40
 			setvar monstertype 1
-			setvar spawnrate 300
+			setvar spawnrate 450
 			setvar totalmonsters 200
 			setvar monsterhp 300
 			setvarvar monsterslefttospawn totalmonsters
@@ -557,7 +559,7 @@ ends
 
 state endgame
 	ifvare eog 1 {
-
+		//TODO
 	}
 ends
 
@@ -1184,7 +1186,7 @@ state doonce
 	  	getactor[temp].picnum tempthree
 	  	ifvare tempthree APLAYER {
   			getactor[temp].extra tempfour
-  			ifvarl tempfour 1 { //Check duke they are dead
+  			ifvarl tempfour 1 { //Check duke is are dead
   				getactor[temp].yvel tempfive
   				getplayervar[tempfive].autorevivetimer tempsix
   				ifvare tempsix 0 { //And that he has not autorevive
@@ -1808,6 +1810,8 @@ onevent EVENT_HOLODUKEON
 	addlogvar moneyfrommoneyfest
 	addlogvar moneyfrommoneyfestshow
 	addlogvar moneyfestshowtimer
+	addlogvar teleporttimer
+	addlogvar teleporttimervar
 	addlogvar ammoamountone
 	addlogvar ammoamounttwo
 	addlogvar ammoamountthree
@@ -5873,7 +5877,7 @@ ends
 move PGROWINGPOP        // Used only as a variable
 
 actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
-  
+
 	state endgame
 	state preventhbombpickup
 	state handlenegativeammodevastator
@@ -11284,6 +11288,25 @@ ends
 
 useractor enemy NEWBEAST NEWBEASTSTRENGTH
   fall
+
+  addvar teleporttimer 1
+  ifvarvarg teleporttimer teleporttimervar {
+  	setvar teleporttimer 0
+  	setvarvar temp MY_X
+  	setvarvar temptwo MY_Y
+  	randvar tempthree 8192
+  	randvar tempfour 8192
+  	subvar tempthree 4096
+  	subvar tempfour 4096
+  	addvarvar temp tempthree
+  	addvarvar temptwo tempfour
+  	updatesector temp temptwo tempfive
+		setactor[THISACTOR].x temp
+		setactor[THISACTOR].y temptwo
+		setactor[THISACTOR].z MY_Z
+		spawn TRANSPORTERSTAR
+		sound TELEPORTER
+  }
 
   getactor[THISACTOR].extra temp
   ifvarg temp 0 {
