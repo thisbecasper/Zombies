@@ -56,16 +56,16 @@ define FROZENQUICKKICKDIST      980
 
 define GENERICIMPACTDAMAGE      10
                                   //DMG  AMMO  TOTALDMG  BUY  BUYDMG  PRICE
-define MAXPISTOLAMMO           401 //7 * 400   =  2800 | 100    700    500 => 1000 
-define MAXSHOTGUNAMMO           61 //80 * 60   =  3200 |  15   1200   1000 => 2000
-define MAXCHAINGUNAMMO         401 //15 * 400  =  6000 | 100   1500   1350 => 2700
-define MAXRPGAMMO               41 //450 * 40  = 18000 |  10   4500   1750 => 3500
-define MAXHANDBOMBAMMO          21 //120 * 20  =  2400 |   5   1200   1500 => 3000
-define MAXSHRINKERAMMO          41 //?
-define MAXGROWAMMO             201 //15 * 200  =  3000 |  50   1500   2000 => 4000 ?
-define MAXDEVISTATORAMMO       301 //100 * 300 = 30000 |  75   7500   3000 => 6000
-define MAXFREEZEAMMO           201 //40 * 200  =  8000 |  50   2000   1400 => 2800
-define MAXTRIPBOMBAMMO          21 //100 * 20  =  3000 |   5    500    500 => 1000
+define MAXPISTOLAMMO           400 //7 * 400   =  2800 | 100    700    500 => 1000 
+define MAXSHOTGUNAMMO           60 //80 * 60   =  3200 |  15   1200   1000 => 2000
+define MAXCHAINGUNAMMO         400 //15 * 400  =  6000 | 100   1500   1350 => 2700
+define MAXRPGAMMO               40 //450 * 40  = 18000 |  10   4500   1750 => 3500
+define MAXHANDBOMBAMMO          20 //120 * 20  =  2400 |   5   1200   1500 => 3000
+define MAXSHRINKERAMMO         100 //300 *100  = 30000 |  25   7500	  3000 => 6000
+define MAXGROWAMMO             200 //15 * 200  =  3000 |  50   1500   2000 => 4000 ?
+define MAXDEVISTATORAMMO       300 //100 * 300 = 30000 |  75   7500   3000 => 6000
+define MAXFREEZEAMMO           200 //40 * 200  =  8000 |  50   2000   1400 => 2800
+define MAXTRIPBOMBAMMO          20 //100 * 20  =  3000 |   5    500    500 => 1000
 define TRIPBOMBLASERMODE        0     // 0 = always visable
                                       // 1 = transluscense
                                       // 2 = invisible w/o IR goggles
