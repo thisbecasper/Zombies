@@ -1205,14 +1205,14 @@ state doonce
 	  setvarvar temptwo temp
 	  whilevarn temp -1 {
 	  	getactor[temp].picnum tempthree
+	  	getactor[temp].yvel tempsix
 	  	ifvare tempthree APLAYER {
-  			getactor[temp].extra tempfour
-  			ifvarl tempfour 1 { //Check duke is are dead
-  				getactor[temp].yvel tempfive
-  				getplayervar[tempfive].autorevivetimer tempsix
-  				ifvare tempsix 0 { //And that he has not autorevive
-  					subvar playersalive 1
-  				}
+  			getplayervar[tempsix].isdead tempfour
+  			getplayervar[tempsix].isdown tempfive
+  			ifvare tempfour 1 { //Check duke is are dead
+  				subvar playersalive 1
+  			} else ifvare tempfive 1 {
+  				subvar playersalive 1
   			}
 	  	}
 	  	nextspritestat temp temp
@@ -1348,7 +1348,7 @@ onevent EVENT_DISPLAYREST
 
 	//Debuggg
 	//getactor[THISACTOR].extra temp
-	//digitalnumberz 2837 0 40 moneyfrommoneyfest 0 0 0 0 0 xdim ydim 58000
+	digitalnumberz 2837 0 40 playersalive 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 60 hasoverheated 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 80 isdead 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 100 downtimer 0 0 0 0 0 xdim ydim 58000
@@ -2128,8 +2128,8 @@ onevent EVENT_USE
 						getplayer[THISACTOR].max_ammo_amount 6 temptwo
 						ifvarvare temp temptwo break
 						setplayer[THISACTOR].gotweapon 6 1
-						addammo 6 10
-						ifvarg infinityammoduration 0 addvar ammoamountsix 10
+						addammo 6 25
+						ifvarg infinityammoduration 0 addvar ammoamountsix 25
 						ifvare primaryweapon 6 state buyandsetcdammo
 						else ifvare tertiaryweapon 6 state buyandsetcdammo
 						else ifvare secondaryweapon 6 state buyandsetcdammo
@@ -5911,7 +5911,6 @@ ends
 move PGROWINGPOP        // Used only as a variable
 
 actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
-
 	state endgame
 	state preventhbombpickup
 	state handlenegativeammodevastator
