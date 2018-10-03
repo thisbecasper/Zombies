@@ -63,7 +63,6 @@ gamevar gotautorevive 0 1
 gamevar haltrunspeed 20000 0
 gamevar playerrunspeed 45000 0
 gamevar playerrunspeedboots 49050 0
-gamevar mysteryboxcost 2500 0
 
 //Game flow specific
 gamevar intermission 150 0 //skal ændres nede i nextround state
@@ -90,6 +89,17 @@ gamevar expandercost 0 4096
 gamevar devistatorcost 6000 4096
 gamevar tripbombcost 2300 4096
 gamevar freezercost 2800 4096
+
+gamevar backpackcost 3000 4096
+gamevar instakillcost 3000 4096
+gamevar perkprotectercost 3000 4096
+gamevar autorevivecost 3000 4096
+gamevar moneymultipliercost 3000 4096
+gamevar armorcost 3000 4096
+gamevar bootscost 3000 4096
+gamevar accesscardcost 4000 4096
+
+gamevar mysteryboxcost 2500 4096
 
 gamevar temp 0 0
 gamevar temptwo 0 0
@@ -176,7 +186,7 @@ gamevar moneyfrommoneyfest 0 1
 gamevar moneyfrommoneyfestshow 0 1
 gamevar moneyfestshowtimer 0 1
 gamevar teleporttimer 0 2
-gamevar weaponcost 0 1
+gamevar itemcost 0 1
 
 gamevar ammoamountone 0 1
 gamevar ammoamounttwo 0 1
@@ -745,8 +755,8 @@ state handlemonsterdrops
 ends
 
 state buyandsetcd
-	subvarvar finalplayermoney weaponcost
-	addvarvar moneyspent weaponcost
+	subvarvar finalplayermoney itemcost
+	addvarvar moneyspent itemcost
 	setvarvar buycooldown buycooldownvar
 	getactor[HITSPRITE].picnum temp
 	ifvare temp APLAYER palfrom 20 0 0 64
@@ -755,8 +765,8 @@ ends
 
 state buyandsetcdammo
 	sound 297
-	subvarvar finalplayermoney weaponcost
-	addvarvar moneyspent weaponcost
+	subvarvar finalplayermoney itemcost
+	addvarvar moneyspent itemcost
 	setvarvar buycooldown buycooldownvar
 	getactor[HITSPRITE].picnum temp
 	ifvare temp APLAYER palfrom 20 0 0 64
@@ -809,23 +819,30 @@ state showinformation
 	ifvarn HITSPRITE -1 {
 		dist temp THISACTOR HITSPRITE
 		ifvarl temp 1200 {
-
-			ifvare tempfive FIRSTGUNSPRITE setvarvar weaponcost pistolcost 
-			else ifvare tempfive SHOTGUNSPRITE setvarvar weaponcost shotguncost
-			else ifvare tempfive CHAINGUNSPRITE setvarvar weaponcost chainguncost
-			else ifvare tempfive RPGSPRITE setvarvar weaponcost rpgcost
-			else ifvare tempfive HBOMBAMMO setvarvar weaponcost pipebombcost
-			else ifvare tempfive SHRINKERSPRITE setvarvar weaponcost shrinkercost
-			else ifvare tempfive GROWSPRITEICON setvarvar weaponcost expandercost
-			else ifvare tempfive DEVISTATORSPRITE setvarvar weaponcost devistatorcost
-			else ifvare tempfive TRIPBOMBSPRITE setvarvar weaponcost tripbombcost
-			else ifvare tempfive FREEZESPRITE setvarvar weaponcost freezercost
-				//TO BE CONTINUED
-			getactor[HITSPRITE].picnum temp
+			getactor[HITSPRITE].picnum temptwo
+			ifvare temptwo FIRSTGUNSPRITE setvarvar itemcost pistolcost 
+			else ifvare temptwo SHOTGUNSPRITE setvarvar itemcost shotguncost
+			else ifvare temptwo CHAINGUNSPRITE setvarvar itemcost chainguncost
+			else ifvare temptwo RPGSPRITE setvarvar itemcost rpgcost
+			else ifvare temptwo HBOMBAMMO setvarvar itemcost pipebombcost
+			else ifvare temptwo SHRINKERSPRITE setvarvar itemcost shrinkercost
+			else ifvare temptwo GROWSPRITEICON setvarvar itemcost expandercost
+			else ifvare temptwo DEVISTATORSPRITE setvarvar itemcost devistatorcost
+			else ifvare temptwo TRIPBOMBSPRITE setvarvar itemcost tripbombcost
+			else ifvare temptwo FREEZESPRITE setvarvar itemcost freezercost
+			else ifvare temptwo BOOTS setvarvar itemcost bootscost
+			else ifvare temptwo JETPACK setvarvar itemcost backpackcost
+			else ifvare temptwo HOLODUKE setvarvar itemcost autorevivecost
+			else ifvare temptwo SHIELD setvarvar itemcost armorcost
+			else ifvare temptwo 1234 setvarvar itemcost moneymultipliercost
+			else ifvare temptwo 1667 setvarvar itemcost instakillcost
+			else ifvare temptwo 4371 setvarvar itemcost perkprotectercost
+			else ifvare temptwo ACCESSCARD setvarcar itemcost accesscardcost
+			
 			setvarvar tempfive finalplayermoney
 			addvarvar tempfive playermoney
 			addvarvar tempfive playermoneybonus
-			switch temp
+			switch temptwo
 				case ACCESSSWITCH2 {
 					getactor[HITSPRITE].pal temp
 					ifvare temp 0 gametextz STARTALPHANUM 320 125 130 0 0 0 0 0 xdim ydim 50000
@@ -838,232 +855,221 @@ state showinformation
 					ifvare temp 0 gametextz STARTALPHANUM 320 125 133 0 0 0 0 0 xdim ydim 50000
 					ifvare temp 21 gametextz STARTALPHANUM 320 125 134 0 0 0 0 0 xdim ydim 50000
 					ifvare temp 23 gametextz STARTALPHANUM 320 125 135 0 0 0 0 0 xdim ydim 50000
-					getactor[HITSPRITE].hitag temp
-					ifvarvarl tempfive temp digitalnumberz 2837 160 135 temp 0 2 0 0 0 xdim ydim 50000
-					else digitalnumberz 2837 160 135 temp 0 0 0 0 0 xdim ydim 50000
+					ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+					else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					break
 				}
 				case FIRSTGUNSPRITE {
-					setvar temp 1 //weaponspecific index
+					setvar temp 1 //weaponspecific index for state beneath
 					state showweaponorammofix
-					getactor[HITSPRITE].hitag temp
 					ifvare temptwo 1 {
 						gametextz STARTALPHANUM 320 125 157 0 0 0 0 0 xdim ydim 50000
-						divvar temp 2
-						ifvarvarl tempfive temp digitalnumberz 2837 160 135 temp 0 2 0 0 0 xdim ydim 50000
-						else digitalnumberz 2837 160 135 temp 0 0 0 0 0 xdim ydim 50000
+						divvar itemcost 2
+						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					} else {
 						gametextz STARTALPHANUM 320 125 136 0 0 0 0 0 xdim ydim 50000 //Weaponspecifik quote
-						ifvarvarl tempfive temp digitalnumberz 2837 160 135 temp 0 2 0 0 0 xdim ydim 50000
-						else digitalnumberz 2837 160 135 temp 0 0 0 0 0 xdim ydim 50000
+						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					}
 					break
 				}
 				case SHOTGUNSPRITE {
-					setvar temp 2 //weaponspecific index
+					setvar temp 2 //weaponspecific index for state beneath
 					state showweaponorammofix
-					getactor[HITSPRITE].hitag temp
 					ifvare temptwo 1 {
 						gametextz STARTALPHANUM 320 125 157 0 0 0 0 0 xdim ydim 50000
-						divvar temp 2
-						ifvarvarl tempfive temp digitalnumberz 2837 160 135 temp 0 2 0 0 0 xdim ydim 50000
-						else digitalnumberz 2837 160 135 temp 0 0 0 0 0 xdim ydim 50000
+						divvar itemcost 2
+						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					} else {
 						gametextz STARTALPHANUM 320 125 137 0 0 0 0 0 xdim ydim 50000 //Weaponspecifik quote
-						ifvarvarl tempfive temp digitalnumberz 2837 160 135 temp 0 2 0 0 0 xdim ydim 50000
-						else digitalnumberz 2837 160 135 temp 0 0 0 0 0 xdim ydim 50000
+						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					}
 					break
 				}
 				case CHAINGUNSPRITE {
-					setvar temp 3 //weaponspecific index
+					setvar temp 3 //weaponspecific index for state beneath
 					state showweaponorammofix
-					getactor[HITSPRITE].hitag temp
 					ifvare temptwo 1 {
 						gametextz STARTALPHANUM 320 125 157 0 0 0 0 0 xdim ydim 50000
-						divvar temp 2
-						ifvarvarl tempfive temp digitalnumberz 2837 160 135 temp 0 2 0 0 0 xdim ydim 50000
-						else digitalnumberz 2837 160 135 temp 0 0 0 0 0 xdim ydim 50000
+						divvar itemcost 2
+						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					} else {
 						gametextz STARTALPHANUM 320 125 138 0 0 0 0 0 xdim ydim 50000 //Weaponspecifik quote
-						ifvarvarl tempfive temp digitalnumberz 2837 160 135 temp 0 2 0 0 0 xdim ydim 50000
-						else digitalnumberz 2837 160 135 temp 0 0 0 0 0 xdim ydim 50000
+						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					}
 					break
 				}
 				case RPGSPRITE {
-					setvar temp 4 //weaponspecific index
+					setvar temp 4 //weaponspecific index for state beneath
 					state showweaponorammofix
-					getactor[HITSPRITE].hitag temp
 					ifvare temptwo 1 {
 						gametextz STARTALPHANUM 320 125 157 0 0 0 0 0 xdim ydim 50000
-						divvar temp 2
-						ifvarvarl tempfive temp digitalnumberz 2837 160 135 temp 0 2 0 0 0 xdim ydim 50000
-						else digitalnumberz 2837 160 135 temp 0 0 0 0 0 xdim ydim 50000
+						divvar itemcost 2
+						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					} else {
 						gametextz STARTALPHANUM 320 125 139 0 0 0 0 0 xdim ydim 50000 //Weaponspecifik quote
-						ifvarvarl tempfive temp digitalnumberz 2837 160 135 temp 0 2 0 0 0 xdim ydim 50000
-						else digitalnumberz 2837 160 135 temp 0 0 0 0 0 xdim ydim 50000
+						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					}
 					break
 				}
 				case HBOMBAMMO {
-					setvar temp 5 //weaponspecific index
+					setvar temp 5 //weaponspecific index for state beneath
 					state showweaponorammofix
-					getactor[HITSPRITE].hitag temp
 					ifvare temptwo 1 {
 						gametextz STARTALPHANUM 320 125 157 0 0 0 0 0 xdim ydim 50000
-						divvar temp 2
-						ifvarvarl tempfive temp digitalnumberz 2837 160 135 temp 0 2 0 0 0 xdim ydim 50000
-						else digitalnumberz 2837 160 135 temp 0 0 0 0 0 xdim ydim 50000
+						divvar itemcost 2
+						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					} else {
 						gametextz STARTALPHANUM 320 125 140 0 0 0 0 0 xdim ydim 50000 //Weaponspecifik quote
-						ifvarvarl tempfive temp digitalnumberz 2837 160 135 temp 0 2 0 0 0 xdim ydim 50000
-						else digitalnumberz 2837 160 135 temp 0 0 0 0 0 xdim ydim 50000
+						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					}
 					break
 				}
 				case SHRINKERSPRITE {
-					setvar temp 6 //weaponspecific index
+					setvar temp 6 //weaponspecific index for state beneath
 					state showweaponorammofix
-					getactor[HITSPRITE].hitag temp
 					ifvare temptwo 1 {
 						gametextz STARTALPHANUM 320 125 157 0 0 0 0 0 xdim ydim 50000
-						divvar temp 2
-						ifvarvarl tempfive temp digitalnumberz 2837 160 135 temp 0 2 0 0 0 xdim ydim 50000
-						else digitalnumberz 2837 160 135 temp 0 0 0 0 0 xdim ydim 50000
+						divvar itemcost 2
+						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					} else {
 						gametextz STARTALPHANUM 320 125 141 0 0 0 0 0 xdim ydim 50000 //Weaponspecifik quote
-						ifvarvarl tempfive temp digitalnumberz 2837 160 135 temp 0 2 0 0 0 xdim ydim 50000
-						else digitalnumberz 2837 160 135 temp 0 0 0 0 0 xdim ydim 50000
+						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					}
 					break
 				}
 				case GROWSPRITEICON {
-					setvar temp 11 //weaponspecific index
+					setvar temp 11 //weaponspecific index for state beneath
 					state showweaponorammofix
-					getactor[HITSPRITE].hitag temp
 					ifvare temptwo 1 {
 						gametextz STARTALPHANUM 320 125 157 0 0 0 0 0 xdim ydim 50000
-						divvar temp 2
-						ifvarvarl tempfive temp digitalnumberz 2837 160 135 temp 0 2 0 0 0 xdim ydim 50000
-						else digitalnumberz 2837 160 135 temp 0 0 0 0 0 xdim ydim 50000
+						divvar itemcost 2
+						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					} else {
 						gametextz STARTALPHANUM 320 125 142 0 0 0 0 0 xdim ydim 50000 //Weaponspecifik quote
-						ifvarvarl tempfive temp digitalnumberz 2837 160 135 temp 0 2 0 0 0 xdim ydim 50000
-						else digitalnumberz 2837 160 135 temp 0 0 0 0 0 xdim ydim 50000
+						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					}
 					break
 				}
 				case DEVISTATORSPRITE {
-					setvar temp 7 //weaponspecific index
+					setvar temp 7 //weaponspecific index for state beneath
 					state showweaponorammofix
-					getactor[HITSPRITE].hitag temp
 					ifvare temptwo 1 {
 						gametextz STARTALPHANUM 320 125 157 0 0 0 0 0 xdim ydim 50000
-						divvar temp 2
-						ifvarvarl tempfive temp digitalnumberz 2837 160 135 temp 0 2 0 0 0 xdim ydim 50000
-						else digitalnumberz 2837 160 135 temp 0 0 0 0 0 xdim ydim 50000
+						divvar itemcost 2
+						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					} else {
 						gametextz STARTALPHANUM 320 125 143 0 0 0 0 0 xdim ydim 50000 //Weaponspecifik quote
-						ifvarvarl tempfive temp digitalnumberz 2837 160 135 temp 0 2 0 0 0 xdim ydim 50000
-						else digitalnumberz 2837 160 135 temp 0 0 0 0 0 xdim ydim 50000
+						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					}
 					break
 				}
 				case TRIPBOMBSPRITE {
-					setvar temp 8 //weaponspecific index
+					setvar temp 8 //weaponspecific index for state beneath
 					state showweaponorammofix
-					getactor[HITSPRITE].hitag temp
 					ifvare temptwo 1 {
 						gametextz STARTALPHANUM 320 125 157 0 0 0 0 0 xdim ydim 50000
-						divvar temp 2
-						ifvarvarl tempfive temp digitalnumberz 2837 160 135 temp 0 2 0 0 0 xdim ydim 50000
-						else digitalnumberz 2837 160 135 temp 0 0 0 0 0 xdim ydim 50000
+						divvar itemcost 2
+						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					} else {
 						gametextz STARTALPHANUM 320 125 144 0 0 0 0 0 xdim ydim 50000 //Weaponspecifik quote
-						ifvarvarl tempfive temp digitalnumberz 2837 160 135 temp 0 2 0 0 0 xdim ydim 50000
-						else digitalnumberz 2837 160 135 temp 0 0 0 0 0 xdim ydim 50000
+						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					}
 					break
 				}
 				case FREEZESPRITE {
-					setvar temp 9 //weaponspecific index
+					setvar temp 9 //weaponspecific index for state beneath
 					state showweaponorammofix
-					getactor[HITSPRITE].hitag temp
 					ifvare temptwo 1 {
 						gametextz STARTALPHANUM 320 125 157 0 0 0 0 0 xdim ydim 50000
-						divvar temp 2
-						ifvarvarl tempfive temp digitalnumberz 2837 160 135 temp 0 2 0 0 0 xdim ydim 50000
-						else digitalnumberz 2837 160 135 temp 0 0 0 0 0 xdim ydim 50000
+						divvar itemcost 2
+						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					} else {
 						gametextz STARTALPHANUM 320 125 145 0 0 0 0 0 xdim ydim 50000 //Weaponspecifik quote
-						ifvarvarl tempfive temp digitalnumberz 2837 160 135 temp 0 2 0 0 0 xdim ydim 50000
-						else digitalnumberz 2837 160 135 temp 0 0 0 0 0 xdim ydim 50000
+						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					}
 					break
 				}
 				case JETPACK {
 					gametextz STARTALPHANUM 320 125 146 0 0 0 0 0 xdim ydim 50000
-					getactor[HITSPRITE].hitag temp
+					getactor[HITSPRITE].hitag itemcost
 					ifvare gotbackpack 1 gametextz STARTALPHANUM 320 135 151 0 0 0 0 0 xdim ydim 50000
-					else ifvare temp 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
-					else ifvarvarl tempfive temp digitalnumberz 2837 160 135 temp 0 2 0 0 0 xdim ydim 50000
-					else digitalnumberz 2837 160 135 temp 0 0 0 0 0 xdim ydim 50000
+					else ifvare itemcost 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
+					else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+					else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					break
 				}
 				case SHIELD {
 					gametextz STARTALPHANUM 320 125 147 0 0 0 0 0 xdim ydim 50000
-					getactor[HITSPRITE].hitag temp
+					getactor[HITSPRITE].hitag itemcost
 					ifvare gotarmor 1 gametextz STARTALPHANUM 320 135 151 0 0 0 0 0 xdim ydim 50000
-					else ifvare temp 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
-					else ifvarvarl tempfive temp digitalnumberz 2837 160 135 temp 0 2 0 0 0 xdim ydim 50000
-					else digitalnumberz 2837 160 135 temp 0 0 0 0 0 xdim ydim 50000
+					else ifvare itemcost 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
+					else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+					else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					break
 				}
 				case BOOTS {
 					gametextz STARTALPHANUM 320 125 148 0 0 0 0 0 xdim ydim 50000
-					getactor[HITSPRITE].hitag temp
+					getactor[HITSPRITE].hitag itemcost
 					ifvare gotboots 1 gametextz STARTALPHANUM 320 135 151 0 0 0 0 0 xdim ydim 50000
-					else ifvare temp 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
-					else ifvarvarl tempfive temp digitalnumberz 2837 160 135 temp 0 2 0 0 0 xdim ydim 50000
-					else digitalnumberz 2837 160 135 temp 0 0 0 0 0 xdim ydim 50000
+					else ifvare itemcost 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
+					else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+					else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					break
 				}
 				case 4371 {
 					gametextz STARTALPHANUM 320 125 150 0 0 0 0 0 xdim ydim 50000
-					getactor[HITSPRITE].hitag temp
+					getactor[HITSPRITE].hitag itemcost
 					ifvare gotperkprotection 1 gametextz STARTALPHANUM 320 135 151 0 0 0 0 0 xdim ydim 50000
-					else ifvare temp 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
-					else ifvarvarl tempfive temp digitalnumberz 2837 160 135 temp 0 2 0 0 0 xdim ydim 50000
-					else digitalnumberz 2837 160 135 temp 0 0 0 0 0 xdim ydim 50000
+					else ifvare itemcost 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
+					else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+					else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					break
 				}
 				case 1667 {
 					gametextz STARTALPHANUM 320 125 152 0 0 0 0 0 xdim ydim 50000
-					getactor[HITSPRITE].hitag temp
+					getactor[HITSPRITE].hitag itemcost
 					ifvare gotpowershot 1 gametextz STARTALPHANUM 320 135 151 0 0 0 0 0 xdim ydim 50000
-					else ifvare temp 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
-					else ifvarvarl tempfive temp digitalnumberz 2837 160 135 temp 0 2 0 0 0 xdim ydim 50000
-					else digitalnumberz 2837 160 135 temp 0 0 0 0 0 xdim ydim 50000
+					else ifvare itemcost 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
+					else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+					else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					break
 				}
 				case 1234 {
 					gametextz STARTALPHANUM 320 125 153 0 0 0 0 0 xdim ydim 50000
-					getactor[HITSPRITE].hitag temp
+					getactor[HITSPRITE].hitag itemcost
 					ifvare gotdoublemoney 1 gametextz STARTALPHANUM 320 135 151 0 0 0 0 0 xdim ydim 50000
-					else ifvare temp 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
-					else ifvarvarl tempfive temp digitalnumberz 2837 160 135 temp 0 2 0 0 0 xdim ydim 50000
-					else digitalnumberz 2837 160 135 temp 0 0 0 0 0 xdim ydim 50000
+					else ifvare itemcost 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
+					else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+					else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					break
 				}
 				case HOLODUKE {
 					gametextz STARTALPHANUM 320 125 176 0 0 0 0 0 xdim ydim 50000
-					getactor[HITSPRITE].hitag temp
+					getactor[HITSPRITE].hitag itemcost
 					ifvare gotautorevive 1 gametextz STARTALPHANUM 320 135 151 0 0 0 0 0 xdim ydim 50000
-					else ifvare temp 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
-					else ifvarvarl tempfive temp digitalnumberz 2837 160 135 temp 0 2 0 0 0 xdim ydim 50000
-					else digitalnumberz 2837 160 135 temp 0 0 0 0 0 xdim ydim 50000
+					else ifvare itemcost 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
+					else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+					else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					break
 				}
 				case APLAYER {
@@ -1971,47 +1977,56 @@ onevent EVENT_USE
 			getactor[HITSPRITE].picnum tempfive
 			ifvare tempfive FIRSTGUNSPRITE {
 				setvar tempfour 1
-				setvarvar weaponcost pistolcost 
+				setvarvar itemcost pistolcost 
 			} else ifvare tempfive SHOTGUNSPRITE {
 				setvar tempfour 2
-				setvarvar weaponcost shotguncost
+				setvarvar itemcost shotguncost
 			} else ifvare tempfive CHAINGUNSPRITE {
 				setvar tempfour 3
-				setvarvar weaponcost chainguncost
+				setvarvar itemcost chainguncost
 			} else ifvare tempfive RPGSPRITE {
 				setvar tempfour 4
-				setvarvar weaponcost rpgcost
+				setvarvar itemcost rpgcost
 			} else ifvare tempfive HBOMBAMMO {
 				setvar tempfour 5
-				setvarvar weaponcost pipebombcost
+				setvarvar itemcost pipebombcost
 			} else ifvare tempfive SHRINKERSPRITE {
 				setvar tempfour 6
-				setvarvar weaponcost shrinkercost
+				setvarvar itemcost shrinkercost
 			} else ifvare tempfive GROWSPRITEICON {
 				setvar tempfour 11
-				setvarvar weaponcost expandercost
+				setvarvar itemcost expandercost
 			} else ifvare tempfive DEVISTATORSPRITE {
 				setvar tempfour 7
-				setvarvar weaponcost devistatorcost
+				setvarvar itemcost devistatorcost
 			} else ifvare tempfive TRIPBOMBSPRITE {
 				setvar tempfour 8
-				setvarvar weaponcost tripbombcost
+				setvarvar itemcost tripbombcost
 			} else ifvare tempfive FREEZESPRITE {
 				setvar tempfour 9
-				setvarvar weaponcost freezercost
+				setvarvar itemcost freezercost
 			} else setvar tempfour -1
+
+			ifvare tempfive SHIELD setvarvar itemcost armorcost
+			else ifvare tempfive HOLODUKE setvarvar itemcost autorevivecost
+			else ifvare tempfive BOOTS setvarvar itemcost bootscost
+			else ifvare tempfive JETPACK setvarvar itemcost backpackcost
+			else ifvare tempfive 1234 setvarvar itemcost moneymultipliercost
+			else ifvare tempfive 1667 setvarvar itemcost instakillcost
+			else ifvare tempfive 4371 setvarvar itemcost perkprotectercost
+			else ifvare tempfive ACCESSCARD servarvar itemcost accesscardcost
 			
 			getactor[HITSPRITE].hitag temptwo
-			ifvare temptwo 0 setvar weaponcost 0
+			ifvare temptwo 0 setvar itemcost 0
 
-			ifvarvare tempfour primaryweapon divvar weaponcost 2
-			ifvarvare tempfour secondaryweapon divvar weaponcost 2
-			ifvarvare tempfour tertiaryweapon divvar weaponcost 2
+			ifvarvare tempfour primaryweapon divvar itemcost 2
+			ifvarvare tempfour secondaryweapon divvar itemcost 2
+			ifvarvare tempfour tertiaryweapon divvar itemcost 2
 
 			setvarvar tempthree finalplayermoney
 			addvarvar tempthree playermoney
 			addvarvar tempthree playermoneybonus 
-			ifvarvarl tempthree weaponcost nullop
+			ifvarvarl tempthree itemcost nullop
 			else {
 				getactor[HITSPRITE].picnum temp
 				switch temp
