@@ -1332,20 +1332,21 @@ state checkhitscan
 ends
 
 state newbeastdrops
-	randvar temp 1 //240
-  ifvarl temp 5 {
+	///OBS HUSK AT ÆNDR IFVARL TEMP X SÅ DER KOMMER SPAWNEFFEKT PÅ NYE TING OGSÅ!!!///
+	randvar temp 240 //240
+  ifvarl temp 6 {
 		spawn TRANSPORTERBEAM
 		sound TELEPORTER
 	}
   ifvare temp 0 spawn BATTERYAMMO
-  else ifvare temp 3 spawn ATOMICHEALTH
+  else ifvare temp 1 spawn ATOMICHEALTH
   else ifvare temp 2 spawn BADGUYICON //Instakill
-  else ifvare temp 1 spawn 2530 //Infinity ammo
+  else ifvare temp 3 spawn 2530 //Infinity ammo
   else ifvare temp 4 spawn 2825 //Money fest
   else ifvare temp 5 spawn 4520 //2000 points
 
   randvar temp 1999 //1999
-	ifvarl temp 7 {
+	ifvarl temp 16 {
 		spawn TRANSPORTERBEAM
 		sound TELEPORTER
 	}
@@ -1356,6 +1357,15 @@ state newbeastdrops
 	else ifvare temp 4 spawn 1234
 	else ifvare temp 5 spawn HOLODUKE
 	else ifvare temp 6 spawn JETPACK
+	else ifvare temp 7 spawn FIRSTGUNSPRITE
+	else ifvare temp 6 spawn SHOTGUNSPRITE
+	else ifvare temp 9 spawn CHAINGUNSPRITE
+	else ifvare temp 10 spawn RPGSPRITE
+	else ifvare temp 11 spawn HBOMBAMMO
+	else ifvare temp 12 spawn SHRINKERSPRITE
+	else ifvare temp 13 spawn DEVISTATORSPRITE
+	else ifvare temp 14 spawn TRIPBOMBSPRITE
+	else ifvare temp 15 spawn FREEZESPRITE
 ends
 
 state buy
@@ -2013,6 +2023,9 @@ onevent EVENT_USE
 							setvar primaryweapon 1
 							setplayer[THISACTOR].curr_weapon 1
 						}
+						getactor[HITSPRITE].hitag temp
+						ifvare temp 0 setactor[HITSPRITE].hitag -1
+						ifvare temp 0 addammo 1 100
 						break
 					}
 					case SHOTGUNSPRITE {
@@ -2045,6 +2058,9 @@ onevent EVENT_USE
 							setvar primaryweapon 2
 							setplayer[THISACTOR].curr_weapon 2
 						}
+						getactor[HITSPRITE].hitag temp
+						ifvare temp 0 setactor[HITSPRITE].hitag -1
+						ifvare temp 0 addammo 2 15
 						break
 					}
 					case CHAINGUNSPRITE {
@@ -2077,6 +2093,9 @@ onevent EVENT_USE
 							setvar primaryweapon 3
 							setplayer[THISACTOR].curr_weapon 3
 						}
+						getactor[HITSPRITE].hitag temp
+						ifvare temp 0 setactor[HITSPRITE].hitag -1
+						ifvare temp 0 addammo 3 100
 						break
 					}
 					case RPGSPRITE {
@@ -2109,6 +2128,9 @@ onevent EVENT_USE
 							setvar primaryweapon 4
 							setplayer[THISACTOR].curr_weapon 4
 						}
+						getactor[HITSPRITE].hitag temp
+						ifvare temp 0 setactor[HITSPRITE].hitag -1
+						ifvare temp 0 addammo 4 10
 						break
 					}
 					case HBOMBAMMO {
@@ -2141,6 +2163,9 @@ onevent EVENT_USE
 							setvar primaryweapon 5
 							setplayer[THISACTOR].curr_weapon 5
 						}
+						getactor[HITSPRITE].hitag temp
+						ifvare temp 0 setactor[HITSPRITE].hitag -1
+						ifvare temp 0 addammo 5 5
 						break
 					}
 					case SHRINKERSPRITE {
@@ -2173,6 +2198,9 @@ onevent EVENT_USE
 							setvar primaryweapon 6
 							setplayer[THISACTOR].curr_weapon 6
 						}
+						getactor[HITSPRITE].hitag temp
+						ifvare temp 0 setactor[HITSPRITE].hitag -1
+						ifvare temp 0 addammo 6 25
 						break
 					}
 					/*case GROWSPRITEICON {
@@ -2205,6 +2233,9 @@ onevent EVENT_USE
 							setvar primaryweapon 11
 							setplayer[THISACTOR].curr_weapon 11
 						}
+						getactor[HITSPRITE].hitag temp
+						ifvare temp 0 setactor[HITSPRITE].hitag -1
+						ifvare temp 0 addammo 11 75
 						break
 					}*/
 					case DEVISTATORSPRITE {
@@ -2237,6 +2268,9 @@ onevent EVENT_USE
 							setvar primaryweapon 7
 							setplayer[THISACTOR].curr_weapon 7
 						}
+						getactor[HITSPRITE].hitag temp
+						ifvare temp 0 setactor[HITSPRITE].hitag -1
+						ifvare temp 0 addammo 7 75
 						break
 					}
 					case TRIPBOMBSPRITE {
@@ -2268,6 +2302,9 @@ onevent EVENT_USE
 							setvar primaryweapon 8
 							setplayer[THISACTOR].curr_weapon 8
 						}
+						getactor[HITSPRITE].hitag temp
+						ifvare temp 0 setactor[HITSPRITE].hitag -1
+						ifvare temp 0 addammo 8 5
 						break
 					}
 					case FREEZESPRITE {
@@ -2300,6 +2337,9 @@ onevent EVENT_USE
 							setvar primaryweapon 9
 							setplayer[THISACTOR].curr_weapon 9
 						}
+						getactor[HITSPRITE].hitag temp
+						ifvare temp 0 setactor[HITSPRITE].hitag -1
+						ifvare temp 0 addammo 9 50
 						break
 					}
 					case JETPACK {
@@ -4422,51 +4462,6 @@ actor BADGUYICON //Instakill
         killit
       }
 enda
-/*
-actor 2530 //Infinityammo
-	setplayer[THISACTOR].ammo_amount 2 61
-	sizeat 19 19
-	ifcount 300 killit
-  fall
-  
-  	headspritestat temp 10
-    setvarvar temptwo temp
-    whilevarn temp -1 {
-    	getactor[temp].yvel tempfive
-    	setplayervar[tempfive].infinityammo 1
-    	//setactorvar[temp].infinityammo 1
-    	nextspritestat temp temp
-    	ifvarvare temp temptwo setvar temp -1
-    }
-    addammo 1 1
-		addammo 2 1
-		addammo 3 1
-		addammo 4 1
-		addammo 5 1
-		addammo 6 1
-		addammo 7 1
-		addammo 8 1
-		addammo 9 1
-		addammo 11 1
-		getplayer[THISACTOR].ammo_amount 1 ammoamountone
-		getplayer[THISACTOR].ammo_amount 2 ammoamounttwo
-		getplayer[THISACTOR].ammo_amount 3 ammoamountthree
-		getplayer[THISACTOR].ammo_amount 4 ammoamountfour
-		getplayer[THISACTOR].ammo_amount 5 ammoamountfive
-		getplayer[THISACTOR].ammo_amount 6 ammoamountsix
-		getplayer[THISACTOR].ammo_amount 7 ammoamountseven
-		getplayer[THISACTOR].ammo_amount 8 ammoamounteight
-		getplayer[THISACTOR].ammo_amount 9 ammoamountnine
-		getplayer[THISACTOR].ammo_amount 11 ammoamounteleven
-		setvar infinityammo 0
-		setvar infinityammotimer 60
-		setvar infinityammoduration 450
-		sound 195
-    killit
-  
-    
-		      
-enda*/
 
 actor 2530 //Infinityammo
 	sizeat 19 19
@@ -4628,6 +4623,97 @@ actor ATOMICHEALTH //Nuclear
       }
 enda
 
+//WEAPONS
+actor FIRSTGUNSPRITE
+  fall
+  cstat 1
+  getactor[THISACTOR].hitag temp
+  ifvare temp -1 killit
+  else ifvare temp 0 {
+  	ifcount 450 killit
+  }
+enda
+
+actor SHOTGUNSPRITE
+  fall
+  cstat 1
+  getactor[THISACTOR].hitag temp
+  ifvare temp -1 killit
+  else ifvare temp 0 {
+  	ifcount 450 killit
+  }
+enda
+
+actor CHAINGUNSPRITE
+  fall
+  cstat 1
+  getactor[THISACTOR].hitag temp
+  ifvare temp -1 killit
+  else ifvare temp 0 {
+  	ifcount 450 killit
+  }
+enda
+
+actor RPGSPRITE
+  fall
+  cstat 1
+  getactor[THISACTOR].hitag temp
+  ifvare temp -1 killit
+  else ifvare temp 0 {
+  	ifcount 450 killit
+  }
+enda
+
+actor HBOMBAMMO
+  fall
+  cstat 1
+  getactor[THISACTOR].hitag temp
+  ifvare temp -1 killit
+  else ifvare temp 0 {
+  	ifcount 450 killit
+  }
+enda
+
+actor SHRINKERSPRITE
+  fall
+  cstat 1
+  getactor[THISACTOR].hitag temp
+  ifvare temp -1 killit
+  else ifvare temp 0 {
+  	ifcount 450 killit
+  }
+enda
+
+actor DEVISTATORSPRITE
+  fall
+  cstat 1
+  getactor[THISACTOR].hitag temp
+  ifvare temp -1 killit
+  else ifvare temp 0 {
+  	ifcount 450 killit
+  }
+enda
+
+actor TRIPBOMBSPRITE
+  fall
+  cstat 1
+  getactor[THISACTOR].hitag temp
+  ifvare temp -1 killit
+  else ifvare temp 0 {
+  	ifcount 450 killit
+  }
+enda
+
+actor FREEZESPRITE
+  fall
+  cstat 1
+  getactor[THISACTOR].hitag temp
+  ifvare temp -1 killit
+  else ifvare temp 0 {
+  	ifcount 450 killit
+  }
+enda
+
 
 
 
@@ -4778,100 +4864,6 @@ actor RPGAMMO
       }
 enda
 
-actor HBOMBAMMO
-  fall
-  cstat 1 /*
-  ifmove RESPAWN_ACTOR_FLAG state respawnit
-  else
-    ifp pshrunk nullop
-    else
-      ifp palive
-        ifpdistl RETRIEVEDISTANCE
-          ifcount 6
-            ifcanseetarget
-      {
-        ifgotweaponce 0
-          break
-
-        addweapon HANDBOMB_WEAPON HANDBOMBBOX
-        quote 55
-//        addammo HANDBOMB_WEAPON HANDBOMBBOX
-
-        ifspawnedby HBOMBAMMO
-          state getweaponcode
-        else
-          state quikweaponget
-      }
-      */
-enda
-
-actor RPGSPRITE
-  fall
-  cstat 1 /*
-  ifmove RESPAWN_ACTOR_FLAG
-    state respawnit
-  else
-    ifp pshrunk nullop
-    else
-      ifp palive
-        ifpdistl RETRIEVEDISTANCE
-          ifcount 6
-            ifcanseetarget
-      {
-        ifgotweaponce 0
-          break
-
-        addweapon RPG_WEAPON RPGAMMOBOX
-        quote 56
-        ifspawnedby RPGSPRITE
-          state getweaponcode
-        else
-          state quikweaponget
-      }
-      */
-enda
-
-actor SHOTGUNSPRITE
-  fall
-  cstat 1 /*
-  ifmove RESPAWN_ACTOR_FLAG
-    state respawnit
-  else
-    ifp pshrunk nullop
-    else
-      ifp palive
-        ifpdistl RETRIEVEDISTANCE
-          ifcount 6
-            ifcanseetarget
-      {
-        ifspawnedby PIGCOP
-        {
-          addweapon SHOTGUN_WEAPON 0
-          ifrnd 64
-            addammo SHOTGUN_WEAPON 4
-          else ifrnd 64
-            addammo SHOTGUN_WEAPON 3
-          else ifrnd 64
-            addammo SHOTGUN_WEAPON 2
-          else
-            addammo SHOTGUN_WEAPON 1
-        }
-        else
-        {
-          ifgotweaponce 0
-            break
-          addweapon SHOTGUN_WEAPON SHOTGUNAMMOAMOUNT
-          quote 57
-        }
-
-        ifspawnedby SHOTGUNSPRITE
-          state getweaponcode
-        else
-          state quikweaponget
-      }
-      */
-enda
-
 actor SIXPAK
   fall
   ifmove RESPAWN_ACTOR_FLAG
@@ -4936,161 +4928,6 @@ actor FIRSTAID
         else
           state quikget
       }
-enda
-
-
-actor FIRSTGUNSPRITE
-  fall
-  cstat 1 /*
-  ifmove RESPAWN_ACTOR_FLAG
-    state respawnit
-  else
-    ifp pshrunk nullop
-    else
-      ifp palive
-        ifpdistl RETRIEVEDISTANCE
-          ifcount 6
-            ifcanseetarget
-      {
-        ifgotweaponce 0
-          break
-        addweapon PISTOL_WEAPON 48
-        ifspawnedby FIRSTGUNSPRITE
-          state getweaponcode
-        else
-          state quikweaponget
-      }
-      */
-enda
-
-
-actor TRIPBOMBSPRITE
-  fall
-  cstat 1 /*
-  ifmove RESPAWN_ACTOR_FLAG
-    state respawnit
-  else
-    ifp pshrunk nullop
-    else
-      ifp palive
-        ifpdistl RETRIEVEDISTANCE
-          ifcount 6
-            ifcanseetarget
-      {
-        ifgotweaponce 0
-          break
-
-        addweapon TRIPBOMB_WEAPON 1
-        quote 58
-        ifspawnedby TRIPBOMBSPRITE
-          state getweaponcode
-        else
-          state quikweaponget
-      }
-      */
-enda
-
-actor CHAINGUNSPRITE
-  fall
-  cstat 1 /*
-  ifmove RESPAWN_ACTOR_FLAG
-    state respawnit
-  else
-    ifp pshrunk nullop
-    else
-      ifp palive
-        ifpdistl RETRIEVEDISTANCE
-          ifcount 6
-            ifcanseetarget
-      {
-        ifgotweaponce 0
-          break
-
-        addweapon CHAINGUN_WEAPON 50
-        quote 54
-        ifspawnedby CHAINGUNSPRITE
-          state getweaponcode
-        else
-          state quikweaponget
-      }
-      */
-enda
-
-
-
-actor SHRINKERSPRITE
-  fall
-  cstat 1 /*
-  ifmove RESPAWN_ACTOR_FLAG
-    state respawnit
-  else
-    ifp pshrunk nullop
-    else
-      ifp palive
-        ifpdistl RETRIEVEDISTANCE
-          ifcount 6
-            ifcanseetarget
-      {
-        ifgotweaponce 0
-          break
-        addweapon SHRINKER_WEAPON 10
-        quote 60
-        ifspawnedby SHRINKERSPRITE
-          state getweaponcode
-        else
-          state quikweaponget
-      }
-      */
-enda
-
-actor FREEZESPRITE
-  fall
-  cstat 1 /*
-  ifmove RESPAWN_ACTOR_FLAG
-    state respawnit
-  else
-    ifp pshrunk nullop
-    else
-      ifp palive
-        ifpdistl RETRIEVEDISTANCE
-          ifcount 6
-            ifcanseetarget
-      {
-        ifgotweaponce 0
-          break
-
-        addweapon FREEZE_WEAPON FREEZEAMMOAMOUNT
-        quote 59
-        ifspawnedby FREEZESPRITE
-          state getweaponcode
-        else
-          state quikweaponget
-      }
-      */
-enda
-
-actor DEVISTATORSPRITE
-  fall
-  cstat 1 /*
-  ifmove RESPAWN_ACTOR_FLAG state respawnit
-  else
-    ifp pshrunk nullop
-    else
-      ifp palive
-        ifpdistl RETRIEVEDISTANCE
-          ifcount 6
-            ifcanseetarget
-      {
-        ifgotweaponce 0
-          break
-        addweapon DEVISTATOR_WEAPON DEVISTATORAMMOAMOUNT
-        quote 87
-        ifspawnedby DEVISTATORSPRITE
-          state getweaponcode
-        else
-          state quikweaponget
-      }
-      */
 enda
 
 action FIRE_FRAMES   -1 14 1 1 1
