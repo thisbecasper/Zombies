@@ -107,7 +107,7 @@ gamevar instakill 0 2
 gamevar instakilltimer 0 1
 gamevar instakillduration 0 1
 gamevar powershotcd 0 1
-gamevar infinityammo 0 2
+gamevar infinityammo 0 1
 gamevar infinityammotimer 0 1
 gamevar infinityammoduration 0 1
 gamevar havespawnedorb 0 0
@@ -640,16 +640,36 @@ state handlemonsterdrops
 		}
 		//INFINITYAMMO
 		ifvare infinityammo 1 {
-			addammo 1 1
-			addammo 2 1
-			addammo 3 1
-			addammo 4 1
-			addammo 5 1
-			addammo 6 1
-			addammo 7 1
-			addammo 8 1
-			addammo 9 1
-			addammo 11 1
+			getplayer[THISACTOR].ammo_amount 1 temp
+			addvar temp 1
+			setplayer[THISACTOR].ammo_amount 1 temp
+			getplayer[THISACTOR].ammo_amount 2 temp
+			addvar temp 1
+			setplayer[THISACTOR].ammo_amount 2 temp
+			getplayer[THISACTOR].ammo_amount 3 temp
+			addvar temp 1
+			setplayer[THISACTOR].ammo_amount 3 temp
+			getplayer[THISACTOR].ammo_amount 4 temp
+			addvar temp 1
+			setplayer[THISACTOR].ammo_amount 4 temp
+			getplayer[THISACTOR].ammo_amount 5 temp
+			addvar temp 1
+			setplayer[THISACTOR].ammo_amount 5 temp
+			getplayer[THISACTOR].ammo_amount 6 temp
+			addvar temp 1
+			setplayer[THISACTOR].ammo_amount 6 temp
+			getplayer[THISACTOR].ammo_amount 7 temp
+			addvar temp 1
+			setplayer[THISACTOR].ammo_amount 7 temp
+			getplayer[THISACTOR].ammo_amount 8 temp
+			addvar temp 1
+			setplayer[THISACTOR].ammo_amount 8 temp
+			getplayer[THISACTOR].ammo_amount 9 temp
+			addvar temp 1
+			setplayer[THISACTOR].ammo_amount 9 temp
+			getplayer[THISACTOR].ammo_amount 11 temp
+			addvar temp 1
+			setplayer[THISACTOR].ammo_amount 11 temp
 			getplayer[THISACTOR].ammo_amount 1 ammoamountone
 			getplayer[THISACTOR].ammo_amount 2 ammoamounttwo
 			getplayer[THISACTOR].ammo_amount 3 ammoamountthree
@@ -1312,17 +1332,17 @@ state checkhitscan
 ends
 
 state newbeastdrops
-	randvar temp 240 //240
+	randvar temp 1 //240
   ifvarl temp 5 {
 		spawn TRANSPORTERBEAM
 		sound TELEPORTER
 	}
   ifvare temp 0 spawn BATTERYAMMO
-  else ifvare temp 1 spawn ATOMICHEALTH
-  else ifvare temp 2 spawn BADGUYICON
-  else ifvare temp 3 spawn 2530
-  else ifvare temp 4 spawn 2825
-  else ifvare temp 5 spawn 4520
+  else ifvare temp 3 spawn ATOMICHEALTH
+  else ifvare temp 2 spawn BADGUYICON //Instakill
+  else ifvare temp 1 spawn 2530 //Infinity ammo
+  else ifvare temp 4 spawn 2825 //Money fest
+  else ifvare temp 5 spawn 4520 //2000 points
 
   randvar temp 1999 //1999
 	ifvarl temp 7 {
@@ -1348,8 +1368,8 @@ onevent EVENT_DISPLAYREST
 
 	//Debuggg
 	//getactor[THISACTOR].extra temp
-	digitalnumberz 2837 0 40 playersalive 0 0 0 0 0 xdim ydim 58000
-	//digitalnumberz 2837 0 60 hasoverheated 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 40 eog 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 60 primaryweapon 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 80 isdead 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 100 downtimer 0 0 0 0 0 xdim ydim 58000
 	
@@ -4402,6 +4422,51 @@ actor BADGUYICON //Instakill
         killit
       }
 enda
+/*
+actor 2530 //Infinityammo
+	setplayer[THISACTOR].ammo_amount 2 61
+	sizeat 19 19
+	ifcount 300 killit
+  fall
+  
+  	headspritestat temp 10
+    setvarvar temptwo temp
+    whilevarn temp -1 {
+    	getactor[temp].yvel tempfive
+    	setplayervar[tempfive].infinityammo 1
+    	//setactorvar[temp].infinityammo 1
+    	nextspritestat temp temp
+    	ifvarvare temp temptwo setvar temp -1
+    }
+    addammo 1 1
+		addammo 2 1
+		addammo 3 1
+		addammo 4 1
+		addammo 5 1
+		addammo 6 1
+		addammo 7 1
+		addammo 8 1
+		addammo 9 1
+		addammo 11 1
+		getplayer[THISACTOR].ammo_amount 1 ammoamountone
+		getplayer[THISACTOR].ammo_amount 2 ammoamounttwo
+		getplayer[THISACTOR].ammo_amount 3 ammoamountthree
+		getplayer[THISACTOR].ammo_amount 4 ammoamountfour
+		getplayer[THISACTOR].ammo_amount 5 ammoamountfive
+		getplayer[THISACTOR].ammo_amount 6 ammoamountsix
+		getplayer[THISACTOR].ammo_amount 7 ammoamountseven
+		getplayer[THISACTOR].ammo_amount 8 ammoamounteight
+		getplayer[THISACTOR].ammo_amount 9 ammoamountnine
+		getplayer[THISACTOR].ammo_amount 11 ammoamounteleven
+		setvar infinityammo 0
+		setvar infinityammotimer 60
+		setvar infinityammoduration 450
+		sound 195
+    killit
+  
+    
+		      
+enda*/
 
 actor 2530 //Infinityammo
 	sizeat 19 19
@@ -4420,7 +4485,9 @@ actor 2530 //Infinityammo
         headspritestat temp 10
         setvarvar temptwo temp
         whilevarn temp -1 {
-        	setactorvar[temp].infinityammo 1
+        	getactor[temp].yvel tempfive
+        	setplayervar[tempfive].infinityammo 1
+        	//setactorvar[temp].infinityammo 1
         	nextspritestat temp temp
         	ifvarvare temp temptwo setvar temp -1
         }
