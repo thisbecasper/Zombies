@@ -79,8 +79,8 @@ gamevar downtimervar 600 4096
 gamevar autorevivetimervar 150 4096
 gamevar teleporttimervar 2700 4096
 
-gamevar pistolcost 1777 4096
-gamevar shotguncost 2777 4096
+gamevar pistolcost 1000 4096
+gamevar shotguncost 2000 4096
 gamevar chainguncost 2700 4096
 gamevar rpgcost 3500 4096
 gamevar pipebombcost 3000 4096
@@ -837,7 +837,7 @@ state showinformation
 			else ifvare temptwo 1234 setvarvar itemcost moneymultipliercost
 			else ifvare temptwo 1667 setvarvar itemcost instakillcost
 			else ifvare temptwo 4371 setvarvar itemcost perkprotectercost
-			else ifvare temptwo ACCESSCARD setvarcar itemcost accesscardcost
+			else ifvare temptwo ACCESSCARD setvarvar itemcost accesscardcost
 			
 			setvarvar tempfive finalplayermoney
 			addvarvar tempfive playermoney
@@ -2014,7 +2014,7 @@ onevent EVENT_USE
 			else ifvare tempfive 1234 setvarvar itemcost moneymultipliercost
 			else ifvare tempfive 1667 setvarvar itemcost instakillcost
 			else ifvare tempfive 4371 setvarvar itemcost perkprotectercost
-			else ifvare tempfive ACCESSCARD servarvar itemcost accesscardcost
+			else ifvare tempfive ACCESSCARD setvarvar itemcost accesscardcost
 			
 			getactor[HITSPRITE].hitag temptwo
 			ifvare temptwo 0 setvar itemcost 0
