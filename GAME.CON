@@ -6003,6 +6003,18 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 				getactor[THISACTOR].yvel temptwo //Populating idofdyingduke
 				setvarvar idofdyingduke temptwo //Populating idofdyingduke
    			ifvare gotrevivedbyplayer 1 {
+   				randvar temp 10
+   				ifvare temp 0 sound DUKE_GETWEAPON1
+   				ifvare temp 1 sound DUKE_GETWEAPON2
+   				ifvare temp 2 sound DUKE_GETWEAPON3
+   				ifvare temp 3 sound DUKE_GETWEAPON4
+   				ifvare temp 4 sound DUKE_GETWEAPON6
+   				ifvare temp 5 sound DUKE_PISSRELIEF
+   				ifvare temp 6 sound BONUS_SPEECH1
+   				ifvare temp 7 sound BONUS_SPEECH2
+   				ifvare temp 8 sound BONUS_SPEECH3
+   				ifvare temp 9 sound BONUS_SPEECH4
+   				ifvare temp 10 sound DUKE_GOTHEALTHATLOW
    				setvar gotrevivedbyplayer 0
    				state respawnfromplayerrevive
    				action PSTAND
