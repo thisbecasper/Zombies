@@ -708,6 +708,16 @@ state endgame
 ends
 
 state handlemonsterdrops
+	ifvarg nucleartimer 0 subvar nucleartimer 1
+	ifvarg maxammotimer 0 subvar maxammotimer 1
+	ifvarg instakilltimer 0 subvar instakilltimer 1
+	ifvarg instakillduration 0 subvar instakillduration 1
+	ifvarg moneyfesttimer 0 subvar moneyfesttimer 1
+	ifvarg moneyfestduration 0 subvar moneyfestduration 1
+	ifvarg moneyfestshowtimer 0 subvar moneyfestshowtimer 1
+	ifvarg infinityammotimer 0 subvar infinityammotimer 1
+	ifvarg infinityammoduration 0 subvar infinityammoduration 1
+	ifvarg moneyfromdroptimer 0 subvar moneyfromdroptimer 1
 	ifp palive {
 		//NUCLEAR
 		ifvare nuclear 1 {
@@ -715,8 +725,6 @@ state handlemonsterdrops
 			setvar nucleartimer 60
 			palfrom 64 64 64 0
 			sound 9
-		} else {
-			ifvarg nucleartimer 0 subvar nucleartimer 1
 		}
 		//MAXAMMO
 		ifvare maxammo 1 {
@@ -732,8 +740,6 @@ state handlemonsterdrops
 				getplayer[THISACTOR].max_ammo_amount tertiaryweapon temp
 				setplayer[THISACTOR].ammo_amount tertiaryweapon temp
 			}
-		} else {
-			ifvarg maxammotimer 0 subvar maxammotimer 1
 		}
 		//INSTAKILL
 		ifvare instakill 1 {
@@ -741,10 +747,6 @@ state handlemonsterdrops
 			setvar instakilltimer 60
 			setvar instakillduration 450
 			sound 195
-		} else {
-			ifvarg instakilltimer 0 subvar instakilltimer 1
-			ifvarg instakillduration 0 subvar instakillduration 1
-			
 		}
 		//MONEYFEST
 		ifvare moneyfest 1 {
@@ -752,9 +754,6 @@ state handlemonsterdrops
 			setvar moneyfesttimer 60
 			setvar moneyfestduration 450
 		} else {
-			ifvarg moneyfesttimer 0 subvar moneyfesttimer 1
-			ifvarg moneyfestduration 0 subvar moneyfestduration 1
-			ifvarg moneyfestshowtimer 0 subvar moneyfestshowtimer 1
 			ifvare moneyfestduration 1 {
 				setvarvar moneyfrommoneyfestshow moneyfrommoneyfest
 				setvar moneyfrommoneyfest 0
@@ -809,7 +808,6 @@ state handlemonsterdrops
 			sound 195
 		} else {
 			ifvarg infinityammoduration 0 {
-				subvar infinityammoduration 1
 				setplayer[THISACTOR].ammo_amount 1 ammoamountone
 				setplayer[THISACTOR].ammo_amount 2 ammoamounttwo
 				setplayer[THISACTOR].ammo_amount 3 ammoamountthree
@@ -843,10 +841,8 @@ state handlemonsterdrops
 					setplayer[THISACTOR].ammo_amount 11 ammoamounteleven
 				}
 			}
-			ifvarg infinityammotimer 0 subvar infinityammotimer 1
+			
 		}
-		//MONEY FROM DROP
-		ifvarg moneyfromdroptimer 0 subvar moneyfromdroptimer 1
 	} else {
 		setvar nuclear 0
 		setvar maxammo 0
