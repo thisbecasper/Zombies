@@ -554,6 +554,107 @@ state respawnfromintermission
 	setvar showoverlay 0
 ends
 
+state jib_sounds
+  ifrnd SWEARFREQUENCY
+  {
+    ifrnd 128
+    {
+      ifrnd 128
+      {
+        ifrnd 128
+        {
+          ifrnd 128
+          {
+            ifrnd 128
+              globalsound JIBBED_ACTOR12
+            else
+              globalsound JIBBED_ACTOR1
+          }
+          else
+          {
+            ifrnd 128
+              globalsound JIBBED_ACTOR9
+            else
+              globalsound JIBBED_ACTOR14
+          }
+        }
+        else
+        {
+          ifrnd 128
+            globalsound SMACKED
+          else
+            globalsound JIBBED_ACTOR2
+        }
+      }
+      else
+      {
+        ifrnd 128
+          globalsound MDEVSPEECH
+        else
+          globalsound JIBBED_ACTOR5
+      }
+    }
+    else
+    {
+      ifrnd 128
+      {
+        ifrnd 128
+        {
+          ifrnd 128
+            globalsound JIBBED_ACTOR11
+          else
+            globalsound JIBBED_ACTOR13
+        }
+        else
+        {
+          ifrnd 128
+            globalsound JIBBED_ACTOR3
+          else
+            globalsound JIBBED_ACTOR8
+        }
+      }
+      else
+      {
+        ifrnd 128
+        {
+          ifrnd 128
+            globalsound JIBBED_ACTOR6
+          else
+            globalsound JIBBED_ACTOR4
+        }
+        else
+        {
+          ifrnd 128
+          {
+            ifrnd 128
+              globalsound JIBBED_ACTOR10
+            else
+              globalsound JIBBED_ACTOR15
+
+          }
+          else
+            globalsound JIBBED_ACTOR7
+        }
+      }
+    }
+  }
+ends
+
+state standard_jibs
+  guts JIBS2 1
+  guts JIBS3 2
+  guts JIBS4 3
+  guts JIBS5 2
+  guts JIBS6 3
+  ifrnd 6
+  {
+    guts JIBS1 1
+    spawn BLOODPOOL
+  }         // a badly drawn spine
+
+  state jib_sounds
+ends
+
 state dieeffects
 	guts JIBS1 1
   guts JIBS3 2
@@ -1371,12 +1472,15 @@ state newbeastdrops
   else ifvare temp 3 spawn 2530 //Infinity ammo
   else ifvare temp 4 spawn 2825 //Money fest
   else ifvare temp 5 spawn 4520 //2000 points
-
-  randvar temp 1999 //1999
-	ifvarl temp 16 {
+  ifvarl temp 6 {
 		spawn TRANSPORTERBEAM
 		sound TELEPORTER
+		sound SQUISHED
+		state standard_jibs
+		killit
 	}
+
+  randvar temp 1999 //1999
 	ifvare temp 0 spawn SHIELD
 	else ifvare temp 1 spawn BOOTS
 	else ifvare temp 2 spawn 4371
@@ -1393,6 +1497,14 @@ state newbeastdrops
 	else ifvare temp 13 spawn DEVISTATORSPRITE
 	else ifvare temp 14 spawn TRIPBOMBSPRITE
 	else ifvare temp 15 spawn FREEZESPRITE
+	ifvarl temp 16 {
+		spawn TRANSPORTERBEAM
+		sound TELEPORTER
+		sound SQUISHED
+		state standard_jibs
+		killit
+	}
+	
 ends
 
 state buy
@@ -2747,108 +2859,6 @@ actor SATELLITE TOUGH
   //  ifmove 0 move SHUTTLEVELS getv geth
   //  ifcount 120 move SHUTTLEVELS getv geth randomangle
 enda
-
-state jib_sounds
-  ifrnd SWEARFREQUENCY
-  {
-    ifrnd 128
-    {
-      ifrnd 128
-      {
-        ifrnd 128
-        {
-          ifrnd 128
-          {
-            ifrnd 128
-              globalsound JIBBED_ACTOR12
-            else
-              globalsound JIBBED_ACTOR1
-          }
-          else
-          {
-            ifrnd 128
-              globalsound JIBBED_ACTOR9
-            else
-              globalsound JIBBED_ACTOR14
-          }
-        }
-        else
-        {
-          ifrnd 128
-            globalsound SMACKED
-          else
-            globalsound JIBBED_ACTOR2
-        }
-      }
-      else
-      {
-        ifrnd 128
-          globalsound MDEVSPEECH
-        else
-          globalsound JIBBED_ACTOR5
-      }
-    }
-    else
-    {
-      ifrnd 128
-      {
-        ifrnd 128
-        {
-          ifrnd 128
-            globalsound JIBBED_ACTOR11
-          else
-            globalsound JIBBED_ACTOR13
-        }
-        else
-        {
-          ifrnd 128
-            globalsound JIBBED_ACTOR3
-          else
-            globalsound JIBBED_ACTOR8
-        }
-      }
-      else
-      {
-        ifrnd 128
-        {
-          ifrnd 128
-            globalsound JIBBED_ACTOR6
-          else
-            globalsound JIBBED_ACTOR4
-        }
-        else
-        {
-          ifrnd 128
-          {
-            ifrnd 128
-              globalsound JIBBED_ACTOR10
-            else
-              globalsound JIBBED_ACTOR15
-
-          }
-          else
-            globalsound JIBBED_ACTOR7
-        }
-      }
-    }
-  }
-ends
-
-
-state standard_jibs
-  guts JIBS2 1
-  guts JIBS3 2
-  guts JIBS4 3
-  guts JIBS5 2
-  guts JIBS6 3
-  ifrnd 6
-  {
-    guts JIBS1 1
-    spawn BLOODPOOL
-  }         // a badly drawn spine
-
-  state jib_sounds
-ends
 
 state genericshrunkcode
   ifcount 32
