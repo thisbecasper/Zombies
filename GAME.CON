@@ -1491,7 +1491,7 @@ state newbeastdrops
 		killit
 	}
 
-  randvar temp 15 //1999
+  randvar temp 1999 //1999
 	ifvare temp 0 spawn SHIELD
 	else ifvare temp 1 spawn BOOTS
 	else ifvare temp 2 spawn 4371
@@ -2633,8 +2633,12 @@ onevent EVENT_USE
 								getplayervar[temp].downtimer tempfour
 								addvar tempfour 1
 								setplayervar[temp].downtimer tempfour
+								getplayervar[temp].revivetimer tempfour
+								addvar tempfour 3
+								setplayervar[temp].revivetimer tempfour
 								ifvarg revivetimer 150 {
-									setplayervar[temp].gotrevivedbyplayer 1 
+									setplayervar[temp].gotrevivedbyplayer 1
+									setplayervar[temp].revivetimer 0
 									setvar revivetimer 0
 									setvar buycooldown 60
 								}
@@ -5932,11 +5936,11 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 		ifvarg chaingunheat 150 subvar chaingunheat 1
 		else subvar chaingunheat 2
 	} else setvar hasoverheated 0
-
+	
+	ifvarg revivetimer 0 subvar revivetimer 2 //Always reduce revivetimer bar
+	ifvarl revivetimer 0 setvar revivetimer 0 //Make sure its not negative
 	ifp palive {
 		cstat 257 //Blockable + hitable
-		ifvarg revivetimer 0 subvar revivetimer 2 //Always reduce revivetimer bar
-		ifvarl revivetimer 0 setvar revivetimer 0 //Make sure its not negative
 		setvarvar downtimer downtimervar
 		setvar isdown 0
 		setvar isdead 0
