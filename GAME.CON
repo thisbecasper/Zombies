@@ -11077,8 +11077,8 @@ state checknewbeasthit
 	    getplayervar[temptwo].powershotcd tempthree
 	    getplayervar[temptwo].instakillduration tempfour
 			ifvare tempthree 150 {
-				spawn FIRE
-				sound NEWBEAST_DYING
+				sound SQUISHED
+				state standard_jibs
 				spawn EXPLOSION2
 				sound 9
 				setplayervar[temptwo].powershotcd 0
