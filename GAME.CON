@@ -163,7 +163,6 @@ gamevar autorevivetimer 0 1
 gamevar owner -1 2
 gamevar totalpoints 0 1
 gamevar moneyrecieved 0 1
-gamevar gamedurationseconds 0 1
 gamevar moneydonated 0 1
 gamevar gothit -1 1
 gamevar nohittimer 0 1
@@ -711,13 +710,13 @@ state handlemonsterdrops
 	ifvarg nucleartimer 0 subvar nucleartimer 1
 	ifvarg maxammotimer 0 subvar maxammotimer 1
 	ifvarg instakilltimer 0 subvar instakilltimer 1
-	ifvarg instakillduration 0 subvar instakillduration 1
 	ifvarg moneyfesttimer 0 subvar moneyfesttimer 1
-	ifvarg moneyfestduration 0 subvar moneyfestduration 1
-	ifvarg moneyfestshowtimer 0 subvar moneyfestshowtimer 1
 	ifvarg infinityammotimer 0 subvar infinityammotimer 1
-	ifvarg infinityammoduration 0 subvar infinityammoduration 1
+	ifvarg moneyfestshowtimer 0 subvar moneyfestshowtimer 1
 	ifvarg moneyfromdroptimer 0 subvar moneyfromdroptimer 1
+	ifvarg instakillduration 0 subvar instakillduration 1
+	ifvarg moneyfestduration 0 subvar moneyfestduration 1
+	ifvarg infinityammoduration 0 subvar infinityammoduration 1
 	ifp palive {
 		//NUCLEAR
 		ifvare nuclear 1 {
@@ -1892,8 +1891,6 @@ endevent
 onevent EVENT_HOLODUKEON
 	setvar RETURN -1
 	quote 177
-	setvarvar gamedurationseconds totalclock
-	divvar gamedurationseconds 120
 	addlogvar finalplayermoney
 	addlogvar primaryweapon
 	addlogvar secondaryweapon
@@ -1981,7 +1978,6 @@ onevent EVENT_HOLODUKEON
 	addlogvar owner
 	addlogvar totalpoints
 	addlogvar moneyrecieved
-	addlogvar gamedurationseconds
 	addlogvar moneydonated
 	addlogvar gothit
 	addlogvar nohittimer
