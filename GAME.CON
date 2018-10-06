@@ -1521,11 +1521,17 @@ onevent EVENT_DISPLAYREST
 	//digitalnumberz 2837 0 60 primaryweapon 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 80 isdead 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 100 downtimer 0 0 0 0 0 xdim ydim 58000
-	
 	ifvare eog 1 {
 		rotatesprite 160 100 500000 0 862 0 4 1 0 0 xdim ydim
 		gametextz STARTALPHANUM 320 30 184 0 2 0 0 0 xdim ydim 80000
-		setvar showoverlay 1
+		ifvare showoverlay 0 {
+			rotatesprite 123 100 58000 0 2957 0 0 0 0 0 xdim ydim
+			rotatesprite 134 100 58000 0 2954 0 0 0 0 0 xdim ydim
+			rotatesprite 145 100 58000 0 2960 0 0 0 0 0 xdim ydim
+			rotatesprite 157 100 58000 0 2953 0 0 0 0 0 xdim ydim
+			rotatesprite 168 100 58000 0 2943 0 0 0 0 0 xdim ydim
+			digitalnumberz 2930 195 100 round 0 0 0 0 0 xdim ydim 58000
+		}
 	} else {
 		//Reviving
 		ifvarg revivetimer 0 {
@@ -1876,6 +1882,7 @@ endevent
 onevent EVENT_DISPLAYCROSSHAIR
 	ifp palive nullop
 	else setvar RETURN -1
+	ifvare eog 1 setvar RETURN -1
 endevent
 
 onevent EVENT_INVENTORYRIGHT
