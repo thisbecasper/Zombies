@@ -11304,7 +11304,7 @@ useractor enemy NEWBEAST NEWBEASTSTRENGTH
 		setactor[THISACTOR].y temptwo
 		setactor[THISACTOR].z MY_Z
 		spawn TRANSPORTERSTAR
-		sound TELEPORTER
+		sound 82
   }
 
   getactor[THISACTOR].extra temp
