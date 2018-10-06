@@ -2462,6 +2462,7 @@ onevent EVENT_USE
 							sound 303
 							getactor[HITSPRITE].hitag temp
 							ifvare temp 0 setactor[HITSPRITE].hitag -1
+							subvarvar doublemoneygained moneymultipliercost
 						}
 						break
 					}
