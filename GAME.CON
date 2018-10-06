@@ -939,6 +939,7 @@ state showinformation
 			setvarvar tempfive finalplayermoney
 			addvarvar tempfive playermoney
 			addvarvar tempfive playermoneybonus
+			getactor[HITSPRITE].hitag tempsix
 			switch temptwo
 				case ACCESSSWITCH2 {
 					getactor[HITSPRITE].pal temp
@@ -957,16 +958,19 @@ state showinformation
 					break
 				}
 				case FIRSTGUNSPRITE {
+					
 					setvar temp 1 //weaponspecific index for state beneath
 					state showweaponorammofix
 					ifvare temptwo 1 {
 						gametextz STARTALPHANUM 320 125 157 0 0 0 0 0 xdim ydim 50000
 						divvar itemcost 2
-						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
+						else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					} else {
 						gametextz STARTALPHANUM 320 125 136 0 0 0 0 0 xdim ydim 50000 //Weaponspecifik quote
-						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
+						else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					}
 					break
@@ -977,11 +981,13 @@ state showinformation
 					ifvare temptwo 1 {
 						gametextz STARTALPHANUM 320 125 157 0 0 0 0 0 xdim ydim 50000
 						divvar itemcost 2
-						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
+						else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					} else {
 						gametextz STARTALPHANUM 320 125 137 0 0 0 0 0 xdim ydim 50000 //Weaponspecifik quote
-						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
+						else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					}
 					break
@@ -992,11 +998,13 @@ state showinformation
 					ifvare temptwo 1 {
 						gametextz STARTALPHANUM 320 125 157 0 0 0 0 0 xdim ydim 50000
 						divvar itemcost 2
-						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
+						else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					} else {
 						gametextz STARTALPHANUM 320 125 138 0 0 0 0 0 xdim ydim 50000 //Weaponspecifik quote
-						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
+						else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					}
 					break
@@ -1007,11 +1015,13 @@ state showinformation
 					ifvare temptwo 1 {
 						gametextz STARTALPHANUM 320 125 157 0 0 0 0 0 xdim ydim 50000
 						divvar itemcost 2
-						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
+						else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					} else {
 						gametextz STARTALPHANUM 320 125 139 0 0 0 0 0 xdim ydim 50000 //Weaponspecifik quote
-						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
+						else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					}
 					break
@@ -1022,11 +1032,13 @@ state showinformation
 					ifvare temptwo 1 {
 						gametextz STARTALPHANUM 320 125 157 0 0 0 0 0 xdim ydim 50000
 						divvar itemcost 2
-						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
+						else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					} else {
 						gametextz STARTALPHANUM 320 125 140 0 0 0 0 0 xdim ydim 50000 //Weaponspecifik quote
-						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
+						else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					}
 					break
@@ -1037,11 +1049,13 @@ state showinformation
 					ifvare temptwo 1 {
 						gametextz STARTALPHANUM 320 125 157 0 0 0 0 0 xdim ydim 50000
 						divvar itemcost 2
-						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
+						else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					} else {
 						gametextz STARTALPHANUM 320 125 141 0 0 0 0 0 xdim ydim 50000 //Weaponspecifik quote
-						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
+						else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					}
 					break
@@ -1052,11 +1066,13 @@ state showinformation
 					ifvare temptwo 1 {
 						gametextz STARTALPHANUM 320 125 157 0 0 0 0 0 xdim ydim 50000
 						divvar itemcost 2
-						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
+						else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					} else {
 						gametextz STARTALPHANUM 320 125 142 0 0 0 0 0 xdim ydim 50000 //Weaponspecifik quote
-						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
+						else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					}
 					break
@@ -1067,11 +1083,13 @@ state showinformation
 					ifvare temptwo 1 {
 						gametextz STARTALPHANUM 320 125 157 0 0 0 0 0 xdim ydim 50000
 						divvar itemcost 2
-						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
+						else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					} else {
 						gametextz STARTALPHANUM 320 125 143 0 0 0 0 0 xdim ydim 50000 //Weaponspecifik quote
-						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
+						else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					}
 					break
@@ -1082,11 +1100,13 @@ state showinformation
 					ifvare temptwo 1 {
 						gametextz STARTALPHANUM 320 125 157 0 0 0 0 0 xdim ydim 50000
 						divvar itemcost 2
-						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
+						else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					} else {
 						gametextz STARTALPHANUM 320 125 144 0 0 0 0 0 xdim ydim 50000 //Weaponspecifik quote
-						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
+						else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					}
 					break
@@ -1097,74 +1117,69 @@ state showinformation
 					ifvare temptwo 1 {
 						gametextz STARTALPHANUM 320 125 157 0 0 0 0 0 xdim ydim 50000
 						divvar itemcost 2
-						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
+						else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					} else {
 						gametextz STARTALPHANUM 320 125 145 0 0 0 0 0 xdim ydim 50000 //Weaponspecifik quote
-						ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+						ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
+						else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					}
 					break
 				}
 				case JETPACK {
 					gametextz STARTALPHANUM 320 125 146 0 0 0 0 0 xdim ydim 50000
-					getactor[HITSPRITE].hitag itemcost
 					ifvare gotbackpack 1 gametextz STARTALPHANUM 320 135 151 0 0 0 0 0 xdim ydim 50000
-					else ifvare itemcost 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
+					else ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
 					else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 					else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					break
 				}
 				case SHIELD {
 					gametextz STARTALPHANUM 320 125 147 0 0 0 0 0 xdim ydim 50000
-					getactor[HITSPRITE].hitag itemcost
 					ifvare gotarmor 1 gametextz STARTALPHANUM 320 135 151 0 0 0 0 0 xdim ydim 50000
-					else ifvare itemcost 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
+					else ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
 					else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 					else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					break
 				}
 				case BOOTS {
 					gametextz STARTALPHANUM 320 125 148 0 0 0 0 0 xdim ydim 50000
-					getactor[HITSPRITE].hitag itemcost
 					ifvare gotboots 1 gametextz STARTALPHANUM 320 135 151 0 0 0 0 0 xdim ydim 50000
-					else ifvare itemcost 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
+					else ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
 					else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 					else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					break
 				}
 				case 4371 {
 					gametextz STARTALPHANUM 320 125 150 0 0 0 0 0 xdim ydim 50000
-					getactor[HITSPRITE].hitag itemcost
 					ifvare gotperkprotection 1 gametextz STARTALPHANUM 320 135 151 0 0 0 0 0 xdim ydim 50000
-					else ifvare itemcost 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
+					else ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
 					else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 					else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					break
 				}
 				case 1667 {
 					gametextz STARTALPHANUM 320 125 152 0 0 0 0 0 xdim ydim 50000
-					getactor[HITSPRITE].hitag itemcost
 					ifvare gotpowershot 1 gametextz STARTALPHANUM 320 135 151 0 0 0 0 0 xdim ydim 50000
-					else ifvare itemcost 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
+					else ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
 					else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 					else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					break
 				}
 				case 1234 {
 					gametextz STARTALPHANUM 320 125 153 0 0 0 0 0 xdim ydim 50000
-					getactor[HITSPRITE].hitag itemcost
 					ifvare gotdoublemoney 1 gametextz STARTALPHANUM 320 135 151 0 0 0 0 0 xdim ydim 50000
-					else ifvare itemcost 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
+					else ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
 					else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 					else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					break
 				}
 				case HOLODUKE {
 					gametextz STARTALPHANUM 320 125 176 0 0 0 0 0 xdim ydim 50000
-					getactor[HITSPRITE].hitag itemcost
 					ifvare gotautorevive 1 gametextz STARTALPHANUM 320 135 151 0 0 0 0 0 xdim ydim 50000
-					else ifvare itemcost 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
+					else ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
 					else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 					else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					break
@@ -1476,7 +1491,7 @@ state newbeastdrops
 		killit
 	}
 
-  randvar temp 1999 //1999
+  randvar temp 15 //1999
 	ifvare temp 0 spawn SHIELD
 	else ifvare temp 1 spawn BOOTS
 	else ifvare temp 2 spawn 4371
