@@ -187,6 +187,7 @@ gamevar moneyfestshowtimer 0 1
 gamevar teleporttimer 0 2
 gamevar itemcost 0 1
 gamevar powershotmoney 0 1
+gamevar successfulrevivetimer 0 1
 
 gamevar ammoamountone 0 1
 gamevar ammoamounttwo 0 1
@@ -1563,6 +1564,15 @@ onevent EVENT_DISPLAYREST
 	      subvar temp 1
 	    }
 		}
+		ifvarg successfulrevivetimer 0 {
+			setvar temptwo 110
+			setvar temp 100
+			whilevarn temp 0 {
+	      rotatesprite temptwo 145 65536 0 3163 0 8 16 0 0 xdim ydim 
+	      addvar temptwo 1 
+	      subvar temp 1
+	    }
+		}
 
 		ifvarn idofdyingduke -1 {
 			getplayervar[idofdyingduke].downtimer temp
@@ -2637,8 +2647,10 @@ onevent EVENT_USE
 								addvar tempfour 3
 								setplayervar[temp].revivetimer tempfour
 								ifvarg revivetimer 150 {
+									setplayervar[temp].successfulrevivetimer 15
 									setplayervar[temp].gotrevivedbyplayer 1
 									setplayervar[temp].revivetimer 0
+									setvar successfulrevivetimer 15
 									setvar revivetimer 0
 									setvar buycooldown 60
 								}
@@ -5936,7 +5948,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 		ifvarg chaingunheat 150 subvar chaingunheat 1
 		else subvar chaingunheat 2
 	} else setvar hasoverheated 0
-	
+	ifvarg successfulrevivetimer 0 subvar successfulrevivetimer 1
 	ifvarg revivetimer 0 subvar revivetimer 2 //Always reduce revivetimer bar
 	ifvarl revivetimer 0 setvar revivetimer 0 //Make sure its not negative
 	ifp palive {
