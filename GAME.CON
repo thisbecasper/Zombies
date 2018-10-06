@@ -188,6 +188,8 @@ gamevar teleporttimer 0 2
 gamevar itemcost 0 1
 gamevar powershotmoney 0 1
 gamevar successfulrevivetimer 0 1
+gamevar moneyused 0 1
+gamevar moneyusedcounter 0 1
 
 gamevar ammoamountone 0 1
 gamevar ammoamounttwo 0 1
@@ -853,6 +855,8 @@ state handlemonsterdrops
 ends
 
 state buyandsetcd
+	subvarvar moneyused itemcost
+	setvar moneyusedcounter 60
 	subvarvar finalplayermoney itemcost
 	addvarvar moneyspent itemcost
 	setvarvar buycooldown buycooldownvar
@@ -863,6 +867,8 @@ ends
 
 state buyandsetcdammo
 	sound 297
+	subvarvar moneyused itemcost
+	setvar moneyusedcounter 60
 	subvarvar finalplayermoney itemcost
 	addvarvar moneyspent itemcost
 	setvarvar buycooldown buycooldownvar
@@ -1255,6 +1261,9 @@ state currentlyearnedmoney
 		addvarvar finalplayermoney playermoneybonus
 		setvar playermoneybonus 0
 	} else subvar bonusmoneycounter 1
+	ifvare moneyusedcounter 0 {
+		setvar moneyused 0
+	} else subvar moneyusedcounter 1
 ends
 
 state nextround
@@ -1724,6 +1733,7 @@ onevent EVENT_DISPLAYREST
 		else digitalnumberz 2837 315 96 finalplayermoney 0 0 0 0 0 xdim ydim 58000
 		ifvarn playermoney 0 digitalnumberz 2837 315 88 playermoney 0 8 0 0 0 xdim ydim 58000
 		ifvarn playermoneybonus 0 digitalnumberz 2837 315 80 playermoneybonus 0 16 0 0 0 xdim ydim 58000
+		ifvarn moneyused 0 digitalnumberz 2837 311 104 moneyused 0 10 0 0 0 xdim ydim 58000
 
 		//Information
 		ifvare buycooldown 0 state showinformation
@@ -1741,20 +1751,20 @@ onevent EVENT_DISPLAYREST
 		else ifvarg moneyfesttimer 0 gametextz STARTALPHANUM 320 60 186 0 7 0 0 0 xdim ydim 65000
 		else ifvarg infinityammotimer 0 gametextz STARTALPHANUM 320 60 154 0 20 0 0 0 xdim ydim 65000
 		else ifvare round 25 gametextz STARTALPHANUM 320 60 178 0 2 0 0 0 xdim ydim 65000
-
-		ifvarg instakillduration 0 {
-			setvarvar temp instakillduration
-			divvar temp 30
-			addvar temp 1
-			digitalnumberz 2930 325 135 temp 0 0 0 0 0 xdim ydim 50000
-			rotatesprite 303 130 50000 0 BADGUYICON 0 0 0 0 0 xdim ydim
-		}
+		
 		ifvarg infinityammoduration 0 {
 			setvarvar temp infinityammoduration
 			divvar temp 30
 			addvar temp 1
-			digitalnumberz 2930 325 116 temp 0 0 0 0 0 xdim ydim 50000
-			rotatesprite 304 111 14000 0 2530 0 0 0 0 0 xdim ydim
+			digitalnumberz 2930 325 120 temp 0 0 0 0 0 xdim ydim 50000
+			rotatesprite 304 115 14000 0 2530 0 0 0 0 0 xdim ydim
+		}
+		ifvarg instakillduration 0 {
+			setvarvar temp instakillduration
+			divvar temp 30
+			addvar temp 1
+			digitalnumberz 2930 325 137 temp 0 0 0 0 0 xdim ydim 50000
+			rotatesprite 303 133 50000 0 BADGUYICON 0 0 0 0 0 xdim ydim
 		}
 		ifvarg moneyfestduration 0 {
 			setvarvar temp moneyfestduration
