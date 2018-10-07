@@ -2642,6 +2642,8 @@ onevent EVENT_USE
 								getplayervar[temp].moneyrecieved temptwo
 								addvar temptwo 100
 								setplayervar[temp].moneyrecieved temptwo
+								addvar moneyused -150
+								setvar moneyusedcounter 60
 								setvar buycooldown 10
 								sound 210
 							}
