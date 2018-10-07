@@ -1501,7 +1501,7 @@ state newbeastdrops
 		killit
 	}
 
-  randvar temp 1999 //1999
+  randvar temp 2500 //2500
 	ifvare temp 0 spawn SHIELD
 	else ifvare temp 1 spawn BOOTS
 	else ifvare temp 2 spawn 4371
