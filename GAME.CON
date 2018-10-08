@@ -49,7 +49,7 @@ defineprojectile 1660 PROJ_PAL 8
 ////////////////////GAMEVARS/////////////////
 
 //Player specific
-gamevar finalplayermoney 500 1 //Husk at korrigere nede i calculatetotalpoints
+gamevar finalplayermoney 500000 1 //Husk at korrigere nede i calculatetotalpoints
 gamevar primaryweapon 1 1
 gamevar secondaryweapon 0 1
 gamevar tertiaryweapon 0 1
