@@ -5,6 +5,8 @@ action ANULLACTION 0
 
 ///////////////////////////////////// N O T E S////////////////////////////////////////////////
 
+
+
 /*
 FIRST PRIORITY:
 Monster stuck i rød uden at rød var åben, men gul var
@@ -1824,55 +1826,55 @@ onevent EVENT_DISPLAYREST
 		//Weaponicons
 		getplayer[THISACTOR].ammo_amount primaryweapon temp
 		subvar temp 1
-		digitalnumberz 2837 20 162 temp 0 0 0 0 0 xdim ydim 58000
+		digitalnumberz 2837 20 152 temp 0 0 0 0 0 xdim ydim 58000 //162
 		getplayer[THISACTOR].ammo_amount secondaryweapon temp
 		subvar temp 1
-		ifvarn secondaryweapon 0 digitalnumberz 2837 4 177 temp 0 0 0 0 0 xdim ydim 35000
+		ifvarn secondaryweapon 0 digitalnumberz 2837 4 167 temp 0 0 0 0 0 xdim ydim 35000 //177
 		getplayer[THISACTOR].ammo_amount tertiaryweapon temp
 		subvar temp 1
-		ifvarn tertiaryweapon 0 digitalnumberz 2837 4 187 temp 0 0 0 0 0 xdim ydim 35000
+		ifvarn tertiaryweapon 0 digitalnumberz 2837 4 177 temp 0 0 0 0 0 xdim ydim 35000 //187
 		
 		getplayer[THISACTOR].max_ammo_amount primaryweapon temp
 		subvar temp 1
-		digitalnumberz 2837 54 162 temp 0 0 0 0 0 xdim ydim 58000
+		digitalnumberz 2837 54 152 temp 0 0 0 0 0 xdim ydim 58000 //162
 		getplayer[THISACTOR].max_ammo_amount secondaryweapon temp
 		subvar temp 1
-		ifvarn secondaryweapon 0 digitalnumberz 2837 24 177 temp 0 0 0 0 0 xdim ydim 35000
+		ifvarn secondaryweapon 0 digitalnumberz 2837 24 167 temp 0 0 0 0 0 xdim ydim 35000 //177
 		getplayer[THISACTOR].max_ammo_amount tertiaryweapon temp
 		subvar temp 1
-		ifvarn tertiaryweapon 0 digitalnumberz 2837 24 187 temp 0 0 0 0 0 xdim ydim 35000
+		ifvarn tertiaryweapon 0 digitalnumberz 2837 24 177 temp 0 0 0 0 0 xdim ydim 35000 //187
 		
-		rotatesprite 32 162 58000 0 2836 0 0 0 0 0 xdim ydim
-		ifvarn secondaryweapon 0 rotatesprite 11 177 35000 0 2836 0 0 0 0 0 xdim ydim
-		ifvarn tertiaryweapon 0 rotatesprite 11 187 35000 0 2836 0 0 0 0 0 xdim ydim
+		rotatesprite 32 152 58000 0 2836 0 0 0 0 0 xdim ydim //162
+		ifvarn secondaryweapon 0 rotatesprite 11 167 35000 0 2836 0 0 0 0 0 xdim ydim //177
+		ifvarn tertiaryweapon 0 rotatesprite 11 177 35000 0 2836 0 0 0 0 0 xdim ydim //187
 		
-		ifvare primaryweapon 1 rotatesprite -20 157 35000 0 21 0 0 0 0 0 xdim ydim
-		ifvare primaryweapon 2 rotatesprite -20 160 35000 0 28 0 0 0 0 0 xdim ydim
-		ifvare primaryweapon 3 rotatesprite -20 157 35000 0 22 0 0 0 0 0 xdim ydim
-		ifvare primaryweapon 4 rotatesprite -20 157 35000 0 23 0 0 0 0 0 xdim ydim
-		ifvare primaryweapon 5 rotatesprite -20 157 35000 0 47 0 0 0 0 0 xdim ydim
-		ifvare primaryweapon 6 rotatesprite -20 157 35000 0 25 0 0 0 0 0 xdim ydim
-		ifvare primaryweapon 7 rotatesprite -20 160 35000 0 29 0 0 0 0 0 xdim ydim
-		ifvare primaryweapon 8 rotatesprite -20 157 35000 0 27 0 0 0 0 0 xdim ydim
-		ifvare primaryweapon 9 rotatesprite -20 157 35000 0 24 0 0 0 0 0 xdim ydim
-		ifvare secondaryweapon 1 rotatesprite -20 175 20000 0 21 0 0 0 0 0 xdim ydim
-		ifvare secondaryweapon 2 rotatesprite -20 177 20000 0 28 0 0 0 0 0 xdim ydim
-		ifvare secondaryweapon 3 rotatesprite -20 175 20000 0 22 0 0 0 0 0 xdim ydim
-		ifvare secondaryweapon 4 rotatesprite -20 175 20000 0 23 0 0 0 0 0 xdim ydim
-		ifvare secondaryweapon 5 rotatesprite -20 175 20000 0 47 0 0 0 0 0 xdim ydim
-		ifvare secondaryweapon 6 rotatesprite -20 175 20000 0 25 0 0 0 0 0 xdim ydim
-		ifvare secondaryweapon 7 rotatesprite -20 175 20000 0 29 0 0 0 0 0 xdim ydim
-		ifvare secondaryweapon 8 rotatesprite -20 175 20000 0 27 0 0 0 0 0 xdim ydim
-		ifvare secondaryweapon 9 rotatesprite -20 175 20000 0 24 0 0 0 0 0 xdim ydim
-		ifvare tertiaryweapon 1 rotatesprite -20 185 20000 0 21 0 0 0 0 0 xdim ydim
-		ifvare tertiaryweapon 2 rotatesprite -20 187 20000 0 28 0 0 0 0 0 xdim ydim
-		ifvare tertiaryweapon 3 rotatesprite -20 185 20000 0 22 0 0 0 0 0 xdim ydim
-		ifvare tertiaryweapon 4 rotatesprite -20 185 20000 0 23 0 0 0 0 0 xdim ydim
-		ifvare tertiaryweapon 5 rotatesprite -20 185 20000 0 47 0 0 0 0 0 xdim ydim
-		ifvare tertiaryweapon 6 rotatesprite -20 185 20000 0 25 0 0 0 0 0 xdim ydim
-		ifvare tertiaryweapon 7 rotatesprite -20 185 20000 0 29 0 0 0 0 0 xdim ydim
-		ifvare tertiaryweapon 8 rotatesprite -20 185 20000 0 27 0 0 0 0 0 xdim ydim
-		ifvare tertiaryweapon 9 rotatesprite -20 185 20000 0 24 0 0 0 0 0 xdim ydim
+		ifvare primaryweapon 1 rotatesprite -20 147 35000 0 21 0 0 0 0 0 xdim ydim //157
+		ifvare primaryweapon 2 rotatesprite -20 150 35000 0 28 0 0 0 0 0 xdim ydim //160
+		ifvare primaryweapon 3 rotatesprite -20 147 35000 0 22 0 0 0 0 0 xdim ydim //157
+		ifvare primaryweapon 4 rotatesprite -20 147 35000 0 23 0 0 0 0 0 xdim ydim //157
+		ifvare primaryweapon 5 rotatesprite -20 147 35000 0 47 0 0 0 0 0 xdim ydim //157
+		ifvare primaryweapon 6 rotatesprite -20 147 35000 0 25 0 0 0 0 0 xdim ydim //157
+		ifvare primaryweapon 7 rotatesprite -20 150 35000 0 29 0 0 0 0 0 xdim ydim //160
+		ifvare primaryweapon 8 rotatesprite -20 151 35000 0 27 0 0 0 0 0 xdim ydim //157
+		ifvare primaryweapon 9 rotatesprite -20 147 35000 0 24 0 0 0 0 0 xdim ydim //157
+		ifvare secondaryweapon 1 rotatesprite -20 165 20000 0 21 0 0 0 0 0 xdim ydim //175
+		ifvare secondaryweapon 2 rotatesprite -20 167 20000 0 28 0 0 0 0 0 xdim ydim //177
+		ifvare secondaryweapon 3 rotatesprite -20 165 20000 0 22 0 0 0 0 0 xdim ydim //175
+		ifvare secondaryweapon 4 rotatesprite -20 165 20000 0 23 0 0 0 0 0 xdim ydim //175
+		ifvare secondaryweapon 5 rotatesprite -20 165 20000 0 47 0 0 0 0 0 xdim ydim //175
+		ifvare secondaryweapon 6 rotatesprite -20 165 20000 0 25 0 0 0 0 0 xdim ydim //175
+		ifvare secondaryweapon 7 rotatesprite -20 165 20000 0 29 0 0 0 0 0 xdim ydim //175
+		ifvare secondaryweapon 8 rotatesprite -20 165 20000 0 27 0 0 0 0 0 xdim ydim //175
+		ifvare secondaryweapon 9 rotatesprite -20 165 20000 0 24 0 0 0 0 0 xdim ydim //175
+		ifvare tertiaryweapon 1 rotatesprite -20 175 20000 0 21 0 0 0 0 0 xdim ydim //185
+		ifvare tertiaryweapon 2 rotatesprite -20 177 20000 0 28 0 0 0 0 0 xdim ydim //187
+		ifvare tertiaryweapon 3 rotatesprite -20 175 20000 0 22 0 0 0 0 0 xdim ydim //185
+		ifvare tertiaryweapon 4 rotatesprite -20 175 20000 0 23 0 0 0 0 0 xdim ydim //185
+		ifvare tertiaryweapon 5 rotatesprite -20 175 20000 0 47 0 0 0 0 0 xdim ydim //185
+		ifvare tertiaryweapon 6 rotatesprite -20 175 20000 0 25 0 0 0 0 0 xdim ydim //185
+		ifvare tertiaryweapon 7 rotatesprite -20 175 20000 0 29 0 0 0 0 0 xdim ydim //185
+		ifvare tertiaryweapon 8 rotatesprite -20 175 20000 0 27 0 0 0 0 0 xdim ydim //185
+		ifvare tertiaryweapon 9 rotatesprite -20 175 20000 0 24 0 0 0 0 0 xdim ydim //185
 		
 		ifvare invalidgame 1 gametextz STARTALPHANUM 320 60 174 0 2 0 0 0 xdim ydim 65000
 	}
