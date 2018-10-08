@@ -1605,15 +1605,15 @@ onevent EVENT_DISPLAYREST
 		//Show access cards
 	  getplayer[THISACTOR].got_access temp
 	  ifvarg temp 3 {
-	    rotatesprite 0 140 25000 0 60 0 23 16 0 0 xdim ydim
+	    rotatesprite 0 130 25000 0 60 0 23 16 0 0 xdim ydim
 	    subvar temp 4
 	  }
 	  ifvarg temp 1 {
-	    rotatesprite -5 140 25000 0 60 0 21 16 0 0 xdim ydim
+	    rotatesprite -5 130 25000 0 60 0 21 16 0 0 xdim ydim
 	    subvar temp 2
 	  }
 	  ifvarg temp 0 {
-	    rotatesprite -10 140 25000 0 60 0 0 16 0 0 xdim ydim
+	    rotatesprite -10 130 25000 0 60 0 0 16 0 0 xdim ydim
 	    subvar temp 1
 	  }
 	  
