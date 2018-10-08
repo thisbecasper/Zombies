@@ -6003,7 +6003,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 	  ifvarvare temp THISACTOR {
 	  	ifvare temptwo RPG setactor[THISACTOR].htextra 10
 	  	else ifvare temptwo FREEZEBLAST setactor[THISACTOR].htextra 3
-	  	else setactor[THISACTOR].htextra 0 
+	  	else ifvare temptwo TRIPBOMB setactor[THISACTOR].htextra 40 
 	  }               
 	}
 	
@@ -11212,7 +11212,7 @@ state checknewbeasthit
 				addvar tempfive 1
 				setplayervar[temptwo].powershotkills tempfive 
 				setvarvar tempsix tempfive
-				mulvar tempsix 5 //Powershot multiplier
+				mulvar tempsix 1 //Powershot multiplier
 				getplayervar[temptwo].playermoneybonus tempfour
 				addvarvar tempfour tempsix
 				setplayervar[temptwo].playermoneybonus tempfour //Money
