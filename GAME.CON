@@ -40,7 +40,7 @@ defineprojectile 1660 PROJ_SPAWNS SHRINKEREXPLOSION
 defineprojectile 1660 PROJ_ISOUND 158
 defineprojectile 1660 PROJ_VEL 840
 defineprojectile 1660 PROJ_HITRADIUS 0
-defineprojectile 1660	PROJ_EXTRA 101
+defineprojectile 1660	PROJ_EXTRA 500
 defineprojectile 1660 PROJ_XREPEAT 14
 defineprojectile 1660 PROJ_YREPEAT 14
 defineprojectile 1660 PROJ_CLIPDIST 30
