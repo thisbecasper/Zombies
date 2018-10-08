@@ -2145,11 +2145,17 @@ onevent EVENT_DOFIRE
   	setplayer[THISACTOR].ammo_amount 6 temptwo 
   }
   ifvarn temp 10 ifvarl temptwo 2 setvar RETURN -1
-  ifvare PWEAPON 1 // if the player has the pistol selected when he fires a projectile...
-    ifvarl PISTOLMAGAZINE 1
-      break
-    else
-      ifvare infinityammoduration 0 subvar PISTOLMAGAZINE 1 // subtract 1 from the magazine count, unless it's already at zero
+  ifvare PWEAPON 1 {
+  	ifvarl PISTOLMAGAZINE 1 {
+  		break
+  	} else {
+  		ifvare infinityammoduration 0 subvar PISTOLMAGAZINE 1 // subtract 1 from the magazine count, unless it's already at zero
+  	}
+  } // if the player has the pistol selected when he fires a projectile...
+    
+      
+    
+     
 endevent
 
 onevent EVENT_INVENTORYLEFT
@@ -6005,7 +6011,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 	  	setvarvar hpregencounter hpregencountervar
 	  	ifvare temptwo RPG setactor[THISACTOR].htextra 10
 	  	else ifvare temptwo FREEZEBLAST setactor[THISACTOR].htextra 3
-	  	else ifvare temptwo RADIUSEXPLOSION setactor[THISACTOR].htextra 50
+	  	else ifvare temptwo RADIUSEXPLOSION setactor[THISACTOR].htextra 49
 	  }               
 	}
 	
