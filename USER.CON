@@ -34,7 +34,7 @@ define SWEARFREQUENCY          100      // The lower, the less.
 define CAMERASDESTRUCTABLE      NO               // YES
 define FREEZERHURTOWNER         YES
 
-define MAXPLAYERHEALTH           50
+define MAXPLAYERHEALTH          150
 define MAXWATERFOUNTAINHEALTH     0
 
 define YELLHURTSOUNDSTRENGTH     35
