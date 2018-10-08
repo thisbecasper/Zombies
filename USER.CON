@@ -59,11 +59,11 @@ define GENERICIMPACTDAMAGE      10
 define MAXPISTOLAMMO           401 //7 * 400   =  2800 | 100    700    500 => 1000 
 define MAXSHOTGUNAMMO           61 //80 * 60   =  3200 |  15   1200   1000 => 2000
 define MAXCHAINGUNAMMO         401 //15 * 400  =  6000 | 100   1500   1350 => 2700
-define MAXRPGAMMO               41 //300 * 40  = 12000 |  10   3000   1750 => 3500
+define MAXRPGAMMO               41 //140 * 40  =  5600 |  10   1400   1750 => 3500
 define MAXHANDBOMBAMMO          21 //300 * 20  =  6000 |   5   1500   1500 => 3000
 define MAXSHRINKERAMMO         101 //300 * 100 = 30000 |  25   7500	  2500 => 5000
 define MAXGROWAMMO             201 //15 * 200  =  3000 |  50   1500   2000 => 4000 ?
-define MAXDEVISTATORAMMO       301 //100 * 300 = 30000 |  75   7500   3000 => 6000
+define MAXDEVISTATORAMMO       301 //40 * 300 =  12000 |  75   3000   3000 => 6000
 define MAXFREEZEAMMO           201 //40 * 200  =  8000 |  50   2000   1400 => 2800
 define MAXTRIPBOMBAMMO          21 //300 * 20  =  6000 |   5   1500   1150 => 2300
 define TRIPBOMBLASERMODE        0     // 0 = always visable
@@ -103,7 +103,7 @@ define THAWTIME 138
 
 // Various blast radius distances
 
-define RPGBLASTRADIUS           1780
+define RPGBLASTRADIUS           1400
 define PIPEBOMBRADIUS           2500
 define SHRINKERBLASTRADIUS      680
 define TRIPBOMBBLASTRADIUS      3000
@@ -135,7 +135,7 @@ define HANDBOMB_WEAPON_STRENGTH        300
 // damage values depend on distance. The
 // further, the weaker.
 
-define RPG_WEAPON_STRENGTH             300
+define RPG_WEAPON_STRENGTH             140
 
 
 define SHRINKER_WEAPON_STRENGTH          0
