@@ -5951,6 +5951,18 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 	state hpregen //Pal
 	state handlemonsterdrops //Pal
 	state gotmoneyfromteammate //Pal
+
+	getactor[THISACTOR].htextra temp
+
+	ifvarg temp 0 {
+	  getactor[THISACTOR].htowner temp
+	  getactor[THISACTOR].htpicnum temptwo
+	  ifvarvare temp THISACTOR {
+	  	ifvare temptwo RPG setactor[THISACTOR].htextra 15
+	  	else ifvare temptwo FREEZEBLAST setactor[THISACTOR].htextra 2
+	  	else setactor[THISACTOR].htextra 0 
+	  }               
+	}
 	
 	ifvarg chaingunheat 0 {
 		ifvarg chaingunheat 250 {
