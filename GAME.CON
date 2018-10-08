@@ -495,6 +495,7 @@ state loseperks
 		setvar gotarmor 0
 		setvar gotdoublemoney 0
 		setvar gotpowershot 0
+		setvar powershotkills 0
 	}
 ends
 
