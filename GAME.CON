@@ -1744,14 +1744,20 @@ onevent EVENT_DISPLAYREST
 	    setvar temptwo -15
 	    getactor[THISACTOR].extra temp
 	    getplayer[THISACTOR].max_player_health tempthree
-	    ifvarvarg temp tempthree {
+	    
+	    ifvare gothit 0 {
+	    	whilevarn tempthree 0 {
+	        rotatesprite temptwo 185 65536 0 3163 0 15 16 0 0 xdim ydim 
+	        addvar temptwo 1 
+	        subvar tempthree 1
+	      }
+	    } else ifvarvarg temp tempthree {
 	    	whilevarn tempthree 0 {
 	        rotatesprite temptwo 185 65536 0 3163 0 6 16 0 0 xdim ydim 
 	        addvar temptwo 1 
 	        subvar tempthree 1
 	      }
-	    }
-			else ifvarg temp 34 {
+	    } else ifvarg temp 34 {
 				whilevarn temp 0 {
 	        rotatesprite temptwo 185 65536 0 3163 0 0 16 0 0 xdim ydim 
 	        addvar temptwo 1 
