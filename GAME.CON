@@ -1751,6 +1751,7 @@ onevent EVENT_DISPLAYREST
 	        addvar temptwo 1 
 	        subvar tempthree 1
 	      }
+	      gametextz STARTALPHANUM 2 188 188 0 15 0 0 0 xdim ydim 36000
 	    } else ifvarvarg temp tempthree {
 	    	whilevarn tempthree 0 {
 	        rotatesprite temptwo 185 65536 0 3163 0 6 16 0 0 xdim ydim 
