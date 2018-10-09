@@ -6491,7 +6491,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
     }
     ifwasweapon SHRINKSPARK
     {
-      setvar gothit 1
+      //setvar gothit 1
       palfrom 56 0 0 0
       //move PSHRINKING // used as a var only.
       //sound ACTOR_SHRINKING
