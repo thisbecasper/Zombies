@@ -256,7 +256,7 @@ state setupround
 			setvar monstertype 1
 			setvar spawnrate 250
 			setvar totalmonsters 8
-			setvar monsterhp 55
+			setvar monsterhp 60
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
@@ -265,7 +265,7 @@ state setupround
 			setvar monstertype 1
 			setvar spawnrate 250
 			setvar totalmonsters 12
-			setvar monsterhp 60
+			setvar monsterhp 70
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
@@ -274,7 +274,7 @@ state setupround
 			setvar monstertype 1
 			setvar spawnrate 250
 			setvar totalmonsters 16
-			setvar monsterhp 65
+			setvar monsterhp 80
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
@@ -283,7 +283,7 @@ state setupround
 			setvar monstertype 1
 			setvar spawnrate 250
 			setvar totalmonsters 20
-			setvar monsterhp 70
+			setvar monsterhp 90
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
@@ -292,7 +292,7 @@ state setupround
 			setvar monstertype 3
 			setvar spawnrate 100
 			setvar totalmonsters 20
-			setvar monsterhp 50
+			setvar monsterhp 60
 			setvarvar monsterslefttospawn totalmonsters
 			setvar rushroundtimer 540
 			break
@@ -302,7 +302,7 @@ state setupround
 			setvar monstertype 1
 			setvar spawnrate 300
 			setvar totalmonsters 25
-			setvar monsterhp 80
+			setvar monsterhp 100
 			setvar maxmonstersallowed 20
 			setvarvar monsterslefttospawn totalmonsters
 			break
@@ -312,7 +312,7 @@ state setupround
 			setvar monstertype 1
 			setvar spawnrate 300
 			setvar totalmonsters 30
-			setvar monsterhp 90
+			setvar monsterhp 115
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
@@ -321,7 +321,7 @@ state setupround
 			setvar monstertype 1
 			setvar spawnrate 300
 			setvar totalmonsters 35
-			setvar monsterhp 100
+			setvar monsterhp 130
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
@@ -330,7 +330,7 @@ state setupround
 			setvar monstertype 1
 			setvar spawnrate 300
 			setvar totalmonsters 40
-			setvar monsterhp 110
+			setvar monsterhp 145
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
@@ -339,7 +339,7 @@ state setupround
 			setvar monstertype 1
 			setvar spawnrate 300
 			setvar totalmonsters 45
-			setvar monsterhp 120
+			setvar monsterhp 160
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
@@ -348,7 +348,7 @@ state setupround
 			setvar monstertype 3
 			setvar spawnrate 150
 			setvar totalmonsters 45
-			setvar monsterhp 75
+			setvar monsterhp 110
 			setvarvar monsterslefttospawn totalmonsters
 			setvar rushroundtimer 540
 			break
@@ -358,7 +358,7 @@ state setupround
 			setvar monstertype 1
 			setvar spawnrate 350
 			setvar totalmonsters 50
-			setvar monsterhp 135
+			setvar monsterhp 175
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
@@ -367,7 +367,7 @@ state setupround
 			setvar monstertype 1
 			setvar spawnrate 350
 			setvar totalmonsters 55
-			setvar monsterhp 150
+			setvar monsterhp 1
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
@@ -376,7 +376,7 @@ state setupround
 			setvar monstertype 1
 			setvar spawnrate 350
 			setvar totalmonsters 60
-			setvar monsterhp 165
+			setvar monsterhp 190
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
@@ -385,7 +385,7 @@ state setupround
 			setvar monstertype 1
 			setvar spawnrate 350
 			setvar totalmonsters 65
-			setvar monsterhp 180
+			setvar monsterhp 205
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
@@ -394,7 +394,7 @@ state setupround
 			setvar monstertype 1
 			setvar spawnrate 350
 			setvar totalmonsters 70
-			setvar monsterhp 195
+			setvar monsterhp 220
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
@@ -403,7 +403,7 @@ state setupround
 			setvar monstertype 3
 			setvar spawnrate 200
 			setvar totalmonsters 70
-			setvar monsterhp 100
+			setvar monsterhp 150
 			setvarvar monsterslefttospawn totalmonsters
 			setvar rushroundtimer 540
 			break
@@ -413,7 +413,7 @@ state setupround
 			setvar monstertype 1
 			setvar spawnrate 400
 			setvar totalmonsters 75
-			setvar monsterhp 210
+			setvar monsterhp 240
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
@@ -422,7 +422,7 @@ state setupround
 			setvar monstertype 1
 			setvar spawnrate 400
 			setvar totalmonsters 80
-			setvar monsterhp 230
+			setvar monsterhp 260
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
@@ -431,7 +431,7 @@ state setupround
 			setvar monstertype 1
 			setvar spawnrate 400
 			setvar totalmonsters 85
-			setvar monsterhp 250
+			setvar monsterhp 280
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
@@ -440,7 +440,7 @@ state setupround
 			setvar monstertype 1
 			setvar spawnrate 400
 			setvar totalmonsters 90
-			setvar monsterhp 270
+			setvar monsterhp 300
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
@@ -449,7 +449,7 @@ state setupround
 			setvar monstertype 1
 			setvar spawnrate 400
 			setvar totalmonsters 95
-			setvar monsterhp 290
+			setvar monsterhp 320
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
@@ -458,7 +458,7 @@ state setupround
 			setvar monstertype 3
 			setvar spawnrate 250
 			setvar totalmonsters 95
-			setvar monsterhp 125
+			setvar monsterhp 210
 			setvarvar monsterslefttospawn totalmonsters
 			setvar rushroundtimer 540
 			break
@@ -469,7 +469,7 @@ state setupround
 			setvar monstertype 1
 			setvar spawnrate 450
 			setvar totalmonsters 200
-			setvar monsterhp 300
+			setvar monsterhp 350
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
