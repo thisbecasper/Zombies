@@ -65,6 +65,7 @@ gamevar gotautorevive 0 1
 gamevar haltrunspeed 20000 0
 gamevar playerrunspeed 45000 0
 gamevar playerrunspeedboots 49050 0
+gamevar minimumthreshold 0 0
 
 //Game flow specific
 gamevar intermission 150 0 //skal ændres nede i nextround state
@@ -209,6 +210,7 @@ gamevar tertiaryweaponsave 0 1
 gamevar primaryammo 0 1
 gamevar secondaryammo 0 1
 gamevar tertiaryammo 0 1
+gamevar spawnedthisiteration 0 0
 
 gamevar MY_X 0 1
 gamevar MY_Y 0 1
@@ -236,240 +238,266 @@ state setupround
 	switch round
 		case 1 {
 			/*
-			setvar maxmonstersallowed 5
 			setvar monstertype 1
-			setvar spawnrate 5
-			setvar totalmonsters 50
 			setvar monsterhp 300
+			setvar totalmonsters 20
+			setvar maxmonstersallowed 5
+			setvar minimumthreshold 1
+			setvar spawnrate 50
 			setvarvar monsterslefttospawn totalmonsters
 			*/
-			setvar maxmonstersallowed 5
 			setvar monstertype 1
-			setvar spawnrate 250
-			setvar totalmonsters 5
 			setvar monsterhp 50
+			setvar totalmonsters 5
+			setvar maxmonstersallowed 5
+			setvar minimumthreshold 0
+			setvar spawnrate 250
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 2 {
-			setvar maxmonstersallowed 6
 			setvar monstertype 1
-			setvar spawnrate 250
+			setvar monsterhp 54
 			setvar totalmonsters 8
-			setvar monsterhp 60
+			setvar maxmonstersallowed 5
+			setvar minimumthreshold 0
+			setvar spawnrate 250
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 3 {
-			setvar maxmonstersallowed 7
 			setvar monstertype 1
-			setvar spawnrate 250
+			setvar monsterhp 59
 			setvar totalmonsters 12
-			setvar monsterhp 70
+			setvar maxmonstersallowed 5
+			setvar minimumthreshold 1
+			setvar spawnrate 250
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 4 {
-			setvar maxmonstersallowed 8
 			setvar monstertype 1
-			setvar spawnrate 250
+			setvar monsterhp 65
 			setvar totalmonsters 16
-			setvar monsterhp 80
+			setvar maxmonstersallowed 5
+			setvar minimumthreshold 1
+			setvar spawnrate 250
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 5 {
-			setvar maxmonstersallowed 9
 			setvar monstertype 1
-			setvar spawnrate 250
+			setvar monsterhp 71
 			setvar totalmonsters 20
-			setvar monsterhp 90
+			setvar maxmonstersallowed 5
+			setvar minimumthreshold 1
+			setvar spawnrate 250
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 6 {
-			setvar maxmonstersallowed 20
-			setvar monstertype 3
-			setvar spawnrate 100
+			setvar monstertype 2
+			setvar monsterhp 35
 			setvar totalmonsters 20
-			setvar monsterhp 60
+			setvar maxmonstersallowed 20
+			setvar minimumthreshold 4
+			setvar spawnrate 250
 			setvarvar monsterslefttospawn totalmonsters
 			setvar rushroundtimer 540
 			break
 		}
 		case 7 {
-			setvar maxmonstersallowed 13
 			setvar monstertype 1
-			setvar spawnrate 300
+			setvar monsterhp 84
 			setvar totalmonsters 25
-			setvar monsterhp 100
+			setvar maxmonstersallowed 13
+			setvar minimumthreshold 2
+			setvar spawnrate 250
 			setvar maxmonstersallowed 20
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 8 {
-			setvar maxmonstersallowed 14
 			setvar monstertype 1
-			setvar spawnrate 300
+			setvar monsterhp 92
 			setvar totalmonsters 30
-			setvar monsterhp 115
+			setvar maxmonstersallowed 14
+			setvar minimumthreshold 2
+			setvar spawnrate 250
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 9 {
-			setvar maxmonstersallowed 15
 			setvar monstertype 1
-			setvar spawnrate 300
+			setvar monsterhp 100
 			setvar totalmonsters 35
-			setvar monsterhp 130
+			setvar maxmonstersallowed 15
+			setvar minimumthreshold 2
+			setvar spawnrate 250
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 10 {
-			setvar maxmonstersallowed 16
 			setvar monstertype 1
-			setvar spawnrate 300
+			setvar monsterhp 109
 			setvar totalmonsters 40
-			setvar monsterhp 145
+			setvar maxmonstersallowed 16
+			setvar minimumthreshold 2
+			setvar spawnrate 250
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 11 {
-			setvar maxmonstersallowed 17
 			setvar monstertype 1
-			setvar spawnrate 300
+			setvar monsterhp 119
 			setvar totalmonsters 45
-			setvar monsterhp 160
+			setvar maxmonstersallowed 17
+			setvar minimumthreshold 2
+			setvar spawnrate 250
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 12 {
-			setvar maxmonstersallowed 45
-			setvar monstertype 3
-			setvar spawnrate 150
+			setvar monstertype 2
+			setvar monsterhp 60
 			setvar totalmonsters 45
-			setvar monsterhp 110
+			setvar maxmonstersallowed 45
+			setvar minimumthreshold 9
+			setvar spawnrate 250
 			setvarvar monsterslefttospawn totalmonsters
 			setvar rushroundtimer 540
 			break
 		}
 		case 13 {
-			setvar maxmonstersallowed 22
 			setvar monstertype 1
-			setvar spawnrate 350
+			setvar monsterhp 141
 			setvar totalmonsters 50
-			setvar monsterhp 175
+			setvar maxmonstersallowed 22
+			setvar minimumthreshold 4
+			setvar spawnrate 250
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 14 {
-			setvar maxmonstersallowed 23
 			setvar monstertype 1
-			setvar spawnrate 350
+			setvar monsterhp 154
+			setvar maxmonstersallowed 23
+			setvar minimumthreshold 4
+			setvar spawnrate 250
 			setvar totalmonsters 55
-			setvar monsterhp 1
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 15 {
-			setvar maxmonstersallowed 24
 			setvar monstertype 1
-			setvar spawnrate 350
+			setvar monsterhp 168
 			setvar totalmonsters 60
-			setvar monsterhp 190
+			setvar maxmonstersallowed 24
+			setvar minimumthreshold 4
+			setvar spawnrate 250
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 16 {
-			setvar maxmonstersallowed 25
 			setvar monstertype 1
-			setvar spawnrate 350
+			setvar monsterhp 183
 			setvar totalmonsters 65
-			setvar monsterhp 205
+			setvar maxmonstersallowed 25
+			setvar minimumthreshold 4
+			setvar spawnrate 250
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 17 {
-			setvar maxmonstersallowed 26
 			setvar monstertype 1
-			setvar spawnrate 350
+			setvar monsterhp 200
 			setvar totalmonsters 70
-			setvar monsterhp 220
+			setvar maxmonstersallowed 26
+			setvar minimumthreshold 4
+			setvar spawnrate 250
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 18 {
-			setvar maxmonstersallowed 70
-			setvar monstertype 3
-			setvar spawnrate 200
+			setvar monstertype 2
+			setvar monsterhp 100
 			setvar totalmonsters 70
-			setvar monsterhp 150
+			setvar maxmonstersallowed 70
+			setvar minimumthreshold 12
+			setvar spawnrate 250
 			setvarvar monsterslefttospawn totalmonsters
 			setvar rushroundtimer 540
 			break
 		}
 		case 19 {
-			setvar maxmonstersallowed 28
 			setvar monstertype 1
-			setvar spawnrate 400
+			setvar monsterhp 238
 			setvar totalmonsters 75
-			setvar monsterhp 240
+			setvar maxmonstersallowed 31
+			setvar minimumthreshold 8
+			setvar spawnrate 250
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 20 {
-			setvar maxmonstersallowed 32
 			setvar monstertype 1
-			setvar spawnrate 400
+			setvar monsterhp 259
 			setvar totalmonsters 80
-			setvar monsterhp 260
+			setvar maxmonstersallowed 32
+			setvar minimumthreshold 8
+			setvar spawnrate 250
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 21 {
-			setvar maxmonstersallowed 33
 			setvar monstertype 1
-			setvar spawnrate 400
+			setvar monsterhp 283
 			setvar totalmonsters 85
-			setvar monsterhp 280
+			setvar maxmonstersallowed 33
+			setvar minimumthreshold 8
+			setvar spawnrate 250
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 22 {
-			setvar maxmonstersallowed 34
 			setvar monstertype 1
-			setvar spawnrate 400
+			setvar monsterhp 308
 			setvar totalmonsters 90
-			setvar monsterhp 300
+			setvar maxmonstersallowed 34
+			setvar minimumthreshold 1
+			setvar spawnrate 250
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 23 {
-			setvar maxmonstersallowed 35
 			setvar monstertype 1
-			setvar spawnrate 400
+			setvar monsterhp 336
 			setvar totalmonsters 95
-			setvar monsterhp 320
+			setvar maxmonstersallowed 35
+			setvar minimumthreshold 8
+			setvar spawnrate 250
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 24 {
-			setvar maxmonstersallowed 95
-			setvar monstertype 3
-			setvar spawnrate 250
+			setvar monstertype 2
+			setvar monsterhp 165
 			setvar totalmonsters 95
-			setvar monsterhp 210
+			setvar maxmonstersallowed 95
+			setvar minimumthreshold 15
+			setvar spawnrate 250
 			setvarvar monsterslefttospawn totalmonsters
 			setvar rushroundtimer 540
 			break
 		}
 		case 25 {
 			//Sidste runde; sættes nede i displayrest mht 'last round' 
-			setvar maxmonstersallowed 40
 			setvar monstertype 1
-			setvar spawnrate 450
+			setvar monsterhp 400
 			setvar totalmonsters 200
-			setvar monsterhp 350
+			setvar maxmonstersallowed 40
+			setvar minimumthreshold 9
+			setvar spawnrate 250
 			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
@@ -1237,12 +1265,39 @@ state generatemonster
 		ifvarg monsterslefttospawn 0 {
 			ifvarvarl monstersalive maxmonstersallowed {
 				ifvarvarg spawncounter spawnrate {
+					ifactor GETICON {				
+						randvarvar temp activespawners
+						addlogvar temp
+			  		ifvare temp 0 {
+			  			ifvare monstertype 1 spawn NEWBEAST //Normal
+			  			ifvare monstertype 2 spawn NEWBEAST //Rush round
+			  			subvar monsterslefttospawn 1
+			  			addvar spawnedthisiteration 1
+			  		}
+					}
+				} else {
+					addvar spawncounter 1
+				}
+			}
+		}
+	}
+ends
+
+/*
+state generatemonster
+	ifactor GETICON ifvare havecountedspawner 0 {
+		setvar havecountedspawner 1
+		addvar activespawners 1
+	}
+	ifvare intermission 0 {
+		ifvarg monsterslefttospawn 0 {
+			ifvarvarl monstersalive maxmonstersallowed {
+				ifvarvarg spawncounter spawnrate {
 					ifactor GETICON {
 						randvar temp 1
 			  		ifvare temp 1 {
-			  			ifvare monstertype 1 spawn NEWBEAST
-			  			ifvare monstertype 2 spawn DRONE
-			  			ifvare monstertype 3 spawn NEWBEAST
+			  			ifvare monstertype 1 spawn NEWBEAST //Normal
+			  			ifvare monstertype 2 spawn NEWBEAST //Rush round
 			  			subvar monsterslefttospawn 1
 			  		}
 					}
@@ -1254,6 +1309,7 @@ state generatemonster
 		}
 	}
 ends
+*/
 
 state currentlyearnedmoney
 	ifvare moneycounter 0 {
@@ -1391,6 +1447,30 @@ state doonce
 	  	ifvarvare temp temptwo setvar temp -1
 	  }
 	  ifvare playersalive 0 setvar eog 1 //Toggle endofgame
+
+	  //Reset spawncounters when threshold is reached
+		ifvarvarg spawnedthisiteration minimumthreshold {
+			headspritestat temp 1
+		  setvarvar temptwo temp
+		  whilevarn temp -1 {
+		  	getactor[temp].picnum tempthree
+		  	ifvare tempthree GETICON {
+	  			setactorvar[temp].spawncounter 0
+		  	}
+		  	nextspritestat temp temp
+			}
+			setvar spawnedthisiteration 0
+			//Reset players spawncount too
+			headspritestat temp 10
+		  setvarvar temptwo temp
+		  whilevarn temp -1 {
+		  	getactor[temp].picnum tempthree
+		  	ifvare tempthree APLAYER {
+	  			setactorvar[temp].spawncounter 0
+		  	}
+		  	nextspritestat temp temp
+			}
+		}
 	}
 ends
 
@@ -1541,7 +1621,7 @@ onevent EVENT_DISPLAYREST
 
 	//Debuggg
 	//getactor[THISACTOR].extra temp
-	//digitalnumberz 2837 0 40 eog 0 0 0 0 0 xdim ydim 58000
+	digitalnumberz 2837 0 40 spawnedthisiteration 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 60 primaryweapon 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 80 isdead 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 100 downtimer 0 0 0 0 0 xdim ydim 58000
@@ -11525,7 +11605,7 @@ useractor enemy NEWBEAST NEWBEASTSTRENGTH
     cstator 257
     sizeat 32 32
     ifvare monstertype 1 setactor[THISACTOR].pal 7
-    ifvare monstertype 3 setactor[THISACTOR].pal 24
+    ifvare monstertype 2 setactor[THISACTOR].pal 24
     ai AINEWBEASTDODGE
   }
   ifaction ANEWBEASTFROZEN
