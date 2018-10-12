@@ -1322,7 +1322,6 @@ state generatemonster
 				ifvarvarg spawncounter spawnrate {
 					ifactor GETICON {				
 						randvarvar temp activespawners
-						addlogvar temp
 			  		ifvare temp 0 {
 			  			ifvare monstertype 1 spawn NEWBEAST //Normal
 			  			ifvare monstertype 2 spawn NEWBEAST //Rush round
