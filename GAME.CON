@@ -2949,7 +2949,7 @@ onevent EVENT_PRESSEDFIRE // when the player presses the fire button..
 	      setvar RETURN -1 // if his magazine is at zero, disable the firing key
 	}
 	ifvare temp CHAINGUN_WEAPON {
-		ifvare hasoverheated 0 addvar chaingunheat 4
+		ifvare hasoverheated 0 addvar chaingunheat 2
 		else setvar RETURN -1
 	}
 endevent
