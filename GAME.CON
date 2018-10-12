@@ -193,6 +193,7 @@ gamevar powershotmoney 0 1
 gamevar successfulrevivetimer 0 1
 gamevar moneyused 0 1
 gamevar moneyusedcounter 0 1
+gamevar armorhpgiven 0 1
 
 gamevar ammoamountone 0 1
 gamevar ammoamounttwo 0 1
@@ -1882,7 +1883,8 @@ onevent EVENT_DISPLAYREST
 	        addvar temptwo 1 
 	        subvar tempthree 1
 	      }
-	      gametextz STARTALPHANUM 2 188 188 0 15 0 0 0 xdim ydim 36000
+	      ifvare gotarmor 0 gametextz STARTALPHANUM 4 188 188 0 15 0 0 0 xdim ydim 32000
+	      else gametextz STARTALPHANUM 24 188 188 0 15 0 0 0 xdim ydim 32000
 	    } else ifvarvarg temp tempthree {
 	    	whilevarn tempthree 0 {
 	        rotatesprite temptwo 185 65536 0 3163 0 6 16 0 0 xdim ydim 
@@ -6139,8 +6141,17 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 	state handlemonsterdrops //Pal
 	state gotmoneyfromteammate //Pal
 
-	ifvare gotarmor 1 setplayer[THISACTOR].max_player_health 70
-	else setplayer[THISACTOR].max_player_health 50
+	ifvare gotarmor 1 {
+		setplayer[THISACTOR].max_player_health 70
+		ifvare gothit 0 ifvare armorhpgiven 0 {
+			addphealth 20
+			setvar armorhpgiven 1
+		} 
+	}
+	else {
+		setplayer[THISACTOR].max_player_health 50
+		setvar armorhpgiven 0
+	} 
 
 	getactor[THISACTOR].htextra temp
 	ifvarg temp 0 {
