@@ -25,7 +25,7 @@ ved en bestemt runde ændrer newbeast karakter og kan fx hoppe eller slår hurti
 sørg for at monstrene kun spawner mht hvor mange kort der er aktive og ikke med 50%
 mellem hver runde effekter og highlight af stats for runden
 */
-
+//84
 //////////////////////////////////// S U R V I V A L /////////////////////////////////////////////////
 
 ////////////////////DEFINES/////////////////
@@ -833,12 +833,15 @@ state handlemonsterdrops
 			setvar instakilltimer 60
 			setvar instakillduration 450
 			sound 195
+			sound 84
 		}
 		//MONEYFEST
 		ifvare moneyfest 1 {
 			setvar moneyfest 0
 			setvar moneyfesttimer 60
 			setvar moneyfestduration 450
+			sound 195
+			sound 84
 		} else {
 			ifvare moneyfestduration 1 {
 				setvarvar moneyfrommoneyfestshow moneyfrommoneyfest
@@ -892,6 +895,7 @@ state handlemonsterdrops
 			setvar infinityammotimer 60
 			setvar infinityammoduration 450
 			sound 195
+			sound 84
 		} else {
 			ifvarg infinityammoduration 0 {
 				setplayer[THISACTOR].ammo_amount 1 ammoamountone
@@ -927,7 +931,6 @@ state handlemonsterdrops
 					setplayer[THISACTOR].ammo_amount 11 ammoamounteleven
 				}
 			}
-			
 		}
 	} else {
 		setvar nuclear 0
