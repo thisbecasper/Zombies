@@ -83,15 +83,15 @@ gamevar autorevivetimervar 150 4096
 gamevar teleporttimervar 2700 4096
 
 gamevar pistolcost 1000 4096
-gamevar shotguncost 2000 4096
-gamevar chainguncost 2700 4096
+gamevar shotguncost 2500 4096
+gamevar chainguncost 3000 4096
 gamevar rpgcost 4000 4096
 gamevar pipebombcost 3000 4096
 gamevar shrinkercost 7000 4096
 gamevar expandercost 0 4096
 gamevar devistatorcost 6000 4096
-gamevar tripbombcost 2300 4096
-gamevar freezercost 2800 4096
+gamevar tripbombcost 2500 4096
+gamevar freezercost 3000 4096
 
 gamevar backpackcost 2000 4096
 gamevar instakillcost 4000 4096
