@@ -6180,7 +6180,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 			ifvare gothit 0 {
 				setvarvar temp round
 				mulvar temp 100
-				subvar temp 50
+				subvar temp 100
 				addvarvar playermoneybonus temp
 				addvarvar bonuses temp 
 				setvar gothit -1
