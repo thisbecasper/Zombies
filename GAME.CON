@@ -2633,6 +2633,7 @@ onevent EVENT_USE
 						else ifvare secondaryweapon 8 state buyandsetcdammo
 						else ifvarn primaryweapon 8 {
 							state buyandsetcd
+							sound 297
 							ifvare secondaryweapon 0 {
 								setvarvar secondaryweapon primaryweapon
 							} else ifvare gotbackpack 1 {
