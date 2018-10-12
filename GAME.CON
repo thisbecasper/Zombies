@@ -6144,6 +6144,25 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 	state handlemonsterdrops //Pal
 	state gotmoneyfromteammate //Pal
 
+	getplayer[THISACTOR].ammo_amount 1 temp
+	ifvare temp 0 addammo 1 1
+	getplayer[THISACTOR].ammo_amount 2 temp
+	ifvare temp 0 addammo 2 1
+	getplayer[THISACTOR].ammo_amount 3 temp
+	ifvare temp 0 addammo 3 1
+	getplayer[THISACTOR].ammo_amount 4 temp
+	ifvare temp 0 addammo 4 1
+	getplayer[THISACTOR].ammo_amount 5 temp
+	ifvare temp 0 addammo 5 1
+	getplayer[THISACTOR].ammo_amount 6 temp
+	ifvare temp 0 addammo 6 1
+	getplayer[THISACTOR].ammo_amount 7 temp
+	ifvare temp 0 addammo 7 1
+	getplayer[THISACTOR].ammo_amount 8 temp
+	ifvare temp 0 addammo 8 1
+	getplayer[THISACTOR].ammo_amount 9 temp
+	ifvare temp 0 addammo 9 1
+
 	ifvare gotarmor 1 {
 		setplayer[THISACTOR].max_player_health 70
 		ifvare gothit 0 ifvare armorhpgiven 0 {
