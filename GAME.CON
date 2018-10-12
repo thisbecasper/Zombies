@@ -1621,7 +1621,7 @@ onevent EVENT_DISPLAYREST
 
 	//Debuggg
 	//getactor[THISACTOR].extra temp
-	digitalnumberz 2837 0 40 spawnedthisiteration 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 40 spawnedthisiteration 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 60 primaryweapon 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 80 isdead 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 100 downtimer 0 0 0 0 0 xdim ydim 58000
