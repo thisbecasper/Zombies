@@ -1615,7 +1615,7 @@ ends
 
 state newbeastdrops
 	///OBS HUSK AT ÆNDR IFVARL TEMP X SÅ DER KOMMER SPAWNEFFEKT PÅ NYE TING OGSÅ!!!///
-	randvar temp 240 //240
+	randvar temp 500 //500
   ifvarl temp 6 {
 		spawn TRANSPORTERBEAM
 		sound TELEPORTER
@@ -1634,7 +1634,7 @@ state newbeastdrops
 		killit
 	}
 
-  randvar temp 3000 //3000
+  randvar temp 5000 //5000
 	ifvare temp 0 spawn SHIELD
 	else ifvare temp 1 spawn BOOTS
 	else ifvare temp 2 spawn 4371
