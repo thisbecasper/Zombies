@@ -194,6 +194,7 @@ gamevar successfulrevivetimer 0 1
 gamevar moneyused 0 1
 gamevar moneyusedcounter 0 1
 gamevar armorhpgiven 0 1
+gamevar itemcounter 0 2
 
 gamevar ammoamountone 0 1
 gamevar ammoamounttwo 0 1
@@ -626,6 +627,16 @@ ends
 
 state handlepowershot
 	ifvare gotpowershot 1 ifvarl powershotcd 150 addvar powershotcd 1
+ends
+
+state countitemcounter
+	addvar itemcounter 1
+	ifvare itemcounter 210 {
+		getactor[THISACTOR].cstat temp
+		addvar temp 2
+		setactor[THISACTOR].cstat temp
+	}
+	ifvare itemcounter 300 killit
 ends
 
 state respawnfromintermission
@@ -1638,7 +1649,7 @@ state newbeastdrops
 		killit
 	}
 
-  randvar temp 5000 //5000
+  randvar temp 0 //5000
 	ifvare temp 0 spawn SHIELD
 	else ifvare temp 1 spawn BOOTS
 	else ifvare temp 2 spawn 4371
@@ -2081,7 +2092,7 @@ onevent EVENT_DISPLAYREST
 			getplayervar[temp].moneyspent temptwo
 			digitalnumberz 2837 132 66 temptwo 0 2 0 0 0 xdim ydim 55000
 			getplayervar[temp].bonuses temptwo
-			digitalnumberz 2837 132 74 temptwo 0 2 0 0 0 xdim ydim 55000
+			digitalnumberz 2837 132 74 temptwo 0 2 0 0 0 xdim ydim 55000	
 			getplayervar[temp].moneydonated temptwo
 			digitalnumberz 2837 132 82 temptwo 0 2 0 0 0 xdim ydim 55000
 			getplayervar[temp].moneyrecieved temptwo
@@ -4652,6 +4663,7 @@ actor 4371 //Perk protector
   ifvare temp -1 killit
   else ifvare temp 0 {
   	ifcount 450 killit
+  	ifcount 360 setactor[THISACTOR].cstat 3
   }
 enda
 
@@ -4663,6 +4675,7 @@ actor 1667 //Powershot
   ifvare temp -1 killit
   else ifvare temp 0 {
   	ifcount 450 killit
+  	ifcount 360 setactor[THISACTOR].cstat 3
   }
 enda
 
@@ -4673,6 +4686,7 @@ actor BOOTS
   ifvare temp -1 killit
   else ifvare temp 0 {
   	ifcount 450 killit
+  	ifcount 360 setactor[THISACTOR].cstat 3
   }
 enda
 
@@ -4683,6 +4697,7 @@ actor SHIELD
   ifvare temp -1 killit
   else ifvare temp 0 {
   	ifcount 450 killit
+  	ifcount 360 setactor[THISACTOR].cstat 3
   }
 enda
 
@@ -4694,6 +4709,7 @@ actor HOLODUKE 0 HOLODUKE_FRAMES
   ifvare temp -1 killit
   else ifvare temp 0 {
   	ifcount 450 killit
+  	ifcount 360 setactor[THISACTOR].cstat 3
   }
 enda
 
@@ -4705,6 +4721,7 @@ actor 1234 //Money multiplier
   ifvare temp -1 killit
   else ifvare temp 0 {
   	ifcount 450 killit
+  	ifcount 360 setactor[THISACTOR].cstat 3
   }
 enda
 
@@ -4715,6 +4732,7 @@ actor JETPACK
   ifvare temp -1 killit
   else ifvare temp 0 {
   	ifcount 450 killit
+  	ifcount 360 setactor[THISACTOR].cstat 3
   }
 enda
 
@@ -4748,7 +4766,7 @@ actor ACCESSCARD
 enda
 
 actor BADGUYICON //Instakill
-	ifcount 300 killit
+	state countitemcounter
 	sizeat 64 64
   fall
   ifmove RESPAWN_ACTOR_FLAG
@@ -4774,7 +4792,7 @@ enda
 
 actor 2530 //Infinityammo
 	sizeat 19 19
-	ifcount 300 killit
+	state countitemcounter
   fall
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
@@ -4800,7 +4818,7 @@ actor 2530 //Infinityammo
 enda
 
 actor BATTERYAMMO //Maxammo
-	ifcount 300 killit
+	state countitemcounter
   fall
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
@@ -4824,7 +4842,7 @@ actor BATTERYAMMO //Maxammo
 enda
 
 actor 4520 //Money
-	ifcount 300 killit
+	state countitemcounter
 	sizeat 28 28
   fall
   ifmove RESPAWN_ACTOR_FLAG
@@ -4847,7 +4865,7 @@ actor 4520 //Money
 enda
 
 actor 2825 //Double money powerup moneyfest
-	ifcount 300 killit
+	state countitemcounter
 	setactor[THISACTOR].pal 7
 	sizeat 100 100
   fall
@@ -4901,7 +4919,7 @@ actor CRYSTALAMMO //Orb
 enda
 
 actor ATOMICHEALTH //Nuclear
-  ifcount 300 killit
+  state countitemcounter
   fall
   setactor[THISACTOR].pal 23
   ifmove RESPAWN_ACTOR_FLAG
@@ -4940,6 +4958,7 @@ actor FIRSTGUNSPRITE
   ifvare temp -1 killit
   else ifvare temp 0 {
   	ifcount 450 killit
+  	ifcount 360 setactor[THISACTOR].cstat 3
   }
 enda
 
@@ -4950,6 +4969,7 @@ actor SHOTGUNSPRITE
   ifvare temp -1 killit
   else ifvare temp 0 {
   	ifcount 450 killit
+  	ifcount 360 setactor[THISACTOR].cstat 3
   }
 enda
 
@@ -4960,6 +4980,7 @@ actor CHAINGUNSPRITE
   ifvare temp -1 killit
   else ifvare temp 0 {
   	ifcount 450 killit
+  	ifcount 360 setactor[THISACTOR].cstat 3
   }
 enda
 
@@ -4970,6 +4991,7 @@ actor RPGSPRITE
   ifvare temp -1 killit
   else ifvare temp 0 {
   	ifcount 450 killit
+  	ifcount 360 setactor[THISACTOR].cstat 3
   }
 enda
 
@@ -4980,6 +5002,7 @@ actor HBOMBAMMO
   ifvare temp -1 killit
   else ifvare temp 0 {
   	ifcount 450 killit
+  	ifcount 360 setactor[THISACTOR].cstat 3
   }
 enda
 
@@ -4990,6 +5013,7 @@ actor SHRINKERSPRITE
   ifvare temp -1 killit
   else ifvare temp 0 {
   	ifcount 450 killit
+  	ifcount 360 setactor[THISACTOR].cstat 3
   }
 enda
 
@@ -5000,6 +5024,7 @@ actor DEVISTATORSPRITE
   ifvare temp -1 killit
   else ifvare temp 0 {
   	ifcount 450 killit
+  	ifcount 360 setactor[THISACTOR].cstat 3
   }
 enda
 
@@ -5010,6 +5035,7 @@ actor TRIPBOMBSPRITE
   ifvare temp -1 killit
   else ifvare temp 0 {
   	ifcount 450 killit
+  	ifcount 360 setactor[THISACTOR].cstat 3
   }
 enda
 
@@ -5020,6 +5046,7 @@ actor FREEZESPRITE
   ifvare temp -1 killit
   else ifvare temp 0 {
   	ifcount 450 killit
+  	ifcount 360 setactor[THISACTOR].cstat 3
   }
 enda
 
