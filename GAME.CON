@@ -82,6 +82,7 @@ gamevar downtimervar 600 4096
 gamevar autorevivetimervar 150 4096
 gamevar teleporttimervar 2700 4096
 
+//Gets set in event_use and showinformation
 gamevar pistolcost 1000 4096
 gamevar shotguncost 2500 4096
 gamevar chainguncost 3000 4096
@@ -100,6 +101,7 @@ gamevar autorevivecost 2000 4096
 gamevar moneymultipliercost 3000 4096
 gamevar armorcost 3000 4096
 gamevar bootscost 4000 4096
+gamevar bigmagcost 3000 4096
 gamevar accesscardcost 3000 4096
 
 gamevar mysteryboxcost 2500 4096
@@ -578,6 +580,7 @@ state loseperks
 		setvar gotpowershot 0
 		setvar powershotkills 0
 		setvar powershotcd 0
+		setvar gotbigmag 0
 	}
 ends
 
@@ -1040,6 +1043,7 @@ state showinformation
 			else ifvare temptwo 1667 setvarvar itemcost instakillcost
 			else ifvare temptwo 4371 setvarvar itemcost perkprotectercost
 			else ifvare temptwo ACCESSCARD setvarvar itemcost accesscardcost
+			else ifvare temptwo AMMO setvarvar itemcost bigmagcost
 			
 			setvarvar tempfive finalplayermoney
 			addvarvar tempfive playermoney
@@ -1284,6 +1288,14 @@ state showinformation
 				case HOLODUKE {
 					gametextz STARTALPHANUM 320 125 176 0 0 0 0 0 xdim ydim 50000
 					ifvare gotautorevive 1 gametextz STARTALPHANUM 320 135 151 0 0 0 0 0 xdim ydim 50000
+					else ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
+					else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
+					else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
+					break
+				}
+				case AMMO {
+					gametextz STARTALPHANUM 320 125 189 0 0 0 0 0 xdim ydim 50000
+					ifvare gotbigmag 1 gametextz STARTALPHANUM 320 135 151 0 0 0 0 0 xdim ydim 50000
 					else ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
 					else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 					else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
@@ -1799,17 +1811,18 @@ onevent EVENT_DISPLAYREST
 		//Perks
 		ifvare gotarmor 1 rotatesprite 341 181 35000 0 54 0 0 0 0 0 xdim ydim
 		ifvare gotdoublemoney 1 {
-			rotatesprite 319 181 19000 0 1234 0 0 0 0 0 xdim ydim
-			digitalnumberz 2837 321 188 doublemoneygained 0 16 0 0 0 xdim ydim 35000
+			rotatesprite 319 183 19000 0 1234 0 0 0 0 0 xdim ydim
+			digitalnumberz 2837 321 190 doublemoneygained 0 16 0 0 0 xdim ydim 35000
 		} 
-		ifvare gotboots 1 rotatesprite 295 183 40000 0 61 0 0 0 0 0 xdim ydim
+		ifvare gotboots 1 rotatesprite 294 184 40000 0 61 0 0 0 0 0 xdim ydim
 		ifvare gotperkprotection 1 rotatesprite 341 165 35000 0 4371 0 0 0 0 0 xdim ydim
 		ifvare gotbackpack 1 rotatesprite 320 163 35000 0 57 0 0 0 0 0 xdim ydim
 		ifvare gotpowershot 1 {
-			rotatesprite 305 166 20000 0 1667 0 0 0 0 0 xdim ydim
-			digitalnumberz 2837 296 175 powershotmoney 0 16 0 0 0 xdim ydim 35000
+			rotatesprite 305 164 20000 0 1667 0 0 0 0 0 xdim ydim
+			digitalnumberz 2837 296 173 powershotmoney 0 16 0 0 0 xdim ydim 35000
 		} 
 		ifvare gotautorevive 1 rotatesprite 272 183 16500 0 HOLODUKE 0 0 0 0 0 xdim ydim
+		ifvare gotbigmag 1 rotatesprite 271 166 18500 0 AMMO 0 0 0 0 0 xdim ydim
 
 		//Powershot
 		ifvare gotpowershot 1 {
@@ -2369,6 +2382,7 @@ onevent EVENT_USE
 			else ifvare tempfive 1667 setvarvar itemcost instakillcost
 			else ifvare tempfive 4371 setvarvar itemcost perkprotectercost
 			else ifvare tempfive ACCESSCARD setvarvar itemcost accesscardcost
+			else ifvare tempfive AMMO setvarvar itemcost bigmagcost
 			
 			getactor[HITSPRITE].hitag temptwo
 			ifvare temptwo 0 setvar itemcost 0
@@ -2824,6 +2838,16 @@ onevent EVENT_USE
 							state buyandsetcd
 							setvar gotautorevive 1
 							sound 35
+							getactor[HITSPRITE].hitag temp
+							ifvare temp 0 setactor[HITSPRITE].hitag -1
+						}
+						break
+					}
+					case AMMO {
+						ifvare gotbigmag 0 {
+							state buyandsetcd
+							setvar gotbigmag 1
+							sound 297
 							getactor[HITSPRITE].hitag temp
 							ifvare temp 0 setactor[HITSPRITE].hitag -1
 						}
@@ -4656,6 +4680,18 @@ enda
 
 
 //Actor Perks Useractors
+actor AMMO
+	fall
+  cstat 1
+  sizeat 24 24
+  getactor[THISACTOR].hitag temp
+  ifvare temp -1 killit
+  else ifvare temp 0 {
+  	ifcount 450 killit
+  	ifcount 360 setactor[THISACTOR].cstat 3
+  }
+enda
+
 actor 4371 //Perk protector
 	fall
   cstat 1
@@ -5055,26 +5091,7 @@ enda
 
 
 
-actor AMMO
-  fall
-  ifmove RESPAWN_ACTOR_FLAG
-    state respawnit
-  else
-    ifp pshrunk nullop
-    else
-      ifp palive
-        ifcount 6
-          ifpdistl RETRIEVEDISTANCE
-            ifcanseetarget
-      {
-        addammo PISTOL_WEAPON PISTOLAMMOAMOUNT
-        quote 65
-        ifspawnedby AMMO
-          state getcode
-        else
-          state quikget
-      }
-enda
+
 
 actor FREEZEAMMO
   fall
@@ -6200,7 +6217,28 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 	else {
 		setplayer[THISACTOR].max_player_health 50
 		setvar armorhpgiven 0
-	} 
+	}
+	ifvare gotbigmag 1 {
+		setplayer[THISACTOR].max_ammo_amount 1 401
+		setplayer[THISACTOR].max_ammo_amount 2 61
+		setplayer[THISACTOR].max_ammo_amount 3 401
+		setplayer[THISACTOR].max_ammo_amount 4 41
+		setplayer[THISACTOR].max_ammo_amount 5 21
+		setplayer[THISACTOR].max_ammo_amount 6 101
+		setplayer[THISACTOR].max_ammo_amount 7 301
+		setplayer[THISACTOR].max_ammo_amount 8 21
+		setplayer[THISACTOR].max_ammo_amount 9 201
+	} else {
+		setplayer[THISACTOR].max_ammo_amount 1 201
+		setplayer[THISACTOR].max_ammo_amount 2 31
+		setplayer[THISACTOR].max_ammo_amount 3 201
+		setplayer[THISACTOR].max_ammo_amount 4 21
+		setplayer[THISACTOR].max_ammo_amount 5 11
+		setplayer[THISACTOR].max_ammo_amount 6 51
+		setplayer[THISACTOR].max_ammo_amount 7 151
+		setplayer[THISACTOR].max_ammo_amount 8 11
+		setplayer[THISACTOR].max_ammo_amount 9 101
+	}
 
 	getactor[THISACTOR].htextra temp
 	ifvarg temp 0 {
