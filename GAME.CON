@@ -195,6 +195,7 @@ gamevar moneyused 0 1
 gamevar moneyusedcounter 0 1
 gamevar armorhpgiven 0 1
 gamevar itemcounter 0 2
+gamevar gotbigmag 0 1
 
 gamevar ammoamountone 0 1
 gamevar ammoamounttwo 0 1
@@ -2965,7 +2966,7 @@ onevent EVENT_PRESSEDFIRE // when the player presses the fire button..
 	      setvar RETURN -1 // if his magazine is at zero, disable the firing key
 	}
 	ifvare temp CHAINGUN_WEAPON {
-		ifvare hasoverheated 0 addvar chaingunheat 2
+		ifvare hasoverheated 0 ifvarg temptwo 1 addvar chaingunheat 4
 		else setvar RETURN -1
 	}
 endevent
