@@ -24,8 +24,13 @@ hvor en counter tæller op hvert tic hvis use, ellers sætter den til 0.
 ved en bestemt runde ændrer newbeast karakter og kan fx hoppe eller slår hurtigere
 sørg for at monstrene kun spawner mht hvor mange kort der er aktive og ikke med 50%
 mellem hver runde effekter og highlight af stats for runden
+
+
+movement 	40000 	+3000 	+6000 	+9000
+ammo 			100 		x1.5 		x2.0		x4.0
+health 		35			+5      +10     +10
+moneyreg  0				+3			+6			+9
 */
-//84
 //////////////////////////////////// S U R V I V A L /////////////////////////////////////////////////
 
 ////////////////////DEFINES/////////////////
@@ -198,6 +203,10 @@ gamevar moneyusedcounter 0 1
 gamevar armorhpgiven 0 1
 gamevar itemcounter 0 2
 gamevar gotbigmag 0 1
+gamevar experience 0 1
+gamevar experienceneeded 0 1
+gamevar currentlevel 1 1
+gamevar skillpoints 0 1
 
 gamevar ammoamountone 0 1
 gamevar ammoamounttwo 0 1
@@ -1635,6 +1644,52 @@ state calculatetotalpoints
 	setvarvar totalpoints temp
 ends
 
+state setuplevelsystem
+	ifvarvarg experience experienceneeded {
+		addvar currentlevel 1
+		addvar skillpoints 1
+		subvarvar experience experienceneeded
+	}
+	switch currentlevel
+		case 1 {
+			setvar experienceneeded 102
+			break
+		}
+		case 2 {
+			setvar experienceneeded 200
+			break
+		}
+		case 3 {
+			setvar experienceneeded 300
+			break
+		}
+		case 4 {
+			setvar experienceneeded 4000
+			break
+		}
+		case 5 {
+			setvar experienceneeded 5000
+			break
+		}
+		case 6 {
+			setvar experienceneeded 6000
+			break
+		}
+		case 7 {
+			setvar experienceneeded 7000
+			break
+		}
+		case 8 {
+			setvar experienceneeded 8000
+			break
+		}
+		case 9 {
+			setvar experienceneeded 9000
+			break
+		}
+	endswitch
+ends
+
 state checkhitscan
   getplayer[THISACTOR].posx MY_X
   getplayer[THISACTOR].posy MY_Y
@@ -1648,6 +1703,16 @@ state checkhitscan
   sin MY_SIN MY_ANGLE
 
   hitscan MY_X MY_Y MY_Z MY_SECTOR MY_COS MY_SIN MY_ZDIST HITSECTOR HITWALL HITSPRITE HITX HITY HITZ 4294901808
+ends
+
+state giveexperince
+	getactor[THISACTOR].htowner temp
+	getactor[temp].yvel temptwo
+	getplayervar[temptwo].experience tempthree
+	addvarvar tempthree monsterhp
+	randvarvar tempfour monsterhp
+	addvarvar tempthree tempfour
+	setplayervar[temptwo].experience tempthree
 ends
 
 state newbeastdrops
@@ -1695,7 +1760,6 @@ state newbeastdrops
 		state standard_jibs
 		killit
 	}
-	
 ends
 
 state buy
@@ -1708,10 +1772,10 @@ onevent EVENT_DISPLAYREST
 
 	//Debuggg
 	//getactor[THISACTOR].extra temp
-	//digitalnumberz 2837 0 40 totalkills 0 0 0 0 0 xdim ydim 58000
-	//digitalnumberz 2837 0 60 primaryweapon 0 0 0 0 0 xdim ydim 58000
-	//digitalnumberz 2837 0 80 isdead 0 0 0 0 0 xdim ydim 58000
-	//digitalnumberz 2837 0 100 downtimer 0 0 0 0 0 xdim ydim 58000
+	digitalnumberz 2837 0 40 experience 0 0 0 0 0 xdim ydim 58000
+	digitalnumberz 2837 0 60 experienceneeded 0 0 0 0 0 xdim ydim 58000
+	digitalnumberz 2837 0 80 currentlevel 0 0 0 0 0 xdim ydim 58000
+	digitalnumberz 2837 0 100 skillpoints 0 0 0 0 0 xdim ydim 58000
 	ifvare eog 1 {
 		rotatesprite 160 100 500000 0 862 0 4 1 0 0 xdim ydim
 		gametextz STARTALPHANUM 320 30 184 0 2 0 0 0 xdim ydim 80000
@@ -1898,7 +1962,31 @@ onevent EVENT_DISPLAYREST
 	      }
 			}
 		}
+		
+		//Levelbar
+		setvar temptwo 110
+		setvar temp 100
+		whilevarn temp 0 {
+      rotatesprite temptwo 191 65536 0 3163 0 12 49 0 0 xdim ydim 
+      addvar temptwo 1 
+      subvar temp 1
+    }
+    ifvarvarg experience experienceneeded {
+    	nullop
+    } else {
+    	setvar temptwo 110
+	    setvarvar temp experience
+	    mulvar temp 100
+	    divvarvar temp experienceneeded
+			whilevarn temp 0 {
+	      rotatesprite temptwo 191 65536 0 3163 0 12 16 0 0 xdim ydim 
+	      addvar temptwo 1 
+	      subvar temp 1
+	    }
+    }
+    digitalnumberz 2837 215 191 currentlevel 0 12 16 0 0 xdim ydim 50000
 
+	    
 		//Health
 		ifp palive {
 			setvar temptwo -15
@@ -6181,6 +6269,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 	state hpregen //Pal
 	state handlemonsterdrops //Pal
 	state gotmoneyfromteammate //Pal
+	state setuplevelsystem
 
 	getplayer[THISACTOR].ammo_amount 1 temp
 	ifvare temp 0 addammo 1 1
@@ -11365,6 +11454,7 @@ state checknewbeasthit
 */
   ifdead //monsterdrops
   {
+    state giveexperince
     state addtotalkills
     state newbeastdrops
     ifwasweapon FREEZEBLAST
@@ -11459,23 +11549,7 @@ state checknewbeasthit
 				addvarvar tempfour tempsix
 				setplayervar[temptwo].powershotmoney tempfour
 				setplayervar[temptwo].bonusmoneycounter 60
-				//Got full money from powershot kill
-				/*getplayervar[temptwo].playermoney tempfour
-				addvarvar tempfour monsterhp
-				setplayervar[temptwo].playermoney tempfour
-				setplayervar[temptwo].moneycounter 60
-				getplayervar[temptwo].gotdoublemoney temp
-				ifvare temp 1 { //gotdoublemoney
-					setvarvar tempfive monsterhp
-					divvar tempfive 3
-					getplayervar[temptwo].playermoneybonus tempfour
-					addvarvar tempfour tempfive
-					setplayervar[temptwo].playermoneybonus tempfour
-					setplayervar[temptwo].bonusmoneycounter 60
-					getplayervar[temptwo].doublemoneygained tempfour
-  				addvarvar tempfour tempfive
-  				setplayervar[temptwo].doublemoneygained tempfour
-				}*/
+				state giveexperince
 				state addtotalkills
 				state newbeastdrops
 				killit
@@ -11483,6 +11557,7 @@ state checknewbeasthit
 				spawn TRANSPORTERSTAR
 				sound SQUISHED
 				state standard_jibs
+				state giveexperince
 				state addtotalkills
 				state newbeastdrops
 				killit
