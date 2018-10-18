@@ -302,7 +302,7 @@ state setupround
 		}
 		case 6 {
 			setvar monstertype 2
-			setvar monsterhp 84
+			setvar monsterhp 63 //84
 			setvar totalmonsters 20
 			setvar maxmonstersallowed 20
 			setvar minimumthreshold 4
@@ -364,7 +364,7 @@ state setupround
 		}
 		case 12 {
 			setvar monstertype 2
-			setvar monsterhp 156
+			setvar monsterhp 117 //156
 			setvar totalmonsters 45
 			setvar maxmonstersallowed 45
 			setvar minimumthreshold 9
@@ -425,7 +425,7 @@ state setupround
 		}
 		case 18 {
 			setvar monstertype 2
-			setvar monsterhp 289
+			setvar monsterhp 216 //289
 			setvar totalmonsters 70
 			setvar maxmonstersallowed 70
 			setvar minimumthreshold 12
@@ -486,7 +486,7 @@ state setupround
 		}
 		case 24 {
 			setvar monstertype 2
-			setvar monsterhp 538
+			setvar monsterhp 403 //538
 			setvar totalmonsters 95
 			setvar maxmonstersallowed 95
 			setvar minimumthreshold 15
@@ -548,7 +548,7 @@ state setupround
 		case 30 {
 			//Sidste runde; sættes nede i displayrest mht 'last round' 
 			setvar monstertype 2
-			setvar monsterhp 1000
+			setvar monsterhp 750 //1000
 			setvar totalmonsters 200
 			setvar maxmonstersallowed 100
 			setvar minimumthreshold 14
