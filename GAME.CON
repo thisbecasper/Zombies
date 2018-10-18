@@ -216,6 +216,7 @@ gamevar primaryammo 0 1
 gamevar secondaryammo 0 1
 gamevar tertiaryammo 0 1
 gamevar spawnedthisiteration 0 0
+gamevar totalkills 0 1
 
 gamevar MY_X 0 1
 gamevar MY_Y 0 1
@@ -1403,6 +1404,14 @@ state currentlyearnedmoney
 	} else subvar moneyusedcounter 1
 ends
 
+state addtotalkills
+	getactor[THISACTOR].htowner temp
+  getactor[temp].yvel temptwo
+  getplayervar[temptwo].totalkills tempthree
+  addvar tempthree 1
+  setplayervar[temptwo].totalkills tempthree
+ends
+
 state nextround
 	setvar roundcompletetimer 90
 	headspritestat temp 10
@@ -1699,7 +1708,7 @@ onevent EVENT_DISPLAYREST
 
 	//Debuggg
 	//getactor[THISACTOR].extra temp
-	//digitalnumberz 2837 0 40 spawnedthisiteration 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 40 totalkills 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 60 primaryweapon 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 80 isdead 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 100 downtimer 0 0 0 0 0 xdim ydim 58000
@@ -2066,60 +2075,45 @@ onevent EVENT_DISPLAYREST
 		digitalnumberz 2837 82 87 spawncounter 0 0 0 0 0 xdim ydim 55000
 		digitalnumberz 2837 82 95 activespawners 0 0 0 0 0 xdim ydim 55000
 	}	else ifvare showoverlay 1 {
-		ifvare eog 0 rotatesprite -160 40 175000 0 862 0 4 49 0 0 xdim ydim
-		ifvare eog 0 rotatesprite -3 40 175000 0 862 0 4 49 0 0 xdim ydim
+		ifvare eog 0 rotatesprite 48 40 117000 0 862 0 4 49 0 0 xdim ydim
+		ifvare eog 0 rotatesprite -57 40 117000 0 862 0 4 49 0 0 xdim ydim
 		gametextz STARTALPHANUM -23 50 160 0 0 0 0 0 xdim ydim 55000
-		gametextz STARTALPHANUM -50 58 158 0 0 0 0 0 xdim ydim 55000
+		gametextz STARTALPHANUM -87 58 190 0 0 0 0 0 xdim ydim 55000
 		gametextz STARTALPHANUM -33 66 159 0 0 0 0 0 xdim ydim 55000
 		gametextz STARTALPHANUM -80 74 161 0 0 0 0 0 xdim ydim 55000
-		ifvarg numplayers 1 gametextz STARTALPHANUM -61 82 180 0 0 0 0 0 xdim ydim 55000
-		ifvarg numplayers 1 gametextz STARTALPHANUM -60 90 181 0 0 0 0 0 xdim ydim 55000
-		gametextz STARTALPHANUM -32 101 162 0 0 0 0 0 xdim ydim 55000
-		gametextz STARTALPHANUM 60 109 163 0 0 0 0 0 xdim ydim 55000
-		gametextz STARTALPHANUM 0 117 164 0 0 0 0 0 xdim ydim 55000
-		gametextz STARTALPHANUM 186 117 165 0 0 0 0 0 xdim ydim 55000
+		ifvarg numplayers 1 gametextz STARTALPHANUM -60 82 181 0 0 0 0 0 xdim ydim 55000		
+		gametextz STARTALPHANUM 0 90 164 0 0 0 0 0 xdim ydim 55000
+		gametextz STARTALPHANUM 186 90 165 0 0 0 0 0 xdim ydim 55000
 		digitalnumberz 2837 84 50 totalpoints 0 0 0 0 0 xdim ydim 55000
-		setvarvar temptwo damagedealt
-		divvar temptwo 1000
-		digitalnumberz 2837 84 58 temptwo 0 0 0 0 0 xdim ydim 55000 //TILFØJ ET 'K' bag dmgdealt
-		gametextz STARTALPHANUM 190 58 187 0 0 0 0 0 xdim ydim 55000 //K
+		digitalnumberz 2837 84 58 totalkills 0 0 0 0 0 xdim ydim 55000
 		digitalnumberz 2837 84 66 moneyspent 0 0 0 0 0 xdim ydim 55000
 		digitalnumberz 2837 84 74 bonuses 0 0 0 0 0 xdim ydim 55000
-		ifvarg numplayers 1 digitalnumberz 2837 84 82 moneydonated 0 0 0 0 0 xdim ydim 55000
 		ifvarg numplayers 1 digitalnumberz 2837 84 90 moneyrecieved 0 0 0 0 0 xdim ydim 55000
-		digitalnumberz 2837 84 101 shots 0 0 0 0 0 xdim ydim 55000
-		digitalnumberz 2837 84 109 hits 0 0 0 0 0 xdim ydim 55000
 		setvarvar temp hits
 		mulvar temp 100
 		divvarvar temp shots
-		digitalnumberz 2837 84 117 temp 0 0 0 0 0 xdim ydim 55000
+		digitalnumberz 2837 84 90 temp 0 0 0 0 0 xdim ydim 55000
 		ifvarg numplayers 1 {
 			getactor[THISACTOR].yvel tempfour
 			ifvarvare tempfour id setvarvar temp idtwo
 			else setvarvar temp id
 			getplayervar[temp].totalpoints temptwo
 			digitalnumberz 2837 132 50 temptwo 0 2 0 0 0 xdim ydim 55000
-			getplayervar[temp].damagedealt temptwo
-			divvar temptwo 1000
+			getplayervar[temp].totalkills temptwo
 			digitalnumberz 2837 132 58 temptwo 0 2 0 0 0 xdim ydim 55000
-			gametextz STARTALPHANUM 288 58 187 0 2 0 0 0 xdim ydim 55000 //K
 			getplayervar[temp].moneyspent temptwo
 			digitalnumberz 2837 132 66 temptwo 0 2 0 0 0 xdim ydim 55000
 			getplayervar[temp].bonuses temptwo
 			digitalnumberz 2837 132 74 temptwo 0 2 0 0 0 xdim ydim 55000	
-			getplayervar[temp].moneydonated temptwo
-			digitalnumberz 2837 132 82 temptwo 0 2 0 0 0 xdim ydim 55000
 			getplayervar[temp].moneyrecieved temptwo
-			digitalnumberz 2837 132 90 temptwo 0 2 0 0 0 xdim ydim 55000
+			digitalnumberz 2837 132 82 temptwo 0 2 0 0 0 xdim ydim 55000
 			getplayervar[temp].hits temptwo
 			setvarvar tempthree temptwo
 			mulvar tempthree 100
-			digitalnumberz 2837 132 109 temptwo 0 2 0 0 0 xdim ydim 55000
 			getplayervar[temp].shots temptwo
-			digitalnumberz 2837 132 101 temptwo 0 2 0 0 0 xdim ydim 55000
 			divvarvar tempthree temptwo
-			digitalnumberz 2837 132 117 tempthree 0 2 0 0 0 xdim ydim 55000
-			gametextz STARTALPHANUM 283 117 165 0 2 0 0 0 xdim ydim 55000
+			digitalnumberz 2837 132 90 tempthree 0 2 0 0 0 xdim ydim 55000
+			gametextz STARTALPHANUM 283 90 165 0 2 0 0 0 xdim ydim 55000
 		}
 	}
 endevent
@@ -11371,8 +11365,8 @@ state checknewbeasthit
 */
   ifdead //monsterdrops
   {
+    state addtotalkills
     state newbeastdrops
-
     ifwasweapon FREEZEBLAST
     {
       sound SOMETHINGFROZE
@@ -11482,12 +11476,14 @@ state checknewbeasthit
   				addvarvar tempfour tempfive
   				setplayervar[temptwo].doublemoneygained tempfour
 				}*/
+				state addtotalkills
 				state newbeastdrops
 				killit
 			} else ifvarg tempfour 0 { //Instakill on newbeast
 				spawn TRANSPORTERSTAR
 				sound SQUISHED
 				state standard_jibs
+				state addtotalkills
 				state newbeastdrops
 				killit
 			}
@@ -11771,6 +11767,7 @@ useractor enemy NEWBEAST NEWBEASTSTRENGTH
 		      //spawn BLOODPOOL
 		    lotsofglass 30
 		    sound GLASS_BREAKING
+		    state addtotalkills
 		    killit
       }
     getlastpal
