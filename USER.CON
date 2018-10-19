@@ -34,7 +34,7 @@ define SWEARFREQUENCY          100      // The lower, the less.
 define CAMERASDESTRUCTABLE      NO               // YES
 define FREEZERHURTOWNER         YES
 
-define MAXPLAYERHEALTH           50
+define MAXPLAYERHEALTH           20
 define MAXWATERFOUNTAINHEALTH     0
 
 define YELLHURTSOUNDSTRENGTH     35
@@ -55,17 +55,17 @@ define DEFAULTVISIBILITY        512
 define FROZENQUICKKICKDIST      980
 
 define GENERICIMPACTDAMAGE      10
-                                  //DMG  AMMO  TOTALDMG  BUY  BUYDMG  PRICE
-define MAXPISTOLAMMO           401 //7 * 400   =  2800 | 100    700    500 => 1000 
-define MAXSHOTGUNAMMO           61 //80 * 60   =  3200 |  15   1200   1000 => 2000
-define MAXCHAINGUNAMMO         401 //15 * 400  =  6000 | 100   1500   1350 => 2700
-define MAXRPGAMMO               41 //140 * 40  =  5600 |  10   1400   1750 => 3500
-define MAXHANDBOMBAMMO          21 //300 * 20  =  6000 |   5   1500   1500 => 3000
-define MAXSHRINKERAMMO         101 //300 * 100 = 30000 |  25   7500	  2500 => 5000
-define MAXGROWAMMO             201 //15 * 200  =  3000 |  50   1500   2000 => 4000 ?
-define MAXDEVISTATORAMMO       301 //40 * 300 =  12000 |  75   3000   3000 => 6000
-define MAXFREEZEAMMO           201 //40 * 200  =  8000 |  50   2000   1400 => 2800
-define MAXTRIPBOMBAMMO          21 //300 * 20  =  6000 |   5   1500   1150 => 2300
+
+define MAXPISTOLAMMO           50
+define MAXSHOTGUNAMMO           8
+define MAXCHAINGUNAMMO         50 
+define MAXRPGAMMO               5 
+define MAXHANDBOMBAMMO          3
+define MAXSHRINKERAMMO         10 
+define MAXGROWAMMO             20 
+define MAXDEVISTATORAMMO       50 
+define MAXFREEZEAMMO           20
+define MAXTRIPBOMBAMMO          3 
 define TRIPBOMBLASERMODE        0     // 0 = always visable
                                       // 1 = transluscense
                                       // 2 = invisible w/o IR goggles
@@ -140,7 +140,7 @@ define RPG_WEAPON_STRENGTH             140
 
 define SHRINKER_WEAPON_STRENGTH          0
 define GROWSPARK_WEAPON_STRENGTH        15
-define SHOTGUN_WEAPON_STRENGTH          10
+define SHOTGUN_WEAPON_STRENGTH          14
 define CHAINGUN_WEAPON_STRENGTH         15
 define FREEZETHROWER_WEAPON_STRENGTH    40
 define COOL_EXPLOSION_STRENGTH          38
@@ -416,6 +416,34 @@ definequote 187		  K
 definequote 188		  NO HIT
 definequote 189		  BIG MAGS
 definequote 190       MONSTERS KILLED:
+definequote 191		  SKILLS
+definequote 192		  MOVEMENT SPEED
+definequote 193		  BASE HEALTH
+definequote 194       BONUS MONEY
+definequote 195 	  MAG SIZE
+definequote 196		  100 %
+definequote 197		  103 %
+definequote 198		  106 %
+definequote 199		  109 %
+definequote 200		  115 %
+definequote 201		  20 HP
+definequote 202		  30 HP
+definequote 203		  40 HP 
+definequote 204		  50 HP
+definequote 205		  60 HP
+definequote 206		  + 0 $
+definequote 207		  + 20 $
+definequote 208		  + 40 $
+definequote 209		  + 60 $
+definequote 210		  + 100 $
+definequote 211		  100 %
+definequote 212		  200 %
+definequote 213		  300 %
+definequote 214		  400 %
+definequote 215		  600 %
+definequote 216		  LVL
+definequote 217		  SKILL POINTS:
+
 
 // Volume titles cannot excede 32 characters.
 

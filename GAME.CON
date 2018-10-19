@@ -25,20 +25,19 @@ ved en bestemt runde ændrer newbeast karakter og kan fx hoppe eller slår hurti
 sørg for at monstrene kun spawner mht hvor mange kort der er aktive og ikke med 50%
 mellem hver runde effekter og highlight af stats for runden
 
-
-movement 	40000 	+3000 	+6000 	+9000
-ammo 			100 		x1.5 		x2.0		x4.0
-health 		35			+5      +10     +10
-moneyreg  0				+3			+6			+9
 */
 //////////////////////////////////// S U R V I V A L /////////////////////////////////////////////////
 
 ////////////////////DEFINES/////////////////
 definegamefuncname 13 Add_Money
+definegamefuncname 19 Up
+definegamefuncname 20 Down
+definegamefuncname 21	Use_skill_point
 definegamefuncname 30 Debugging
 definegamefuncname 31 God_Mode
 definegamefuncname 32 Log
 definegamefuncname 34 Score_Overlay
+definegamefuncname 36 Skill_pick
 definegamefuncname 48 Reload
 
 //SHRINKER
@@ -67,9 +66,8 @@ gamevar gotperkprotection 0 1
 gamevar gotpowershot 0 1
 gamevar gotdoublemoney 0 1
 gamevar gotautorevive 0 1
-gamevar haltrunspeed 20000 0
-gamevar playerrunspeed 45000 0
-gamevar playerrunspeedboots 49050 0
+gamevar haltrunspeed 20000 1
+gamevar playerrunspeed 43000 1
 gamevar minimumthreshold 0 0
 
 //Game flow specific
@@ -86,18 +84,30 @@ gamevar maxmonstersallowed 5 0
 gamevar downtimervar 600 4096
 gamevar autorevivetimervar 150 4096
 gamevar teleporttimervar 2700 4096
+gamevar buycooldownvar 10 4096
 
 //Gets set in event_use and showinformation
+ 					//DMG AMMO TOTALDMG  BUY  BUYDMG  PRICE
+//PISTOL	  7 * 500 =  3500 |  50    350   250 - 1000 
+//SHOTTY	112 *  80 =  8960 |   8    896   750 - 3000
+//CHAIN		 15 * 500 =  7500 |  50    750   600 - 2400
+//RPG			250	*  50 = 12500 |	  5   1250  1250 - 5000
+//HBOMB		300 *  30 =  9000 |   3    900   750 - 3000
+//STINGER	300 * 100 = 30000 |  10   3000  2000 - 8000
+//EXPAND	 15 * 200 =  3000 |  20    300  1000 - 4000 ?
+//DEVI		 50 * 500 = 25000 |  50   2500  1750 - 7000
+//FREEZE	 40 * 200 =  8000 |  20    800   650 - 2600
+//TRIP		300 *  30 =  9000 |   3    900   600 - 2400
 gamevar pistolcost 1000 4096
-gamevar shotguncost 2500 4096
-gamevar chainguncost 3000 4096
-gamevar rpgcost 4000 4096
+gamevar shotguncost 3000 4096
+gamevar chainguncost 2400 4096
+gamevar rpgcost 5000 4096
 gamevar pipebombcost 3000 4096
-gamevar shrinkercost 7000 4096
+gamevar shrinkercost 8000 4096
 gamevar expandercost 0 4096
-gamevar devistatorcost 6000 4096
-gamevar tripbombcost 2500 4096
-gamevar freezercost 3000 4096
+gamevar devistatorcost 7000 4096
+gamevar tripbombcost 2600 4096
+gamevar freezercost 2400 4096
 
 gamevar backpackcost 2000 4096
 gamevar instakillcost 4000 4096
@@ -106,7 +116,7 @@ gamevar autorevivecost 2000 4096
 gamevar moneymultipliercost 3000 4096
 gamevar armorcost 3000 4096
 gamevar bootscost 4000 4096
-gamevar bigmagcost 3000 4096
+gamevar bigmagcost 4000 4096
 gamevar accesscardcost 3000 4096
 
 gamevar mysteryboxcost 2500 4096
@@ -152,7 +162,6 @@ gamevar playersalive 0 0
 gamevar instakillhpset 0 2
 gamevar playermoney 0 1
 gamevar playermoneybonus 0 1
-gamevar buycooldownvar 15 0
 gamevar hpregencountervar 180 0
 gamevar debugvalue 0 1
 gamevar debugvaluetwo 0 1 
@@ -206,7 +215,18 @@ gamevar gotbigmag 0 1
 gamevar experience 0 1
 gamevar experienceneeded 0 1
 gamevar currentlevel 1 1
-gamevar skillpoints 0 1
+gamevar skillpoints 1 1
+gamevar showskilloverlay 0 1
+gamevar choice 1 1
+gamevar playerhealth 20 1
+gamevar ammomultiplier 1 1
+gamevar bonusmoneyonkills 0 1
+gamevar autooffcounter 0 1
+
+gamevar movespeedskill 1 1
+gamevar bonusmoneyskill 1 1
+gamevar healthskill 1 1
+gamevar maxammoskill 1 1
 
 gamevar ammoamountone 0 1
 gamevar ammoamounttwo 0 1
@@ -645,12 +665,12 @@ ends
 
 state countitemcounter
 	addvar itemcounter 1
-	ifvare itemcounter 210 {
+	ifvare itemcounter 360 {
 		getactor[THISACTOR].cstat temp
 		addvar temp 2
 		setactor[THISACTOR].cstat temp
 	}
-	ifvare itemcounter 300 killit
+	ifvare itemcounter 450 killit
 ends
 
 state respawnfromintermission
@@ -784,30 +804,11 @@ state respawnfromautorevive
 	subvar autorevivetimer 1
 	setactor[THISACTOR].extra 500 //God mode hp
 	setvar showoverlay 0
-	/*
-	getplayer[THISACTOR].ammo_amount primaryweapon primaryammo
-	getplayer[THISACTOR].ammo_amount secondaryweapon secondaryammo
-	getplayer[THISACTOR].ammo_amount tertiaryweapon tertiaryammo
-	getplayer[THISACTOR].posx MY_X
-	getplayer[THISACTOR].posy MY_Y
-	getplayer[THISACTOR].posz MY_Z
-	resetplayer
-	setplayer[THISACTOR].posx MY_X
-	setplayer[THISACTOR].posy MY_Y
-	setplayer[THISACTOR].posz MY_Z
-	setplayer[THISACTOR].ammo_amount primaryweapon primaryammo
-	setplayer[THISACTOR].ammo_amount secondaryweapon secondaryammo
-	setplayer[THISACTOR].ammo_amount tertiaryweapon tertiaryammo
-	setplayer[THISACTOR].gotweapon primaryweapon 1
-	setplayer[THISACTOR].gotweapon secondaryweapon 1
-	setplayer[THISACTOR].gotweapon tertiaryweapon 1
-	setplayer[THISACTOR].curr_weapon primaryweapon
-	*/
 ends
 
 state respawnfromplayerrevive
 	state loseperks
-	setactor[THISACTOR].extra 50
+	setactor[THISACTOR].extra playerhealth
 	sound DUKE_GOTHEALTHATLOW
 	setvar showoverlay 0
 ends
@@ -992,8 +993,7 @@ state movementspeed
 	ifvarg haltcounter 0 {
 		setplayer[THISACTOR].runspeed haltrunspeed
 		subvar haltcounter 1
-	} else ifvare gotboots 1 setplayer[THISACTOR].runspeed playerrunspeedboots
-	else setplayer[THISACTOR].runspeed playerrunspeed
+	} else setplayer[THISACTOR].runspeed playerrunspeed
 ends
 
 state manualreload
@@ -1028,6 +1028,54 @@ state manualreload
       }
     }
   }
+ends
+
+state preventoddammoamount
+	getplayer[THISACTOR].ammo_amount 1 temp
+	ifvare temp 0 addammo 1 1
+	getplayer[THISACTOR].max_ammo_amount 1 temptwo
+	ifvarvarg temp temptwo
+	setplayer[THISACTOR].ammo_amount 1 temptwo
+	getplayer[THISACTOR].ammo_amount 2 temp
+	ifvare temp 0 addammo 2 1
+	getplayer[THISACTOR].max_ammo_amount 2 temptwo
+	ifvarvarg temp temptwo
+	setplayer[THISACTOR].ammo_amount 2 temptwo
+	getplayer[THISACTOR].ammo_amount 3 temp
+	ifvare temp 0 addammo 3 1
+	getplayer[THISACTOR].max_ammo_amount 3 temptwo
+	ifvarvarg temp temptwo
+	setplayer[THISACTOR].ammo_amount 3 temptwo
+	getplayer[THISACTOR].ammo_amount 4 temp
+	ifvare temp 0 addammo 4 1
+	getplayer[THISACTOR].max_ammo_amount 4 temptwo
+	ifvarvarg temp temptwo
+	setplayer[THISACTOR].ammo_amount 4 temptwo
+	getplayer[THISACTOR].ammo_amount 5 temp
+	ifvare temp 0 addammo 5 1
+	getplayer[THISACTOR].max_ammo_amount 5 temptwo
+	ifvarvarg temp temptwo
+	setplayer[THISACTOR].ammo_amount 5 temptwo
+	getplayer[THISACTOR].ammo_amount 6 temp
+	ifvare temp 0 addammo 6 1
+	getplayer[THISACTOR].max_ammo_amount 6 temptwo
+	ifvarvarg temp temptwo
+	setplayer[THISACTOR].ammo_amount 6 temptwo
+	getplayer[THISACTOR].ammo_amount 7 temp
+	ifvare temp 0 addammo 7 1
+	getplayer[THISACTOR].max_ammo_amount 7 temptwo
+	ifvarvarg temp temptwo
+	setplayer[THISACTOR].ammo_amount 7 temptwo
+	getplayer[THISACTOR].ammo_amount 8 temp
+	ifvare temp 0 addammo 8 1
+	getplayer[THISACTOR].max_ammo_amount 8 temptwo
+	ifvarvarg temp temptwo
+	setplayer[THISACTOR].ammo_amount 8 temptwo
+	getplayer[THISACTOR].ammo_amount 9 temp
+	ifvare temp 0 addammo 9 1
+	getplayer[THISACTOR].max_ammo_amount 9 temptwo
+	ifvarvarg temp temptwo
+	setplayer[THISACTOR].ammo_amount 9 temptwo
 ends
 
 state showinformation
@@ -1082,7 +1130,7 @@ state showinformation
 					state showweaponorammofix
 					ifvare temptwo 1 {
 						gametextz STARTALPHANUM 320 125 157 0 0 0 0 0 xdim ydim 50000
-						divvar itemcost 2
+						divvar itemcost 4
 						ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
 						else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
@@ -1099,7 +1147,7 @@ state showinformation
 					state showweaponorammofix
 					ifvare temptwo 1 {
 						gametextz STARTALPHANUM 320 125 157 0 0 0 0 0 xdim ydim 50000
-						divvar itemcost 2
+						divvar itemcost 4
 						ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
 						else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
@@ -1116,7 +1164,7 @@ state showinformation
 					state showweaponorammofix
 					ifvare temptwo 1 {
 						gametextz STARTALPHANUM 320 125 157 0 0 0 0 0 xdim ydim 50000
-						divvar itemcost 2
+						divvar itemcost 4
 						ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
 						else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
@@ -1133,7 +1181,7 @@ state showinformation
 					state showweaponorammofix
 					ifvare temptwo 1 {
 						gametextz STARTALPHANUM 320 125 157 0 0 0 0 0 xdim ydim 50000
-						divvar itemcost 2
+						divvar itemcost 4
 						ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
 						else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
@@ -1150,7 +1198,7 @@ state showinformation
 					state showweaponorammofix
 					ifvare temptwo 1 {
 						gametextz STARTALPHANUM 320 125 157 0 0 0 0 0 xdim ydim 50000
-						divvar itemcost 2
+						divvar itemcost 4
 						ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
 						else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
@@ -1167,7 +1215,7 @@ state showinformation
 					state showweaponorammofix
 					ifvare temptwo 1 {
 						gametextz STARTALPHANUM 320 125 157 0 0 0 0 0 xdim ydim 50000
-						divvar itemcost 2
+						divvar itemcost 4
 						ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
 						else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
@@ -1184,7 +1232,7 @@ state showinformation
 					state showweaponorammofix
 					ifvare temptwo 1 {
 						gametextz STARTALPHANUM 320 125 157 0 0 0 0 0 xdim ydim 50000
-						divvar itemcost 2
+						divvar itemcost 4
 						ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
 						else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
@@ -1201,7 +1249,7 @@ state showinformation
 					state showweaponorammofix
 					ifvare temptwo 1 {
 						gametextz STARTALPHANUM 320 125 157 0 0 0 0 0 xdim ydim 50000
-						divvar itemcost 2
+						divvar itemcost 4
 						ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
 						else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
@@ -1218,7 +1266,7 @@ state showinformation
 					state showweaponorammofix
 					ifvare temptwo 1 {
 						gametextz STARTALPHANUM 320 125 157 0 0 0 0 0 xdim ydim 50000
-						divvar itemcost 2
+						divvar itemcost 4
 						ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
 						else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
@@ -1235,7 +1283,7 @@ state showinformation
 					state showweaponorammofix
 					ifvare temptwo 1 {
 						gametextz STARTALPHANUM 320 125 157 0 0 0 0 0 xdim ydim 50000
-						divvar itemcost 2
+						divvar itemcost 4
 						ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
 						else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 						else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
@@ -1263,6 +1311,7 @@ state showinformation
 					else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					break
 				}
+				/*
 				case BOOTS {
 					gametextz STARTALPHANUM 320 125 148 0 0 0 0 0 xdim ydim 50000
 					ifvare gotboots 1 gametextz STARTALPHANUM 320 135 151 0 0 0 0 0 xdim ydim 50000
@@ -1270,7 +1319,7 @@ state showinformation
 					else ifvarvarl tempfive itemcost digitalnumberz 2837 160 135 itemcost 0 2 0 0 0 xdim ydim 50000
 					else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					break
-				}
+				}*/
 				case 4371 {
 					gametextz STARTALPHANUM 320 125 150 0 0 0 0 0 xdim ydim 50000
 					ifvare gotperkprotection 1 gametextz STARTALPHANUM 320 135 151 0 0 0 0 0 xdim ydim 50000
@@ -1413,12 +1462,17 @@ state currentlyearnedmoney
 	} else subvar moneyusedcounter 1
 ends
 
-state addtotalkills
+state dostuffonkill
 	getactor[THISACTOR].htowner temp
   getactor[temp].yvel temptwo
   getplayervar[temptwo].totalkills tempthree
   addvar tempthree 1
   setplayervar[temptwo].totalkills tempthree
+  getplayervar[temptwo].bonusmoneyonkills tempfive
+  getplayervar[temptwo].playermoneybonus tempfour
+  addvarvar tempfour tempfive
+  setplayervar[temptwo].playermoneybonus tempfour
+  setplayervar[temptwo].bonusmoneycounter 60
 ends
 
 state nextround
@@ -1586,6 +1640,53 @@ state handlenegativeammodevastator
 	ifvare temp 0 setplayer[THISACTOR].ammo_amount DEVISTATOR_WEAPON 1
 ends
 
+state handlemaxammo
+	setvarvar temptwo ammomultiplier
+	ifvare gotbigmag 1 addvar temptwo 4
+
+	setvar temp MAXPISTOLAMMO
+	mulvarvar temp temptwo 
+	addvar temp 1
+	setplayer[THISACTOR].max_ammo_amount 1 temp
+	setvar temp MAXSHOTGUNAMMO
+	mulvarvar temp temptwo
+	addvar temp 1
+	setplayer[THISACTOR].max_ammo_amount 2 temp
+	setvar temp MAXCHAINGUNAMMO
+	mulvarvar temp temptwo
+	addvar temp 1
+	setplayer[THISACTOR].max_ammo_amount 3 temp
+	setvar temp MAXRPGAMMO
+	mulvarvar temp temptwo
+	addvar temp 1
+	setplayer[THISACTOR].max_ammo_amount 4 temp
+	setvar temp MAXHANDBOMBAMMO
+	mulvarvar temp temptwo
+	addvar temp 1
+	setplayer[THISACTOR].max_ammo_amount 5 temp
+	setvar temp MAXSHRINKERAMMO
+	mulvarvar temp temptwo
+	addvar temp 1
+	setplayer[THISACTOR].max_ammo_amount 6 temp
+	setvar temp MAXGROWAMMO
+	mulvarvar temp temptwo
+	addvar temp 1
+	setplayer[THISACTOR].max_ammo_amount 11 temp
+	setvar temp MAXDEVISTATORAMMO
+	mulvarvar temp temptwo
+	addvar temp 1
+	setplayer[THISACTOR].max_ammo_amount 7 temp
+	setvar temp MAXFREEZEAMMO
+	mulvarvar temp temptwo
+	addvar temp 1
+	setplayer[THISACTOR].max_ammo_amount 9 temp
+	setvar temp MAXTRIPBOMBAMMO
+	mulvarvar temp temptwo
+	addvar temp 1    
+	setplayer[THISACTOR].max_ammo_amount 8 temp
+
+ends
+
 state jumpheight
 	getplayer[THISACTOR].jumping_counter temp
 	ifvare temp 541	setplayer[THISACTOR].jumping_counter 0
@@ -1607,17 +1708,27 @@ state hpregen
 			resetcount
 		}
 	} else subvar hpregencounter 1
+
 	getactor[THISACTOR].extra temptwo
+	getplayer[THISACTOR].max_player_health tempsix
+	mulvar tempsix 2
+	divvar tempsix 3
+	addvar tempsix 1
+	/*
 	getplayer[THISACTOR].max_player_health tempthree
+	setvarvar tempsix playerhealth
+	mulvar tempsix 3
+	divvar tempsix 5
 	ifvare temptwo 0 nullop
 	else ifvarg temptwo 400 palfrom 20 0 0 40
 	else ifvarg temptwo 300 palfrom 20 0 0 30
 	else ifvarg temptwo 200 palfrom 20 0 0 20
 	else ifvarvarg temptwo tempthree palfrom 20 0 0 15
-	else ifvarg temptwo 34 nullop // normal screen - duke has 35-50(70) hp
+	else ifvarvarg temptwo tempsix nullop // normal screen - duke has 35-50(70) hp
 	else ifvarg temptwo 10 palfrom 15 24 0 0
 	else ifvarg temptwo 10 ifvarl temptwo 35 palfrom 15 24 0 0
-	else { //HP is 10 or less
+	*/
+	ifvarl temptwo 11 { //HP is 10 or less
     ifvarn temptwo 0 {
       ifcount 20 {
       	palfrom 43 30 0 0
@@ -1625,7 +1736,9 @@ state hpregen
         resetcount
       }
     }
-  }
+  } else ifvarvarl temptwo tempsix {
+  	palfrom 15 24 0 0
+  } 
 ends
 
 state calculatetotalpoints
@@ -1645,49 +1758,86 @@ state calculatetotalpoints
 ends
 
 state setuplevelsystem
-	ifvarvarg experience experienceneeded {
-		addvar currentlevel 1
-		addvar skillpoints 1
-		subvarvar experience experienceneeded
-	}
 	switch currentlevel
 		case 1 {
-			setvar experienceneeded 102
+			setvar experienceneeded 1000
 			break
 		}
 		case 2 {
-			setvar experienceneeded 200
+			setvar experienceneeded 2000
 			break
 		}
 		case 3 {
-			setvar experienceneeded 300
-			break
-		}
-		case 4 {
 			setvar experienceneeded 4000
 			break
 		}
-		case 5 {
-			setvar experienceneeded 5000
-			break
-		}
-		case 6 {
-			setvar experienceneeded 6000
-			break
-		}
-		case 7 {
+		case 4 {
 			setvar experienceneeded 7000
 			break
 		}
+		case 5 {
+			setvar experienceneeded 11000
+			break
+		}
+		case 6 {
+			setvar experienceneeded 16000
+			break
+		}
+		case 7 {
+			setvar experienceneeded 22000
+			break
+		}
 		case 8 {
-			setvar experienceneeded 8000
+			setvar experienceneeded 28000
 			break
 		}
 		case 9 {
-			setvar experienceneeded 9000
+			setvar experienceneeded 39000
+			break
+		}
+		case 10 {
+			setvar experience 0
 			break
 		}
 	endswitch
+	ifvarvarg experience experienceneeded {
+			addvar currentlevel 1
+			addvar skillpoints 1
+			subvarvar experience experienceneeded
+			sound SHORT_CIRCUIT
+			palfrom 50 64 64 64
+		}
+ends
+
+state handleskills
+	//Movement
+	ifvare movespeedskill 1 setvar playerrunspeed 43000
+	else ifvare movespeedskill 2 setvar playerrunspeed 44290
+	else ifvare movespeedskill 3 setvar playerrunspeed 45580
+	else ifvare movespeedskill 4 setvar playerrunspeed 46870
+	else ifvare movespeedskill 5 setvar playerrunspeed 49450
+
+	//Health
+	ifvare healthskill 1 setvar playerhealth 20
+	else ifvare healthskill 2 setvar playerhealth 30
+	else ifvare healthskill 3 setvar playerhealth 40
+	else ifvare healthskill 4 setvar playerhealth 50
+	else ifvare healthskill 5 setvar playerhealth 60
+
+	//Bonus money
+	ifvare bonusmoneyskill 1 setvar bonusmoneyonkills 0
+	else ifvare bonusmoneyskill 2 setvar bonusmoneyonkills 20
+	else ifvare bonusmoneyskill 3 setvar bonusmoneyonkills 40
+	else ifvare bonusmoneyskill 4 setvar bonusmoneyonkills 60
+	else ifvare bonusmoneyskill 5 setvar bonusmoneyonkills 100
+
+	//Mag size
+	ifvare maxammoskill 1 setvar ammomultiplier 1
+	else ifvare maxammoskill 2 setvar ammomultiplier 2
+	else ifvare maxammoskill 3 setvar ammomultiplier 3
+	else ifvare maxammoskill 4 setvar ammomultiplier 4
+	else ifvare maxammoskill 5 setvar ammomultiplier 6
+
 ends
 
 state checkhitscan
@@ -1736,9 +1886,8 @@ state newbeastdrops
 		killit
 	}
 
-  randvar temp 5000 //5000
+  randvar temp 2000 //2000
 	ifvare temp 0 spawn SHIELD
-	else ifvare temp 1 spawn BOOTS
 	else ifvare temp 2 spawn 4371
 	else ifvare temp 3 spawn 1667
 	else ifvare temp 4 spawn 1234
@@ -1753,6 +1902,8 @@ state newbeastdrops
 	else ifvare temp 13 spawn DEVISTATORSPRITE
 	else ifvare temp 14 spawn TRIPBOMBSPRITE
 	else ifvare temp 15 spawn FREEZESPRITE
+	else ifvare temp 1 spawn RESPAWNMARKERYELLOW
+		//else ifvare temp 1 spawn BOOTS
 	ifvarl temp 16 {
 		spawn TRANSPORTERBEAM
 		sound TELEPORTER
@@ -1772,10 +1923,10 @@ onevent EVENT_DISPLAYREST
 
 	//Debuggg
 	//getactor[THISACTOR].extra temp
-	digitalnumberz 2837 0 40 experience 0 0 0 0 0 xdim ydim 58000
-	digitalnumberz 2837 0 60 experienceneeded 0 0 0 0 0 xdim ydim 58000
-	digitalnumberz 2837 0 80 currentlevel 0 0 0 0 0 xdim ydim 58000
-	digitalnumberz 2837 0 100 skillpoints 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 40 experience 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 60 experienceneeded 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 80 currentlevel 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 100 skillpoints 0 0 0 0 0 xdim ydim 58000
 	ifvare eog 1 {
 		rotatesprite 160 100 500000 0 862 0 4 1 0 0 xdim ydim
 		gametextz STARTALPHANUM 320 30 184 0 2 0 0 0 xdim ydim 80000
@@ -1962,7 +2113,7 @@ onevent EVENT_DISPLAYREST
 	      }
 			}
 		}
-		
+
 		//Levelbar
 		setvar temptwo 110
 		setvar temp 100
@@ -1984,8 +2135,25 @@ onevent EVENT_DISPLAYREST
 	      subvar temp 1
 	    }
     }
-    digitalnumberz 2837 215 191 currentlevel 0 12 16 0 0 xdim ydim 50000
-
+    ifvare currentlevel 10 {
+    	setvar temptwo 110
+			setvar temp 100
+			whilevarn temp 0 {
+	      rotatesprite temptwo 191 65536 0 3163 0 12 16 0 0 xdim ydim 
+	      addvar temptwo 1 
+	      subvar temp 1
+	    }
+    }
+    gametextz STARTALPHANUM 300 192 216 0 12 16 0 0 xdim ydim 30000
+    digitalnumberz 2837 166 192 currentlevel 0 12 16 0 0 xdim ydim 30000
+    ifvarg skillpoints 0 {
+    	digitalnumberz 2837 216 191 skillpoints 0 7 16 0 0 xdim ydim 45000
+    	rotatesprite 224 193 17500 0 RESPAWNMARKERYELLOW 0 16 0 0 0 xdim ydim
+    }
+    ifvarn currentlevel 10 {
+    	digitalnumberz 2837 121 192 experience 10 12 16 0 0 xdim ydim 30000
+	    digitalnumberz 2837 199 192 experienceneeded 10 12 16 0 0 xdim ydim 30000
+    }
 	    
 		//Health
 		ifp palive {
@@ -2000,22 +2168,24 @@ onevent EVENT_DISPLAYREST
 	    setvar temptwo -15
 	    getactor[THISACTOR].extra temp
 	    getplayer[THISACTOR].max_player_health tempthree
-	    
+	    setvarvar tempsix tempthree
+	    mulvar tempsix 2
+	    divvar tempsix 3
 	    ifvare gothit 0 {
 	    	whilevarn tempthree 0 {
 	        rotatesprite temptwo 185 65536 0 3163 0 15 16 0 0 xdim ydim 
 	        addvar temptwo 1 
 	        subvar tempthree 1
 	      }
-	      ifvare gotarmor 0 gametextz STARTALPHANUM 4 188 188 0 15 0 0 0 xdim ydim 32000
-	      else gametextz STARTALPHANUM 24 188 188 0 15 0 0 0 xdim ydim 32000
+	      //ifvare gotarmor 0 gametextz STARTALPHANUM 4 188 188 0 15 0 0 0 xdim ydim 32000
+	      //else gametextz STARTALPHANUM 24 188 188 0 15 0 0 0 xdim ydim 32000
 	    } else ifvarvarg temp tempthree {
 	    	whilevarn tempthree 0 {
 	        rotatesprite temptwo 185 65536 0 3163 0 6 16 0 0 xdim ydim 
 	        addvar temptwo 1 
 	        subvar tempthree 1
 	      }
-	    } else ifvarg temp 34 {
+	    } else ifvarvarg temp tempsix {
 				whilevarn temp 0 {
 	        rotatesprite temptwo 185 65536 0 3163 0 0 16 0 0 xdim ydim 
 	        addvar temptwo 1 
@@ -2034,6 +2204,12 @@ onevent EVENT_DISPLAYREST
 	        subvar temp 1
 	      }
 	    }
+	    addvar tempsix 1 //Make it hit the right branch and not off by one
+	    getactor[THISACTOR].extra temp
+	    ifvare gothit 0 digitalnumberz 2837 -8 186 temp 0 15 16 0 0 xdim ydim 30000
+	    else ifvarl temp 11 digitalnumberz 2837 -8 186 temp 0 10 16 0 0 xdim ydim 30000
+	    else ifvarvarg tempsix temp digitalnumberz 2837 -8 186 temp 0 2 16 0 0 xdim ydim 30000    
+	    else digitalnumberz 2837 -8 186 temp 0 0 16 0 0 xdim ydim 30000
 		}
 
 		//Money
@@ -2162,6 +2338,82 @@ onevent EVENT_DISPLAYREST
 		digitalnumberz 2837 82 79 spawnrate 0 0 0 0 0 xdim ydim 55000
 		digitalnumberz 2837 82 87 spawncounter 0 0 0 0 0 xdim ydim 55000
 		digitalnumberz 2837 82 95 activespawners 0 0 0 0 0 xdim ydim 55000
+	} else ifvare showskilloverlay 1 {
+		rotatesprite 160 100 1000000 0 862 0 4 1 0 0 xdim ydim
+		gametextz STARTALPHANUM 320 50 191 0 7 0 0 0 xdim ydim 55000
+		//Movement speed
+		gametextz STARTALPHANUM 320 60 192 0 12 0 0 0 xdim ydim 55000
+		gametextz STARTALPHANUM 176 68 196 0 2 0 0 0 xdim ydim 44000
+		gametextz STARTALPHANUM 236 68 197 0 2 0 0 0 xdim ydim 44000
+		gametextz STARTALPHANUM 320 68 198 0 2 0 0 0 xdim ydim 44000
+		gametextz STARTALPHANUM 356 68 199 0 2 0 0 0 xdim ydim 44000
+		gametextz STARTALPHANUM 416 68 200 0 2 0 0 0 xdim ydim 44000
+
+		digitalnumberz 2837 197 135 skillpoints 0 7 16 0 0 xdim ydim 55000
+    gametextz STARTALPHANUM 220 135 217 0 12 16 0 0 xdim ydim 55000
+
+		ifvare movespeedskill 1 gametextz STARTALPHANUM 176 68 196 0 0 0 0 0 xdim ydim 44000
+		ifvare movespeedskill 2 gametextz STARTALPHANUM 236 68 197 0 0 0 0 0 xdim ydim 44000
+		ifvare movespeedskill 3 gametextz STARTALPHANUM 320 68 198 0 0 0 0 0 xdim ydim 44000
+		ifvare movespeedskill 4 gametextz STARTALPHANUM 356 68 199 0 0 0 0 0 xdim ydim 44000
+		ifvare movespeedskill 5 gametextz STARTALPHANUM 416 68 200 0 0 0 0 0 xdim ydim 44000
+
+		//Health
+		gametextz STARTALPHANUM 320 80 193 0 12 0 0 0 xdim ydim 55000
+		gametextz STARTALPHANUM 176 88 201 0 2 0 0 0 xdim ydim 44000
+		gametextz STARTALPHANUM 236 88 202 0 2 0 0 0 xdim ydim 44000
+		gametextz STARTALPHANUM 320 88 203 0 2 0 0 0 xdim ydim 44000
+		gametextz STARTALPHANUM 356 88 204 0 2 0 0 0 xdim ydim 44000
+		gametextz STARTALPHANUM 416 88 205 0 2 0 0 0 xdim ydim 44000
+
+		ifvare healthskill 1 gametextz STARTALPHANUM 176 88 201 0 0 0 0 0 xdim ydim 44000
+		ifvare healthskill 2 gametextz STARTALPHANUM 236 88 202 0 0 0 0 0 xdim ydim 44000
+		ifvare healthskill 3 gametextz STARTALPHANUM 320 88 203 0 0 0 0 0 xdim ydim 44000
+		ifvare healthskill 4 gametextz STARTALPHANUM 356 88 204 0 0 0 0 0 xdim ydim 44000
+		ifvare healthskill 5 gametextz STARTALPHANUM 416 88 205 0 0 0 0 0 xdim ydim 44000
+
+		//Bonus money
+		gametextz STARTALPHANUM 320 100 194 0 12 0 0 0 xdim ydim 55000
+		gametextz STARTALPHANUM 176 108 206 0 2 0 0 0 xdim ydim 44000
+		gametextz STARTALPHANUM 236 108 207 0 2 0 0 0 xdim ydim 44000
+		gametextz STARTALPHANUM 320 108 208 0 2 0 0 0 xdim ydim 44000
+		gametextz STARTALPHANUM 356 108 209 0 2 0 0 0 xdim ydim 44000
+		gametextz STARTALPHANUM 416 108 210 0 2 0 0 0 xdim ydim 44000
+
+		ifvare bonusmoneyskill 1 gametextz STARTALPHANUM 176 108 206 0 0 0 0 0 xdim ydim 44000
+		ifvare bonusmoneyskill 2 gametextz STARTALPHANUM 236 108 207 0 0 0 0 0 xdim ydim 44000
+		ifvare bonusmoneyskill 3 gametextz STARTALPHANUM 320 108 208 0 0 0 0 0 xdim ydim 44000
+		ifvare bonusmoneyskill 4 gametextz STARTALPHANUM 356 108 209 0 0 0 0 0 xdim ydim 44000
+		ifvare bonusmoneyskill 5 gametextz STARTALPHANUM 416 108 210 0 0 0 0 0 xdim ydim 44000
+
+		//Mag size
+		gametextz STARTALPHANUM 320 120 195 0 12 0 0 0 xdim ydim 55000
+		gametextz STARTALPHANUM 179 128 211 0 2 0 0 0 xdim ydim 44000
+		gametextz STARTALPHANUM 236 128 212 0 2 0 0 0 xdim ydim 44000
+		gametextz STARTALPHANUM 320 128 213 0 2 0 0 0 xdim ydim 44000
+		gametextz STARTALPHANUM 356 128 214 0 2 0 0 0 xdim ydim 44000
+		gametextz STARTALPHANUM 416 128 215 0 2 0 0 0 xdim ydim 44000
+
+		ifvare maxammoskill 1 gametextz STARTALPHANUM 179 128 211 0 0 0 0 0 xdim ydim 44000
+		ifvare maxammoskill 2 gametextz STARTALPHANUM 236 128 212 0 0 0 0 0 xdim ydim 44000
+		ifvare maxammoskill 3 gametextz STARTALPHANUM 320 128 213 0 0 0 0 0 xdim ydim 44000
+		ifvare maxammoskill 4 gametextz STARTALPHANUM 356 128 214 0 0 0 0 0 xdim ydim 44000
+		ifvare maxammoskill 5 gametextz STARTALPHANUM 416 128 215 0 0 0 0 0 xdim ydim 44000
+
+		ifvare choice 1 {
+			rotatesprite 100 58 27000 0 RESPAWNMARKERYELLOW 0 0 0 0 0 xdim ydim
+			rotatesprite 220 58 27000 0 RESPAWNMARKERYELLOW 0 0 0 0 0 xdim ydim
+		} else ifvare choice 2 {
+			rotatesprite 100 78 27000 0 RESPAWNMARKERYELLOW 0 0 0 0 0 xdim ydim
+			rotatesprite 220 78 27000 0 RESPAWNMARKERYELLOW 0 0 0 0 0 xdim ydim
+		} else ifvare choice 3 {
+			rotatesprite 100 98 27000 0 RESPAWNMARKERYELLOW 0 0 0 0 0 xdim ydim
+			rotatesprite 220 98 27000 0 RESPAWNMARKERYELLOW 0 0 0 0 0 xdim ydim
+		}	else ifvare choice 4 {
+			rotatesprite 100 118 27000 0 RESPAWNMARKERYELLOW 0 0 0 0 0 xdim ydim
+			rotatesprite 220 118 27000 0 RESPAWNMARKERYELLOW 0 0 0 0 0 xdim ydim
+		} 
+
 	}	else ifvare showoverlay 1 {
 		ifvare eog 0 rotatesprite 48 40 117000 0 862 0 4 49 0 0 xdim ydim
 		ifvare eog 0 rotatesprite -57 40 117000 0 862 0 4 49 0 0 xdim ydim
@@ -2210,6 +2462,7 @@ onevent EVENT_DISPLAYCROSSHAIR
 	ifp palive nullop
 	else setvar RETURN -1
 	ifvare eog 1 setvar RETURN -1
+	ifvare showskilloverlay 1 setvar RETURN -1
 endevent
 
 onevent EVENT_INVENTORYRIGHT
@@ -2236,7 +2489,6 @@ onevent EVENT_HOLODUKEON
 	addlogvar gotautorevive
 	addlogvar haltrunspeed
 	addlogvar playerrunspeed
-	addlogvar playerrunspeedboots
 	addlogvar mysteryboxcost
 	addlogvar intermission
 	addlogvar round
@@ -2469,9 +2721,9 @@ onevent EVENT_USE
 			getactor[HITSPRITE].hitag temptwo
 			ifvare temptwo 0 setvar itemcost 0
 
-			ifvarvare tempfour primaryweapon divvar itemcost 2
-			ifvarvare tempfour secondaryweapon divvar itemcost 2
-			ifvarvare tempfour tertiaryweapon divvar itemcost 2
+			ifvarvare tempfour primaryweapon divvar itemcost 4
+			ifvarvare tempfour secondaryweapon divvar itemcost 4
+			ifvarvare tempfour tertiaryweapon divvar itemcost 4
 
 			setvarvar tempthree finalplayermoney
 			addvarvar tempthree playermoney
@@ -2509,7 +2761,7 @@ onevent EVENT_USE
 						getplayer[THISACTOR].max_ammo_amount 1 temptwo
 						ifvarvare temp temptwo break
 						setplayer[THISACTOR].gotweapon 1 1
-						addammo 1 100
+						addammo 1 MAXPISTOLAMMO
 						ifvarg infinityammoduration 0 addvar ammoamountone 100
 						ifvare primaryweapon 1 state buyandsetcdammo
 						else ifvare tertiaryweapon 1 state buyandsetcdammo
@@ -2536,7 +2788,6 @@ onevent EVENT_USE
 						}
 						getactor[HITSPRITE].hitag temp
 						ifvare temp 0 setactor[HITSPRITE].hitag -1
-						ifvare temp 0 addammo 1 100
 						break
 					}
 					case SHOTGUNSPRITE {
@@ -2544,7 +2795,7 @@ onevent EVENT_USE
 						getplayer[THISACTOR].max_ammo_amount 2 temptwo
 						ifvarvare temp temptwo break
 						setplayer[THISACTOR].gotweapon 2 1
-						addammo 2 15
+						addammo 2 MAXSHOTGUNAMMO
 						ifvarg infinityammoduration 0 addvar ammoamounttwo 15
 						ifvare primaryweapon 2 state buyandsetcdammo
 						else ifvare tertiaryweapon 2 state buyandsetcdammo
@@ -2571,7 +2822,6 @@ onevent EVENT_USE
 						}
 						getactor[HITSPRITE].hitag temp
 						ifvare temp 0 setactor[HITSPRITE].hitag -1
-						ifvare temp 0 addammo 2 15
 						break
 					}
 					case CHAINGUNSPRITE {
@@ -2579,7 +2829,7 @@ onevent EVENT_USE
 						getplayer[THISACTOR].max_ammo_amount 3 temptwo
 						ifvarvare temp temptwo break
 						setplayer[THISACTOR].gotweapon 3 1
-						addammo 3 100
+						addammo 3 MAXCHAINGUNAMMO
 						ifvarg infinityammoduration 0 addvar ammoamountthree 100
 						ifvare primaryweapon 3 state buyandsetcdammo
 						else ifvare tertiaryweapon 3 state buyandsetcdammo
@@ -2606,7 +2856,6 @@ onevent EVENT_USE
 						}
 						getactor[HITSPRITE].hitag temp
 						ifvare temp 0 setactor[HITSPRITE].hitag -1
-						ifvare temp 0 addammo 3 100
 						break
 					}
 					case RPGSPRITE {
@@ -2614,7 +2863,7 @@ onevent EVENT_USE
 						getplayer[THISACTOR].max_ammo_amount 4 temptwo
 						ifvarvare temp temptwo break
 						setplayer[THISACTOR].gotweapon 4 1
-						addammo 4 10
+						addammo 4 MAXRPGAMMO
 						ifvarg infinityammoduration 0 addvar ammoamountfour 10
 						ifvare primaryweapon 4 state buyandsetcdammo
 						else ifvare tertiaryweapon 4 state buyandsetcdammo
@@ -2641,7 +2890,6 @@ onevent EVENT_USE
 						}
 						getactor[HITSPRITE].hitag temp
 						ifvare temp 0 setactor[HITSPRITE].hitag -1
-						ifvare temp 0 addammo 4 10
 						break
 					}
 					case HBOMBAMMO {
@@ -2649,7 +2897,7 @@ onevent EVENT_USE
 						getplayer[THISACTOR].max_ammo_amount 5 temptwo
 						ifvarvare temp temptwo break
 						setplayer[THISACTOR].gotweapon 5 1
-						addammo 5 5
+						addammo 5 MAXHANDBOMBAMMO
 						ifvarg infinityammoduration 0 addvar ammoamountfive 5
 						ifvare primaryweapon 5 state buyandsetcdammo
 						else ifvare tertiaryweapon 5 state buyandsetcdammo
@@ -2676,7 +2924,6 @@ onevent EVENT_USE
 						}
 						getactor[HITSPRITE].hitag temp
 						ifvare temp 0 setactor[HITSPRITE].hitag -1
-						ifvare temp 0 addammo 5 5
 						break
 					}
 					case SHRINKERSPRITE {
@@ -2684,7 +2931,7 @@ onevent EVENT_USE
 						getplayer[THISACTOR].max_ammo_amount 6 temptwo
 						ifvarvare temp temptwo break
 						setplayer[THISACTOR].gotweapon 6 1
-						addammo 6 25
+						addammo 6 MAXSHRINKERAMMO
 						ifvarg infinityammoduration 0 addvar ammoamountsix 25
 						ifvare primaryweapon 6 state buyandsetcdammo
 						else ifvare tertiaryweapon 6 state buyandsetcdammo
@@ -2711,7 +2958,6 @@ onevent EVENT_USE
 						}
 						getactor[HITSPRITE].hitag temp
 						ifvare temp 0 setactor[HITSPRITE].hitag -1
-						ifvare temp 0 addammo 6 25
 						break
 					}
 					/*case GROWSPRITEICON {
@@ -2719,7 +2965,7 @@ onevent EVENT_USE
 						getplayer[THISACTOR].max_ammo_amount 11 temptwo
 						ifvarvare temp temptwo break
 						setplayer[THISACTOR].gotweapon 11 1
-						addammo 11 75
+						addammo 11 MAXGROWAMMO
 						ifvarg infinityammoduration 0 addvar ammoamounteleven 75
 						ifvare primaryweapon 11 state buyandsetcdammo
 						else ifvare tertiaryweapon 11 state buyandsetcdammo
@@ -2746,7 +2992,6 @@ onevent EVENT_USE
 						}
 						getactor[HITSPRITE].hitag temp
 						ifvare temp 0 setactor[HITSPRITE].hitag -1
-						ifvare temp 0 addammo 11 75
 						break
 					}*/
 					case DEVISTATORSPRITE {
@@ -2754,7 +2999,7 @@ onevent EVENT_USE
 						getplayer[THISACTOR].max_ammo_amount 7 temptwo
 						ifvarvare temp temptwo break
 						setplayer[THISACTOR].gotweapon 7 1
-						addammo 7 75
+						addammo 7 MAXDEVISTATORAMMO
 						ifvarg infinityammoduration 0 addvar ammoamountseven 75
 						ifvare primaryweapon 7 state buyandsetcdammo
 						else ifvare tertiaryweapon 7 state buyandsetcdammo
@@ -2781,7 +3026,6 @@ onevent EVENT_USE
 						}
 						getactor[HITSPRITE].hitag temp
 						ifvare temp 0 setactor[HITSPRITE].hitag -1
-						ifvare temp 0 addammo 7 75
 						break
 					}
 					case TRIPBOMBSPRITE {
@@ -2789,7 +3033,7 @@ onevent EVENT_USE
 						getplayer[THISACTOR].max_ammo_amount 8 temptwo
 						ifvarvare temp temptwo break
 						setplayer[THISACTOR].gotweapon 8 1
-						addammo 8 5
+						addammo 8 MAXTRIPBOMBAMMO
 						ifvarg infinityammoduration 0 addvar ammoamounteight 5
 						ifvare primaryweapon 8 state buyandsetcdammo
 						else ifvare tertiaryweapon 8 state buyandsetcdammo
@@ -2816,7 +3060,6 @@ onevent EVENT_USE
 						}
 						getactor[HITSPRITE].hitag temp
 						ifvare temp 0 setactor[HITSPRITE].hitag -1
-						ifvare temp 0 addammo 8 5
 						break
 					}
 					case FREEZESPRITE {
@@ -2824,7 +3067,7 @@ onevent EVENT_USE
 						getplayer[THISACTOR].max_ammo_amount 9 temptwo
 						ifvarvare temp temptwo break
 						setplayer[THISACTOR].gotweapon 9 1
-						addammo 9 50
+						addammo 9 MAXFREEZEAMMO
 						ifvarg infinityammoduration 0 addvar ammoamountnine 50
 						ifvare primaryweapon 9 state buyandsetcdammo
 						else ifvare tertiaryweapon 9 state buyandsetcdammo
@@ -2851,7 +3094,6 @@ onevent EVENT_USE
 						}
 						getactor[HITSPRITE].hitag temp
 						ifvare temp 0 setactor[HITSPRITE].hitag -1
-						ifvare temp 0 addammo 9 50
 						break
 					}
 					case JETPACK {
@@ -2874,6 +3116,7 @@ onevent EVENT_USE
 						}
 						break
 					}
+					/*
 					case BOOTS {
 						ifvare gotboots 0 {
 							state buyandsetcd
@@ -2884,6 +3127,7 @@ onevent EVENT_USE
 						}
 						break
 					}
+					*/
 					case 4371 {
 						ifvare gotperkprotection 0 {
 							state buyandsetcd
@@ -3077,20 +3321,63 @@ onevent EVENT_PRESSEDFIRE // when the player presses the fire button..
 	}
 endevent
 
+onevent EVENT_TURNAROUND
+	setvar RETURN -1
+	ifvare showskilloverlay 0 setvar showskilloverlay 1
+	else setvar showskilloverlay 0
+endevent
+
 onevent EVENT_DISPLAYSBAR
 	ifvare showdebugging 0 setvar RETURN -1
 endevent
 
 onevent EVENT_WEAPKEY1
 	setvar RETURN -1
+	ifvare choice 1 setvar choice 4
+	else subvar choice 1
+	sound KICK_HIT
 endevent
 
 onevent EVENT_WEAPKEY2
 	setvar RETURN -1
+	ifvare choice 4 setvar choice 1
+	else addvar choice 1
+	sound KICK_HIT
 endevent
 
 onevent EVENT_WEAPKEY3
 	setvar RETURN -1
+	ifvare showskilloverlay 1 {
+		ifvarg skillpoints 0 {
+			ifvare choice 1 ifvarl movespeedskill 5 {
+				addvar movespeedskill 1
+				subvar skillpoints 1
+				setvar autooffcounter 15
+				sound 243
+			} 
+			ifvare choice 2 ifvarl healthskill 5 {
+				addvar healthskill 1
+				setvarvar temp playerhealth
+				addvar temp 10
+				setactor[THISACTOR].extra temp
+				subvar skillpoints 1
+				setvar autooffcounter 15
+				sound 243
+			} 
+			ifvare choice 3 ifvarl bonusmoneyskill 5 {
+				addvar bonusmoneyskill 1
+				subvar skillpoints 1
+				setvar autooffcounter 15
+				sound 243
+			} 
+			ifvare choice 4 ifvarl maxammoskill 5 {
+				addvar maxammoskill 1
+				subvar skillpoints 1
+				setvar autooffcounter 15
+				sound 243
+			}
+		}
+	}
 endevent
 
 onevent EVENT_WEAPKEY4
@@ -4762,6 +5049,29 @@ enda
 
 
 //Actor Perks Useractors
+actor RESPAWNMARKERYELLOW
+	fall
+	cstat 1
+	sizeat 32 32
+  ifcount 450 killit
+  ifcount 360 setactor[THISACTOR].cstat 3
+  ifmove RESPAWN_ACTOR_FLAG
+    state respawnit
+  else
+    ifp pshrunk nullop
+    else
+      ifp palive
+        ifpdistl RETRIEVEDISTANCE
+          ifcount 6
+            ifcanseetarget
+      {
+        addvar skillpoints 1
+        palfrom 40 64 64 64
+        sound DUKE_GET
+        killit
+      }
+enda
+
 actor AMMO
 	fall
   cstat 1
@@ -5029,10 +5339,13 @@ actor CRYSTALAMMO //Orb
         mulvarvar temp round
         addvarvar playermoneybonus temp //money
         addvarvar bonuses temp
+        mulvar temp 4
+        addvarvar experience temp
         setvar bonusmoneycounter 60
         palfrom 30 0 0 64
         setvar orbtimer 60
         sound 70
+
         killit
       }
 enda
@@ -6251,6 +6564,8 @@ ends
 move PGROWINGPOP        // Used only as a variable
 
 actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
+	state handleskills
+	state handlemaxammo
 	state endgame
 	state preventhbombpickup
 	state handlenegativeammodevastator
@@ -6270,57 +6585,27 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 	state handlemonsterdrops //Pal
 	state gotmoneyfromteammate //Pal
 	state setuplevelsystem
+	state preventoddammoamount
 
-	getplayer[THISACTOR].ammo_amount 1 temp
-	ifvare temp 0 addammo 1 1
-	getplayer[THISACTOR].ammo_amount 2 temp
-	ifvare temp 0 addammo 2 1
-	getplayer[THISACTOR].ammo_amount 3 temp
-	ifvare temp 0 addammo 3 1
-	getplayer[THISACTOR].ammo_amount 4 temp
-	ifvare temp 0 addammo 4 1
-	getplayer[THISACTOR].ammo_amount 5 temp
-	ifvare temp 0 addammo 5 1
-	getplayer[THISACTOR].ammo_amount 6 temp
-	ifvare temp 0 addammo 6 1
-	getplayer[THISACTOR].ammo_amount 7 temp
-	ifvare temp 0 addammo 7 1
-	getplayer[THISACTOR].ammo_amount 8 temp
-	ifvare temp 0 addammo 8 1
-	getplayer[THISACTOR].ammo_amount 9 temp
-	ifvare temp 0 addammo 9 1
+	ifvarg autooffcounter 0 {
+		subvar autooffcounter 1
+		ifvare autooffcounter 1 {
+			setvar showskilloverlay 0
+		}
+	}
 
 	ifvare gotarmor 1 {
-		setplayer[THISACTOR].max_player_health 70
+		setvarvar temp playerhealth
+		addvar temp 20
+		setplayer[THISACTOR].max_player_health temp
 		ifvare gothit 0 ifvare armorhpgiven 0 {
 			addphealth 20
 			setvar armorhpgiven 1
 		} 
 	}
 	else {
-		setplayer[THISACTOR].max_player_health 50
+		setplayer[THISACTOR].max_player_health playerhealth
 		setvar armorhpgiven 0
-	}
-	ifvare gotbigmag 1 {
-		setplayer[THISACTOR].max_ammo_amount 1 401
-		setplayer[THISACTOR].max_ammo_amount 2 61
-		setplayer[THISACTOR].max_ammo_amount 3 401
-		setplayer[THISACTOR].max_ammo_amount 4 41
-		setplayer[THISACTOR].max_ammo_amount 5 21
-		setplayer[THISACTOR].max_ammo_amount 6 101
-		setplayer[THISACTOR].max_ammo_amount 7 301
-		setplayer[THISACTOR].max_ammo_amount 8 21
-		setplayer[THISACTOR].max_ammo_amount 9 201
-	} else {
-		setplayer[THISACTOR].max_ammo_amount 1 201
-		setplayer[THISACTOR].max_ammo_amount 2 31
-		setplayer[THISACTOR].max_ammo_amount 3 201
-		setplayer[THISACTOR].max_ammo_amount 4 21
-		setplayer[THISACTOR].max_ammo_amount 5 11
-		setplayer[THISACTOR].max_ammo_amount 6 51
-		setplayer[THISACTOR].max_ammo_amount 7 151
-		setplayer[THISACTOR].max_ammo_amount 8 11
-		setplayer[THISACTOR].max_ammo_amount 9 101
 	}
 
 	getactor[THISACTOR].htextra temp
@@ -6335,6 +6620,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 	  }               
 	}
 	
+
 	ifvarg chaingunheat 0 {
 		ifvarg chaingunheat 250 {
 			sound STEAM_HISSING
@@ -6365,6 +6651,8 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 				subvar temp 100
 				addvarvar playermoneybonus temp
 				addvarvar bonuses temp 
+				mulvar temp 2
+				addvarvar experience temp
 				setvar gothit -1
 				setvar nohittimer 60
 			} else ifvarg nohittimer 0 subvar nohittimer 1
@@ -11455,7 +11743,7 @@ state checknewbeasthit
   ifdead //monsterdrops
   {
     state giveexperince
-    state addtotalkills
+    state dostuffonkill
     state newbeastdrops
     ifwasweapon FREEZEBLAST
     {
@@ -11550,7 +11838,7 @@ state checknewbeasthit
 				setplayervar[temptwo].powershotmoney tempfour
 				setplayervar[temptwo].bonusmoneycounter 60
 				state giveexperince
-				state addtotalkills
+				state dostuffonkill
 				state newbeastdrops
 				killit
 			} else ifvarg tempfour 0 { //Instakill on newbeast
@@ -11558,7 +11846,7 @@ state checknewbeasthit
 				sound SQUISHED
 				state standard_jibs
 				state giveexperince
-				state addtotalkills
+				state dostuffonkill
 				state newbeastdrops
 				killit
 			}
@@ -11842,7 +12130,7 @@ useractor enemy NEWBEAST NEWBEASTSTRENGTH
 		      //spawn BLOODPOOL
 		    lotsofglass 30
 		    sound GLASS_BREAKING
-		    state addtotalkills
+		    state dostuffonkill
 		    killit
       }
     getlastpal
