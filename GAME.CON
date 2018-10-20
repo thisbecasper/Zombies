@@ -6632,8 +6632,6 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 		setvar armorhpgiven 0
 	}
 
-	ifp palive userquote 100
-
 	getactor[THISACTOR].htextra temp
 	ifvarg temp 0 {
 	  getactor[THISACTOR].htowner temp
@@ -6642,7 +6640,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 	  	setvarvar hpregencounter hpregencountervar
 	  	ifvare temptwo RPG setactor[THISACTOR].htextra 30
 	  	else ifvare temptwo FREEZEBLAST setactor[THISACTOR].htextra 3
-	  	else ifvare temptwo RADIUSEXPLOSION ifp palive setactor[THISACTOR].htextra 49
+	  	else ifvare temptwo RADIUSEXPLOSION ifvare isdown 0 setactor[THISACTOR].htextra 49
 	  }               
 	}
 
