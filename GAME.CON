@@ -6641,6 +6641,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 	  	ifvare temptwo RPG setactor[THISACTOR].htextra 30
 	  	else ifvare temptwo FREEZEBLAST setactor[THISACTOR].htextra 3
 	  	else ifvare temptwo RADIUSEXPLOSION ifvare isdown 0 setactor[THISACTOR].htextra 49
+	  	else ifvare temptwo RADIUSEXPLOSION setactor[THISACTOR].htextra 0
 	  }               
 	}
 
