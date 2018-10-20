@@ -1920,7 +1920,7 @@ state setuplevelsystem
 			addvar currentlevel 1
 			addvar skillpoints 1
 			subvarvar experience experienceneeded
-			sound SHORT_CIRCUIT
+			sound GETATOMICHEALTH
 			palfrom 50 64 64 64
 		}
 ends
