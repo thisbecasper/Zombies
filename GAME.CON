@@ -1764,38 +1764,62 @@ state setuplevelsystem
 			break
 		}
 		case 2 {
-			setvar experienceneeded 2000
+			setvar experienceneeded 3000
 			break
 		}
 		case 3 {
-			setvar experienceneeded 4000
+			setvar experienceneeded 9750
 			break
 		}
 		case 4 {
-			setvar experienceneeded 7000
+			setvar experienceneeded 21250
 			break
 		}
 		case 5 {
-			setvar experienceneeded 11000
+			setvar experienceneeded 37500
 			break
 		}
 		case 6 {
-			setvar experienceneeded 16000
+			setvar experienceneeded 58500
 			break
 		}
 		case 7 {
-			setvar experienceneeded 22000
+			setvar experienceneeded 84250
 			break
 		}
 		case 8 {
-			setvar experienceneeded 28000
+			setvar experienceneeded 114750
 			break
 		}
 		case 9 {
-			setvar experienceneeded 39000
+			setvar experienceneeded 150000
 			break
 		}
 		case 10 {
+			setvar experienceneeded 190000
+			break
+		}
+		case 11 {
+			setvar experienceneeded 234750
+			break
+		}
+		case 12 {
+			setvar experienceneeded 284250
+			break
+		}
+		case 13 {
+			setvar experienceneeded 338500
+			break
+		}
+		case 14 {
+			setvar experienceneeded 397500
+			break
+		}
+		case 15 {
+			setvar experienceneeded 461250
+			break
+		}
+		case 16 {
 			setvar experience 0
 			break
 		}
@@ -1886,7 +1910,7 @@ state newbeastdrops
 		killit
 	}
 
-  randvar temp 2000 //2000
+  randvar temp 3000 //3000
 	ifvare temp 0 spawn SHIELD
 	else ifvare temp 2 spawn 4371
 	else ifvare temp 3 spawn 1667
