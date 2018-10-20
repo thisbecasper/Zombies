@@ -12067,7 +12067,8 @@ state checknewbeasthit
       //ifrnd 64
         //spawn BLOODPOOL
     }
-    sound NEWBEAST_DYING
+    randvar temp 1
+    ifvare temp 1 sound NEWBEAST_DYING
   }
   else
   {
