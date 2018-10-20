@@ -420,7 +420,7 @@ definequote 191		  SKILLS
 definequote 192		  MOVEMENT SPEED
 definequote 193		  BASE HEALTH
 definequote 194       BONUS MONEY
-definequote 195 	  MAG SIZE
+definequote 195 	  MAGAZINES
 definequote 196		  100 %
 definequote 197		  103 %
 definequote 198		  106 %
@@ -436,11 +436,11 @@ definequote 207		  + 20 $
 definequote 208		  + 40 $
 definequote 209		  + 60 $
 definequote 210		  + 100 $
-definequote 211		  100 %
-definequote 212		  200 %
-definequote 213		  300 %
-definequote 214		  400 %
-definequote 215		  600 %
+definequote 211		  1 MG
+definequote 212		  2 MGS
+definequote 213		  3 MGS
+definequote 214		  4 MGS
+definequote 215		  6 MGS
 definequote 216		  LVL
 definequote 217		  SKILL POINTS:
 
