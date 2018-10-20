@@ -5,25 +5,14 @@ action ANULLACTION 0
 
 ///////////////////////////////////// N O T E S////////////////////////////////////////////////
 
-
-
 /*
 FIRST PRIORITY:
-Monster stuck i rød uden at rød var åben, men gul var
-Monster blev stuck
 
 SECOND PRIORITY:
-Monsterdrop: ammo til våben/våbene og double penge over tid
-tilføj noget ved eog screen
 Mysteryboks skal sige en rumlyd når man er tæt på dem
-tilføj en bank - giver 110% interest pr runde, men det koster gebyr og de skal mindst være der
-i 5 runder eller sådan noget. eller juster withdraw prisen alt efter hvor lang tid de har været
-derinde. lav noget fed grafik til det.
-mystery box der spawner by a chance og så kan man have en hold-use mechanic, 
-hvor en counter tæller op hvert tic hvis use, ellers sætter den til 0.
+mystery box der spawner by a chance
 ved en bestemt runde ændrer newbeast karakter og kan fx hoppe eller slår hurtigere
-sørg for at monstrene kun spawner mht hvor mange kort der er aktive og ikke med 50%
-mellem hver runde effekter og highlight af stats for runden
+highlight af stats for runden
 
 */
 //////////////////////////////////// S U R V I V A L /////////////////////////////////////////////////
@@ -844,6 +833,55 @@ state standard_jibs
   state jib_sounds
 ends
 
+state processdmg
+	getactor[THISACTOR].extra temp
+  ifvarg temp 0 {
+  	getactor[THISACTOR].htextra temp
+		getactor[THISACTOR].htowner temptwo
+		getactor[temptwo].yvel tempthree
+		ifvarn temp -1 {
+			//Normal money
+			getplayervar[tempthree].playermoney temptwo
+			addvarvar temptwo temp
+			setplayervar[tempthree].playermoney temptwo
+			setplayervar[tempthree].moneycounter 60
+			//Money fest
+			getplayervar[tempthree].moneyfestduration temptwo
+			ifvarg temptwo 0 {
+				setvarvar tempfour temp //Get dmg dealt
+				mulvar tempfour 2 //Double it and add (total money is 3x) 
+				getplayervar[tempthree].moneyfrommoneyfest tempsix
+				addvarvar tempsix tempfour
+				setplayervar[tempthree].moneyfrommoneyfest tempsix
+				setplayervar[tempthree].bonusmoneycounter 60
+				getplayervar[tempthree].playermoneybonus tempfive
+				addvarvar tempfive tempfour
+				setplayervar[tempthree].playermoneybonus tempfive
+			}
+			//Money multiplier
+			getplayervar[tempthree].gotdoublemoney temptwo
+			ifvare temptwo 1 { //gotdoublemoney
+				divvar temp 4 //Double money rate
+				getplayervar[tempthree].playermoneybonus tempfive
+				addvarvar tempfive temp
+				setplayervar[tempthree].playermoneybonus tempfive //money
+				setplayervar[tempthree].bonusmoneycounter 60
+				getplayervar[tempthree].doublemoneygained tempfour
+  			addvarvar tempfour temp
+  			setplayervar[tempthree].doublemoneygained tempfour
+			}
+			//Damage dealt
+			getplayervar[tempthree].damagedealt temptwo
+			addvarvar temptwo temp 
+			setplayervar[tempthree].damagedealt temptwo
+			//Hits
+			getplayervar[tempthree].hits temptwo
+			addvar temptwo 1
+			setplayervar[tempthree].hits temptwo
+		}
+  }
+ends
+
 state dieeffects
 	guts JIBS1 1
   guts JIBS3 2
@@ -1049,6 +1087,17 @@ state buyandsetcdammo
 	getactor[HITSPRITE].picnum temp
 	ifvare temp APLAYER palfrom 20 0 0 64
 	else palfrom 20 0 64 0
+ends
+
+state amplifydmg
+/*
+	getactor[THISACTOR].htowner temp
+	getactor[temp].picnum temp
+	getactor[THISACTOR].htextra temptwo
+	ifvarn temptwo -1	ifvare temp APLAYER {
+		mulvar temptwo 2
+		setactor[THISACTOR].htextra temptwo
+	}		*/
 ends
 
 state movementspeed
@@ -5627,6 +5676,11 @@ enda
 actor CRYSTALAMMO //Orb
   ifvarn intermission 0 killit
   ifcount 900 killit
+  ifcount 600 {
+  	getactor[THISACTOR].cstat temp
+	  addvar temp 2
+	  setactor[THISACTOR].cstat temp
+  }
   sizeat 30 64
   setactor[THISACTOR].pal 17
   fall
@@ -12328,8 +12382,10 @@ state newbeastcode
       }*/
     }
   }
-
+  state amplifydmg
+  state processdmg
   ifhitweapon
+
     state checknewbeasthit
 ends
 
@@ -12339,52 +12395,7 @@ useractor enemy NEWBEAST NEWBEASTSTRENGTH
 
   state teleportmonster
 
-  getactor[THISACTOR].extra temp
-  ifvarg temp 0 {
-  	getactor[THISACTOR].htextra temp
-		getactor[THISACTOR].htowner temptwo
-		getactor[temptwo].yvel tempthree
-		ifvarn temp -1 {
-			//Normal money
-			getplayervar[tempthree].playermoney temptwo
-			addvarvar temptwo temp
-			setplayervar[tempthree].playermoney temptwo
-			setplayervar[tempthree].moneycounter 60
-			//Money fest
-			getplayervar[tempthree].moneyfestduration temptwo
-			ifvarg temptwo 0 {
-				setvarvar tempfour temp //Get dmg dealt
-				mulvar tempfour 2 //Double it and add (total money is 3x) 
-				getplayervar[tempthree].moneyfrommoneyfest tempsix
-				addvarvar tempsix tempfour
-				setplayervar[tempthree].moneyfrommoneyfest tempsix
-				setplayervar[tempthree].bonusmoneycounter 60
-				getplayervar[tempthree].playermoneybonus tempfive
-				addvarvar tempfive tempfour
-				setplayervar[tempthree].playermoneybonus tempfive
-			}
-			//Money multiplier
-			getplayervar[tempthree].gotdoublemoney temptwo
-			ifvare temptwo 1 { //gotdoublemoney
-				divvar temp 4 //Double money rate
-				getplayervar[tempthree].playermoneybonus tempfive
-				addvarvar tempfive temp
-				setplayervar[tempthree].playermoneybonus tempfive //money
-				setplayervar[tempthree].bonusmoneycounter 60
-				getplayervar[tempthree].doublemoneygained tempfour
-  			addvarvar tempfour temp
-  			setplayervar[tempthree].doublemoneygained tempfour
-			}
-			//Damage dealt
-			getplayervar[tempthree].damagedealt temptwo
-			addvarvar temptwo temp 
-			setplayervar[tempthree].damagedealt temptwo
-			//Hits
-			getplayervar[tempthree].hits temptwo
-			addvar temptwo 1
-			setplayervar[tempthree].hits temptwo
-		}
-  }
+  
   
   ifvare nuclear 1 { //Handle monster nuclear
   	setvar nuclear 0
