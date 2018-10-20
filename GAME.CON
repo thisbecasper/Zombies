@@ -232,6 +232,9 @@ gamevar bonusxpcap 0 1
 gamevar recentbonusxp 0 1
 gamevar recentbonusxpcounter 0 1
 gamevar havetpdonce 0 2
+gamevar spawnedthisiteration 0 0
+gamevar totalkills 0 1
+gamevar showexcessinfo 1 1
 
 gamevar movespeedskill 1 1
 gamevar bonusmoneyskill 1 1
@@ -255,9 +258,6 @@ gamevar tertiaryweaponsave 0 1
 gamevar primaryammo 0 1
 gamevar secondaryammo 0 1
 gamevar tertiaryammo 0 1
-gamevar spawnedthisiteration 0 0
-gamevar totalkills 0 1
-gamevar showexcessinfo 0 1
 
 gamevar MY_X 0 1
 gamevar MY_Y 0 1
