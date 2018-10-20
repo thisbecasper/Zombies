@@ -33,6 +33,7 @@ definegamefuncname 13 Add_Money
 definegamefuncname 19 Up
 definegamefuncname 20 Down
 definegamefuncname 21	Use_skill_point
+definegamefuncname 22 Show_excess_info
 definegamefuncname 30 Debugging
 definegamefuncname 31 God_Mode
 definegamefuncname 32 Log
@@ -254,6 +255,7 @@ gamevar secondaryammo 0 1
 gamevar tertiaryammo 0 1
 gamevar spawnedthisiteration 0 0
 gamevar totalkills 0 1
+gamevar showexcessinfo 0 1
 
 gamevar MY_X 0 1
 gamevar MY_Y 0 1
@@ -2309,8 +2311,11 @@ onevent EVENT_DISPLAYREST
 		ifvarn playermoney 0 digitalnumberz 2837 315 88 playermoney 0 8 0 0 0 xdim ydim 58000
 		ifvarn playermoneybonus 0 digitalnumberz 2837 315 80 playermoneybonus 0 16 0 0 0 xdim ydim 58000
 		ifvarn moneyused 0 digitalnumberz 2837 311 104 moneyused 0 10 0 0 0 xdim ydim 58000
-		ifvarn recentbonusxp 0 digitalnumberz 2837 160 68 recentbonusxp 0 16 0 0 0 xdim ydim 40000
-		ifvarn recentxp 0 digitalnumberz 2837 160 74 recentxp 0 12 0 0 0 xdim ydim 40000
+		ifvare showexcessinfo 1 {
+			ifvarn recentbonusxp 0 digitalnumberz 2837 160 68 recentbonusxp 0 16 0 0 0 xdim ydim 40000
+			ifvarn recentxp 0 digitalnumberz 2837 160 74 recentxp 0 12 0 0 0 xdim ydim 40000
+		}
+		
 
 		//Information
 		ifvare buycooldown 0 state showinformation
@@ -3627,6 +3632,9 @@ endevent
 
 onevent EVENT_WEAPKEY4
 	setvar RETURN -1
+	ifvare showexcessinfo 0 setvar showexcessinfo 1
+	else setvar showexcessinfo 0
+	quote 224
 endevent
 
 onevent EVENT_WEAPKEY5
