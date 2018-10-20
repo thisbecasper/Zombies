@@ -12056,10 +12056,10 @@ useractor enemy NEWBEAST NEWBEASTSTRENGTH
   	setvar teleporttimer 0
   	setvarvar temp MY_X
   	setvarvar temptwo MY_Y
-  	randvar tempthree 8192
-  	randvar tempfour 8192
-  	subvar tempthree 4096
-  	subvar tempfour 4096
+  	randvar tempthree 4096
+  	randvar tempfour 4096
+  	subvar tempthree 2048
+  	subvar tempfour 2048
   	addvarvar temp tempthree
   	addvarvar temptwo tempfour
   	updatesector temp temptwo tempfive
