@@ -624,6 +624,30 @@ state loseperks
 	}
 ends
 
+state teleportmonster
+	getactor[THISACTOR].extra temp
+	ifvarg temp 0 {
+		addvar teleporttimer 1
+	  ifvarvarg teleporttimer teleporttimervar {
+	  	setvar teleporttimer 0
+	  	setvarvar temp MY_X
+	  	setvarvar temptwo MY_Y
+	  	randvar tempthree 4096
+	  	randvar tempfour 4096
+	  	subvar tempthree 2048
+	  	subvar tempfour 2048
+	  	addvarvar temp tempthree
+	  	addvarvar temptwo tempfour
+	  	updatesector temp temptwo tempfive
+			setactor[THISACTOR].x temp
+			setactor[THISACTOR].y temptwo
+			setactor[THISACTOR].z MY_Z
+			spawn TRANSPORTERSTAR
+			sound 82
+	  }
+	}
+ends
+
 state showweaponorammofix
 	ifvarvare temp primaryweapon setvar temptwo 1
 	else ifvarvare temp secondaryweapon setvar temptwo 1
@@ -12284,24 +12308,7 @@ ends
 useractor enemy NEWBEAST NEWBEASTSTRENGTH
   fall
 
-  addvar teleporttimer 1
-  ifvarvarg teleporttimer teleporttimervar {
-  	setvar teleporttimer 0
-  	setvarvar temp MY_X
-  	setvarvar temptwo MY_Y
-  	randvar tempthree 4096
-  	randvar tempfour 4096
-  	subvar tempthree 2048
-  	subvar tempfour 2048
-  	addvarvar temp tempthree
-  	addvarvar temptwo tempfour
-  	updatesector temp temptwo tempfive
-		setactor[THISACTOR].x temp
-		setactor[THISACTOR].y temptwo
-		setactor[THISACTOR].z MY_Z
-		spawn TRANSPORTERSTAR
-		sound 82
-  }
+  state teleportmonster
 
   getactor[THISACTOR].extra temp
   ifvarg temp 0 {
