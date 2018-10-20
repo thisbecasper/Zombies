@@ -6632,6 +6632,8 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 		setvar armorhpgiven 0
 	}
 
+	ifp palive userquote 100
+
 	getactor[THISACTOR].htextra temp
 	ifvarg temp 0 {
 	  getactor[THISACTOR].htowner temp
