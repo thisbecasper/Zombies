@@ -997,6 +997,10 @@ state handlemonsterdrops
 		setvar maxammo 0
 		setvar instakill 0
 		setvar infinityammo 0
+		setvar moneyfest 0
+		setvar moneyfestduration 0
+		setvar infinityammoduration 0
+		setvar instakillduration 0
 	}
 ends
 
