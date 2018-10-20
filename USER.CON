@@ -416,7 +416,7 @@ definequote 187		  K
 definequote 188		  NO HIT
 definequote 189		  BIG MAGS
 definequote 190       MONSTERS KILLED:
-definequote 191		  SKILLS
+definequote 191		  SKILLS:
 definequote 192		  MOVEMENT SPEED
 definequote 193		  BASE HEALTH
 definequote 194       BONUS MONEY
@@ -443,6 +443,12 @@ definequote 214		  4 MGS
 definequote 215		  6 MGS
 definequote 216		  LVL
 definequote 217		  SKILL POINTS:
+definequote 218		  RANDOM BONUS XP
+definequote 219       0 %
+definequote 220       50 %
+definequote 221       100 %
+definequote 222       150 %
+definequote 223       300 %
 
 
 // Volume titles cannot excede 32 characters.
