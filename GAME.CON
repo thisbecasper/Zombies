@@ -2698,7 +2698,7 @@ onevent EVENT_DISPLAYREST
 				digitalnumberz 2837 84 58 totalkills 0 0 0 0 0 xdim ydim 55000
 				digitalnumberz 2837 84 66 moneyspent 0 0 0 0 0 xdim ydim 55000
 				digitalnumberz 2837 84 74 bonuses 0 0 0 0 0 xdim ydim 55000
-				ifvarg numplayers 1 digitalnumberz 2837 84 90 moneyrecieved 0 0 0 0 0 xdim ydim 55000
+				ifvarg numplayers 1 digitalnumberz 2837 84 82 moneyrecieved 0 0 0 0 0 xdim ydim 55000
 				setvarvar temp hits
 				mulvar temp 100
 				divvarvar temp shots
