@@ -1918,7 +1918,7 @@ state newbeastdrops
 	else ifvare temp 5 spawn HOLODUKE
 	else ifvare temp 6 spawn JETPACK
 	else ifvare temp 7 spawn FIRSTGUNSPRITE
-	else ifvare temp 6 spawn SHOTGUNSPRITE
+	else ifvare temp 8 spawn SHOTGUNSPRITE
 	else ifvare temp 9 spawn CHAINGUNSPRITE
 	else ifvare temp 10 spawn RPGSPRITE
 	else ifvare temp 11 spawn HBOMBAMMO
