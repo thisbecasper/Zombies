@@ -1889,75 +1889,75 @@ state setuplevelsystem
 			break
 		}
 		case 2 {
-			setvar experienceneeded 3000
+			setvar experienceneeded 2000
 			break
 		}
 		case 3 {
-			setvar experienceneeded 9750
+			setvar experienceneeded 5407
 			break
 		}
 		case 4 {
-			setvar experienceneeded 21250
+			setvar experienceneeded 9720
 			break
 		}
 		case 5 {
-			setvar experienceneeded 37500
+			setvar experienceneeded 15440
 			break
 		}
 		case 6 {
-			setvar experienceneeded 58500
+			setvar experienceneeded 22566
 			break
 		}
 		case 7 {
-			setvar experienceneeded 84250
+			setvar experienceneeded 31099
 			break
 		}
 		case 8 {
-			setvar experienceneeded 114750
+			setvar experienceneeded 41039
 			break
 		}
 		case 9 {
-			setvar experienceneeded 150000
+			setvar experienceneeded 52385
 			break
 		}
 		case 10 {
-			setvar experienceneeded 190000
+			setvar experienceneeded 65137
 			break
 		}
 		case 11 {
-			setvar experienceneeded 234750
+			setvar experienceneeded 79297
 			break
 		}
 		case 12 {
-			setvar experienceneeded 284250
+			setvar experienceneeded 94863
 			break
 		}
 		case 13 {
-			setvar experienceneeded 338500
+			setvar experienceneeded 111835
 			break
 		}
 		case 14 {
-			setvar experienceneeded 397500
+			setvar experienceneeded 130214
 			break
 		}
 		case 15 {
-			setvar experienceneeded 461250
+			setvar experienceneeded 150000
 			break
 		}
 		case 16 {
-			setvar experienceneeded 461250
+			setvar experienceneeded 171192
 			break
 		}
 		case 17 {
-			setvar experienceneeded 461250
+			setvar experienceneeded 193791
 			break
 		}
 		case 18 {
-			setvar experienceneeded 461250
+			setvar experienceneeded 217797
 			break
 		}
 		case 19 {
-			setvar experienceneeded 461250
+			setvar experienceneeded 243209
 			break
 		}
 		case 20 {
