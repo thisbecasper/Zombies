@@ -1612,6 +1612,8 @@ state nextround
   setvarvar temptwo temp
   setvar tempfour 50
   mulvarvar tempfour round //Round bonus
+  setvarvar tempseven round
+  mulvar tempseven 200
   whilevarn temp -1 {
   	getactor[temp].yvel tempfive
   	getplayervar[tempfive].isdead tempsix //Check if player is not dead
@@ -1621,15 +1623,18 @@ state nextround
 	  	addvarvar tempthree tempfour
 	  	setplayervar[tempfive].playermoneybonus tempthree //Money
 	  	setplayervar[tempfive].bonusmoneycounter 60
+
 	  	getplayervar[tempfive].bonuses tempthree
 	  	addvarvar tempthree tempfour
 	  	setplayervar[tempfive].bonuses tempthree
+
+	  	
 	  	getplayervar[tempfive].experience tempthree
-	  	mulvar tempfour 4
-	  	addvarvar tempthree tempfour
+	  	addvarvar tempthree tempseven
 	  	setplayervar[tempfive].experience tempthree
+
 	  	getplayervar[tempfive].recentxp tempthree
-	  	addvarvar tempthree tempfour
+	  	addvarvar tempthree tempseven
 	  	setplayervar[tempfive].recentxp tempthree
 	  	setplayervar[tempfive].recentxpcounter 60
   	}
