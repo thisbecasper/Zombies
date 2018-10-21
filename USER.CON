@@ -450,6 +450,12 @@ definequote 221       100 %
 definequote 222       150 %
 definequote 223       300 %
 definequote 224		  TOGGLED INFORMATION SHOWN
+definequote 225		  DMG AMPLIFIER
+definequote 226		  0 %
+definequote 227		  15 %
+definequote 228		  30 %
+definequote 229		  45 %
+definequote 230		  70 %
 
 
 // Volume titles cannot excede 32 characters.
