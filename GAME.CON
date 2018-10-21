@@ -2059,9 +2059,10 @@ ends
 state giveexperience
 	getactor[THISACTOR].htowner temp
 	getactor[temp].yvel temptwo
+	getplayervar[temptwo].bonusxpcap tempsix
 
 	setvarvar temp monsterhp
-	randvarvar tempfour bonusxpcap
+	randvarvar tempfour tempsix
 
 	getplayervar[temptwo].experience tempthree
 	addvarvar tempthree temp
