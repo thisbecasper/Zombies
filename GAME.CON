@@ -1613,7 +1613,7 @@ state nextround
   setvar tempfour 50
   mulvarvar tempfour round //Round bonus
   setvarvar tempseven round
-  mulvar tempseven 200
+  mulvar tempseven 200 //Xp bonus
   whilevarn temp -1 {
   	getactor[temp].yvel tempfive
   	getplayervar[tempfive].isdead tempsix //Check if player is not dead
