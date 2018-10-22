@@ -80,7 +80,7 @@ gamevar maxlevel 20 4096
 
 //Gets set in event_use and showinformation
  					//DMG AMMO TOTALDMG  BUY  BUYDMG  PRICE
-//PISTOL	  7 * 500 =  3500 |  50    350   250 - 1000 
+//PISTOL	  7 * 500 =  3500 |  50    350   200 -  800 
 //SHOTTY	112 *  80 =  8960 |   8    896   750 - 3000
 //CHAIN		 15 * 500 =  7500 |  50    750   600 - 2400
 //RPG			250	*  50 = 12500 |	  5   1250  1250 - 5000
@@ -90,7 +90,7 @@ gamevar maxlevel 20 4096
 //DEVI		 50 * 500 = 25000 |  50   2500  1750 - 7000
 //FREEZE	 40 * 200 =  8000 |  20    800   650 - 2600
 //TRIP		300 *  30 =  9000 |   3    900   600 - 2400
-gamevar pistolcost 1000 4096
+gamevar pistolcost 800 4096
 gamevar shotguncost 3000 4096
 gamevar chainguncost 2400 4096
 gamevar rpgcost 5000 4096
@@ -2602,7 +2602,7 @@ onevent EVENT_DISPLAYREST
 	  	subvar tempthree 1
 	  	digitalnumberz 2837 337 30 tempthree 0 2 16 0 0 xdim ydim 25000
 
-	  	/* //Health bar
+	  	//Health bar
 			getplayer[temptwo].i temp
 			getactor[temp].extra temp
 	    getplayer[temptwo].max_player_health tempthree
@@ -2650,7 +2650,7 @@ onevent EVENT_DISPLAYREST
 	        addvar tempseven 1 
 	        subvar temp 1
 	      }
-	    } */
+	    }
 	
 	  	//Xp bar
 	  	setvar tempthree 312
