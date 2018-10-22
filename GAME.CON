@@ -91,9 +91,9 @@ gamevar maxlevel 20 4096
 //FREEZE	 40 * 200 =  8000 |  20    800   650 - 2600
 //TRIP		300 *  30 =  9000 |   3    900   600 - 2400
 gamevar pistolcost 800 4096
-gamevar shotguncost 3000 4096
+gamevar shotguncost 2800 4096
 gamevar chainguncost 2400 4096
-gamevar rpgcost 5000 4096
+gamevar rpgcost 4500 4096
 gamevar pipebombcost 3000 4096
 gamevar shrinkercost 8000 4096
 gamevar expandercost 0 4096
