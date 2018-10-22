@@ -224,13 +224,14 @@ gamevar havetpdonce 0 2
 gamevar spawnedthisiteration 0 0
 gamevar totalkills 0 1
 gamevar showexcessinfo 1 1
+gamevar criticalhitcounter 0 1
 
 gamevar movespeedskill 1 1
 gamevar bonusmoneyskill 1 1
 gamevar healthskill 1 1
 gamevar maxammoskill 1 1
 gamevar bonusxpskill 1 1
-gamevar dmgamplifyskill 1 1
+gamevar criticalhitskill 1 1
 
 gamevar ammoamountone 0 1
 gamevar ammoamounttwo 0 1
@@ -1090,25 +1091,52 @@ state buyandsetcdammo
 	else palfrom 20 0 64 0
 ends
 
-state amplifydmg
+state criticalhit
 	getactor[THISACTOR].htowner temp
 	getactor[temp].picnum temp
 	getactor[THISACTOR].htextra temptwo
+	randvar tempsix 99
 	ifvarn temptwo -1	ifvare temp APLAYER {
-		ifvare dmgamplifyskill 1 {
+		ifvare criticalhitskill 1 {
 			//Do nothing
-		} else ifvare dmgamplifyskill 2 {
-			mulvar temptwo 115
-			divvar temptwo 100
-		} else ifvare dmgamplifyskill 3 {
-			mulvar temptwo 130
-			divvar temptwo 100
-		} else ifvare dmgamplifyskill 4 {
-			mulvar temptwo 145
-			divvar temptwo 100
-		} else ifvare dmgamplifyskill 5 {
-			mulvar temptwo 170
-			divvar temptwo 100
+		} else ifvare criticalhitskill 2 {
+			ifvarl tempsix 14 {
+				mulvar temptwo 2
+				guts JIBS2 1
+  			guts JIBS3 2
+  			guts JIBS4 3
+  			guts JIBS5 2
+  			guts JIBS6 3
+			}
+		} else ifvare criticalhitskill 3 {
+			ifvarl tempsix 29 {
+				mulvar temptwo 2
+				guts JIBS2 1
+  			guts JIBS3 2
+  			guts JIBS4 3
+  			guts JIBS5 2
+  			guts JIBS6 3
+  			getactor[temp].yvel tempthree
+  			setplayervar[tempthree].criticalhitcounter 15
+			}
+		} else ifvare criticalhitskill 4 {
+			ifvarl tempsix 44 {
+				mulvar temptwo 2
+				guts JIBS2 1
+  			guts JIBS3 2
+  			guts JIBS4 3
+  			guts JIBS5 2
+  			guts JIBS6 3
+			}
+		} else ifvare criticalhitskill 5 {
+			ifvarl tempsix 69 {
+				mulvar temptwo 2
+				guts JIBS2 1
+  			guts JIBS3 2
+  			guts JIBS4 3
+  			guts JIBS5 2
+  			guts JIBS6 3
+			}
 		}
 		setactor[THISACTOR].htextra temptwo
 	}
@@ -2043,7 +2071,7 @@ state handleskills
 	}
 
 	//Dmg amplify
-	//State amplifydmg
+	//state criticalhit
 ends
 
 state checkhitscan
@@ -2333,6 +2361,11 @@ onevent EVENT_DISPLAYREST
 			}
 		}
 
+		//Crit hit visuals
+		//ifvarg criticalhitcounter 9 rotatesprite 160 100 65535 0 1667 0 0 0 0 0 xdim ydim
+		//else ifvarg criticalhitcounter 4 rotatesprite 160 100 65535 0 1667 0 0 0 0 0 xdim ydim
+		//else ifvarg criticalhitcounter 0 rotatesprite 160 100 65535 0 1667 0 0 0 0 0 xdim ydim
+
 		//Levelbar 
 		setvar temptwo 110
 		setvar temp 100
@@ -2569,7 +2602,7 @@ onevent EVENT_DISPLAYREST
 	  	getplayervar[temptwo].bonusxpskill tempthree
 	  	subvar tempthree 1
 	  	digitalnumberz 2837 337 26 tempthree 0 16 16 0 0 xdim ydim 25000
-	  	getplayervar[temptwo].dmgamplifyskill tempthree
+	  	getplayervar[temptwo].criticalhitskill tempthree
 	  	subvar tempthree 1
 	  	digitalnumberz 2837 337 30 tempthree 0 2 16 0 0 xdim ydim 25000
 
@@ -2771,11 +2804,11 @@ onevent EVENT_DISPLAYREST
 				gametextz STARTALPHANUM 320 148 228 0 2 0 0 0 xdim ydim 44000
 				gametextz STARTALPHANUM 356 148 229 0 2 0 0 0 xdim ydim 44000
 				gametextz STARTALPHANUM 416 148 230 0 2 0 0 0 xdim ydim 44000
-				ifvare dmgamplifyskill 1 gametextz STARTALPHANUM 176 148 226 0 0 0 0 0 xdim ydim 44000
-				ifvare dmgamplifyskill 2 gametextz STARTALPHANUM 236 148 227 0 0 0 0 0 xdim ydim 44000
-				ifvare dmgamplifyskill 3 gametextz STARTALPHANUM 320 148 228 0 0 0 0 0 xdim ydim 44000
-				ifvare dmgamplifyskill 4 gametextz STARTALPHANUM 356 148 229 0 0 0 0 0 xdim ydim 44000
-				ifvare dmgamplifyskill 5 gametextz STARTALPHANUM 416 148 230 0 0 0 0 0 xdim ydim 44000
+				ifvare criticalhitskill 1 gametextz STARTALPHANUM 176 148 226 0 0 0 0 0 xdim ydim 44000
+				ifvare criticalhitskill 2 gametextz STARTALPHANUM 236 148 227 0 0 0 0 0 xdim ydim 44000
+				ifvare criticalhitskill 3 gametextz STARTALPHANUM 320 148 228 0 0 0 0 0 xdim ydim 44000
+				ifvare criticalhitskill 4 gametextz STARTALPHANUM 356 148 229 0 0 0 0 0 xdim ydim 44000
+				ifvare criticalhitskill 5 gametextz STARTALPHANUM 416 148 230 0 0 0 0 0 xdim ydim 44000
 
 				ifvare choice 1 {
 					rotatesprite 100 38 27000 0 RESPAWNMARKERYELLOW 0 0 0 0 0 xdim ydim
@@ -3770,8 +3803,8 @@ onevent EVENT_WEAPKEY3
 				setvar autooffcounter 15
 				sound 243
 			}
-			ifvare choice 6 ifvarl dmgamplifyskill 5 {
-				addvar dmgamplifyskill 1
+			ifvare choice 6 ifvarl criticalhitskill 5 {
+				addvar criticalhitskill 1
 				subvar skillpoints 1
 				setvar autooffcounter 15
 				sound 243
@@ -6969,11 +7002,10 @@ state check_pstandard
       action PDUCKING
 ends
 
-
-
 move PGROWINGPOP        // Used only as a variable
 
 actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
+setvar skillpoints 10
 	state handleskills
 	state handlemaxammo
 	state endgame
@@ -6996,6 +7028,8 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 	state gotmoneyfromteammate //Pal
 	state setuplevelsystem
 	state preventoddammoamount
+
+	ifvarg criticalhitcounter 0 subvar criticalhitcounter 1
 
 	ifvarg autooffcounter 0 {
 		subvar autooffcounter 1
@@ -12431,7 +12465,7 @@ state newbeastcode
       }*/
     }
   }
-  state amplifydmg
+  state criticalhit
   state processdmg
   ifhitweapon
 
@@ -12489,4 +12523,3 @@ useractor enemy NEWBEAST NEWBEASTSTRENGTH
     getlastpal
   }
 enda
-

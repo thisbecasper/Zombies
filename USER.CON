@@ -450,7 +450,7 @@ definequote 221       100 %
 definequote 222       150 %
 definequote 223       300 %
 definequote 224		  TOGGLED INFORMATION SHOWN
-definequote 225		  DMG AMPLIFIER
+definequote 225		  CRIT CHANCE
 definequote 226		  0 %
 definequote 227		  15 %
 definequote 228		  30 %
@@ -1014,7 +1014,6 @@ definesound DTAG_GREENSCORE        GSCORE.VOC     -128 128 255 128 0
 definesound DTAG_BROWNSCORE        BSCORE.VOC     -128 128 255 128 0
 definesound SCREECH                skidcr1.voc    -128 128   4 0   0
 
-
 definesound INTRO4_1               intro4h1.voc    0   0   255 0   0
 definesound INTRO4_B               intro4h2.voc    0   0   255 0   0
 definesound INTRO4_2               typing.voc      0   0   255 0   0
@@ -1048,4 +1047,3 @@ definesound HORNSND                shorn1.voc      0   0   255  2    0
 definesound BELLSND                sbell1a.voc     0   0   255  2    0
 definesound GOAWAY                 goaway.voc      0   0    4   0    0
 definesound JOKE                   joke.voc        0   0   128  0    0
-
