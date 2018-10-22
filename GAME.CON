@@ -2602,7 +2602,7 @@ onevent EVENT_DISPLAYREST
 	  	subvar tempthree 1
 	  	digitalnumberz 2837 337 30 tempthree 0 2 16 0 0 xdim ydim 25000
 
-	  	/*//Health bar
+	  	/* //Health bar
 			getplayer[temptwo].i temp
 			getactor[temp].extra temp
 	    getplayer[temptwo].max_player_health tempthree
@@ -2650,7 +2650,7 @@ onevent EVENT_DISPLAYREST
 	        addvar tempseven 1 
 	        subvar temp 1
 	      }
-	    }*/
+	    } */
 	
 	  	//Xp bar
 	  	setvar tempthree 312
