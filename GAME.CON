@@ -224,6 +224,7 @@ gamevar havetpdonce 0 2
 gamevar spawnedthisiteration 0 0
 gamevar totalkills 0 1
 gamevar showexcessinfo 1 1
+gamevar criticalhitcounter 0 1
 
 gamevar movespeedskill 1 1
 gamevar bonusmoneyskill 1 1
@@ -1115,6 +1116,8 @@ state criticalhit
   			guts JIBS4 3
   			guts JIBS5 2
   			guts JIBS6 3
+  			getactor[temp].yvel tempthree
+  			setplayervar[tempthree].criticalhitcounter 15
 			}
 		} else ifvare criticalhitskill 4 {
 			ifvarl tempsix 44 {
@@ -2357,6 +2360,11 @@ onevent EVENT_DISPLAYREST
 	      }
 			}
 		}
+
+		//Crit hit visuals
+		//ifvarg criticalhitcounter 9 rotatesprite 160 100 65535 0 1667 0 0 0 0 0 xdim ydim
+		//else ifvarg criticalhitcounter 4 rotatesprite 160 100 65535 0 1667 0 0 0 0 0 xdim ydim
+		//else ifvarg criticalhitcounter 0 rotatesprite 160 100 65535 0 1667 0 0 0 0 0 xdim ydim
 
 		//Levelbar 
 		setvar temptwo 110
@@ -7021,6 +7029,8 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 	state gotmoneyfromteammate //Pal
 	state setuplevelsystem
 	state preventoddammoamount
+
+	ifvarg criticalhitcounter 0 subvar criticalhitcounter 1
 
 	ifvarg autooffcounter 0 {
 		subvar autooffcounter 1
