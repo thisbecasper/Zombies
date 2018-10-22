@@ -120,6 +120,7 @@ gamevar tempfour 0 0
 gamevar tempfive 0 0
 gamevar tempsix 0 0
 gamevar tempseven 0 0
+gamevar tempeight 0 0
 gamevar haltcounter 0 1
 gamevar spawncounter 0 2
 gamevar hpregencounter 0 1
@@ -2610,7 +2611,7 @@ onevent EVENT_DISPLAYREST
 	    setvarvar tempsix tempthree
 	    mulvar tempsix 2
 	    divvar tempsix 3
-	    addvar tempsix 1 //Make it hit the right branch and not off by one
+	    addvar tempsix 1 
 
 	    setvar tempfive 20
 	    setvar tempseven 312
@@ -2643,9 +2644,9 @@ onevent EVENT_DISPLAYREST
 	        subvar temp 1
 	      }
 			} else {
+				mulvar temp 20
+	    	divvarvar temp tempthree
 				whilevarn temp 0 {
-					mulvar temp 20
-	    		divvarvar temp tempthree
 	        rotatesprite tempseven 31 65536 0 3135 0 10 16 0 0 xdim ydim 
 	        addvar tempseven 1 
 	        subvar temp 1
@@ -3750,16 +3751,20 @@ endevent
 
 onevent EVENT_WEAPKEY1
 	setvar RETURN -1
-	ifvare choice 1 setvar choice 6
-	else subvar choice 1
-	sound KICK_HIT
+	ifvare showskilloverlay 1 {
+		ifvare choice 1 setvar choice 6
+		else subvar choice 1
+		sound KICK_HIT
+	}
 endevent
 
 onevent EVENT_WEAPKEY2
 	setvar RETURN -1
-	ifvare choice 6 setvar choice 1
-	else addvar choice 1
-	sound KICK_HIT
+	ifvare showskilloverlay 1 {
+		ifvare choice 6 setvar choice 1
+		else addvar choice 1
+		sound KICK_HIT
+	}
 endevent
 
 onevent EVENT_WEAPKEY3
