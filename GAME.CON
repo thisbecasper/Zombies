@@ -12458,7 +12458,6 @@ state newbeastcode
   state criticalhit
   state processdmg
   ifhitweapon
-
     state checknewbeasthit
 ends
 
