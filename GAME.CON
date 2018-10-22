@@ -1093,9 +1093,9 @@ ends
 
 state criticalhit
 	getactor[THISACTOR].htowner temp
+	getactor[temp].yvel tempseven
 	getactor[temp].picnum temp
 	getactor[THISACTOR].htextra temptwo
-	getactor[temp].yvel tempseven
 	getplayervar[tempseven].criticalhitskill tempfive
 	randvar tempsix 99
 	ifvarn temptwo -1	ifvare temp APLAYER {
