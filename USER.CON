@@ -450,7 +450,7 @@ definequote 221       100 %
 definequote 222       150 %
 definequote 223       300 %
 definequote 224		  TOGGLED INFORMATION SHOWN
-definequote 225		  DMG AMPLIFIER
+definequote 225		  CRIT CHANCE
 definequote 226		  0 %
 definequote 227		  15 %
 definequote 228		  30 %
