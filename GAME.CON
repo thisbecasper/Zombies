@@ -1109,7 +1109,15 @@ state criticalhit
   			guts JIBS6 1
   			setplayervar[tempseven].criticalhitcounter 15
 			}
-		} else ifvare tempfive 19 {
+		} else ifvare tempfive 3 {
+			ifvarl tempsix 19 {
+				mulvar temptwo 2
+				guts JIBS2 1
+  			guts JIBS3 1
+  			guts JIBS6 1
+  			setplayervar[tempseven].criticalhitcounter 15
+			}
+		} else ifvare tempfive 4 {
 			ifvarl tempsix 29 {
 				mulvar temptwo 2
 				guts JIBS2 1
@@ -1117,16 +1125,8 @@ state criticalhit
   			guts JIBS6 1
   			setplayervar[tempseven].criticalhitcounter 15
 			}
-		} else ifvare tempfive 29 {
-			ifvarl tempsix 44 {
-				mulvar temptwo 2
-				guts JIBS2 1
-  			guts JIBS3 1
-  			guts JIBS6 1
-  			setplayervar[tempseven].criticalhitcounter 15
-			}
-		} else ifvare tempfive 49 {
-			ifvarl tempsix 69 {
+		} else ifvare tempfive 5 {
+			ifvarl tempsix 49 {
 				mulvar temptwo 2
 				guts JIBS2 1
   			guts JIBS3 1
