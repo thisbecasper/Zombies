@@ -1095,47 +1095,43 @@ state criticalhit
 	getactor[THISACTOR].htowner temp
 	getactor[temp].picnum temp
 	getactor[THISACTOR].htextra temptwo
+	getactor[temp].yvel tempseven
+	getplayervar[tempseven].criticalhitskill tempfive
 	randvar tempsix 99
 	ifvarn temptwo -1	ifvare temp APLAYER {
-		ifvare criticalhitskill 1 {
+		ifvare tempfive 1 {
 			//Do nothing
-		} else ifvare criticalhitskill 2 {
+		} else ifvare tempfive 2 {
 			ifvarl tempsix 14 {
 				mulvar temptwo 2
 				guts JIBS2 1
-  			guts JIBS3 2
-  			guts JIBS4 3
-  			guts JIBS5 2
-  			guts JIBS6 3
+  			guts JIBS3 1
+  			guts JIBS6 1
+  			setplayervar[tempseven].criticalhitcounter 15
 			}
-		} else ifvare criticalhitskill 3 {
+		} else ifvare tempfive 3 {
 			ifvarl tempsix 29 {
 				mulvar temptwo 2
 				guts JIBS2 1
-  			guts JIBS3 2
-  			guts JIBS4 3
-  			guts JIBS5 2
-  			guts JIBS6 3
-  			getactor[temp].yvel tempthree
-  			setplayervar[tempthree].criticalhitcounter 15
+  			guts JIBS3 1
+  			guts JIBS6 1
+  			setplayervar[tempseven].criticalhitcounter 15
 			}
-		} else ifvare criticalhitskill 4 {
+		} else ifvare tempfive 4 {
 			ifvarl tempsix 44 {
 				mulvar temptwo 2
 				guts JIBS2 1
-  			guts JIBS3 2
-  			guts JIBS4 3
-  			guts JIBS5 2
-  			guts JIBS6 3
+  			guts JIBS3 1
+  			guts JIBS6 1
+  			setplayervar[tempseven].criticalhitcounter 15
 			}
-		} else ifvare criticalhitskill 5 {
+		} else ifvare tempfive 5 {
 			ifvarl tempsix 69 {
 				mulvar temptwo 2
 				guts JIBS2 1
-  			guts JIBS3 2
-  			guts JIBS4 3
-  			guts JIBS5 2
-  			guts JIBS6 3
+  			guts JIBS3 1
+  			guts JIBS6 1
+  			setplayervar[tempseven].criticalhitcounter 15
 			}
 		}
 		setactor[THISACTOR].htextra temptwo
@@ -2170,7 +2166,7 @@ ends
 onevent EVENT_DISPLAYREST
 	//Debuggg
 	//getactor[THISACTOR].extra temp
-	//digitalnumberz 2837 0 40 bonusxpcap 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 40 criticalhitcounter 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 60 recentxpcounter 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 80 currentlevel 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 100 skillpoints 0 0 0 0 0 xdim ydim 58000
@@ -2360,11 +2356,11 @@ onevent EVENT_DISPLAYREST
 	      }
 			}
 		}
-
+		
 		//Crit hit visuals
-		//ifvarg criticalhitcounter 9 rotatesprite 160 100 65535 0 1667 0 0 0 0 0 xdim ydim
-		//else ifvarg criticalhitcounter 4 rotatesprite 160 100 65535 0 1667 0 0 0 0 0 xdim ydim
-		//else ifvarg criticalhitcounter 0 rotatesprite 160 100 65535 0 1667 0 0 0 0 0 xdim ydim
+		ifvarg criticalhitcounter 6 rotatesprite 160 100 38000 256 2523 0 7 0 0 0 xdim ydim
+		else ifvarg criticalhitcounter 3 rotatesprite 160 100 38000 256 2523 0 7 1 0 0 xdim ydim
+		else ifvarg criticalhitcounter 0 rotatesprite 160 100 38000 256 2523 0 7 33 0 0 xdim ydim
 
 		//Levelbar 
 		setvar temptwo 110
@@ -5758,11 +5754,6 @@ enda
 actor CRYSTALAMMO //Orb
   ifvarn intermission 0 killit
   ifcount 900 killit
-  ifcount 600 {
-  	getactor[THISACTOR].cstat temp
-	  addvar temp 2
-	  setactor[THISACTOR].cstat temp
-  }
   sizeat 30 64
   setactor[THISACTOR].pal 17
   fall
@@ -7005,7 +6996,6 @@ ends
 move PGROWINGPOP        // Used only as a variable
 
 actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
-setvar skillpoints 10
 	state handleskills
 	state handlemaxammo
 	state endgame
