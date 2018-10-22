@@ -1102,14 +1102,14 @@ state criticalhit
 		ifvare tempfive 1 {
 			//Do nothing
 		} else ifvare tempfive 2 {
-			ifvarl tempsix 14 {
+			ifvarl tempsix 9 {
 				mulvar temptwo 2
 				guts JIBS2 1
   			guts JIBS3 1
   			guts JIBS6 1
   			setplayervar[tempseven].criticalhitcounter 15
 			}
-		} else ifvare tempfive 3 {
+		} else ifvare tempfive 19 {
 			ifvarl tempsix 29 {
 				mulvar temptwo 2
 				guts JIBS2 1
@@ -1117,7 +1117,7 @@ state criticalhit
   			guts JIBS6 1
   			setplayervar[tempseven].criticalhitcounter 15
 			}
-		} else ifvare tempfive 4 {
+		} else ifvare tempfive 29 {
 			ifvarl tempsix 44 {
 				mulvar temptwo 2
 				guts JIBS2 1
@@ -1125,7 +1125,7 @@ state criticalhit
   			guts JIBS6 1
   			setplayervar[tempseven].criticalhitcounter 15
 			}
-		} else ifvare tempfive 5 {
+		} else ifvare tempfive 49 {
 			ifvarl tempsix 69 {
 				mulvar temptwo 2
 				guts JIBS2 1
@@ -2602,7 +2602,7 @@ onevent EVENT_DISPLAYREST
 	  	subvar tempthree 1
 	  	digitalnumberz 2837 337 30 tempthree 0 2 16 0 0 xdim ydim 25000
 
-	  	//Health bar
+	  	/*//Health bar
 			getplayer[temptwo].i temp
 			getactor[temp].extra temp
 	    getplayer[temptwo].max_player_health tempthree
@@ -2650,7 +2650,7 @@ onevent EVENT_DISPLAYREST
 	        addvar tempseven 1 
 	        subvar temp 1
 	      }
-	    }
+	    }*/
 	
 	  	//Xp bar
 	  	setvar tempthree 312
