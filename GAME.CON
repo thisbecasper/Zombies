@@ -2201,7 +2201,7 @@ onevent EVENT_DISPLAYREST
 			setvarvar temp intermission
 			divvar temp 30
 			addvar temp 1
-			digitalnumberz 2930 160 20 temp 0 0 0 0 0 xdim ydim 65000
+			digitalnumberz 2930 160 14 temp 0 0 0 0 0 xdim ydim 65000
 		}
 
 		//Show access cards
@@ -2245,12 +2245,12 @@ onevent EVENT_DISPLAYREST
 	  ifvarvarl tempthree temp digitalnumberz 2837 180 108 tempthree 0 2 0 0 0 xdim ydim 40000
 
 		//Round number
-		rotatesprite -47 20 58000 0 2957 0 0 0 0 0 xdim ydim
-		rotatesprite -36 20 58000 0 2954 0 0 0 0 0 xdim ydim
-		rotatesprite -25 20 58000 0 2960 0 0 0 0 0 xdim ydim
-		rotatesprite -13 20 58000 0 2953 0 0 0 0 0 xdim ydim
-		rotatesprite -2 20 58000 0 2943 0 0 0 0 0 xdim ydim
-		digitalnumberz 2930 25 20 round 0 0 0 0 0 xdim ydim 58000
+		rotatesprite -47 12 58000 0 2957 0 0 0 0 0 xdim ydim
+		rotatesprite -36 12 58000 0 2954 0 0 0 0 0 xdim ydim
+		rotatesprite -25 12 58000 0 2960 0 0 0 0 0 xdim ydim
+		rotatesprite -13 12 58000 0 2953 0 0 0 0 0 xdim ydim
+		rotatesprite -2 12 58000 0 2943 0 0 0 0 0 xdim ydim
+		digitalnumberz 2930 25 12 round 0 0 0 0 0 xdim ydim 58000
 
 		//Perks
 		ifvare gotarmor 1 rotatesprite 341 181 35000 0 54 0 0 0 0 0 xdim ydim
@@ -2672,8 +2672,40 @@ onevent EVENT_DISPLAYREST
 	    setvarvar tempfive temp
 	    addvarvar temp tempthree
 	    addvarvar temp tempfour
-	    ifvare tempsix 0 digitalnumberz 2837 352 22 temp 0 0 16 0 0 xdim ydim 30000
+	    ifvare tempsix 0 digitalnumberz 2837 352 10 temp 0 0 16 0 0 xdim ydim 30000
 	    else digitalnumberz 2837 352 22 temp 0 7 16 0 0 xdim ydim 30000
+
+	    //Weapons
+	    getplayervar[temptwo].primaryweapon tempthree
+	  	getplayervar[temptwo].secondaryweapon tempfour
+	  	getplayervar[temptwo].tertiaryweapon tempfive
+	    ifvare tempthree 1 rotatesprite 352 18 14000 0 21 0 0 0 0 0 xdim ydim //157
+			ifvare tempthree 2 rotatesprite 352 20 14000 0 28 0 0 0 0 0 xdim ydim //160
+			ifvare tempthree 3 rotatesprite 352 18 14000 0 22 0 0 0 0 0 xdim ydim //157
+			ifvare tempthree 4 rotatesprite 352 21 14000 0 23 0 0 0 0 0 xdim ydim //157
+			ifvare tempthree 5 rotatesprite 352 18 14000 0 47 0 0 0 0 0 xdim ydim //157
+			ifvare tempthree 6 rotatesprite 352 18 14000 0 25 0 0 0 0 0 xdim ydim //157
+			ifvare tempthree 7 rotatesprite 352 21 14000 0 29 0 0 0 0 0 xdim ydim //160
+			ifvare tempthree 8 rotatesprite 352 19 14000 0 27 0 0 0 0 0 xdim ydim //158
+			ifvare tempthree 9 rotatesprite 352 18 14000 0 24 0 0 0 0 0 xdim ydim //157
+			ifvare tempfour 1 rotatesprite 352 26 10000 0 21 0 0 0 0 0 xdim ydim //175
+			ifvare tempfour 2 rotatesprite 352 28 10000 0 28 0 0 0 0 0 xdim ydim //177
+			ifvare tempfour 3 rotatesprite 352 26 10000 0 22 0 0 0 0 0 xdim ydim //175
+			ifvare tempfour 4 rotatesprite 352 26 10000 0 23 0 0 0 0 0 xdim ydim //175
+			ifvare tempfour 5 rotatesprite 352 26 10000 0 47 0 0 0 0 0 xdim ydim //175
+			ifvare tempfour 6 rotatesprite 352 26 10000 0 25 0 0 0 0 0 xdim ydim //175
+			ifvare tempfour 7 rotatesprite 352 26 10000 0 29 0 0 0 0 0 xdim ydim //175
+			ifvare tempfour 8 rotatesprite 352 26 10000 0 27 0 0 0 0 0 xdim ydim //175
+			ifvare tempfour 9 rotatesprite 352 26 10000 0 24 0 0 0 0 0 xdim ydim //175
+			ifvare tempfive 1 rotatesprite 352 33 10000 0 21 0 0 0 0 0 xdim ydim //185
+			ifvare tempfive 2 rotatesprite 352 35 10000 0 28 0 0 0 0 0 xdim ydim //187
+			ifvare tempfive 3 rotatesprite 352 33 10000 0 22 0 0 0 0 0 xdim ydim //185
+			ifvare tempfive 4 rotatesprite 352 33 10000 0 23 0 0 0 0 0 xdim ydim //185
+			ifvare tempfive 5 rotatesprite 352 33 10000 0 47 0 0 0 0 0 xdim ydim //185
+			ifvare tempfive 6 rotatesprite 352 33 10000 0 25 0 0 0 0 0 xdim ydim //185
+			ifvare tempfive 7 rotatesprite 352 33 10000 0 29 0 0 0 0 0 xdim ydim //185
+			ifvare tempfive 8 rotatesprite 352 33 10000 0 27 0 0 0 0 0 xdim ydim //185
+			ifvare tempfive 9 rotatesprite 352 33 10000 0 24 0 0 0 0 0 xdim ydim //185
 		}
 		//Overlay information
 		ifp palive {
