@@ -90,26 +90,26 @@ gamevar maxlevel 20 4096
 //DEVI		 50 * 500 = 25000 |  50   2500  1750 - 7000
 //FREEZE	 40 * 200 =  8000 |  20    800   650 - 2600
 //TRIP		300 *  30 =  9000 |   3    900   600 - 2400
-gamevar pistolcost 800 4096
-gamevar shotguncost 2800 4096
-gamevar chainguncost 2400 4096
-gamevar rpgcost 4500 4096
-gamevar pipebombcost 3000 4096
+gamevar pistolcost 600 4096
+gamevar shotguncost 2500 4096
+gamevar chainguncost 2200 4096
+gamevar rpgcost 4000 4096
+gamevar pipebombcost 4000 4096
 gamevar shrinkercost 8000 4096
 gamevar expandercost 0 4096
 gamevar devistatorcost 7000 4096
 gamevar tripbombcost 2600 4096
-gamevar freezercost 2400 4096
+gamevar freezercost 2200 4096
 
 gamevar backpackcost 2000 4096
-gamevar instakillcost 4000 4096
-gamevar perkprotectercost 4000 4096
+gamevar instakillcost 3000 4096
+gamevar perkprotectercost 3000 4096
 gamevar autorevivecost 2000 4096
 gamevar moneymultipliercost 3000 4096
 gamevar armorcost 3000 4096
-gamevar bootscost 4000 4096
-gamevar bigmagcost 4000 4096
-gamevar accesscardcost 3000 4096
+gamevar bootscost 3000 4096
+gamevar bigmagcost 3000 4096
+gamevar accesscardcost 2500 4096
 
 gamevar mysteryboxcost 2500 4096
 
