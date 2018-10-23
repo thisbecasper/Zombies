@@ -283,7 +283,6 @@ state setupround
 			setvar maxmonstersallowed 5
 			setvar minimumthreshold 1
 			setvar spawnrate 50
-			setvarvar monsterslefttospawn totalmonsters
 			*/
 			setvar monstertype 1
 			setvar monsterhp 50
@@ -291,7 +290,6 @@ state setupround
 			setvar maxmonstersallowed 5
 			setvar minimumthreshold 0
 			setvar spawnrate 250
-			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 2 {
@@ -301,7 +299,7 @@ state setupround
 			setvar maxmonstersallowed 5
 			setvar minimumthreshold 0
 			setvar spawnrate 250
-			setvarvar monsterslefttospawn totalmonsters
+			
 			break
 		}
 		case 3 {
@@ -311,7 +309,6 @@ state setupround
 			setvar maxmonstersallowed 5
 			setvar minimumthreshold 1
 			setvar spawnrate 250
-			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 4 {
@@ -321,7 +318,6 @@ state setupround
 			setvar maxmonstersallowed 5
 			setvar minimumthreshold 1
 			setvar spawnrate 250
-			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 5 {
@@ -331,7 +327,6 @@ state setupround
 			setvar maxmonstersallowed 5
 			setvar minimumthreshold 1
 			setvar spawnrate 250
-			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 6 {
@@ -341,7 +336,6 @@ state setupround
 			setvar maxmonstersallowed 20
 			setvar minimumthreshold 4
 			setvar spawnrate 250
-			setvarvar monsterslefttospawn totalmonsters
 			setvar rushroundtimer 540
 			break
 		}
@@ -353,7 +347,6 @@ state setupround
 			setvar minimumthreshold 2
 			setvar spawnrate 320
 			setvar maxmonstersallowed 20
-			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 8 {
@@ -363,7 +356,6 @@ state setupround
 			setvar maxmonstersallowed 14
 			setvar minimumthreshold 2
 			setvar spawnrate 320
-			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 9 {
@@ -373,7 +365,6 @@ state setupround
 			setvar maxmonstersallowed 15
 			setvar minimumthreshold 2
 			setvar spawnrate 320
-			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 10 {
@@ -383,7 +374,6 @@ state setupround
 			setvar maxmonstersallowed 16
 			setvar minimumthreshold 2
 			setvar spawnrate 320
-			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 11 {
@@ -393,7 +383,6 @@ state setupround
 			setvar maxmonstersallowed 17
 			setvar minimumthreshold 2
 			setvar spawnrate 320
-			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 12 {
@@ -403,7 +392,6 @@ state setupround
 			setvar maxmonstersallowed 45
 			setvar minimumthreshold 9
 			setvar spawnrate 320
-			setvarvar monsterslefttospawn totalmonsters
 			setvar rushroundtimer 540
 			break
 		}
@@ -414,7 +402,6 @@ state setupround
 			setvar maxmonstersallowed 22
 			setvar minimumthreshold 4
 			setvar spawnrate 390
-			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 14 {
@@ -424,7 +411,6 @@ state setupround
 			setvar minimumthreshold 4
 			setvar spawnrate 390
 			setvar totalmonsters 55
-			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 15 {
@@ -434,7 +420,6 @@ state setupround
 			setvar maxmonstersallowed 24
 			setvar minimumthreshold 4
 			setvar spawnrate 390
-			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 16 {
@@ -444,7 +429,6 @@ state setupround
 			setvar maxmonstersallowed 25
 			setvar minimumthreshold 4
 			setvar spawnrate 390
-			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 17 {
@@ -454,7 +438,6 @@ state setupround
 			setvar maxmonstersallowed 26
 			setvar minimumthreshold 4
 			setvar spawnrate 390
-			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 18 {
@@ -464,7 +447,6 @@ state setupround
 			setvar maxmonstersallowed 70
 			setvar minimumthreshold 12
 			setvar spawnrate 390
-			setvarvar monsterslefttospawn totalmonsters
 			setvar rushroundtimer 540
 			break
 		}
@@ -475,7 +457,6 @@ state setupround
 			setvar maxmonstersallowed 31
 			setvar minimumthreshold 8
 			setvar spawnrate 460
-			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 20 {
@@ -485,7 +466,6 @@ state setupround
 			setvar maxmonstersallowed 32
 			setvar minimumthreshold 8
 			setvar spawnrate 460
-			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 21 {
@@ -495,7 +475,6 @@ state setupround
 			setvar maxmonstersallowed 33
 			setvar minimumthreshold 8
 			setvar spawnrate 460
-			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 22 {
@@ -505,7 +484,6 @@ state setupround
 			setvar maxmonstersallowed 34
 			setvar minimumthreshold 8
 			setvar spawnrate 460
-			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 23 {
@@ -515,7 +493,6 @@ state setupround
 			setvar maxmonstersallowed 35
 			setvar minimumthreshold 8
 			setvar spawnrate 460
-			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 24 {
@@ -525,7 +502,6 @@ state setupround
 			setvar maxmonstersallowed 95
 			setvar minimumthreshold 15
 			setvar spawnrate 460
-			setvarvar monsterslefttospawn totalmonsters
 			setvar rushroundtimer 540
 			break
 		}
@@ -536,7 +512,6 @@ state setupround
 			setvar maxmonstersallowed 40
 			setvar minimumthreshold 9
 			setvar spawnrate 530
-			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 26 {
@@ -546,7 +521,6 @@ state setupround
 			setvar maxmonstersallowed 45
 			setvar minimumthreshold 9
 			setvar spawnrate 530
-			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 27 {
@@ -556,7 +530,6 @@ state setupround
 			setvar maxmonstersallowed 50
 			setvar minimumthreshold 9
 			setvar spawnrate 530
-			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 28 {
@@ -566,7 +539,6 @@ state setupround
 			setvar maxmonstersallowed 55
 			setvar minimumthreshold 9
 			setvar spawnrate 530
-			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 29 {
@@ -576,7 +548,6 @@ state setupround
 			setvar maxmonstersallowed 60
 			setvar minimumthreshold 9
 			setvar spawnrate 530
-			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		case 30 {
@@ -587,13 +558,18 @@ state setupround
 			setvar maxmonstersallowed 100
 			setvar minimumthreshold 14
 			setvar spawnrate 530
-			setvarvar monsterslefttospawn totalmonsters
 			break
 		}
 		default {
 			break
 		}
 	endswitch
+	ifvarg numplayers 1	setvarvar monsterslefttospawn totalmonsters
+	else {
+		divvar totalmonsters 2
+		addvar totalkills 1
+		setvarvar monsterslefttospawn totalmonsters
+	}
 ends
 
 state gotmoneyfromteammate
