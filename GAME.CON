@@ -660,7 +660,7 @@ state weaponswitchfix
 				setvarvar tertiaryweapon temp
 			}
 		} else ifvarvarg secondaryweapon tertiaryweapon {
-			ifvarvarg tertiaryweapon secondaryweapon {
+			ifvarvarg tertiaryweapon primaryweapon {
 				setvarvar temp secondaryweapon
 				setvarvar secondaryweapon tertiaryweapon
 				setvarvar tertiaryweapon temp
