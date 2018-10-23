@@ -567,7 +567,7 @@ state setupround
 	ifvarg numplayers 1	setvarvar monsterslefttospawn totalmonsters
 	else {
 		divvar totalmonsters 2
-		addvar totalkills 1
+		addvar totalmonsters 1
 		setvarvar monsterslefttospawn totalmonsters
 	}
 ends
