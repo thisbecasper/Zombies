@@ -456,7 +456,9 @@ definequote 227		  10 %
 definequote 228		  20 %
 definequote 229		  30 %
 definequote 230		  50 %
-
+definequote 231       TOTAL MONEY:
+definequote 232       TOTAL XP:
+definequote 233       TOTAL DMG:
 
 // Volume titles cannot excede 32 characters.
 
