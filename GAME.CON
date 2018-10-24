@@ -7055,7 +7055,6 @@ ends
 move PGROWINGPOP        // Used only as a variable
 
 actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
-setvar skillpoints 10
   state calculateearnedmoney
   state calculatetotalxp
 	state handleskills
