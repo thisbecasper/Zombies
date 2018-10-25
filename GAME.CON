@@ -1943,71 +1943,71 @@ state setuplevelsystem
 			break
 		}
 		case 3 {
-			setvar experienceneeded 4200
+			setvar experienceneeded 4000
 			break
 		}
 		case 4 {
-			setvar experienceneeded 7300
+			setvar experienceneeded 7000
 			break
 		}
 		case 5 {
-			setvar experienceneeded 11600
+			setvar experienceneeded 11000
 			break
 		}
 		case 6 {
-			setvar experienceneeded 17000
+			setvar experienceneeded 16000
 			break
 		}
 		case 7 {
-			setvar experienceneeded 23500
+			setvar experienceneeded 22000
 			break
 		}
 		case 8 {
-			setvar experienceneeded 31200
+			setvar experienceneeded 29000
 			break
 		}
 		case 9 {
-			setvar experienceneeded 39900
+			setvar experienceneeded 37000
 			break
 		}
 		case 10 {
-			setvar experienceneeded 49700
+			setvar experienceneeded 45000
 			break
 		}
 		case 11 {
-			setvar experienceneeded 60600
+			setvar experienceneeded 54000
 			break
 		}
 		case 12 {
-			setvar experienceneeded 72600
+			setvar experienceneeded 64000
 			break
 		}
 		case 13 {
-			setvar experienceneeded 85800
+			setvar experienceneeded 75000
 			break
 		}
 		case 14 {
-			setvar experienceneeded 100000
+			setvar experienceneeded 87000
 			break
 		}
 		case 15 {
-			setvar experienceneeded 115300
+			setvar experienceneeded 90000
 			break
 		}
 		case 16 {
-			setvar experienceneeded 131800
+			setvar experienceneeded 104000
 			break
 		}
 		case 17 {
-			setvar experienceneeded 149300
+			setvar experienceneeded 119000
 			break
 		}
 		case 18 {
-			setvar experienceneeded 167900
+			setvar experienceneeded 135000
 			break
 		}
 		case 19 {
-			setvar experienceneeded 187700
+			setvar experienceneeded 152000
 			break
 		}
 		case 20 {
@@ -2707,7 +2707,7 @@ onevent EVENT_DISPLAYREST
 	    addvarvar temp tempthree
 	    addvarvar temp tempfour
 	    ifvare tempsix 0 digitalnumberz 2837 352 10 temp 0 0 16 0 0 xdim ydim 30000
-	    else digitalnumberz 2837 352 22 temp 0 7 16 0 0 xdim ydim 30000
+	    else digitalnumberz 2837 352 10 temp 0 7 16 0 0 xdim ydim 30000
 
 	    //Weapons
 	    getplayervar[temptwo].primaryweapon tempthree
