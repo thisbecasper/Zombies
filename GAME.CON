@@ -36,7 +36,7 @@ defineprojectile 1660 PROJ_SPAWNS SHRINKEREXPLOSION
 defineprojectile 1660 PROJ_ISOUND 158
 defineprojectile 1660 PROJ_VEL 840
 defineprojectile 1660 PROJ_HITRADIUS 0
-defineprojectile 1660	PROJ_EXTRA 101
+defineprojectile 1660 PROJ_EXTRA 101
 defineprojectile 1660 PROJ_XREPEAT 14
 defineprojectile 1660 PROJ_YREPEAT 14
 defineprojectile 1660 PROJ_CLIPDIST 30
@@ -2300,7 +2300,7 @@ onevent EVENT_DISPLAYREST
 			rotatesprite 305 164 20000 0 1667 0 0 0 0 0 xdim ydim
 			digitalnumberz 2837 296 173 powershotmoney 0 16 0 0 0 xdim ydim 35000
 		} 
-		ifvare gotautorevive 1 rotatesprite 272 183 16500 0 HOLODUKE 0 0 0 0 0 xdim ydim
+		ifvare gotautorevive 1 rotatesprite 343 183 16500 0 HOLODUKE 0 0 0 0 0 xdim ydim
 		ifvare gotbigmag 1 rotatesprite 271 166 18500 0 AMMO 0 0 0 0 0 xdim ydim
 
 		//Powershot
