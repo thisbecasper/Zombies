@@ -34,7 +34,7 @@ define SWEARFREQUENCY          100      // The lower, the less.
 define CAMERASDESTRUCTABLE      NO               // YES
 define FREEZERHURTOWNER         YES
 
-define MAXPLAYERHEALTH           20
+define MAXPLAYERHEALTH           30
 define MAXWATERFOUNTAINHEALTH     0
 
 define YELLHURTSOUNDSTRENGTH     35
@@ -421,11 +421,11 @@ definequote 192		  MOVEMENT SPEED
 definequote 193		  BASE HEALTH
 definequote 194       BONUS MONEY
 definequote 195 	  MAGAZINES
-definequote 196		  100 %
-definequote 197		  103 %
-definequote 198		  106 %
-definequote 199		  109 %
-definequote 200		  115 %
+definequote 196		  104 %
+definequote 197		  108 %
+definequote 198		  112 %
+definequote 199		  116 %
+definequote 200		  120 %
 definequote 201		  30 HP
 definequote 202		  40 HP
 definequote 203		  50 HP 
@@ -436,11 +436,11 @@ definequote 207		  + 20 $
 definequote 208		  + 40 $
 definequote 209		  + 60 $
 definequote 210		  + 100 $
-definequote 211		  1 MG
-definequote 212		  2 MGS
-definequote 213		  3 MGS
-definequote 214		  4 MGS
-definequote 215		  6 MGS
+definequote 211		  2 MG
+definequote 212		  3 MGS
+definequote 213		  4 MGS
+definequote 214		  6 MGS
+definequote 215		  10 MGS
 definequote 216		  LVL
 definequote 217		  SKILL POINTS:
 definequote 218		  RANDOM BONUS XP
@@ -452,10 +452,10 @@ definequote 223       300 %
 definequote 224		  TOGGLED INFORMATION SHOWN
 definequote 225		  CRIT CHANCE
 definequote 226		  0 %
-definequote 227		  10 %
-definequote 228		  20 %
-definequote 229		  30 %
-definequote 230		  50 %
+definequote 227		  8 %
+definequote 228		  16 %
+definequote 229		  24 %
+definequote 230		  40 %
 definequote 231       TOTAL MONEY:
 definequote 232       TOTAL XP:
 definequote 233       TOTAL DMG:

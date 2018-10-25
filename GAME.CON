@@ -1098,7 +1098,7 @@ state criticalhit
 		ifvare tempfive 1 {
 			//Do nothing
 		} else ifvare tempfive 2 {
-			ifvarl tempsix 9 {
+			ifvarl tempsix 7 {
 				addvarvar tempeight temptwo
 				setplayervar[tempseven].totalbonusdmg tempeight
 				mulvar temptwo 2
@@ -1108,7 +1108,7 @@ state criticalhit
   			setplayervar[tempseven].criticalhitcounter 15
 			}
 		} else ifvare tempfive 3 {
-			ifvarl tempsix 19 {
+			ifvarl tempsix 15 {
 				addvarvar tempeight temptwo
 				setplayervar[tempseven].totalbonusdmg tempeight
 				mulvar temptwo 2
@@ -1118,7 +1118,7 @@ state criticalhit
   			setplayervar[tempseven].criticalhitcounter 15
 			}
 		} else ifvare tempfive 4 {
-			ifvarl tempsix 29 {
+			ifvarl tempsix 23 {
 				addvarvar tempeight temptwo
 				setplayervar[tempseven].totalbonusdmg tempeight
 				mulvar temptwo 2
@@ -1128,7 +1128,7 @@ state criticalhit
   			setplayervar[tempseven].criticalhitcounter 15
 			}
 		} else ifvare tempfive 5 {
-			ifvarl tempsix 49 {
+			ifvarl tempsix 39 {
 				addvarvar tempeight temptwo
 				setplayervar[tempseven].totalbonusdmg tempeight
 				mulvar temptwo 2
@@ -2028,10 +2028,10 @@ ends
 state handleskills
 	//Movement
 	ifvare movespeedskill 1 setvar playerrunspeed 43000
-	else ifvare movespeedskill 2 setvar playerrunspeed 44290
-	else ifvare movespeedskill 3 setvar playerrunspeed 45580
-	else ifvare movespeedskill 4 setvar playerrunspeed 46870
-	else ifvare movespeedskill 5 setvar playerrunspeed 49450
+	else ifvare movespeedskill 2 setvar playerrunspeed 44720
+	else ifvare movespeedskill 3 setvar playerrunspeed 46440
+	else ifvare movespeedskill 4 setvar playerrunspeed 49880
+	else ifvare movespeedskill 5 setvar playerrunspeed 51600
 
 	//Health
 	ifvare healthskill 1 setvar playerhealth 30
@@ -2048,11 +2048,11 @@ state handleskills
 	else ifvare bonusmoneyskill 5 setvar bonusmoneyonkills 100
 
 	//Mag size
-	ifvare maxammoskill 1 setvar ammomultiplier 1
-	else ifvare maxammoskill 2 setvar ammomultiplier 2
-	else ifvare maxammoskill 3 setvar ammomultiplier 3
-	else ifvare maxammoskill 4 setvar ammomultiplier 4
-	else ifvare maxammoskill 5 setvar ammomultiplier 6
+	ifvare maxammoskill 1 setvar ammomultiplier 2
+	else ifvare maxammoskill 2 setvar ammomultiplier 3
+	else ifvare maxammoskill 3 setvar ammomultiplier 4
+	else ifvare maxammoskill 4 setvar ammomultiplier 6
+	else ifvare maxammoskill 5 setvar ammomultiplier 10
 
 	//Bonus xp
 	ifvare bonusxpskill 1 {
