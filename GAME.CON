@@ -2034,11 +2034,11 @@ state handleskills
 	else ifvare movespeedskill 5 setvar playerrunspeed 49450
 
 	//Health
-	ifvare healthskill 1 setvar playerhealth 20
-	else ifvare healthskill 2 setvar playerhealth 30
-	else ifvare healthskill 3 setvar playerhealth 40
-	else ifvare healthskill 4 setvar playerhealth 50
-	else ifvare healthskill 5 setvar playerhealth 60
+	ifvare healthskill 1 setvar playerhealth 30
+	else ifvare healthskill 2 setvar playerhealth 40
+	else ifvare healthskill 3 setvar playerhealth 50
+	else ifvare healthskill 4 setvar playerhealth 60
+	else ifvare healthskill 5 setvar playerhealth 70
 
 	//Bonus money
 	ifvare bonusmoneyskill 1 setvar bonusmoneyonkills 0
@@ -2177,7 +2177,7 @@ ends
 onevent EVENT_DISPLAYREST
 	//Debuggg
 	//getactor[THISACTOR].extra temp
-	//digitalnumberz 2837 0 40 damagedealt 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 40 debugvalue 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 60 totalearnedmoney 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 80 totalearnedxp 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 100 skillpoints 0 0 0 0 0 xdim ydim 58000
@@ -7113,7 +7113,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 	  	else ifvare temptwo FREEZEBLAST setactor[THISACTOR].htextra 3
 	  	else ifvare temptwo RADIUSEXPLOSION ifvare isdown 0 setactor[THISACTOR].htextra 49
 	  	else ifvare temptwo RADIUSEXPLOSION setactor[THISACTOR].htextra 0
-	  }               
+	  }       
 	}
 
 	ifvarg chaingunheat 0 {

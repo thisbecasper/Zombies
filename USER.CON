@@ -426,11 +426,11 @@ definequote 197		  103 %
 definequote 198		  106 %
 definequote 199		  109 %
 definequote 200		  115 %
-definequote 201		  20 HP
-definequote 202		  30 HP
-definequote 203		  40 HP 
-definequote 204		  50 HP
-definequote 205		  60 HP
+definequote 201		  30 HP
+definequote 202		  40 HP
+definequote 203		  50 HP 
+definequote 204		  60 HP
+definequote 205		  70 HP
 definequote 206		  + 0 $
 definequote 207		  + 20 $
 definequote 208		  + 40 $
