@@ -843,6 +843,14 @@ state processdmg
 				addvarvar tempfive tempfour
 				setplayervar[tempthree].playermoneybonus tempfive
 			}
+			//Damage dealt
+			getplayervar[tempthree].damagedealt temptwo
+			addvarvar temptwo temp 
+			setplayervar[tempthree].damagedealt temptwo
+			//Hits
+			getplayervar[tempthree].hits temptwo
+			addvar temptwo 1
+			setplayervar[tempthree].hits temptwo
 			//Money multiplier
 			getplayervar[tempthree].gotdoublemoney temptwo
 			ifvare temptwo 1 { //gotdoublemoney
@@ -855,14 +863,6 @@ state processdmg
   			addvarvar tempfour temp
   			setplayervar[tempthree].doublemoneygained tempfour
 			}
-			//Damage dealt
-			getplayervar[tempthree].damagedealt temptwo
-			addvarvar temptwo temp 
-			setplayervar[tempthree].damagedealt temptwo
-			//Hits
-			getplayervar[tempthree].hits temptwo
-			addvar temptwo 1
-			setplayervar[tempthree].hits temptwo
 		}
   }
 ends
