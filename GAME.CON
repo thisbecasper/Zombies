@@ -232,6 +232,7 @@ gamevar totalbonusdmg 0 1
 gamevar totalearnedmoney 0 1
 gamevar tempxp 0 1
 gamevar totalearnedxp 0 1
+gamevar armorhitsleft 0 1
 
 gamevar movespeedskill 1 1
 gamevar bonusmoneyskill 1 1
@@ -2177,7 +2178,7 @@ ends
 onevent EVENT_DISPLAYREST
 	//Debuggg
 	//getactor[THISACTOR].extra temp
-	//digitalnumberz 2837 0 40 debugvalue 0 0 0 0 0 xdim ydim 58000
+	digitalnumberz 2837 0 40 armorhitsleft 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 60 totalearnedmoney 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 80 totalearnedxp 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 100 skillpoints 0 0 0 0 0 xdim ydim 58000
@@ -2461,6 +2462,25 @@ onevent EVENT_DISPLAYREST
 	        subvar temp 1
 	      }
 	    }
+	    
+	    ifvarg armorhitsleft 0 {
+	    	addvar temptwo 2
+	    	setvarvar tempfour temptwo
+		    setvarvar temp 3
+		    whilevarn temp 0 {
+	        rotatesprite temptwo 185 14000 0 54 0 10 49 0 0 xdim ydim 
+	        addvar temptwo 7
+	        subvar temp 1
+	      }
+		    setvarvar temptwo tempfour
+		    setvarvar temp armorhitsleft
+		    whilevarn temp 0 {
+	        rotatesprite temptwo 185 14000 0 54 0 10 16 0 0 xdim ydim 
+	        addvar temptwo 7
+	        subvar temp 1
+	      }
+	    }
+
 	    addvar tempsix 1 //Make it hit the right branch and not off by one
 	    getactor[THISACTOR].extra temp
 	    ifvare gothit 0 digitalnumberz 2837 -8 186 temp 0 15 16 0 0 xdim ydim 30000
@@ -3581,7 +3601,7 @@ onevent EVENT_USE
 					case SHIELD {
 						ifvare gotarmor 0 {
 							state buyandsetcd
-							setvar gotarmor 1
+							setvar armorhitsleft 3
 							sound 298
 							getactor[HITSPRITE].hitag temp
 							ifvare temp 0 setactor[HITSPRITE].hitag -1
@@ -7055,6 +7075,7 @@ ends
 move PGROWINGPOP        // Used only as a variable
 
 actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
+
   state calculateearnedmoney
   state calculatetotalxp
 	state handleskills
@@ -7103,8 +7124,10 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 		setvar armorhpgiven 0
 	}
 
+	ifvarg armorhitsleft 0 setactor[THISACTOR].extra playerhealth
 	getactor[THISACTOR].htextra temp
 	ifvarg temp 0 {
+		subvar armorhitsleft 1
 	  getactor[THISACTOR].htowner temp
 	  getactor[THISACTOR].htpicnum temptwo
 	  ifvarvare temp THISACTOR {
@@ -7113,7 +7136,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 	  	else ifvare temptwo FREEZEBLAST setactor[THISACTOR].htextra 3
 	  	else ifvare temptwo RADIUSEXPLOSION ifvare isdown 0 setactor[THISACTOR].htextra 49
 	  	else ifvare temptwo RADIUSEXPLOSION setactor[THISACTOR].htextra 0
-	  }       
+	  }  
 	}
 
 	ifvarg chaingunheat 0 {
@@ -12204,12 +12227,20 @@ state newbeastscratchstate
       //ai AINEWBEASTTHINK
     else ifp palive ifcansee
     {
-      setvarvar hpregencounter hpregencountervar
-      palfrom 16 16
-      addphealth NEWBEASTSCRATCHAMOUNT
-      sound DUKE_GRUNT
-      resetactioncount
-      resetcount
+      ifvarg armorhitsleft 0 {
+	      palfrom 20 13 13 13
+	      subvar armorhitsleft 1
+	      sound 298
+	      resetactioncount
+	      resetcount
+      } else {
+      	setvarvar hpregencounter hpregencountervar
+	      palfrom 16 16
+	      addphealth NEWBEASTSCRATCHAMOUNT
+	      sound DUKE_GRUNT
+	      resetactioncount
+	      resetcount
+      }
     }
   }
   else
