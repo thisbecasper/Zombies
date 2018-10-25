@@ -108,7 +108,7 @@ gamevar autorevivecost 2000 4096
 gamevar moneymultipliercost 3000 4096
 gamevar armorcost 3000 4096
 gamevar bootscost 3000 4096
-gamevar bigmagcost 3000 4096
+gamevar skillpointcost 10000 4096
 gamevar accesscardcost 2500 4096
 
 gamevar mysteryboxcost 2500 4096
@@ -1255,7 +1255,7 @@ state showinformation
 			else ifvare temptwo 1667 setvarvar itemcost instakillcost
 			else ifvare temptwo 4371 setvarvar itemcost perkprotectercost
 			else ifvare temptwo ACCESSCARD setvarvar itemcost accesscardcost
-			else ifvare temptwo AMMO setvarvar itemcost bigmagcost
+			else ifvare temptwo SPINNINGNUKEICON setvarvar itemcost skillpointcost
 			
 			setvarvar tempfive finalplayermoney
 			addvarvar tempfive playermoney
@@ -1506,7 +1506,7 @@ state showinformation
 					else digitalnumberz 2837 160 135 itemcost 0 0 0 0 0 xdim ydim 50000
 					break
 				}
-				case AMMO {
+				case SPINNINGNUKEICON {
 					gametextz STARTALPHANUM 320 125 189 0 0 0 0 0 xdim ydim 50000
 					ifvare gotbigmag 1 gametextz STARTALPHANUM 320 135 151 0 0 0 0 0 xdim ydim 50000
 					else ifvare tempsix 0 gametextz STARTALPHANUM 320 135 179 0 0 0 0 0 xdim ydim 50000
@@ -2178,7 +2178,7 @@ ends
 onevent EVENT_DISPLAYREST
 	//Debuggg
 	//getactor[THISACTOR].extra temp
-	digitalnumberz 2837 0 40 armorhitsleft 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 40 armorhitsleft 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 60 totalearnedmoney 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 80 totalearnedxp 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 100 skillpoints 0 0 0 0 0 xdim ydim 58000
@@ -3208,7 +3208,7 @@ onevent EVENT_USE
 			else ifvare tempfive 1667 setvarvar itemcost instakillcost
 			else ifvare tempfive 4371 setvarvar itemcost perkprotectercost
 			else ifvare tempfive ACCESSCARD setvarvar itemcost accesscardcost
-			else ifvare tempfive AMMO setvarvar itemcost bigmagcost
+			else ifvare tempfive SPINNINGNUKEICON setvarvar itemcost skillpointcost
 			
 			getactor[HITSPRITE].hitag temptwo
 			ifvare temptwo 0 setvar itemcost 0
@@ -3661,14 +3661,12 @@ onevent EVENT_USE
 						}
 						break
 					}
-					case AMMO {
-						ifvare gotbigmag 0 {
-							state buyandsetcd
-							setvar gotbigmag 1
-							sound 297
-							getactor[HITSPRITE].hitag temp
-							ifvare temp 0 setactor[HITSPRITE].hitag -1
-						}
+					case SPINNINGNUKEICON {		
+						state buyandsetcd
+						addvar skillpoints 1
+						sound GETATOMICHEALTH
+						getactor[HITSPRITE].hitag temp
+						ifvare temp 0 setactor[HITSPRITE].hitag -1
 						break
 					}
 					case APLAYER {
@@ -5560,6 +5558,13 @@ enda
 
 
 //Actor Perks Useractors
+actor SPINNINGNUKEICON
+	fall
+  cstat 1
+  setactor[THISACTOR].pal 14
+  sizeat 40 40
+enda
+
 actor RESPAWNMARKERYELLOW
 	fall
 	cstat 1
