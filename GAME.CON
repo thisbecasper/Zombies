@@ -80,26 +80,26 @@ gamevar maxlevel 20 4096
 
 //Gets set in event_use and showinformation
  					//DMG AMMO TOTALDMG  BUY  BUYDMG  PRICE
-//PISTOL	  7 * 500 =  3500 |  50    350   200 -  800 
+//PISTOL	  7 * 500 =  3500 |  50    350   250 - 1000 
 //SHOTTY	112 *  80 =  8960 |   8    896   700 - 2800
-//CHAIN		 15 * 500 =  7500 |  50    750   600 - 2400
+//CHAIN		 15 * 500 =  7500 |  50    750   575 - 2300
 //RPG			250	*  50 = 12500 |	  5   1250  1125 - 4500
-//HBOMB		300 *  30 =  9000 |   3    900   750 - 3000
+//HBOMB		300 *  30 =  9000 |   3    900  1000 - 4000
 //STINGER	300 * 100 = 30000 |  10   3000  2000 - 8000
 //EXPAND	 15 * 200 =  3000 |  20    300  1000 - 4000 ?
 //DEVI		 50 * 500 = 25000 |  50   2500  1750 - 7000
-//FREEZE	 40 * 200 =  8000 |  20    800   650 - 2600
+//FREEZE	 40 * 200 =  8000 |  20    800   750 - 3000
 //TRIP		300 *  30 =  9000 |   3    900   600 - 2400
-gamevar pistolcost 600 4096
-gamevar shotguncost 2500 4096
-gamevar chainguncost 2200 4096
-gamevar rpgcost 4000 4096
+gamevar pistolcost 1000 4096
+gamevar shotguncost 2800 4096
+gamevar chainguncost 2300 4096
+gamevar rpgcost 4500 4096
 gamevar pipebombcost 4000 4096
 gamevar shrinkercost 8000 4096
 gamevar expandercost 0 4096
 gamevar devistatorcost 7000 4096
 gamevar tripbombcost 2600 4096
-gamevar freezercost 2200 4096
+gamevar freezercost 3000 4096
 
 gamevar backpackcost 2000 4096
 gamevar instakillcost 3000 4096
@@ -3773,7 +3773,7 @@ onevent EVENT_RESETPLAYER
 	  ifvare gotrevivedbyintermission 1 {
 	  	setvar gotrevivedbyintermission 0
 	  	setplayer[THISACTOR].ammo_amount 1 1
-	  } else setplayer[THISACTOR].ammo_amount 1 101
+	  } else setplayer[THISACTOR].ammo_amount 1 51
 	  setplayer[THISACTOR].ammo_amount 2 1
 	  setplayer[THISACTOR].ammo_amount 3 1
 	  setplayer[THISACTOR].ammo_amount 4 1
