@@ -2752,7 +2752,7 @@ onevent EVENT_DISPLAYREST
 	    ifvare tempthree 1 rotatesprite 352 18 14000 0 21 0 0 0 0 0 xdim ydim //157
 			ifvare tempthree 2 rotatesprite 352 20 14000 0 28 0 0 0 0 0 xdim ydim //160
 			ifvare tempthree 3 rotatesprite 352 18 14000 0 22 0 0 0 0 0 xdim ydim //157
-			ifvare tempthree 4 rotatesprite 352 21 14000 0 23 0 0 0 0 0 xdim ydim //157
+			ifvare tempthree 4 rotatesprite 352 19 14000 0 23 0 0 0 0 0 xdim ydim //157
 			ifvare tempthree 5 rotatesprite 352 18 14000 0 47 0 0 0 0 0 xdim ydim //157
 			ifvare tempthree 6 rotatesprite 352 18 14000 0 25 0 0 0 0 0 xdim ydim //157
 			ifvare tempthree 7 rotatesprite 352 21 14000 0 29 0 0 0 0 0 xdim ydim //160
