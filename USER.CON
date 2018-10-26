@@ -421,10 +421,10 @@ definequote 192		  MOVEMENT SPEED
 definequote 193		  BASE HEALTH
 definequote 194       BONUS MONEY
 definequote 195 	  MAGAZINES
-definequote 196		  104 %
-definequote 197		  108 %
-definequote 198		  112 %
-definequote 199		  116 %
+definequote 196		  100 %
+definequote 197		  104 %
+definequote 198		  108 %
+definequote 199		  112 %
 definequote 200		  120 %
 definequote 201		  30 HP
 definequote 202		  40 HP

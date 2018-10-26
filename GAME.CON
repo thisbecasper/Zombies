@@ -2048,7 +2048,7 @@ state handleskills
 	ifvare movespeedskill 1 setvar playerrunspeed 43000
 	else ifvare movespeedskill 2 setvar playerrunspeed 44720
 	else ifvare movespeedskill 3 setvar playerrunspeed 46440
-	else ifvare movespeedskill 4 setvar playerrunspeed 49880
+	else ifvare movespeedskill 4 setvar playerrunspeed 48160
 	else ifvare movespeedskill 5 setvar playerrunspeed 51600
 
 	//Health
