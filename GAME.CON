@@ -42,6 +42,21 @@ defineprojectile 1660 PROJ_YREPEAT 14
 defineprojectile 1660 PROJ_CLIPDIST 30
 defineprojectile 1660 PROJ_PAL 8
 
+//DEVISTATOR
+defineprojectile 1669 PROJ_WORKSLIKE 36865
+defineprojectile 1669 PROJ_SPAWNS GROWSPARK
+defineprojectile 1669 PROJ_SOUND RPG_SHOOT
+defineprojectile 1660 PROJ_ISOUND KICK_HIT
+defineprojectile 1669 PROJ_VEL 840
+defineprojectile 1669 PROJ_VEL_MULT 5
+defineprojectile 1669 PROJ_XREPEAT 20
+defineprojectile 1669 PROJ_YREPEAT 20
+defineprojectile 1669 PROJ_TNUM 1
+defineprojectile 1669 PROJ_CLIPDIST 15
+defineprojectile 1669 PROJ_HITRADIUS 0
+defineprojectile 1669 PROJ_EXTRA 40
+defineprojectile 1669 PROJ_TRAIL SMALLSMOKE //2567
+
 ////////////////////GAMEVARS/////////////////
 
 //Player specific
@@ -233,6 +248,7 @@ gamevar totalearnedmoney 0 1
 gamevar tempxp 0 1
 gamevar totalearnedxp 0 1
 gamevar armorhitsleft 0 1
+gamevar shootright 1 1
 
 gamevar movespeedskill 1 1
 gamevar bonusmoneyskill 1 1
@@ -3136,7 +3152,17 @@ onevent EVENT_DOFIRE
   	setactor[RETURN].ang temp
   	subvar temptwo 1
   	setplayer[THISACTOR].ammo_amount 6 temptwo 
-  }
+  } /*else ifvare temp 7 {
+  	ifvare shootright 1 {
+  		setprojectile[1669].offset 128
+  		setvar shootright 0
+  	} else {
+  		setprojectile[1669].offset -128
+  		setvar shootright 1
+  	} 
+		shoot 1669
+		setprojectile[1669].offset 0
+  }*/
   ifvarn temp 10 ifvarl temptwo 2 setvar RETURN -1
   ifvare PWEAPON 1 {
   	ifvarl PISTOLMAGAZINE 1 {
@@ -7080,7 +7106,8 @@ ends
 move PGROWINGPOP        // Used only as a variable
 
 actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
-
+	//setvar WEAPON7_SHOOTS 1669
+	//setvar WEAPON7_FLAGS 0
   state calculateearnedmoney
   state calculatetotalxp
 	state handleskills
