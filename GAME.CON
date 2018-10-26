@@ -3626,12 +3626,14 @@ onevent EVENT_USE
 						break
 					}
 					case SHIELD {
-						ifvare gotarmor 0 {
-							state buyandsetcd
-							setvar armorhitsleft 3
-							sound 298
-							getactor[HITSPRITE].hitag temp
-							ifvare temp 0 setactor[HITSPRITE].hitag -1
+						ifvarn armorhitsleft 3 {
+							ifvare gotarmor 0 {
+								state buyandsetcd
+								setvar armorhitsleft 3
+								sound 298
+								getactor[HITSPRITE].hitag temp
+								ifvare temp 0 setactor[HITSPRITE].hitag -1
+							}
 						}
 						break
 					}
