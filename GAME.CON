@@ -119,10 +119,10 @@ gamevar freezercost 3000 4096
 
 gamevar backpackcost 2000 4096
 gamevar instakillcost 3000 4096
-gamevar perkprotectercost 3000 4096
-gamevar autorevivecost 2000 4096
-gamevar moneymultipliercost 3000 4096
-gamevar armorcost 3000 4096
+gamevar perkprotectercost 4000 4096
+gamevar autorevivecost 3000 4096
+gamevar moneymultipliercost 4000 4096
+gamevar armorcost 1500 4096
 gamevar bootscost 3000 4096
 gamevar skillpointcost 10000 4096
 gamevar accesscardcost 2500 4096
