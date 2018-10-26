@@ -445,10 +445,10 @@ definequote 216		  LVL
 definequote 217		  SKILL POINTS:
 definequote 218		  RANDOM BONUS XP
 definequote 219       0 %
-definequote 220       50 %
-definequote 221       100 %
-definequote 222       150 %
-definequote 223       300 %
+definequote 220       75 %
+definequote 221       150 %
+definequote 222       225 %
+definequote 223       450 %
 definequote 224		  TOGGLED INFORMATION SHOWN
 definequote 225		  CRIT CHANCE
 definequote 226		  0 %

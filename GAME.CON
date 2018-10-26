@@ -2077,18 +2077,23 @@ state handleskills
 		setvar bonusxpcap 0
 	}	else ifvare bonusxpskill 2 {
 		setvarvar temp monsterhp
-		divvar temp 2
+		mulvar temp 75
+		divvar temp 100
 		setvarvar bonusxpcap temp
 	}	else ifvare bonusxpskill 3 {
-		setvarvar bonusxpcap monsterhp
+		setvarvar temp monsterhp
+		mulvar temp 150
+		divvar temp 100
+		setvarvar bonusxpcap temp
 	}	else ifvare bonusxpskill 4 {
 		setvarvar temp monsterhp
-		mulvar temp 3
-		divvar temp 2
+		mulvar temp 225
+		divvar temp 100
 		setvarvar bonusxpcap temp
 	}	else ifvare bonusxpskill 5 {
 		setvarvar temp monsterhp
-		mulvar temp 3
+		mulvar temp 450
+		divvar temp 100
 		setvarvar bonusxpcap temp
 	}
 
