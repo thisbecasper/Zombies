@@ -44,6 +44,29 @@ definegamefuncname 36 Reload
 definegamefuncname 13 Sprint
 
 ////////////////////GAMEVARS/////////////////
+
+gamevar bombtimervar 600 4096
+gamevar armingtimervar 150 4096
+gamevar disarmingtimervar 150 4096
+gamevar freezetimervar 20 4096
+
+gamevar idone -1 0
+gamevar idtwo -1 0
+gamevar roundtime 200 0
+gamevar intermission 90 0
+gamevar ctwins 0 131073
+gamevar twins 0 131073
+gamevar theend 0 0
+gamevar havegivenpoint 0 0
+gamevar isdead 0 1
+gamevar isterrorist -1 1
+gamevar terroristid -1 0
+gamevar counterterroristid -1 0
+gamevar bombtimer -1 0
+gamevar armingtimer 0 0
+gamevar disarmingtimer 0 0 
+gamevar freezetimer 0 1
+
 gamevar tempone 0 0
 gamevar temptwo 0 0
 gamevar tempthree 0 0
@@ -62,6 +85,12 @@ gamevar PISTOLMAGAZINE 0 1
 gamevar PERPLAYER1 0 1
 gamevar WEAPON1_CLIP 0 0 // this last gamevar disables the game's automatic reloading
 ////////////////////STATES/////////////////
+
+state popisdead
+  getactor[THISACTOR].extra tempone
+  ifvarl tempone 1 setvar isdead 1
+ends
+
 state pistolreload
 	getplayer[THISACTOR].curr_weapon PWEAPON // the player's current weapon
 	getplayer[THISACTOR].kickback_pic KICKBACK // the frame of animation the player's weapon is at
@@ -93,6 +122,96 @@ state pistolreload
   }
 ends
 
+state givectpoint
+  ifvare havegivenpoint 0 {
+    setvar havegivenpoint 1
+    addvar ctwins 1
+    setvar theend 1
+  }
+ends
+
+state givetpoint
+  ifvare havegivenpoint 0 {
+    setvar havegivenpoint 1
+    addvar twins 1
+    setvar theend 1
+  }
+ends
+
+state frozen
+  ifvarg freezetimer 0 {
+    subvar freezetimer 1
+    lockplayer 4
+  }
+ends
+
+state checkgameend
+  //Time is out - ct wins
+  ifvare roundtime 0 {
+    state givectpoint
+  }
+
+  //One is dead
+  getplayervar[terroristid].isdead tempone
+  ifvare tempone 1 {
+    ifvare bombtimer -1 {
+      state givectpoint //t dead - no bomb planted
+    }
+  }
+  getplayervar[counterterroristid].isdead tempone
+  ifvare tempone 1 {
+    state givetpoint //ct is dead - t wins
+  }
+  
+  //Bomb counter
+  ifvare bombtimer 0 {
+    state givetpoint //bomb explodes - t wins
+  }
+  
+ends
+
+state freezeplayeractions
+  lockplayer 20
+ends
+
+state popteam
+  getsector[THISACTOR].floorpal tempthree
+  ifvare tempthree 200 {
+    setvar isterrorist 1
+    setvarvar counterterroristid temptwo
+  } else {
+    setvar isterrorist 0
+    setvarvar terroristid temptwo
+  }
+ends
+
+state doonce
+  ifvare idone -1 { //Set id of the first player
+    getplayer[THISACTOR].i tempone
+    getactor[tempone].yvel temptwo
+    setvarvar idone temptwo
+    getsector[THISACTOR].floorpal tempthree
+    state popteam
+  } else ifvare idtwo -1 { //Set id of the second player
+    getplayer[THISACTOR].i tempone
+    getactor[tempone].yvel temptwo
+    setvarvar idtwo temptwo
+    state popteam
+  }
+
+  getactor[THISACTOR].yvel tempone //For the first player only, do this
+  ifvarvare tempone idone {
+    state checkgameend
+    ifvarg intermission 0 subvar intermission 1
+    ifvare intermission 0 ifvarg roundtime 0 ifvare bombtimer -1 subvar roundtime 1
+    ifvarg bombtimer 0 subvar bombtimer 1
+    ifvarg armingtimer 0 subvar armingtimer 4
+    else setvar armingtimer 0
+    ifvarg disarmingtimer 0 subvar disarmingtimer 4
+    else setvar disarmingtimer 0
+  }
+ends
+
 state shootshotgun
 	//horiz er 40 gange højere end ang
   eshoot 1669
@@ -115,11 +234,83 @@ ends
 ////////////////////EVENTS/////////////////
 onevent EVENT_DISPLAYREST
 	//Debuggg
-	//getactor[THISACTOR].extra tempone
-	digitalnumberz 2837 0 40 PISTOLMAGAZINE 0 0 0 0 0 xdim ydim 58000
-	// digitalnumberz 2837 0 60 endofroundtimer 0 0 0 0 0 xdim ydim 58000
-	//digitalnumberz 2837 0 80 debugvalue 0 0 0 0 0 xdim ydim 58000
-	//digitalnumberz 2837 0 100 debugvaluetwo 0 0 0 0 0 xdim ydim 58000
+	getsector[THISACTOR].floorpal tempone
+	digitalnumberz 2837 0 40 twins 0 0 0 0 0 xdim ydim 58000
+	digitalnumberz 2837 0 60 ctwins 0 0 0 0 0 xdim ydim 58000
+	digitalnumberz 2837 0 80 armingtimer 0 0 0 0 0 xdim ydim 58000
+	digitalnumberz 2837 0 100 freezetimer 0 0 0 0 0 xdim ydim 58000
+
+  //Clock
+  setvarvar tempone roundtime
+  divvar tempone 30
+  modvar tempone 60 //rest seconds
+  setvarvar temptwo roundtime
+  divvar temptwo 30
+  divvar temptwo 60 //minutes
+  ifvarg bombtimer 0 {
+    setvarvar tempone bombtimer 
+    divvar tempone 30
+    digitalnumberz 2930 325 35 tempone 0 2 0 0 0 xdim ydim 36000
+  } else ifvarg roundtime 1800 { //60 sekunder
+    digitalnumberz 2930 331 35 tempone 0 1 0 0 0 xdim ydim 36000
+    digitalnumberz 3007 318 29 0 0 1 16 0 0 xdim ydim 36000
+    digitalnumberz 2930 315 35 temptwo 0 1 0 0 0 xdim ydim 36000
+  } else ifvarg roundtime 900 { // 30 sekunder
+    digitalnumberz 2930 331 35 tempone 0 6 0 0 0 xdim ydim 36000
+    digitalnumberz 3007 318 29 0 0 6 16 0 0 xdim ydim 36000
+    digitalnumberz 2930 315 35 temptwo 0 6 0 0 0 xdim ydim 36000
+  } else {
+    digitalnumberz 2930 331 35 tempone 0 2 0 0 0 xdim ydim 36000
+    digitalnumberz 3007 318 29 0 0 2 16 0 0 xdim ydim 36000
+    digitalnumberz 2930 315 35 temptwo 0 2 0 0 0 xdim ydim 36000
+  }
+
+  //Bomb announcement
+  setvarvar tempone bombtimervar
+  subvar tempone 60
+  ifvarvarg bombtimer tempone {
+    ifvare isterrorist 0 {
+      gametextz 2822 185 130 125 0 2 0 0 0 xdim ydim 50000
+    }
+  }
+
+  //Bomb bar
+  ifvarg armingtimer 0 {
+    setvar tempone 133
+    setvar temptwo 50
+    whilevarn temptwo 0 {
+      rotatesprite tempone 120 65000 0 3021 0 2 49 0 0 xdim ydim //3021 3163
+      addvar tempone 1
+      subvar temptwo 1
+    }
+
+    setvar tempone 133
+    setvarvar temptwo armingtimer
+    divvar temptwo 3
+    whilevarn temptwo 0 {
+      rotatesprite tempone 120 65000 0 3021 0 2 17 0 0 xdim ydim
+        addvar tempone 1
+        subvar temptwo 1
+    }
+  }
+  ifvarg disarmingtimer 0 {
+    setvar tempone 133
+    setvar temptwo 50
+    whilevarn temptwo 0 {
+      rotatesprite tempone 120 65000 0 3021 0 2 49 0 0 xdim ydim //3021 3163
+      addvar tempone 1
+      subvar temptwo 1
+    }
+
+    setvar tempone 133
+    setvarvar temptwo disarmingtimer
+    divvar temptwo 3
+    whilevarn temptwo 0 {
+      rotatesprite tempone 120 65000 0 3021 0 2 17 0 0 xdim ydim
+        addvar tempone 1
+        subvar temptwo 1
+    }
+  }
 endevent
 
 onevent EVENT_TURNAROUND 
@@ -135,11 +326,52 @@ onevent EVENT_TURNAROUND
 	}
 endevent
 
-onevent EVENT_DOFIRE 
-  ifvare PWEAPON 1 {
+onevent EVENT_USE
+  ifvarn theend 1 {
+    getsector[THISACTOR].floorpal tempone
+    ifvare tempone 100 {
+      setvar RETURN -1
+      ifvare bombtimer -1 {
+        ifvare isterrorist 0 { //TODO: Sæt til 1 igen
+          setvarvar freezetimer freezetimervar
+          addvar armingtimer 5
+          ifvarvarg armingtimer armingtimervar {
+            setvarvar bombtimer bombtimervar
+            setvar armingtimer 0
+          } 
+        } 
+      } else ifvarg bombtimer 0 {
+        ifvare isterrorist 0 {
+          setvarvar freezetimer freezetimervar
+          addvar disarmingtimer 5
+          ifvarvarg disarmingtimer disarmingtimervar {
+            setvar bombtimer -1
+            setvar disarmingtimer 0
+            state givectpoint
+          } 
+        }
+      }
+    }
+  }
+  
+endevent
+
+onevent EVENT_DOFIRE
+  ifvare PWEAPON PISTOL_WEAPON {
   	ifvarl PISTOLMAGAZINE 1 break
   	else subvar PISTOLMAGAZINE 1 // subtract 1 from the magazine count, unless it's already at zero
-  } 
+  } else ifvare PWEAPON SHOTGUN_WEAPON {
+    state shootshotgun
+    state shootshotgun
+    state shootshotgun
+    state shootshotgun
+    state shootshotgun
+    state shootshotgun
+    state shootshotgun
+    state shootshotgun
+    state shootshotgun
+    state shootshotgun
+  }
 endevent
 
 onevent EVENT_DOFIRE
@@ -158,8 +390,13 @@ onevent EVENT_DOFIRE
 	}
 endevent
 
+onevent EVENT_JUMP
+  ifvarg freezetimer 0 setvar RETURN -1
+endevent
+
 onevent EVENT_PRESSEDFIRE
-  ifvare PWEAPON 1 ifvarl PISTOLMAGAZINE 1 setvar RETURN -1 
+  ifvare PWEAPON 1 ifvarl PISTOLMAGAZINE 1 setvar RETURN -1
+  ifvarg freezetimer 0 setvar RETURN -1
 endevent
 //////////////////////////////////// S N D /////////////////////////////////////////////////
 
@@ -3342,7 +3579,10 @@ move PGROWINGPOP        // Used only as a variable
 actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 	setvar WEAPON1_SHOOTS 1665
 	setvar WEAPON2_SHOOTS 1669
+  state frozen
 	state pistolreload
+  state doonce
+  state popisdead
 
   ifaction 0
     action PSTAND
