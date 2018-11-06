@@ -50,7 +50,7 @@ gamevar armingtimervar 150 4096
 gamevar disarmingtimervar 150 4096
 gamevar freezetimervar 20 4096
 
-gamevar roundtime 30 0
+gamevar roundtime 300 0
 gamevar intermission 90 0
 gamevar ending 150 0
 gamevar idone -1 0
@@ -59,12 +59,12 @@ gamevar isterrorist -1 1
 gamevar terroristid -1 0
 gamevar counterterroristid -1 0
 gamevar bombtimer -1 0
-
-gamevar ctwins 0 131073
-gamevar twins 0 131073
 gamevar theend 0 0
 gamevar havegivenpoint 0 0
 gamevar isdead 0 1
+
+gamevar ctwins 0 131073
+gamevar twins 0 131073
 gamevar armingtimer 0 0
 gamevar disarmingtimer 0 0 
 gamevar freezetimer 0 1
@@ -84,10 +84,12 @@ gamevar tposx 0 0
 gamevar tposy 0 0
 gamevar tposz 0 0
 gamevar tang 0 0
+gamevar tsectnum 0 0
 gamevar ctposx 0 0
 gamevar ctposy 0 0
 gamevar ctposz 0 0
 gamevar ctang 0 0
+gamevar ctsectnum 0 0
 
 
 gamevar PISTOLAMMO 0 1 
@@ -101,31 +103,7 @@ gamevar WEAPON1_CLIP 0 0 // this last gamevar disables the game's automatic relo
 state popisdead
   getactor[THISACTOR].extra tempone
   ifvarl tempone 1 setvar isdead 1
-ends
-
-state newround
-  getplayer[terroristid].i tempone
-  setactor[tempone].extra MAXPLAYERHEALTH
-  setplayer[terroristid].posx tposx
-  setplayer[terroristid].posy tposy
-  setplayer[terroristid].posz tposz
-  setplayer[terroristid].ang tang
-
-  getplayer[counterterroristid].i tempone
-  setactor[tempone].extra MAXPLAYERHEALTH
-  setplayer[counterterroristid].posx ctposx
-  setplayer[counterterroristid].posy ctposy
-  setplayer[counterterroristid].posz ctposz
-  setplayer[counterterroristid].ang ctang
-  
-  setvar roundtime 300
-  setvar intermission 90
-  setvar ending 150
-  setvar idone -1
-  setvar idtwo -1
-  setvar terroristid -1
-  setvar counterterroristid -1
-  setvar bombtimer -1
+  else setvar isdead 0
 ends
 
 state pistolreload
@@ -216,21 +194,27 @@ state doonce
     getplayer[THISACTOR].i tempone
     getactor[tempone].yvel temptwo
     setvarvar idone temptwo
+    setvar isterrorist 0
 
     getplayer[THISACTOR].posx ctposx
     getplayer[THISACTOR].posy ctposy
     getplayer[THISACTOR].posz ctposz
     getplayer[THISACTOR].ang ctang
+    getactor[THISACTOR].sectnum ctsectnum
+    
+    savemapstate
 
   } else ifvare idtwo -1 { //Set id of the second player TERRORIST
     getplayer[THISACTOR].i tempone
     getactor[tempone].yvel temptwo
     setvarvar idtwo temptwo
+    setvar isterrorist 1
 
     getplayer[THISACTOR].posx tposx
     getplayer[THISACTOR].posy tposy
     getplayer[THISACTOR].posz tposz
     getplayer[THISACTOR].ang tang
+    getactor[THISACTOR].sectnum tsectnum
   }
 
   getactor[THISACTOR].yvel tempone //For the first player only, do this
@@ -244,7 +228,7 @@ state doonce
     ifvarg disarmingtimer 0 subvar disarmingtimer 4
     else setvar disarmingtimer 0
     ifvare theend 1 ifvarg ending 0 subvar ending 1
-    ifvare ending 0 state newround
+    ifvare ending 1 loadmapstate
   }
 ends
 
@@ -3627,18 +3611,78 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 	state pistolreload
   state doonce
   state popisdead
-  ifvare intermission 90 {
-    action PSTAND
-    cstat 257
-  }
   ifvarg intermission 0 {
-    palfrom 48 0 0 0
+    palfrom 32 0 0 0
     setvar freezetimer 1
   }
   ifvarl ending 135 {
-    palfrom 48 0 0 0
+    palfrom 32 0 0 0
   }
   ifvarl ending 100 setvar freezetimer 1
+  ifvare ending 5 {
+    ifvare isterrorist 1 {
+      resetplayer
+      action PSTAND
+      cstat 257
+      getplayer[THISACTOR].i tempone
+      setactor[tempone].extra MAXPLAYERHEALTH
+      updatesectorz tposx tposy tposz tsectnum
+      setplayer[THISACTOR].posx tposx
+      setplayer[THISACTOR].posy tposy
+      setplayer[THISACTOR].posz tposz
+      setplayer[THISACTOR].ang tang
+      setactor[THISACTOR].sectnum tsectnum
+    } else {
+      resetplayer
+      action PSTAND
+      cstat 257
+      getplayer[THISACTOR].i tempone
+      updatesectorz ctposx ctposy ctposz ctsectnum
+      setplayer[THISACTOR].posx ctposx
+      setplayer[THISACTOR].posy ctposy
+      setplayer[THISACTOR].posz ctposz
+      setplayer[THISACTOR].ang ctang
+      setactor[THISACTOR].sectnum ctsectnum
+    }
+  }
+
+  /* getplayer[THISACTOR].i tempone
+  setactor[tempone].extra MAXPLAYERHEALTH
+  updatesectorz tposx tposy tposz tsectnum
+  setplayer[THISACTOR].posx tposx
+  setplayer[THISACTOR].posy tposy
+  setplayer[THISACTOR].posz tposz
+  setplayer[THISACTOR].ang tang
+  setactor[THISACTOR].sectnum tsectnum
+
+  getplayer[terroristid].i tempone
+  setactor[tempone].extra MAXPLAYERHEALTH
+  updatesectorz tposx tposy tposz tsectnum
+  setplayer[terroristid].posx tposx
+  setplayer[terroristid].posy tposy
+  setplayer[terroristid].posz tposz
+  setplayer[terroristid].ang tang
+  setactor[terroristid].sectnum tsectnum
+  
+  getplayer[counterterroristid].i tempone
+  setactor[tempone].extra MAXPLAYERHEALTH
+  updatesectorz ctposx ctposy ctposz ctsectnum
+  setplayer[counterterroristid].posx ctposx
+  setplayer[counterterroristid].posy ctposy
+  setplayer[counterterroristid].posz ctposz
+  setplayer[counterterroristid].ang ctang
+  setactor[counterterroristid].sectnum ctsectnum
+
+  /*setvar roundtime 300
+  setvar intermission 90
+  setvar ending 150
+  setvar idone -1
+  setvar idtwo -1
+  setvar terroristid -1
+  setvar counterterroristid -1
+  setvar bombtimer -1
+  setvar theend 0
+  setvar havegivenpoint 0*/
 
   ifaction 0
     action PSTAND
