@@ -34,11 +34,11 @@ define SWEARFREQUENCY          100      // The lower, the less.
 define CAMERASDESTRUCTABLE      NO               // YES
 define FREEZERHURTOWNER         YES
 
-define MAXPLAYERHEALTH           10
-define MAXWATERFOUNTAINHEALTH     5
+define MAXPLAYERHEALTH          100
+define MAXWATERFOUNTAINHEALTH    50
 
-define YELLHURTSOUNDSTRENGTH      4
-define YELLHURTSOUNDSTRENGTHMP    3
+define YELLHURTSOUNDSTRENGTH     40
+define YELLHURTSOUNDSTRENGTHMP   50
 
 define MAXXSTRETCH 70
 define MAXYSTRETCH 70
@@ -46,7 +46,7 @@ define MAXYSTRETCH 70
 define MINXSTRETCH 9
 define MINYSTRETCH 8
 
-define MAXPLAYERATOMICHEALTH     20   // doubles as maxarmor.
+define MAXPLAYERATOMICHEALTH    200     // doubles as maxarmor.
 define DOUBLEMAXPLAYERHEALTH    MAXPLAYERATOMICHEALTH
 define STARTARMORHEALTH         0
 define RETRIEVEDISTANCE         844
@@ -56,25 +56,25 @@ define FROZENQUICKKICKDIST      980
 
 define GENERICIMPACTDAMAGE      10
 
-define MAXPISTOLAMMO           60   //96
-define MAXSHOTGUNAMMO           5  //5
-define MAXCHAINGUNAMMO         200 
-define MAXRPGAMMO              50
+define MAXPISTOLAMMO           200
+define MAXSHOTGUNAMMO           50
+define MAXCHAINGUNAMMO         200
+define MAXRPGAMMO               50
 define MAXHANDBOMBAMMO          50
 define MAXSHRINKERAMMO          50
 define MAXGROWAMMO              50
 define MAXDEVISTATORAMMO        99
 define MAXFREEZEAMMO            99
-define MAXTRIPBOMBAMMO          1 //4
-define TRIPBOMBLASERMODE        1     // 0 = always visable
+define MAXTRIPBOMBAMMO          10
+define TRIPBOMBLASERMODE        0     // 0 = always visable
                                       // 1 = transluscense
                                       // 2 = invisible w/o IR goggles
                                       // 3 = totally invisable
 
 
 
-define RESPAWNACTORTIME         100000
-define RESPAWNITEMTIME          100000
+define RESPAWNACTORTIME         768
+define RESPAWNITEMTIME          768
 
 define QSIZE                   64       // total number of active
                                         // bullet holes, blood,
@@ -89,7 +89,7 @@ define BLIMPRESPAWNTIME 2048
 define NUMFREEZEBOUNCES          3    // 0 - 255
 
 
-define RUNNINGSPEED 40000 //husk at ændre sprintting i aplayer
+define RUNNINGSPEED 53200
 define GRAVITATIONALCONSTANT 176
 
 define PLAYDEADTIME 120
@@ -106,7 +106,7 @@ define THAWTIME 138
 define RPGBLASTRADIUS           1780
 define PIPEBOMBRADIUS           2500
 define SHRINKERBLASTRADIUS      680
-define TRIPBOMBBLASTRADIUS      5000
+define TRIPBOMBBLASTRADIUS      3880
 define MORTERBLASTRADIUS        2500
 define BOUNCEMINEBLASTRADIUS    2500
 define SEENINEBLASTRADIUS       2048
@@ -349,7 +349,6 @@ definequote 121       GOT ALL KEYS
 definequote 122       <Please Leave Blank>
 definequote 123       AMMO FOR EXPANDER
 definequote 124       MAP HAS A DIFFERENT NUMBER OF PLAYERS
-definequote 125       THE BOMB HAS BEEN PLANTED!
 
 
 
@@ -653,7 +652,7 @@ definesound DUKE_GETWEAPON2     getsom1a.voc       0   0   255 4   0
 definesound DUKE_GETWEAPON3     groovy02.voc       0   0   255 4   0
 definesound DUKE_GETWEAPON4     wansom4a.voc       0   0   255 4   0
 definesound DUKE_GETWEAPON6     HAIL01.VOC         0   0   255 4   0
-//definesound DUKE_GOTHEALTHATLOW needed03.voc       0   0   255 4   0
+definesound DUKE_GOTHEALTHATLOW needed03.voc       0   0   255 4   0
 
 definesound DUKE_SEARCH         pain87.VOC       0   0   2   4     0
 definesound DUKE_SEARCH2        whrsit05.voc       0   0   255 4   0
