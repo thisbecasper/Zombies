@@ -113,6 +113,14 @@ state shootshotgun
   setactor[RETURN].zvel tempone
 ends
 ////////////////////EVENTS/////////////////
+onevent EVENT_DISPLAYREST
+	//Debuggg
+	//getactor[THISACTOR].extra tempone
+	digitalnumberz 2837 0 40 PISTOLMAGAZINE 0 0 0 0 0 xdim ydim 58000
+	// digitalnumberz 2837 0 60 endofroundtimer 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 80 debugvalue 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 100 debugvaluetwo 0 0 0 0 0 xdim ydim 58000
+endevent
 
 onevent EVENT_TURNAROUND 
   setvar RETURN -1 // disable the event
@@ -130,7 +138,8 @@ endevent
 onevent EVENT_DOFIRE 
   ifvare PWEAPON 1 {
   	ifvarl PISTOLMAGAZINE 1 break
-  } else subvar PISTOLMAGAZINE 1 // subtract 1 from the magazine count, unless it's already at zero
+  	else subvar PISTOLMAGAZINE 1 // subtract 1 from the magazine count, unless it's already at zero
+  } 
 endevent
 
 onevent EVENT_DOFIRE
