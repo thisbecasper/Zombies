@@ -50,7 +50,7 @@ gamevar armingtimervar 150 4096
 gamevar disarmingtimervar 150 4096
 gamevar freezetimervar 20 4096
 
-gamevar roundtime 300 0
+gamevar roundtime 30 0
 gamevar intermission 90 0
 gamevar ending 150 0
 gamevar idone -1 0
@@ -62,7 +62,6 @@ gamevar bombtimer -1 0
 
 gamevar ctwins 0 131073
 gamevar twins 0 131073
-gamevar havesavedstate 0 131073
 gamevar theend 0 0
 gamevar havegivenpoint 0 0
 gamevar isdead 0 1
@@ -105,30 +104,28 @@ state popisdead
 ends
 
 state newround
-  getplayer[terroristid].yvel tempone
+  getplayer[terroristid].i tempone
   setactor[tempone].extra MAXPLAYERHEALTH
   setplayer[terroristid].posx tposx
   setplayer[terroristid].posy tposy
   setplayer[terroristid].posz tposz
   setplayer[terroristid].ang tang
-  setplayervar[terroristid].isterrorist -1
 
-  getplayer[counterterroristid].yvel tempone
+  getplayer[counterterroristid].i tempone
   setactor[tempone].extra MAXPLAYERHEALTH
-  setplayer[counterterroristid].cposx ctposx
-  setplayer[counterterroristid].cposy ctposy
-  setplayer[counterterroristid].cposz ctposz
+  setplayer[counterterroristid].posx ctposx
+  setplayer[counterterroristid].posy ctposy
+  setplayer[counterterroristid].posz ctposz
   setplayer[counterterroristid].ang ctang
-  setplayervar[terroristid].isterrorist -1
-
-  setvar roundtime 300 0
-  setvar intermission 90 0
-  setvar ending 150 0
-  setvar idone -1 0
-  setvar idtwo -1 0
-  setvar terroristid -1 0
-  setvar counterterroristid -1 0
-  setvar bombtimer -1 0
+  
+  setvar roundtime 300
+  setvar intermission 90
+  setvar ending 150
+  setvar idone -1
+  setvar idtwo -1
+  setvar terroristid -1
+  setvar counterterroristid -1
+  setvar bombtimer -1
 ends
 
 state pistolreload
@@ -236,11 +233,6 @@ state doonce
     getplayer[THISACTOR].ang tang
   }
 
-  ifvare havesavedstate 0 {
-    setvar havesavedstate 1
-    savemapstate
-  } 
-
   getactor[THISACTOR].yvel tempone //For the first player only, do this
   ifvarvare tempone idone {
     state checkgameend
@@ -279,10 +271,10 @@ ends
 onevent EVENT_DISPLAYREST
 	//Debuggg
 	getsector[THISACTOR].floorpal tempone
-	digitalnumberz 2837 0 40 intermission 0 0 0 0 0 xdim ydim 58000
-	digitalnumberz 2837 0 60 roundtime 0 0 0 0 0 xdim ydim 58000
-	digitalnumberz 2837 0 80 ending 0 0 0 0 0 xdim ydim 58000
-	//digitalnumberz 2837 0 100 restartcounter 0 0 0 0 0 xdim ydim 58000
+	digitalnumberz 2837 0 40 ctposx 0 0 0 0 0 xdim ydim 58000
+	digitalnumberz 2837 0 60 ctposy 0 0 0 0 0 xdim ydim 58000
+	digitalnumberz 2837 0 80 tposx 0 0 0 0 0 xdim ydim 58000
+	digitalnumberz 2837 0 100 tposy 0 0 0 0 0 xdim ydim 58000
 
   ifvarg intermission 0 {
     setvarvar tempone intermission
@@ -3637,7 +3629,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
   state popisdead
   ifvare intermission 90 {
     action PSTAND
-    cstat 
+    cstat 257
   }
   ifvarg intermission 0 {
     palfrom 48 0 0 0
