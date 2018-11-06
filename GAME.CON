@@ -19,39 +19,38 @@ action ANULLACTION 0
 
 ////////////////////DEFINES/////////////////
 
-//pistol
-defineprojectile 1817 PROJ_WORKSLIKE 36898
-defineprojectile 1817 PROJ_XREPEAT 5
-defineprojectile 1817 PROJ_YREPEAT 5
-defineprojectile 1817 PROJ_SXREPEAT 50
-defineprojectile 1817 PROJ_SYREPEAT 50
-defineprojectile 1817 PROJ_VEL 1000
-defineprojectile 1817 PROJ_VEL_MULT 3
-defineprojectile 1817 PROJ_ISOUND -1
-defineprojectile 1817 PROJ_EXTRA 2
-defineprojectile 1817 PROJ_EXTRA_RAND 1
-defineprojectile 1817 PROJ_HITRADIUS 0
-defineprojectile 1817 PROJ_CLIPDIST 1
-defineprojectile 1817 PROJ_PAL 24
-defineprojectile 1817 PROJ_SPAWNS SHOTSPARK1
-defineprojectile 1817 PROJ_OFFSET 14354
+//PISTOL
+defineprojectile 1665 PROJ_WORKSLIKE 36866
+defineprojectile 1665 PROJ_SPAWNS SMALLSMOKE
+defineprojectile 1665 PROJ_SOUND PISTOL_FIRE
+defineprojectile 1665 PROJ_VEL 840
+defineprojectile 1665 PROJ_VEL_MULT 3
+defineprojectile 1665 PROJ_XREPEAT 3
+defineprojectile 1665 PROJ_YREPEAT 3
+defineprojectile 1665 PROJ_TXREPEAT 4
+defineprojectile 1665 PROJ_TYREPEAT 4
+defineprojectile 1665 PROJ_TNUM 5
+defineprojectile 1665 PROJ_CLIPDIST 0
+defineprojectile 1665 PROJ_HITRADIUS 0
+defineprojectile 1665 PROJ_EXTRA 15
+defineprojectile 1665 PROJ_TRAIL SMALLSMOKE //2567
 
-//Shotgun
-defineprojectile 1669 PROJ_WORKSLIKE 36898
-defineprojectile 1669 PROJ_XREPEAT 7
-defineprojectile 1669 PROJ_YREPEAT 7
-defineprojectile 1669 PROJ_SOUND SHORT_CIRCUIT
-defineprojectile 1669 PROJ_VEL 800
-defineprojectile 1669 PROJ_VEL_MULT 3
-defineprojectile 1669 PROJ_ISOUND -1
-defineprojectile 1669 PROJ_EXTRA 10
-defineprojectile 1669 PROJ_EXTRA_RAND 1
+//SHOTGUN
+defineprojectile 1669 PROJ_WORKSLIKE 36866
+defineprojectile 1669 PROJ_SPAWNS SMALLSMOKE
+defineprojectile 1669 PROJ_SOUND SHOTGUN_FIRE
+defineprojectile 1669 PROJ_VEL 840
+defineprojectile 1669 PROJ_VEL_MULT 2
+defineprojectile 1669 PROJ_XREPEAT 6
+defineprojectile 1669 PROJ_YREPEAT 6
+defineprojectile 1669 PROJ_TXREPEAT 6
+defineprojectile 1669 PROJ_TYREPEAT 6
+defineprojectile 1669 PROJ_TNUM 5
+defineprojectile 1669 PROJ_CLIPDIST 4
 defineprojectile 1669 PROJ_HITRADIUS 0
-defineprojectile 1669 PROJ_DROP -100
-defineprojectile 1669 PROJ_PAL 2
-defineprojectile 1669 PROJ_SPAWNS GROWSPARK
-defineprojectile 1669 PROJ_OFFSET 14354
-defineprojectile 1669 PROJ_CLIPDIST 1
+defineprojectile 1669 PROJ_EXTRA 15
+defineprojectile 1669 PROJ_TRAIL SMALLSMOKE //2567
+
 
 definegamefuncname 36 Function // rename it, so it'll appear as Reload in the control settings menu
 definegamefuncname 13 Sprint
@@ -64,6 +63,17 @@ gamevar PWEAPON 0 1
 gamevar PISTOLMAGAZINE 0 1
 gamevar PERPLAYER1 0 1
 gamevar WEAPON1_CLIP 0 0 // this last gamevar disables the game's automatic reloading
+
+gamevar tempone 0 0
+gamevar temptwo 0 0
+gamevar tempthree 0 0
+gamevar tempfour 0 0
+gamevar tempfive 0 0
+gamevar tempsix 0 0
+gamevar tempseven 0 0
+gamevar tempeight 0 0
+gamevar tempnine 0 0
+gamevar tempten 0 0
 
 gamevar currenthealth 0 2
 gamevar healthregencounter 0 2
@@ -84,15 +94,9 @@ gamevar modseconds 0 1
 gamevar roundcountdown 120 1
 gamevar ending 75 1
 gamevar theend 0 0
-gamevar temp3 0 1
-gamevar temp4 0 1
 gamevar finalcountdown 116 1
 gamevar firstaidamount 0 1
-gamevar temp5 0 1
-gamevar temp6 0 131073
-
 gamevar candefuse 0 1
-
 gamevar currentsectorshade 0 2
 gamevar currentsectorpal 0 2
 gamevar arming 0 1
@@ -102,9 +106,8 @@ gamevar defusetimer 0 1
 gamevar bombcountdown 901 1
 gamevar bombseconds 0 1
 gamevar defusing 0 1
-gamevar temp 0 1
-gamevar temp2 0 1
 gamevar plantedat 0 0
+gamevar havesetcoordinates 0 131073
 
 gamevar ctwins 0 131073
 gamevar twins 0 131073
@@ -157,9 +160,9 @@ ends
 
 state roundcountdowntosec
 {
-	setvarvar temp2 roundcountdown
-	divvar temp2 30
-	addvar temp2 1
+	setvarvar temptwo roundcountdown
+	divvar temptwo 30
+	addvar temptwo 1
 }
 ends
 
@@ -176,19 +179,15 @@ ends
 
 state clock
 {
-	ifvare theend 1
-	{
+	ifvare theend 1	{
 		nullop
 	} else {
-		ifvare armed 1
-		{
-			ifvarl bombcountdown 1
-			{
+		ifvare armed 1 {
+			ifvarl bombcountdown 1 {
 				addphealth -400
 			}
 		} else {
-			ifvarl clockcounter 1
-			{
+			ifvarl clockcounter 1	{
 				setvar theend 1
 				addphealth 100
 			} else {
@@ -200,12 +199,9 @@ state clock
 ends
 
 state decrementsprintcounter
-{
-	ifvarg sprintcounter 0
-	{
+	ifvarg sprintcounter 0 {
 		subvar sprintcounter 1
 	}
-}
 ends
 
 state decrementsprinting
@@ -221,6 +217,26 @@ state decrementsprinting
 		
 	}
 }
+ends
+
+state shootshotgun
+	//horiz er 40 gange højere end ang
+  eshoot 1669
+  
+  getplayer[THISACTOR].ang tempone
+  randvar temptwo 79
+  subvar temptwo 40
+  addvarvar tempone temptwo
+  setactor[RETURN].ang tempone
+
+  getplayer[THISACTOR].horiz tempone
+  subvar tempone 100
+  mulvar tempone -2048
+  divvar tempone 20
+  randvar temptwo 3200
+  subvar temptwo 1600
+  addvarvar tempone temptwo
+  setactor[RETURN].zvel tempone
 ends
 
 state clocktoseconds
@@ -250,6 +266,12 @@ ends
 ////////////////////EVENTS/////////////////
 
 onevent EVENT_DISPLAYREST
+	//Debuggg
+	//getactor[THISACTOR].extra tempone
+	//digitalnumberz 2837 0 40 theend 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 60 totalearnedmoney 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 80 totalearnedxp 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 100 skillpoints 0 0 0 0 0 xdim ydim 58000
 	
 	getplayer[THISACTOR].ammo_amount 2 currentshotgunammo
 	getactor[THISACTOR].extra currenthealth
@@ -320,7 +342,7 @@ onevent EVENT_DISPLAYREST
 		nullop
 	} else {
 		ifvarg roundcountdown 0	{
-			digitalnumberz 2930 165 105 temp2 0 0 0 0 0 xdim ydim 50000
+			digitalnumberz 2930 165 105 temptwo 0 0 0 0 0 xdim ydim 50000
 		} else {
 			ifvare armed 1 {
 				state bombtoseconds
@@ -619,9 +641,8 @@ endevent
 
 onevent EVENT_GAME
 {
-	setvar WEAPON1_SHOOTS 1817
+	setvar WEAPON1_SHOOTS 1665
 	setvar WEAPON2_SHOOTS 1669
-	setvar WEAPON2_SHOTSPERBURST 1
 
 	ifvare clockcounter 1800
 		globalsound DUKE_GET
@@ -687,9 +708,23 @@ onevent EVENT_GAME
 		globalsound 16
 	ifvare bombcountdown 0
 		globalsound 14 
-
-	
 }
+endevent
+
+onevent EVENT_DOFIRE
+	getplayer[THISACTOR].curr_weapon tempone
+	ifvare tempone SHOTGUN_WEAPON {
+	  state shootshotgun
+	  state shootshotgun
+	  state shootshotgun
+	  state shootshotgun
+	  state shootshotgun
+	  state shootshotgun
+	  state shootshotgun
+	  state shootshotgun
+	  state shootshotgun
+	  state shootshotgun
+	}
 endevent
 
 //////////////////////////////////// S N D /////////////////////////////////////////////////
@@ -3962,9 +3997,9 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 
 	ifvare clockcounter 0 {
 		setvar theend 1
-		ifvare temp4 0 {
+		ifvare tempfour 0 {
 			addvar holderct 1
-			setvar temp4 1
+			setvar tempfour 1
 		}
 	}
 
@@ -3977,23 +4012,21 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 			setvar iscounterterrorist 0
 		}
 		
-		ifvare temp6 0 {
+		ifvare havesetcoordinates 0 {
 			getplayer[THISACTOR].posx posx
 			getplayer[THISACTOR].posy posy
 			getplayer[THISACTOR].posz posz
-			setvar temp6 1
+			setvar havesetcoordinates 1
 		}
 		getplayer[THISACTOR].posx posx
 		getplayer[THISACTOR].posy posy
 		getplayer[THISACTOR].posz posz
 	}
 
-	ifvare bombcountdown 0
-	{
-		ifvare temp4 0
-		{
+	ifvare bombcountdown 0 {
+		ifvare tempfour 0 {
 			addvar holdert 1
-			setvar temp4 1
+			setvar tempfour 1
 		}
 		setvar theend 1
 	}
@@ -4027,9 +4060,9 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 	ifvarl currenthealth 1 {
 		ifvarn iscounterterrorist 1	{
 			ifvarg firstaidamount 0	{
-				ifvare temp5 0 {
+				ifvare tempfive 0 {
 					spawn FIRSTAID
-					setvar temp5 1
+					setvar tempfive 1
 				}		
 			}
 		}
@@ -4037,18 +4070,20 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 		setvar arming 0
 		setvar defusing 0
 
+		/*
 		ifvarn armed 1 {
 			setvar theend 1
-			ifvare temp4 0 {
+			ifvare tempfour 0 {
 				ifvare iscounterterrorist 1	{
 					addvar holdert 1
-					setvar temp4 1
+					setvar tempfour 1
 				} else {
 					addvar holderct 1
-					setvar temp4 1
+					setvar tempfour 1
 				}
 			}
 		}
+		*/
 	}
 
 	ifvarg roundcountdown 0 {
@@ -4118,16 +4153,16 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 	ifvare defusetimer 150 {
 		setvar theend 1
 		setvar defusing 0
-		ifvare temp4 0 {
+		ifvare tempfour 0 {
 			addvar holderct 1
-			setvar temp4 1
+			setvar tempfour 1
 		}
 	}
 
 	ifvare theend 1	{
-		ifvare temp3 0 {
+		ifvare tempthree 0 {
 			setvar armed 2
-			setvar temp3 1
+			setvar tempthree 1
 		}
 	}
 
