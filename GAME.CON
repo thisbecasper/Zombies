@@ -1,82 +1,694 @@
+/*
+musik skal kun spille når der er vundet ordentligt, ikke også når der bare er kill
+slet alt hud når ending = 0
+man skal ikke kunne crouche når man planter og defuser
+kun en tripbomb
+ingen briller og holo
+måske ingen shotgun og mere skade på pistol og hurtigere regen
+grenade launcher
+auto respawn, round counter osv.
+evt lyd ved plantning og defusing
+*/
+
 include DEFS.CON
 include USER.CON
 
 action ANULLACTION 0
 
-///////////////////////////////////// N O T E S////////////////////////////////////////////////
-
 //////////////////////////////////// S N D /////////////////////////////////////////////////
 
 ////////////////////DEFINES/////////////////
 
-//SHOTGUN
-defineprojectile 1669 PROJ_WORKSLIKE 36866
-defineprojectile 1669 PROJ_SPAWNS SMALLSMOKE
-defineprojectile 1669 PROJ_SOUND SHOTGUN_FIRE
-defineprojectile 1669 PROJ_VEL 840
+//pistol
+defineprojectile 1817 PROJ_WORKSLIKE 36898
+defineprojectile 1817 PROJ_XREPEAT 5
+defineprojectile 1817 PROJ_YREPEAT 5
+defineprojectile 1817 PROJ_SXREPEAT 50
+defineprojectile 1817 PROJ_SYREPEAT 50
+defineprojectile 1817 PROJ_VEL 1000
+defineprojectile 1817 PROJ_VEL_MULT 3
+defineprojectile 1817 PROJ_ISOUND -1
+defineprojectile 1817 PROJ_EXTRA 2
+defineprojectile 1817 PROJ_EXTRA_RAND 1
+defineprojectile 1817 PROJ_HITRADIUS 0
+defineprojectile 1817 PROJ_CLIPDIST 1
+defineprojectile 1817 PROJ_PAL 24
+defineprojectile 1817 PROJ_SPAWNS SHOTSPARK1
+defineprojectile 1817 PROJ_OFFSET 14354
+
+//Shotgun
+defineprojectile 1669 PROJ_WORKSLIKE 36898
+defineprojectile 1669 PROJ_XREPEAT 7
+defineprojectile 1669 PROJ_YREPEAT 7
+defineprojectile 1669 PROJ_SOUND SHORT_CIRCUIT
+defineprojectile 1669 PROJ_VEL 800
 defineprojectile 1669 PROJ_VEL_MULT 3
-defineprojectile 1669 PROJ_XREPEAT 10
-defineprojectile 1669 PROJ_YREPEAT 10
-defineprojectile 1669 PROJ_TXREPEAT 10
-defineprojectile 1669 PROJ_TYREPEAT 10
-defineprojectile 1669 PROJ_TNUM 5
-defineprojectile 1669 PROJ_CLIPDIST 4
+defineprojectile 1669 PROJ_ISOUND -1
+defineprojectile 1669 PROJ_EXTRA 10
+defineprojectile 1669 PROJ_EXTRA_RAND 1
 defineprojectile 1669 PROJ_HITRADIUS 0
-defineprojectile 1669 PROJ_EXTRA 50
-defineprojectile 1669 PROJ_TRAIL SMALLSMOKE //2567
+defineprojectile 1669 PROJ_DROP -100
+defineprojectile 1669 PROJ_PAL 2
+defineprojectile 1669 PROJ_SPAWNS GROWSPARK
+defineprojectile 1669 PROJ_OFFSET 14354
+defineprojectile 1669 PROJ_CLIPDIST 1
+
+definegamefuncname 36 Function // rename it, so it'll appear as Reload in the control settings menu
+definegamefuncname 13 Sprint
 
 ////////////////////GAMEVARS/////////////////
 
-gamevar temp 0 0
-gamevar tempone 0 0
-gamevar temptwo 0 0
-gamevar tempthree 0 0
-gamevar tempfour 0 0
-gamevar tempfive 0 0
-gamevar tempsix 0 0
-gamevar tempseven 0 0
-gamevar tempeight 0 0
-gamevar tempnine 0 0
-gamevar tempten 0 0
+gamevar PISTOLAMMO 0 1 
+gamevar KICKBACK 0 1
+gamevar PWEAPON 0 1 
+gamevar PISTOLMAGAZINE 0 1
+gamevar PERPLAYER1 0 1
+gamevar WEAPON1_CLIP 0 0 // this last gamevar disables the game's automatic reloading
+
+gamevar currenthealth 0 2
+gamevar healthregencounter 0 2
+gamevar currentshotgunammo 0 1
+gamevar currtripbombammo 0 1
+gamevar xonevar 0 1
+gamevar holodukeamount 0 1
+gamevar gogglesamount 0 1
+gamevar steroidsamount 0 1
+gamevar fifty 0 1
+gamevar sprintcounter 0 1
+gamevar sprinting 0 1
+gamevar number 0 1
+gamevar clockcounter 3000 1 //plus 120 for the countdown and 30 for one extra second
+gamevar seconds 0 1
+gamevar minutes 0 1
+gamevar modseconds 0 1
+gamevar roundcountdown 120 1
+gamevar ending 75 1
+gamevar theend 0 0
+gamevar temp3 0 1
+gamevar temp4 0 1
+gamevar finalcountdown 116 1
+gamevar firstaidamount 0 1
+gamevar temp5 0 1
+gamevar temp6 0 131073
+
+gamevar candefuse 0 1
+
+gamevar currentsectorshade 0 2
+gamevar currentsectorpal 0 2
+gamevar arming 0 1
+gamevar armed 0 0
+gamevar armingtimer 0 1
+gamevar defusetimer 0 1
+gamevar bombcountdown 901 1
+gamevar bombseconds 0 1
+gamevar defusing 0 1
+gamevar temp 0 1
+gamevar temp2 0 1
+gamevar plantedat 0 0
+
+gamevar ctwins 0 131073
+gamevar twins 0 131073
+gamevar holderct 0 1
+gamevar holdert 0 1
+
+gamevar posx 0 1
+gamevar posy 0 1
+gamevar posz 0 1
+
+gamevar iscounterterrorist 0 1
 
 ////////////////////STATES/////////////////
 
-state shootshotgun
-  eshoot 1669
-  randvar temptwo 119
-  subvar temptwo 60
-  getplayer[THISACTOR].ang tempthree
-  addvarvar tempthree temptwo
-  setactor[RETURN].ang tempthree
-
-  getplayer[THISACTOR].horiz tempfour
-  subvar tempfour 100
-  mulvar tempfour -2048
-  divvar tempfour 20
-
-  randvar tempseven 4800
-  subvar tempseven 2400
-  addvarvar tempseven tempfour
-  setactor[RETURN].zvel tempseven
+state pistolreload
+	getplayer[THISACTOR].curr_weapon PWEAPON // the player's current weapon
+	getplayer[THISACTOR].kickback_pic KICKBACK // the frame of animation the player's weapon is at
+	getplayer[THISACTOR].ammo_amount 1 PISTOLAMMO // the player's pistol ammo
+  ifvare PWEAPON 1 // if the player has the pistol selected...
+  {
+    ifvarl PISTOLMAGAZINE 1 // and his magazine count is at zero...
+    {
+      getplayer[THISACTOR].weapon_pos PERPLAYER1
+      
+      ifvarn PERPLAYER1 0
+        break // if he has a weapon that's lowering off screen, break
+      else ifvarl PISTOLAMMO 1
+        break
+      else // otherwise, if he has ammo for the pistol, start the reloading anim
+      {
+        setplayer[THISACTOR].reloading 1
+        setplayer[THISACTOR].kickback_pic 4
+      }
+    }
+      
+    ifvare KICKBACK 5 // if the reloading animation is on its second frame...
+    {
+      ifvarg PISTOLAMMO 11 // if the player has at least twelve pistol rounds left,
+        setvar PISTOLMAGAZINE 12 // then set his magazine counter to a full magazine
+      else
+        setvarvar PISTOLMAGAZINE PISTOLAMMO // otherwise set the magazine counter equal to his remaining ammo
+    }
+  }
 ends
 
-////////////////////GAMEVARS/////////////////
+state remainingpistolammo
+	getplayer[THISACTOR].ammo_amount 1 PISTOLAMMO
+	subvarvar PISTOLAMMO PISTOLMAGAZINE
+ends
+
+state roundcountdowntosec
+{
+	setvarvar temp2 roundcountdown
+	divvar temp2 30
+	addvar temp2 1
+}
+ends
+
+state healthregen
+{
+	addvar healthregencounter 1
+	ifvarg healthregencounter 450
+	{
+		addphealth 1
+		setvar healthregencounter 0
+	}
+}
+ends
+
+state clock
+{
+	ifvare theend 1
+	{
+		nullop
+	} else {
+		ifvare armed 1
+		{
+			ifvarl bombcountdown 1
+			{
+				addphealth -400
+			}
+		} else {
+			ifvarl clockcounter 1
+			{
+				setvar theend 1
+				addphealth 100
+			} else {
+				subvar clockcounter 1
+			}
+		}
+	}
+}
+ends
+
+state decrementsprintcounter
+{
+	ifvarg sprintcounter 0
+	{
+		subvar sprintcounter 1
+	}
+}
+ends
+
+state decrementsprinting
+{
+	ifvarg sprinting 0
+	{
+		subvar sprinting 1
+	} else {
+		ifvarg sprintcounter 620
+		{
+			sound DUKE_GASP
+		}
+		
+	}
+}
+ends
+
+state clocktoseconds
+{
+	setvarvar seconds clockcounter
+	divvar seconds 30
+	setvarvar modseconds seconds
+	modvar modseconds 60
+		
+}
+ends
+
+state clocktominutes
+{
+	setvarvar minutes seconds
+	divvar minutes 60
+}
+ends
+
+state bombtoseconds
+{
+	setvarvar bombseconds bombcountdown
+	divvar bombseconds 30
+}
+ends
 
 ////////////////////EVENTS/////////////////
 
-onevent EVENT_DOFIRE
-getplayer[THISACTOR].curr_weapon temp
-ifvare temp SHOTGUN_WEAPON {
-  state shootshotgun
-  state shootshotgun
-  state shootshotgun
-  state shootshotgun
-  state shootshotgun
-  state shootshotgun
-  state shootshotgun
-  state shootshotgun
-  state shootshotgun
-  state shootshotgun
+onevent EVENT_DISPLAYREST
+	
+	getplayer[THISACTOR].ammo_amount 2 currentshotgunammo
+	getactor[THISACTOR].extra currenthealth
+	getplayer[THISACTOR].HOLODUKE_AMOUNT holodukeamount
+	getplayer[THISACTOR].HEAT_AMOUNT gogglesamount
+	getplayer[THISACTOR].STEROIDS_AMOUNT steroidsamount
+	getsector[THISACTOR].floorpal currentsectorpal
+	getplayer[THISACTOR].FIRSTAID_AMOUNT firstaidamount
+  
+  ifvare arming 1 {
+  	setvar xonevar 133
+		setvar fifty 50
+		whilevarn fifty 0	{
+		rotatesprite xonevar 120 65000 0 3021 0 2 49 0 0 xdim ydim //3021 3163
+    	addvar xonevar 1
+    	subvar fifty 1
+		}
+
+		setvarvar fifty armingtimer
+		divvar fifty 3
+		setvar xonevar 133
+
+		whilevarn fifty 0	{
+			rotatesprite xonevar 120 65000 0 3021 0 2 16 0 0 xdim ydim
+	    	addvar xonevar 1
+	    	subvar fifty 1
+			}
+	  }
+
+	  ifvare defusing 1  {
+	  	setvar xonevar 133
+			setvar fifty 50
+			whilevarn fifty 0	{
+				rotatesprite xonevar 120 65000 0 3021 0 2 49 0 0 xdim ydim
+	    	addvar xonevar 1
+	    	subvar fifty 1
+		}
+
+		setvarvar fifty defusetimer
+		divvar fifty 3
+		setvar xonevar 133
+		whilevarn fifty 0	{
+			rotatesprite xonevar 120 65000 0 3021 0 2 16 0 0 xdim ydim
+	    addvar xonevar 1
+	    subvar fifty 1
+		}
+  }
+
+	ifvarg roundcountdown 0	{
+		nullop
+	} else {
+		ifvare ending 0	{
+			digitalnumberz 2472 150 95 twins 0 2 16 0 0 xdim ydim 70000
+			digitalnumberz 2472 170 95 ctwins 0 1 16 0 0 xdim ydim 70000
+		} else {
+			digitalnumberz 2472 0 20 twins 0 2 16 0 0 xdim ydim 70000
+			digitalnumberz 2472 20 20 ctwins 0 1 16 0 0 xdim ydim 70000
+		}
+	}
+  	
+
+  state roundcountdowntosec
+  state clocktominutes
+	state clocktoseconds
+
+
+	ifvare theend 1	{
+		nullop
+	} else {
+		ifvarg roundcountdown 0	{
+			digitalnumberz 2930 165 105 temp2 0 0 0 0 0 xdim ydim 50000
+		} else {
+			ifvare armed 1 {
+				state bombtoseconds
+  			digitalnumberz 2930 325 35 bombseconds 0 2 0 0 0 xdim ydim 36000
+			} else {
+				ifvarg seconds 59	{
+					digitalnumberz 2930 331 35 modseconds 0 1 0 0 0 xdim ydim 36000
+					digitalnumberz 3007 318 29 0 0 1 16 0 0 xdim ydim 36000
+					digitalnumberz 2930 315 35 minutes 0 1 0 0 0 xdim ydim 36000
+				} else {
+					ifvarg seconds 29	{
+						digitalnumberz 2930 331 35 modseconds 0 6 0 0 0 xdim ydim 36000
+						digitalnumberz 3007 318 29 0 0 6 16 0 0 xdim ydim 36000
+						digitalnumberz 2930 315 35 minutes 0 6 0 0 0 xdim ydim 36000
+					} else {
+						digitalnumberz 2930 331 35 modseconds 0 2 0 0 0 xdim ydim 36000
+						digitalnumberz 3007 318 29 0 0 2 16 0 0 xdim ydim 36000
+						digitalnumberz 2930 315 35 minutes 0 2 0 0 0 xdim ydim 36000
+					}
+				}
+			}
+		}
+	}
+	
+
+	ifvarg bombcountdown 840 {
+		ifvarl bombcountdown 901 {
+			ifvare iscounterterrorist 1 {
+				gametextz 2822 185 130 125 0 2 0 0 0 xdim ydim 50000
+			}
+		}
+	}
+	
+	
+
+	//Ammo
+	ifvarg roundcountdown 0	{
+		nullop
+	} else ifvarl ending 31 {
+		nullop
+	} else ifvarg currenthealth 0 {
+		state remainingpistolammo
+  	ifvarg firstaidamount 0	{
+  		ifvare armed 0 {
+  			rotatesprite 0 160 15000 0 53 0 0 16 0 0 xdim ydim
+  		}
+  	}
+  	digitalnumberz 2930 292 175 PISTOLMAGAZINE 0 0 0 0 0 xdim ydim 36000 // display the magazine count at a slightly smaller size (50000) next to the ammo
+ 		digitalnumberz 3008 305 172 0 0 0 0 0 4 xdim ydim 36000
+  	digitalnumberz 2930 318 175 PISTOLAMMO 0 0 0 0 0 xdim ydim 36000
+  	digitalnumberz 2930 335 175 currentshotgunammo 0 1 0 0 0 xdim ydim 36000
+  	
+  	getplayer[THISACTOR].ammo_amount TRIPBOMB_WEAPON currtripbombammo
+		setvar xonevar 340
+		whilevarn currtripbombammo 0 {
+			rotatesprite xonevar 173 24000 -140 27 0 0 16 0 0 xdim ydim
+    	addvar xonevar 5
+    	subvar currtripbombammo 1
+		}
+
+		//Sprintbar	
+		setvar xonevar 308
+		setvar fifty 50
+		whilevarn fifty 0 {
+			rotatesprite xonevar 160 65536 0 3163 0 0 49 0 0 xdim ydim
+    	addvar xonevar 1
+    	subvar fifty 1
+		}
+
+		rotatesprite 301 160 4500 0 1427 0 0 16 0 0 xdim ydim //sprint
+
+		setvar xonevar 308
+		setvar fifty 50
+		setvarvar number sprintcounter
+		divvar number 14 //Her skal der divideres med det rigtige: sprintcounter / 50
+		subvarvar fifty number
+
+		whilevarn fifty 0	{
+			rotatesprite xonevar 160 65536 0 3163 0 0 16 0 0 xdim ydim
+    	addvar xonevar 1
+    	subvar fifty 1
+		}
+	}
+endevent
+
+onevent EVENT_LOOKLEFT
+{
+	ifvarg roundcountdown 0
+	{
+		setvar RETURN -1
+	} else {
+		setvar RETURN -1
+		ifvare sprintcounter 0
+		{
+			setvar sprintcounter 700 // husk at dividere med det rigtige under sprintbaren
+			setvar sprinting 60
+		}
+	}
+}
+endevent
+
+onevent EVENT_DISPLAYSBAR
+{
+	setvar RETURN -1
+}
+endevent
+
+onevent EVENT_JUMP
+ifvare ending 0
+{
+	setvar RETURN -1
+} else {
+	ifvare arming 0
+	{
+		ifvare defusing 0
+		{
+			setvar RETURN 0
+		} else {
+			setvar RETURN -1
+		}
+	} else {
+		setvar RETURN -1
+	}
+}
+
+
+endevent
+
+onevent EVENT_DISPLAYCROSSHAIR
+{
+	ifvarl ending 31
+	{
+		setvar RETURN -1
+	} else {
+		ifvarg roundcountdown 0
+		{
+			setvar RETURN -1
+		} else {
+			setvar RETURN 0
+		}
+	}
+}
+endevent
+
+onevent EVENT_TURNAROUND 
+  	setvar RETURN -1 // disable the event
+
+  	ifvare iscounterterrorist 1
+  	{
+  		ifvare armed 1
+  		{
+  			ifvare candefuse 1
+			{
+				ifvare defusing 0
+				{
+					setvar defusing 1
+				} else {
+					setvar defusing 0
+				}
+			}
+  		}
+  	}
+	
+			
+		
+			/*
+			ifvarvare plantedat currentsectorpal
+			{
+				ifvare iscounterterrorist 1
+				{
+					ifvare candefuse 1
+					{
+						ifvare defusing 0
+						{
+							setvar defusing 1
+						} else {
+							setvar defusing 0
+						}
+					}
+				}
+			}
+			*/
+		
+
+	ifvare currentsectorpal 100
+	{
+		ifvare armed 0
+		{
+			ifvarn iscounterterrorist 1
+			{
+				ifvarg firstaidamount 0
+				{
+					ifvare arming 0
+					{
+						setvar arming 1
+					} else {
+						setvar arming 0
+					}
+				}
+			}
+		} else {
+			ifvare PWEAPON 1 // if the player has the pistol armed
+  {
+    ifvare PISTOLMAGAZINE 12 // and his magazine is full, break
+      break
+    else ifvarvare PISTOLMAGAZINE PISTOLAMMO // if his magazine is equal to his pistol ammo, break
+      break
+    else // otherwise, start the reloading sequence
+    {
+      setplayer[THISACTOR].reloading 1
+      setplayer[THISACTOR].kickback_pic 4
+    }
+	}
+  }
+  }
+endevent
+
+/*
+onevent EVENT_CROUCH
+{
+	ifvare ending 0
+	{
+		setvar RETURN -1
+	} else {
+		ifvare arming 0
+		{
+			ifvare defusing 0
+			{
+				setvar RETURN 0
+			} else {
+				setvar RETURN -1
+			}
+		} else {
+			setvar RETURN -1
+		}
+	}
+}
+endevent
+*/
+
+onevent EVENT_PRESSEDFIRE
+{
+	ifvarg roundcountdown 0
+	{
+		setvar RETURN -1
+	} else {
+		ifvare ending 0
+		{
+			setvar RETURN -1
+		} else {
+			ifvarn arming 1
+			{
+				ifvarn defusing 1
+				{
+					setvar RETURN 0
+				}
+			} else {
+				setvar RETURN -1
+			}
+			ifvare PWEAPON 1
+    		ifvarl PISTOLMAGAZINE 1
+    		{
+    			setvar RETURN -1
+    		}
+		}
+	}
+}
+endevent
+
+onevent EVENT_RESETPLAYER {
+	addammo 1 48
+	addammo 2 5
+	addammo 8 1
+
+	setvar PISTOLMAGAZINE 0 // if the player was reset to his starting position (i.e, he died), reset the clip amount to zero.
+  	setplayer[THISACTOR].gotweapon 2 1 
+  	setplayer[THISACTOR].gotweapon 8 1 
+
+  ifvare PWEAPON 1 {
+    setplayer[THISACTOR].reloading 1 
+    setplayer[THISACTOR].kickback_pic 4 // start the reloading sequence.
+  }
+}
+endevent
+
+
+onevent EVENT_DOFIRE 
+
+  ifvare PWEAPON 1 // if the player has the pistol selected when he fires a projectile...
+    ifvarl PISTOLMAGAZINE 1
+      break
+    else
+      subvar PISTOLMAGAZINE 1 // subtract 1 from the magazine count, unless it's already at zero
+
+endevent
+
+onevent EVENT_GAME
+{
+	setvar WEAPON1_SHOOTS 1817
+	setvar WEAPON2_SHOOTS 1669
+	setvar WEAPON2_SHOTSPERBURST 1
+
+	ifvare clockcounter 1800
+		globalsound DUKE_GET
+	ifvare clockcounter 900
+		globalsound DUKE_GET
+	ifvare clockcounter 300
+		globalsound DUKE_GET
+	ifvare clockcounter 270
+		globalsound DUKE_GET
+	ifvare clockcounter 240
+		globalsound DUKE_GET
+	ifvare clockcounter 210
+		globalsound DUKE_GET
+	ifvare clockcounter 180
+		globalsound DUKE_GET
+	ifvare clockcounter 150
+		globalsound DUKE_GET
+	ifvare clockcounter 120
+		globalsound DUKE_GET
+	ifvare clockcounter 90
+		globalsound DUKE_GET
+	ifvare clockcounter 60
+		globalsound DUKE_GET
+	ifvare clockcounter 30
+		globalsound DUKE_GET
+
+
+	ifvare bombcountdown 900
+		globalsound 83
+	ifvare bombcountdown 810
+		globalsound 83
+	ifvare bombcountdown 720
+		globalsound 83
+	ifvare bombcountdown 630
+		globalsound 83
+	ifvare bombcountdown 540
+		globalsound 83
+	ifvare bombcountdown 450
+		globalsound 83
+	ifvare bombcountdown 360
+		globalsound 83
+	ifvare bombcountdown 300
+		globalsound 83
+	ifvare bombcountdown 270
+		globalsound 83
+	ifvare bombcountdown 240
+		globalsound 83
+	ifvare bombcountdown 210
+		globalsound 83
+	ifvare bombcountdown 180
+		globalsound 83
+	ifvare bombcountdown 150
+		globalsound 83
+	ifvare bombcountdown 120
+		globalsound 83
+	ifvare bombcountdown 90
+		globalsound 83
+	ifvare bombcountdown 60
+		globalsound 83
+	ifvare bombcountdown 30
+		globalsound 83	
+	ifvare bombcountdown 17
+		globalsound 16
+	ifvare bombcountdown 0
+		globalsound 14 
+
+	
 }
 endevent
 
@@ -1674,6 +2286,7 @@ ends
 
 actor STEROIDS
   fall
+  /*
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
   else
@@ -1693,10 +2306,12 @@ actor STEROIDS
         else
           state quikget
       }
+      */
 enda
 
 actor BOOTS
   fall
+  /*
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
   else
@@ -1716,10 +2331,12 @@ actor BOOTS
         else
           state quikget
       }
+      */
 enda
 
 actor HEATSENSOR
   fall
+  /*
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
   else
@@ -1739,10 +2356,12 @@ actor HEATSENSOR
         else
           state quikget
       }
+      */
 enda
 
 actor SHIELD
   fall
+  /*
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
   else
@@ -1773,11 +2392,13 @@ actor SHIELD
         else
           state quikget
       }
+      */
 enda
 
 
 actor AIRTANK
   fall
+  /*
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
   else
@@ -1796,11 +2417,13 @@ actor AIRTANK
         else
           state quikget
       }
+      */
 enda
 
 action HOLODUKE_FRAMES 0 4 1 1 8
 actor HOLODUKE 0 HOLODUKE_FRAMES
   fall
+  /*
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
   else
@@ -1819,10 +2442,13 @@ actor HOLODUKE 0 HOLODUKE_FRAMES
         else
           state quikget
       }
+      */
 enda
 
 actor JETPACK
   fall
+      /*
+
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
   else
@@ -1841,10 +2467,12 @@ actor JETPACK
         else
           state quikget
       }
+      */
 enda
 
 actor ACCESSCARD
   fall
+  /*
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
   else
@@ -1861,10 +2489,12 @@ actor ACCESSCARD
         quote 43
         state getcode
       }
+      */
 enda
 
 actor AMMO
   fall
+  /*
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
   else
@@ -1882,10 +2512,12 @@ actor AMMO
         else
           state quikget
       }
+      */
 enda
 
 actor FREEZEAMMO
   fall
+  /*
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
   else
@@ -1903,10 +2535,12 @@ actor FREEZEAMMO
         else
           state quikget
       }
+      */
 enda
 
 actor SHOTGUNAMMO
   fall
+  /*
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
   else
@@ -1924,10 +2558,12 @@ actor SHOTGUNAMMO
         else
           state quikget
       }
+      */
 enda
 
 actor AMMOLOTS
   fall
+  /*
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
   else
@@ -1945,10 +2581,12 @@ actor AMMOLOTS
         else
           state quikget
       }
+      */
 enda
 
 actor CRYSTALAMMO
   fall
+  /*
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
   else
@@ -1966,10 +2604,12 @@ actor CRYSTALAMMO
         else
           state quikget
       }
+      */
 enda
 
 actor GROWAMMO
   fall
+  /*
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
   else
@@ -1987,10 +2627,12 @@ actor GROWAMMO
         else
           state quikget
       }
+      */
 enda
 
 actor BATTERYAMMO
   fall
+  /*
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
   else
@@ -2008,10 +2650,12 @@ actor BATTERYAMMO
         else
           state quikget
       }
+      */
 enda
 
 actor DEVISTATORAMMO
   fall
+  /*
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
   else
@@ -2029,10 +2673,12 @@ actor DEVISTATORAMMO
         else
           state quikget
       }
+      */
 enda
 
 actor RPGAMMO
   fall
+  /*
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
   else
@@ -2049,10 +2695,12 @@ actor RPGAMMO
         else
           state quikget
       }
+      */
 enda
 
 actor HBOMBAMMO
   fall
+
   ifmove RESPAWN_ACTOR_FLAG state respawnit
   else
     ifp pshrunk nullop
@@ -2078,6 +2726,7 @@ enda
 
 actor RPGSPRITE
   fall
+  /*
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
   else
@@ -2098,10 +2747,12 @@ actor RPGSPRITE
         else
           state quikweaponget
       }
+      */
 enda
 
 actor SHOTGUNSPRITE
   fall
+  /*
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
   else
@@ -2137,12 +2788,14 @@ actor SHOTGUNSPRITE
         else
           state quikweaponget
       }
+      */
 enda
 
 
 
 actor SIXPAK
   fall
+  /*
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
   else
@@ -2154,17 +2807,19 @@ actor SIXPAK
             ifphealthl MAXPLAYERHEALTH
               ifcanseetarget
       {
-        addphealth 30
+        addphealth 3
         quote 62
         ifspawnedby SIXPAK
           state getcode
         else
           state quikget
       }
+      */
 enda
 
 actor COLA
   fall
+  /*
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
   else
@@ -2176,17 +2831,19 @@ actor COLA
             ifphealthl MAXPLAYERHEALTH
               ifcanseetarget
       {
-        addphealth 10
+        addphealth 1
         quote 61
         ifspawnedby COLA
           state getcode
         else
           state quikget
       }
+      */
 enda
 
 actor ATOMICHEALTH
   fall
+  /*
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
   else
@@ -2198,13 +2855,14 @@ actor ATOMICHEALTH
             ifphealthl MAXPLAYERATOMICHEALTH
               ifcanseetarget
       {
-        addphealth 50
+        addphealth 5
         quote 19
         ifspawnedby ATOMICHEALTH
           state getcode
         else
           state quikget
       }
+      */
 enda
 
 
@@ -2212,29 +2870,40 @@ enda
 
 actor FIRSTAID
   fall
-  ifmove RESPAWN_ACTOR_FLAG state respawnit
-  else
-    ifp pshrunk nullop
-    else
+
+  
       ifp palive
         ifpdistl RETRIEVEDISTANCE
           ifcount 6
-            ifpinventory GET_FIRSTAID FIRSTAID_AMOUNT
+            
               ifcanseetarget
       {
-        addinventory GET_FIRSTAID FIRSTAID_AMOUNT
-        quote 3
-
-        ifspawnedby FIRSTAID
+        setvar candefuse 1
+        ifvarn iscounterterrorist 1
+        {
+        	ifvarn armed 1
+        	{
+        		ifvare firstaidamount 0
+        		{
+        			addinventory GET_FIRSTAID FIRSTAID_AMOUNT
+        		ifspawnedby FIRSTAID
           state getcode
         else
           state quikget
+        		}	
+        	}
+        }
+        
+      } else {
+      	setvar candefuse 0
       }
+      
 enda
 
 
 actor FIRSTGUNSPRITE
   fall
+  /*
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
   else
@@ -2253,11 +2922,13 @@ actor FIRSTGUNSPRITE
         else
           state quikweaponget
       }
+      */
 enda
 
 
 actor TRIPBOMBSPRITE
   fall
+  /*
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
   else
@@ -2278,10 +2949,12 @@ actor TRIPBOMBSPRITE
         else
           state quikweaponget
       }
+     */
 enda
 
 actor CHAINGUNSPRITE
   fall
+  /*
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
   else
@@ -2302,12 +2975,14 @@ actor CHAINGUNSPRITE
         else
           state quikweaponget
       }
+      */
 enda
 
 
 
 actor SHRINKERSPRITE
   fall
+  /*
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
   else
@@ -2327,10 +3002,12 @@ actor SHRINKERSPRITE
         else
           state quikweaponget
       }
+      */
 enda
 
 actor FREEZESPRITE
   fall
+  /*
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
   else
@@ -2351,10 +3028,12 @@ actor FREEZESPRITE
         else
           state quikweaponget
       }
+      */
 enda
 
 actor DEVISTATORSPRITE
   fall
+  /*
   ifmove RESPAWN_ACTOR_FLAG state respawnit
   else
     ifp pshrunk nullop
@@ -2373,6 +3052,7 @@ actor DEVISTATORSPRITE
         else
           state quikweaponget
       }
+      */
 enda
 
 action FIRE_FRAMES   -1 14 1 1 1
@@ -3153,6 +3833,7 @@ actor SHOTSPARK1 PISTOL_WEAPON_STRENGTH WEAP2FRAMES
   }
 enda
 
+
 state standard_pjibs
   guts JIBS1 1
   guts JIBS3 2
@@ -3260,7 +3941,218 @@ move PGROWINGPOP        // Used only as a variable
 
 actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 
-  setvar WEAPON2_SHOOTS 1669
+	state healthregen
+	state decrementsprinting
+	state decrementsprintcounter
+	state clock
+  state pistolreload
+
+	ifvare theend 1	ifvarg ending 0	subvar ending 1
+
+	ifvare finalcountdown 82 {
+		ifvare holderct 1 {
+			addvar ctwins 1
+			sound 9
+		}
+		ifvare holdert 1 {
+			addvar twins 1
+			sound 9
+		}
+	}
+
+	ifvare clockcounter 0 {
+		setvar theend 1
+		ifvare temp4 0 {
+			addvar holderct 1
+			setvar temp4 1
+		}
+	}
+
+	ifvare roundcountdown 120 {
+		clearmapstate 7
+		savemapstate
+		ifvare currentsectorpal 200	{
+			setvar iscounterterrorist 1
+		} else {
+			setvar iscounterterrorist 0
+		}
+		
+		ifvare temp6 0 {
+			getplayer[THISACTOR].posx posx
+			getplayer[THISACTOR].posy posy
+			getplayer[THISACTOR].posz posz
+			setvar temp6 1
+		}
+		getplayer[THISACTOR].posx posx
+		getplayer[THISACTOR].posy posy
+		getplayer[THISACTOR].posz posz
+	}
+
+	ifvare bombcountdown 0
+	{
+		ifvare temp4 0
+		{
+			addvar holdert 1
+			setvar temp4 1
+		}
+		setvar theend 1
+	}
+
+	ifvare ending 0	{
+		subvar finalcountdown 1
+	}
+
+	ifvarl ending 31 {
+		palfrom 40 1 1 1
+	}
+
+	ifvare finalcountdown 2	{
+		setplayer[THISACTOR].posx posx
+  	setplayer[THISACTOR].posy posy
+  	setplayer[THISACTOR].posz posz
+	}
+ 
+	ifvare finalcountdown 4	{
+		setactor[THISACTOR].extra 10
+		setplayer[THISACTOR].ammo_amount 1 60
+		setplayer[THISACTOR].ammo_amount 2 5
+		setplayer[THISACTOR].ammo_amount 8 1
+		setplayer[THISACTOR].curr_weapon 1
+	}
+
+	ifvare finalcountdown 0	{
+		loadmapstate
+	}
+
+	ifvarl currenthealth 1 {
+		ifvarn iscounterterrorist 1	{
+			ifvarg firstaidamount 0	{
+				ifvare temp5 0 {
+					spawn FIRSTAID
+					setvar temp5 1
+				}		
+			}
+		}
+		
+		setvar arming 0
+		setvar defusing 0
+
+		ifvarn armed 1 {
+			setvar theend 1
+			ifvare temp4 0 {
+				ifvare iscounterterrorist 1	{
+					addvar holdert 1
+					setvar temp4 1
+				} else {
+					addvar holderct 1
+					setvar temp4 1
+				}
+			}
+		}
+	}
+
+	ifvarg roundcountdown 0 {
+		palfrom 40 1 1 1
+		subvar roundcountdown 1
+	}
+
+	ifvare armed 0 {
+		ifvare arming 1 {
+			addvar armingtimer 2
+		} else {
+			ifvare sprinting 0 {
+				setvar armingtimer 0
+			}
+		}
+	}
+
+	ifvare armed 1 {
+		ifvare defusing 1 {
+			addvar defusetimer 1
+		} else {
+			ifvare sprinting 0 {
+				setvar defusetimer 0
+			}
+		}
+	}
+
+  	
+
+	ifvare arming 0	{
+		ifvare defusing 0	{
+			ifvare roundcountdown 0	{
+				ifvarn ending 0	{
+					ifvare sprinting 0
+					{
+						setplayer[THISACTOR].runspeed 40000
+					} else {
+						setplayer[THISACTOR].runspeed 51000
+					}
+				} else {
+					setplayer[THISACTOR].runspeed 0
+					}
+			} else {
+					setplayer[THISACTOR].runspeed 0
+				}
+		} else {
+				setplayer[THISACTOR].runspeed 0
+			}
+	} else {
+			setplayer[THISACTOR].runspeed 0
+		}
+
+
+	ifvare armingtimer 150 {
+		setvar armed 1
+		setvar arming 0
+		//getsector[THISACTOR].floorpal plantedat
+		setvar armingtimer 1
+		spawn FIRSTAID
+	}
+
+	ifvare armed 1 {
+		subvar bombcountdown 1
+		setvar arming 0
+	}
+
+	ifvare defusetimer 150 {
+		setvar theend 1
+		setvar defusing 0
+		ifvare temp4 0 {
+			addvar holderct 1
+			setvar temp4 1
+		}
+	}
+
+	ifvare theend 1	{
+		ifvare temp3 0 {
+			setvar armed 2
+			setvar temp3 1
+		}
+	}
+
+	ifvare armed 2 {
+		//sound 249 //var oprindeligt globalsound
+		setvar defusetimer 0
+		setvar armed 0
+	}
+
+	
+  
+  ifvarl currenthealth 6 {
+  	palfrom 16 24 0 0
+  	ifvarl currenthealth 4 {
+  		palfrom 32 24 0 0
+  		ifvarl currenthealth 3 {
+  			palfrom 40 24 0 0
+  			ifvarl currenthealth 2 {
+  				palfrom 48 24 0 0
+  			}
+  		}
+  	}
+  }
+
+//////////////////////////////////////
 
   ifaction 0
     action PSTAND
@@ -3298,8 +4190,8 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
       quote 13
       ifhitspace
       {
-        action PSTAND
-        resetplayer
+        //action PSTAND
+        //resetplayer
       }
       break
     }
@@ -3334,8 +4226,8 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
         quote 13
         ifhitspace
         {
-          action 0
-          resetplayer
+          //action 0
+          //resetplayer
         }
         break
       }
@@ -3397,9 +4289,9 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
       quote 13
       ifhitspace
       {
-        action PSTAND
-        spawn DUKELYINGDEAD
-        resetplayer
+        //action PSTAND
+        //spawn DUKELYINGDEAD
+        //resetplayer
       }
       break
     }
@@ -3422,8 +4314,8 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
       quote 13
       ifhitspace
       {
-        resetplayer
-        action PSTAND
+        //resetplayer
+        //action PSTAND
       }
       break
     }
@@ -3590,8 +4482,8 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
     {
       state headhitstate
       sound DUKE_GRUNT
-      ifp pstanding
-        action PFLINTCHING
+      //ifp pstanding
+        //action PFLINTCHING
     }
 
     ifwasweapon RPG
@@ -3667,12 +4559,14 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
     break
   }
 
+  
   ifaction PFLINTCHING
   {
     ifactioncount 2
       action PSTAND
     break
   }
+
 
   ifinwater
   {
