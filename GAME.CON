@@ -51,7 +51,6 @@ defineprojectile 1669 PROJ_HITRADIUS 0
 defineprojectile 1669 PROJ_EXTRA 15
 defineprojectile 1669 PROJ_TRAIL SMALLSMOKE //2567
 
-
 definegamefuncname 36 Function // rename it, so it'll appear as Reload in the control settings menu
 definegamefuncname 13 Sprint
 
@@ -108,6 +107,10 @@ gamevar bombseconds 0 1
 gamevar defusing 0 1
 gamevar plantedat 0 0
 gamevar havesetcoordinates 0 131073
+gamevar id -1 0
+gamevar idtwo -1 0
+gamevar debugvalue 0 0
+gamevar debugvaluetwo 0 0
 
 gamevar ctwins 0 131073
 gamevar twins 0 131073
@@ -263,15 +266,48 @@ state bombtoseconds
 }
 ends
 
+state checkgameend
+	getplayervar[id].iscounterterrorist tempone
+	getplayer[id].i temptwo
+	getactor[temptwo].extra tempthree
+	setvarvar debugvalue tempthree
+	ifvarl tempthree 1 {
+		setvar theend 1
+	}
+	getplayervar[idtwo].iscounterterrorist tempone
+	getplayer[idtwo].i temptwo
+	getactor[temptwo].extra tempthree
+	setvarvar debugvaluetwo tempthree
+	ifvarl tempthree 1 {
+		setvar theend 1
+	}
+ends
+
+state doonce
+	ifvare id -1 { //Set id of the first player
+		getplayer[THISACTOR].i tempone
+		getactor[tempone].yvel temptwo
+		setvarvar id temptwo
+	} else ifvare idtwo -1 { //Set id of the second player
+		getplayer[THISACTOR].i tempone
+		getactor[tempone].yvel temptwo
+		setvarvar idtwo temptwo
+	}
+	getactor[THISACTOR].yvel tempone //For the first player only, do this
+	ifvarvare tempone id {
+		state checkgameend
+	}
+ends
+
 ////////////////////EVENTS/////////////////
 
 onevent EVENT_DISPLAYREST
 	//Debuggg
 	//getactor[THISACTOR].extra tempone
-	//digitalnumberz 2837 0 40 theend 0 0 0 0 0 xdim ydim 58000
-	//digitalnumberz 2837 0 60 totalearnedmoney 0 0 0 0 0 xdim ydim 58000
-	//digitalnumberz 2837 0 80 totalearnedxp 0 0 0 0 0 xdim ydim 58000
-	//digitalnumberz 2837 0 100 skillpoints 0 0 0 0 0 xdim ydim 58000
+	digitalnumberz 2837 0 40 id 0 0 0 0 0 xdim ydim 58000
+	digitalnumberz 2837 0 60 debugvalue 0 0 0 0 0 xdim ydim 58000
+	digitalnumberz 2837 0 80 debugvaluetwo 0 0 0 0 0 xdim ydim 58000
+	digitalnumberz 2837 0 100 idtwo 0 0 0 0 0 xdim ydim 58000
 	
 	getplayer[THISACTOR].ammo_amount 2 currentshotgunammo
 	getactor[THISACTOR].extra currenthealth
@@ -3981,6 +4017,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 	state decrementsprintcounter
 	state clock
   state pistolreload
+  state checkgameend
 
 	ifvare theend 1	ifvarg ending 0	subvar ending 1
 
