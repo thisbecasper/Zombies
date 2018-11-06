@@ -50,19 +50,22 @@ gamevar armingtimervar 150 4096
 gamevar disarmingtimervar 150 4096
 gamevar freezetimervar 20 4096
 
+gamevar roundtime 300 0
+gamevar intermission 90 0
+gamevar ending 150 0
 gamevar idone -1 0
 gamevar idtwo -1 0
-gamevar roundtime 200 0
-gamevar intermission 90 0
-gamevar ctwins 0 131073
-gamevar twins 0 131073
-gamevar theend 0 0
-gamevar havegivenpoint 0 0
-gamevar isdead 0 1
 gamevar isterrorist -1 1
 gamevar terroristid -1 0
 gamevar counterterroristid -1 0
 gamevar bombtimer -1 0
+
+gamevar ctwins 0 131073
+gamevar twins 0 131073
+gamevar havesavedstate 0 131073
+gamevar theend 0 0
+gamevar havegivenpoint 0 0
+gamevar isdead 0 1
 gamevar armingtimer 0 0
 gamevar disarmingtimer 0 0 
 gamevar freezetimer 0 1
@@ -78,6 +81,16 @@ gamevar tempeight 0 0
 gamevar tempnine 0 0
 gamevar tempten 0 0
 
+gamevar tposx 0 0
+gamevar tposy 0 0
+gamevar tposz 0 0
+gamevar tang 0 0
+gamevar ctposx 0 0
+gamevar ctposy 0 0
+gamevar ctposz 0 0
+gamevar ctang 0 0
+
+
 gamevar PISTOLAMMO 0 1 
 gamevar KICKBACK 0 1
 gamevar PWEAPON 0 1 
@@ -89,6 +102,33 @@ gamevar WEAPON1_CLIP 0 0 // this last gamevar disables the game's automatic relo
 state popisdead
   getactor[THISACTOR].extra tempone
   ifvarl tempone 1 setvar isdead 1
+ends
+
+state newround
+  getplayer[terroristid].yvel tempone
+  setactor[tempone].extra MAXPLAYERHEALTH
+  setplayer[terroristid].posx tposx
+  setplayer[terroristid].posy tposy
+  setplayer[terroristid].posz tposz
+  setplayer[terroristid].ang tang
+  setplayervar[terroristid].isterrorist -1
+
+  getplayer[counterterroristid].yvel tempone
+  setactor[tempone].extra MAXPLAYERHEALTH
+  setplayer[counterterroristid].cposx ctposx
+  setplayer[counterterroristid].cposy ctposy
+  setplayer[counterterroristid].cposz ctposz
+  setplayer[counterterroristid].ang ctang
+  setplayervar[terroristid].isterrorist -1
+
+  setvar roundtime 300 0
+  setvar intermission 90 0
+  setvar ending 150 0
+  setvar idone -1 0
+  setvar idtwo -1 0
+  setvar terroristid -1 0
+  setvar counterterroristid -1 0
+  setvar bombtimer -1 0
 ends
 
 state pistolreload
@@ -174,30 +214,32 @@ state freezeplayeractions
   lockplayer 20
 ends
 
-state popteam
-  getsector[THISACTOR].floorpal tempthree
-  ifvare tempthree 200 {
-    setvar isterrorist 1
-    setvarvar counterterroristid temptwo
-  } else {
-    setvar isterrorist 0
-    setvarvar terroristid temptwo
-  }
-ends
-
 state doonce
-  ifvare idone -1 { //Set id of the first player
+  ifvare idone -1 { //Set id of the first player COUNTERTERRORISR
     getplayer[THISACTOR].i tempone
     getactor[tempone].yvel temptwo
     setvarvar idone temptwo
-    getsector[THISACTOR].floorpal tempthree
-    state popteam
-  } else ifvare idtwo -1 { //Set id of the second player
+
+    getplayer[THISACTOR].posx ctposx
+    getplayer[THISACTOR].posy ctposy
+    getplayer[THISACTOR].posz ctposz
+    getplayer[THISACTOR].ang ctang
+
+  } else ifvare idtwo -1 { //Set id of the second player TERRORIST
     getplayer[THISACTOR].i tempone
     getactor[tempone].yvel temptwo
     setvarvar idtwo temptwo
-    state popteam
+
+    getplayer[THISACTOR].posx tposx
+    getplayer[THISACTOR].posy tposy
+    getplayer[THISACTOR].posz tposz
+    getplayer[THISACTOR].ang tang
   }
+
+  ifvare havesavedstate 0 {
+    setvar havesavedstate 1
+    savemapstate
+  } 
 
   getactor[THISACTOR].yvel tempone //For the first player only, do this
   ifvarvare tempone idone {
@@ -209,6 +251,8 @@ state doonce
     else setvar armingtimer 0
     ifvarg disarmingtimer 0 subvar disarmingtimer 4
     else setvar disarmingtimer 0
+    ifvare theend 1 ifvarg ending 0 subvar ending 1
+    ifvare ending 0 state newround
   }
 ends
 
@@ -235,82 +279,103 @@ ends
 onevent EVENT_DISPLAYREST
 	//Debuggg
 	getsector[THISACTOR].floorpal tempone
-	digitalnumberz 2837 0 40 twins 0 0 0 0 0 xdim ydim 58000
-	digitalnumberz 2837 0 60 ctwins 0 0 0 0 0 xdim ydim 58000
-	digitalnumberz 2837 0 80 armingtimer 0 0 0 0 0 xdim ydim 58000
-	digitalnumberz 2837 0 100 freezetimer 0 0 0 0 0 xdim ydim 58000
+	digitalnumberz 2837 0 40 intermission 0 0 0 0 0 xdim ydim 58000
+	digitalnumberz 2837 0 60 roundtime 0 0 0 0 0 xdim ydim 58000
+	digitalnumberz 2837 0 80 ending 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 100 restartcounter 0 0 0 0 0 xdim ydim 58000
 
-  //Clock
-  setvarvar tempone roundtime
-  divvar tempone 30
-  modvar tempone 60 //rest seconds
-  setvarvar temptwo roundtime
-  divvar temptwo 30
-  divvar temptwo 60 //minutes
-  ifvarg bombtimer 0 {
-    setvarvar tempone bombtimer 
+  ifvarg intermission 0 {
+    setvarvar tempone intermission
     divvar tempone 30
-    digitalnumberz 2930 325 35 tempone 0 2 0 0 0 xdim ydim 36000
-  } else ifvarg roundtime 1800 { //60 sekunder
-    digitalnumberz 2930 331 35 tempone 0 1 0 0 0 xdim ydim 36000
-    digitalnumberz 3007 318 29 0 0 1 16 0 0 xdim ydim 36000
-    digitalnumberz 2930 315 35 temptwo 0 1 0 0 0 xdim ydim 36000
-  } else ifvarg roundtime 900 { // 30 sekunder
-    digitalnumberz 2930 331 35 tempone 0 6 0 0 0 xdim ydim 36000
-    digitalnumberz 3007 318 29 0 0 6 16 0 0 xdim ydim 36000
-    digitalnumberz 2930 315 35 temptwo 0 6 0 0 0 xdim ydim 36000
+    addvar tempone 1
+    digitalnumberz 2930 165 105 tempone 0 0 0 0 0 xdim ydim 50000
   } else {
-    digitalnumberz 2930 331 35 tempone 0 2 0 0 0 xdim ydim 36000
-    digitalnumberz 3007 318 29 0 0 2 16 0 0 xdim ydim 36000
-    digitalnumberz 2930 315 35 temptwo 0 2 0 0 0 xdim ydim 36000
-  }
-
-  //Bomb announcement
-  setvarvar tempone bombtimervar
-  subvar tempone 60
-  ifvarvarg bombtimer tempone {
-    ifvare isterrorist 0 {
-      gametextz 2822 185 130 125 0 2 0 0 0 xdim ydim 50000
+    //Clock
+    setvarvar tempone roundtime
+    divvar tempone 30
+    modvar tempone 60 //rest seconds
+    setvarvar temptwo roundtime
+    divvar temptwo 30
+    divvar temptwo 60 //minutes
+    ifvarg bombtimer 0 {
+      setvarvar tempone bombtimer 
+      divvar tempone 30
+      digitalnumberz 2930 325 35 tempone 0 2 0 0 0 xdim ydim 36000
+    } else ifvarg roundtime 1800 { //60 sekunder
+      digitalnumberz 2930 331 35 tempone 0 1 0 0 0 xdim ydim 36000
+      digitalnumberz 3007 318 29 0 0 1 16 0 0 xdim ydim 36000
+      digitalnumberz 2930 315 35 temptwo 0 1 0 0 0 xdim ydim 36000
+    } else ifvarg roundtime 900 { // 30 sekunder
+      digitalnumberz 2930 331 35 tempone 0 6 0 0 0 xdim ydim 36000
+      digitalnumberz 3007 318 29 0 0 6 16 0 0 xdim ydim 36000
+      digitalnumberz 2930 315 35 temptwo 0 6 0 0 0 xdim ydim 36000
+    } else {
+      digitalnumberz 2930 331 35 tempone 0 2 0 0 0 xdim ydim 36000
+      digitalnumberz 3007 318 29 0 0 2 16 0 0 xdim ydim 36000
+      digitalnumberz 2930 315 35 temptwo 0 2 0 0 0 xdim ydim 36000
     }
-  }
 
-  //Bomb bar
-  ifvarg armingtimer 0 {
-    setvar tempone 133
-    setvar temptwo 50
-    whilevarn temptwo 0 {
-      rotatesprite tempone 120 65000 0 3021 0 2 49 0 0 xdim ydim //3021 3163
-      addvar tempone 1
-      subvar temptwo 1
+    //Bomb announcement
+    setvarvar tempone bombtimervar
+    subvar tempone 60
+    ifvarvarg bombtimer tempone {
+      ifvare isterrorist 0 {
+        gametextz 2822 185 130 125 0 2 0 0 0 xdim ydim 50000
+      }
     }
 
-    setvar tempone 133
-    setvarvar temptwo armingtimer
-    divvar temptwo 3
-    whilevarn temptwo 0 {
-      rotatesprite tempone 120 65000 0 3021 0 2 17 0 0 xdim ydim
+    //Bomb bar
+    ifvarg armingtimer 0 {
+      setvar tempone 133
+      setvar temptwo 50
+      whilevarn temptwo 0 {
+        rotatesprite tempone 120 65000 0 3021 0 2 49 0 0 xdim ydim //3021 3163
         addvar tempone 1
         subvar temptwo 1
-    }
-  }
-  ifvarg disarmingtimer 0 {
-    setvar tempone 133
-    setvar temptwo 50
-    whilevarn temptwo 0 {
-      rotatesprite tempone 120 65000 0 3021 0 2 49 0 0 xdim ydim //3021 3163
-      addvar tempone 1
-      subvar temptwo 1
-    }
+      }
 
-    setvar tempone 133
-    setvarvar temptwo disarmingtimer
-    divvar temptwo 3
-    whilevarn temptwo 0 {
-      rotatesprite tempone 120 65000 0 3021 0 2 17 0 0 xdim ydim
+      setvar tempone 133
+      setvarvar temptwo armingtimer
+      divvar temptwo 3
+      whilevarn temptwo 0 {
+        rotatesprite tempone 120 65000 0 3021 0 2 17 0 0 xdim ydim
+          addvar tempone 1
+          subvar temptwo 1
+      }
+    }
+    ifvarg disarmingtimer 0 {
+      setvar tempone 133
+      setvar temptwo 50
+      whilevarn temptwo 0 {
+        rotatesprite tempone 120 65000 0 3021 0 2 49 0 0 xdim ydim //3021 3163
         addvar tempone 1
         subvar temptwo 1
+      }
+
+      setvar tempone 133
+      setvarvar temptwo disarmingtimer
+      divvar temptwo 3
+      whilevarn temptwo 0 {
+        rotatesprite tempone 120 65000 0 3021 0 2 17 0 0 xdim ydim
+          addvar tempone 1
+          subvar temptwo 1
+      }
+    }
+
+    //Score
+    ifvarl ending 76 {
+      digitalnumberz 2472 150 95 twins 0 2 16 0 0 xdim ydim 70000
+      digitalnumberz 2472 170 95 ctwins 0 1 16 0 0 xdim ydim 70000
+    } else {
+      digitalnumberz 2472 0 20 twins 0 2 16 0 0 xdim ydim 70000
+      digitalnumberz 2472 20 20 ctwins 0 1 16 0 0 xdim ydim 70000
     }
   }
+endevent
+
+onevent EVENT_DISPLAYCROSSHAIR
+  ifvarl ending 125 setvar RETURN -1
+  else ifvarg intermission 0 setvar RETURN -1
 endevent
 
 onevent EVENT_TURNAROUND 
@@ -324,6 +389,10 @@ onevent EVENT_TURNAROUND
       setplayer[THISACTOR].kickback_pic 4
     }
 	}
+endevent
+
+onevent EVENT_DISPLAYSBAR
+  setvar RETURN -1
 endevent
 
 onevent EVENT_USE
@@ -353,7 +422,6 @@ onevent EVENT_USE
       }
     }
   }
-  
 endevent
 
 onevent EVENT_DOFIRE
@@ -372,22 +440,6 @@ onevent EVENT_DOFIRE
     state shootshotgun
     state shootshotgun
   }
-endevent
-
-onevent EVENT_DOFIRE
-	getplayer[THISACTOR].curr_weapon tempone
-	ifvare tempone SHOTGUN_WEAPON {
-	  state shootshotgun
-	  state shootshotgun
-	  state shootshotgun
-	  state shootshotgun
-	  state shootshotgun
-	  state shootshotgun
-	  state shootshotgun
-	  state shootshotgun
-	  state shootshotgun
-	  state shootshotgun
-	}
 endevent
 
 onevent EVENT_JUMP
@@ -3583,6 +3635,18 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 	state pistolreload
   state doonce
   state popisdead
+  ifvare intermission 90 {
+    action PSTAND
+    cstat 
+  }
+  ifvarg intermission 0 {
+    palfrom 48 0 0 0
+    setvar freezetimer 1
+  }
+  ifvarl ending 135 {
+    palfrom 48 0 0 0
+  }
+  ifvarl ending 100 setvar freezetimer 1
 
   ifaction 0
     action PSTAND
