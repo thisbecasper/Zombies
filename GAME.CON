@@ -63,8 +63,8 @@ gamevar theend 0 0
 gamevar havegivenpoint 0 0
 gamevar isdead 0 1
 
-gamevar ctwins 0 131073
-gamevar twins 0 131073
+gamevar ctwins 0 131072
+gamevar twins 0 131072
 gamevar armingtimer 0 0
 gamevar disarmingtimer 0 0 
 gamevar freezetimer 0 1
@@ -79,6 +79,8 @@ gamevar tempseven 0 0
 gamevar tempeight 0 0
 gamevar tempnine 0 0
 gamevar tempten 0 0
+gamevar debugvalue 0 0
+gamevar debugvaluetwo 0 0
 
 gamevar tposx 0 0
 gamevar tposy 0 0
@@ -99,12 +101,6 @@ gamevar PISTOLMAGAZINE 0 1
 gamevar PERPLAYER1 0 1
 gamevar WEAPON1_CLIP 0 0 // this last gamevar disables the game's automatic reloading
 ////////////////////STATES/////////////////
-
-state popisdead
-  getactor[THISACTOR].extra tempone
-  ifvarl tempone 1 setvar isdead 1
-  else setvar isdead 0
-ends
 
 state pistolreload
 	getplayer[THISACTOR].curr_weapon PWEAPON // the player's current weapon
@@ -137,20 +133,63 @@ state pistolreload
   }
 ends
 
+state resetround
+  setplayervar[terroristid].isdead 0
+  setplayervar[counterterroristid].isdead 0
+  setvar roundtime 300
+  setvar intermission 90
+  setvar ending 150
+  setvar idone -1
+  setvar idtwo -1
+  setvar terroristid -1
+  setvar counterterroristid -1
+  setvar bombtimer -1
+  setvar theend 0
+  setvar havegivenpoint 0
+  setvar armingtimer 0
+  setvar disarmingtimer 0
+  setvar tempone 0
+  setvar temptwo 0
+  setvar tempthree 0
+  setvar tempfour 0
+  setvar tempfive 0
+  setvar tempsix 0
+  setvar tempseven 0
+  setvar tempeight 0
+  setvar tempnine 0
+  setvar tempten 0
+  setvar debugvalue 0
+  setvar debugvaluetwo 0
+  setvar tposx 0
+  setvar tposy 0
+  setvar tposz 0
+  setvar tang 0
+  setvar tsectnum 0
+  setvar ctposx 0
+  setvar ctposy 0
+  setvar ctposz 0
+  setvar ctang 0
+  setvar ctsectnum 0
+ends
+
 state givectpoint
-  ifvare havegivenpoint 0 {
-    setvar havegivenpoint 1
-    addvar ctwins 1
-    setvar theend 1
+  ifvare intermission 0 {
+    ifvare havegivenpoint 0 {
+      setvar havegivenpoint 1
+      addvar ctwins 1
+      setvar theend 1
+    }
   }
 ends
 
 state givetpoint
-  ifvare havegivenpoint 0 {
-    setvar havegivenpoint 1
-    addvar twins 1
-    setvar theend 1
-  }
+  ifvare intermission 0 {
+    ifvare havegivenpoint 0 {
+        setvar havegivenpoint 1
+        addvar twins 1
+        setvar theend 1
+      }
+  }  
 ends
 
 state frozen
@@ -166,23 +205,22 @@ state checkgameend
     state givectpoint
   }
 
-  //One is dead
+  //Dead player
   getplayervar[terroristid].isdead tempone
   ifvare tempone 1 {
     ifvare bombtimer -1 {
-      state givectpoint //t dead - no bomb planted
+      state givectpoint
     }
   }
   getplayervar[counterterroristid].isdead tempone
   ifvare tempone 1 {
-    state givetpoint //ct is dead - t wins
+    state givetpoint
   }
   
   //Bomb counter
   ifvare bombtimer 0 {
     state givetpoint //bomb explodes - t wins
   }
-  
 ends
 
 state freezeplayeractions
@@ -194,6 +232,7 @@ state doonce
     getplayer[THISACTOR].i tempone
     getactor[tempone].yvel temptwo
     setvarvar idone temptwo
+    setvarvar counterterroristid temptwo
     setvar isterrorist 0
 
     getplayer[THISACTOR].posx ctposx
@@ -201,13 +240,11 @@ state doonce
     getplayer[THISACTOR].posz ctposz
     getplayer[THISACTOR].ang ctang
     getactor[THISACTOR].sectnum ctsectnum
-    
-    savemapstate
-
   } else ifvare idtwo -1 { //Set id of the second player TERRORIST
     getplayer[THISACTOR].i tempone
     getactor[tempone].yvel temptwo
     setvarvar idtwo temptwo
+    setvarvar terroristid temptwo
     setvar isterrorist 1
 
     getplayer[THISACTOR].posx tposx
@@ -228,7 +265,7 @@ state doonce
     ifvarg disarmingtimer 0 subvar disarmingtimer 4
     else setvar disarmingtimer 0
     ifvare theend 1 ifvarg ending 0 subvar ending 1
-    ifvare ending 1 loadmapstate
+    ifvare ending 1 state resetround
   }
 ends
 
@@ -251,20 +288,29 @@ state shootshotgun
   addvarvar tempone temptwo
   setactor[RETURN].zvel tempone
 ends
+
+state popisdead
+  ifdead setvar isdead 1
+  else setvar isdead 0
+ends
 ////////////////////EVENTS/////////////////
 onevent EVENT_DISPLAYREST
 	//Debuggg
-	getsector[THISACTOR].floorpal tempone
-	digitalnumberz 2837 0 40 ctposx 0 0 0 0 0 xdim ydim 58000
-	digitalnumberz 2837 0 60 ctposy 0 0 0 0 0 xdim ydim 58000
-	digitalnumberz 2837 0 80 tposx 0 0 0 0 0 xdim ydim 58000
-	digitalnumberz 2837 0 100 tposy 0 0 0 0 0 xdim ydim 58000
+	digitalnumberz 2837 0 40 theend 0 0 0 0 0 xdim ydim 58000
+	digitalnumberz 2837 0 60 ending 0 0 0 0 0 xdim ydim 58000
+	digitalnumberz 2837 0 80 isdead 0 0 0 0 0 xdim ydim 58000
+	digitalnumberz 2837 0 100 isdead 0 0 0 0 0 xdim ydim 58000
 
   ifvarg intermission 0 {
     setvarvar tempone intermission
     divvar tempone 30
     addvar tempone 1
     digitalnumberz 2930 165 105 tempone 0 0 0 0 0 xdim ydim 50000
+  } else ifvarl ending 135 {
+    ifvarl ending 75 {
+      digitalnumberz 2472 150 95 twins 0 2 16 0 0 xdim ydim 70000
+      digitalnumberz 2472 170 95 ctwins 0 1 16 0 0 xdim ydim 70000
+    }
   } else {
     //Clock
     setvarvar tempone roundtime
@@ -337,15 +383,9 @@ onevent EVENT_DISPLAYREST
           subvar temptwo 1
       }
     }
-
     //Score
-    ifvarl ending 76 {
-      digitalnumberz 2472 150 95 twins 0 2 16 0 0 xdim ydim 70000
-      digitalnumberz 2472 170 95 ctwins 0 1 16 0 0 xdim ydim 70000
-    } else {
-      digitalnumberz 2472 0 20 twins 0 2 16 0 0 xdim ydim 70000
-      digitalnumberz 2472 20 20 ctwins 0 1 16 0 0 xdim ydim 70000
-    }
+    digitalnumberz 2472 0 20 twins 0 2 16 0 0 xdim ydim 70000
+    digitalnumberz 2472 20 20 ctwins 0 1 16 0 0 xdim ydim 70000
   }
 endevent
 
@@ -780,7 +820,7 @@ state blimphitstate
   {
     action BLIMPWAITTORESPAWN
     count 0
-    cstat 32768
+    //cstat 32768
   }
   else
     killit
@@ -1124,7 +1164,7 @@ state breakobject
         spritepal 1
         debris SCRAP3 4
         resetcount
-        cstat 32768
+        //cstat 32768
         break
       }
       else
@@ -1951,7 +1991,7 @@ state getcode
   {
     move RESPAWN_ACTOR_FLAG
     spawn RESPAWNMARKERRED
-    cstat 32768
+    //cstat 32768
   }
   else
     killit
@@ -1984,7 +2024,7 @@ state getweaponcode
   {
     move RESPAWN_ACTOR_FLAG
     spawn RESPAWNMARKERRED
-    cstat 32768
+    //cstat 32768
   }
   else
     killit
@@ -3605,6 +3645,7 @@ ends
 move PGROWINGPOP        // Used only as a variable
 
 actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
+
 	setvar WEAPON1_SHOOTS 1665
 	setvar WEAPON2_SHOOTS 1669
   state frozen
@@ -3622,8 +3663,11 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
   ifvare ending 5 {
     ifvare isterrorist 1 {
       resetplayer
-      action PSTAND
-      cstat 257
+    } else {
+      resetplayer
+    }
+  } else ifvare ending 2 {
+    ifvare isterrorist 1 {
       getplayer[THISACTOR].i tempone
       setactor[tempone].extra MAXPLAYERHEALTH
       updatesectorz tposx tposy tposz tsectnum
@@ -3633,10 +3677,8 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
       setplayer[THISACTOR].ang tang
       setactor[THISACTOR].sectnum tsectnum
     } else {
-      resetplayer
-      action PSTAND
-      cstat 257
       getplayer[THISACTOR].i tempone
+      setactor[tempone].extra MAXPLAYERHEALTH
       updatesectorz ctposx ctposy ctposz ctsectnum
       setplayer[THISACTOR].posx ctposx
       setplayer[THISACTOR].posy ctposy
@@ -3645,6 +3687,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
       setactor[THISACTOR].sectnum ctsectnum
     }
   }
+  
 
   /* getplayer[THISACTOR].i tempone
   setactor[tempone].extra MAXPLAYERHEALTH
@@ -3716,12 +3759,12 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
     }
     else
     {
-      cstat 32768
+      //cstat 32768
       quote 13
       ifhitspace
       {
-        action PSTAND
-        resetplayer
+        //action PSTAND
+        //resetplayer
       }
       break
     }
@@ -3756,8 +3799,8 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
         quote 13
         ifhitspace
         {
-          action 0
-          resetplayer
+          //action 0
+          //resetplayer
         }
         break
       }
@@ -3773,7 +3816,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
           guts JIBS4 20
           guts JIBS6 20
           move PGROWINGPOP
-          cstat 32768
+          //cstat 32768
           tossweapon
 
           hitradius 2048 60 70 80 90
@@ -3819,9 +3862,9 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
       quote 13
       ifhitspace
       {
-        action PSTAND
+        /*action PSTAND
         spawn DUKELYINGDEAD
-        resetplayer
+        resetplayer*/
       }
       break
     }
@@ -3844,8 +3887,8 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
       quote 13
       ifhitspace
       {
-        resetplayer
-        action PSTAND
+        /*resetplayer
+        action PSTAND*/
       }
       break
     }
@@ -3867,7 +3910,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
       sound SQUISHED
       sound DUKE_DEAD
 
-      cstat 32768         // Hide the sprite
+      //cstat 32768         // Hide the sprite
 
       action PLYINGDEAD
     }
@@ -3883,7 +3926,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
       {
         action PEXPLODE
         state standard_pjibs
-        cstat 32768
+        //cstat 32768
         sound SQUISHED
         sound DUKE_DEAD
       }
@@ -3959,7 +4002,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
         count 0
         move 0
         sound ACTOR_GROWING
-        cstat 0
+        //cstat 0
         break
       }
     }
@@ -4054,7 +4097,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
       palfrom 48 0 48
       move PSHRINKING // used as a var only.
       sound ACTOR_SHRINKING
-      cstat 0
+      //cstat 0
       break
     }
     ifwasweapon SHOTSPARK1
@@ -4376,9 +4419,9 @@ enda
 
 state rf
   ifrnd 128
-    cstat 4
+    //cstat 4
   else
-    cstat 0
+    //cstat 0
 ends
 
 
@@ -4480,7 +4523,7 @@ state troophidestate
       sound TELEPORTER
       action ATROOPWALKING
       move TROOPWALKVELS faceplayer
-      cstat 32768
+      //cstat 32768
     }
     else
     {
@@ -7983,7 +8026,7 @@ action ALAVABUBBLEANIM 0 5 1 1 16
 useractor notenemy LAVABUBBLE
   ifaction 0
   {
-    cstat 32768
+    //cstat 32768
     action ALAVABUBBLE
   }
   else
@@ -8000,7 +8043,7 @@ useractor notenemy LAVABUBBLE
   {
     ifactioncount 5
     {
-      cstat 32768
+      //cstat 32768
       action ALAVABUBBLE
     }
   }
