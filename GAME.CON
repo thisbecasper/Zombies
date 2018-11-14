@@ -68,6 +68,7 @@ gamevar twins 0 131072
 gamevar armingtimer 0 0
 gamevar disarmingtimer 0 0 
 gamevar freezetimer 0 1
+gamevar hitmarker 0 1
 
 gamevar tempone 0 0
 gamevar temptwo 0 0
@@ -336,6 +337,11 @@ onevent EVENT_DISPLAYREST
       digitalnumberz 3007 318 29 0 0 2 16 0 0 xdim ydim 36000
       digitalnumberz 2930 315 35 temptwo 0 2 0 0 0 xdim ydim 36000
     }
+
+    //Hitmarker
+    ifvarg hitmarker 6 rotatesprite 160 100 38000 256 2523 0 7 0 0 0 xdim ydim
+    else ifvarg hitmarker 3 rotatesprite 160 100 38000 256 2523 0 7 1 0 0 xdim ydim
+    else ifvarg hitmarker 0 rotatesprite 160 100 38000 256 2523 0 7 33 0 0 xdim ydim
 
     //Bomb announcement
     setvarvar tempone bombtimervar
@@ -3693,44 +3699,11 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
     }
   }
   
-
-  /* getplayer[THISACTOR].i tempone
-  setactor[tempone].extra MAXPLAYERHEALTH
-  updatesectorz tposx tposy tposz tsectnum
-  setplayer[THISACTOR].posx tposx
-  setplayer[THISACTOR].posy tposy
-  setplayer[THISACTOR].posz tposz
-  setplayer[THISACTOR].ang tang
-  setactor[THISACTOR].sectnum tsectnum
-
-  getplayer[terroristid].i tempone
-  setactor[tempone].extra MAXPLAYERHEALTH
-  updatesectorz tposx tposy tposz tsectnum
-  setplayer[terroristid].posx tposx
-  setplayer[terroristid].posy tposy
-  setplayer[terroristid].posz tposz
-  setplayer[terroristid].ang tang
-  setactor[terroristid].sectnum tsectnum
-  
-  getplayer[counterterroristid].i tempone
-  setactor[tempone].extra MAXPLAYERHEALTH
-  updatesectorz ctposx ctposy ctposz ctsectnum
-  setplayer[counterterroristid].posx ctposx
-  setplayer[counterterroristid].posy ctposy
-  setplayer[counterterroristid].posz ctposz
-  setplayer[counterterroristid].ang ctang
-  setactor[counterterroristid].sectnum ctsectnum
-
-  /*setvar roundtime 300
-  setvar intermission 90
-  setvar ending 150
-  setvar idone -1
-  setvar idtwo -1
-  setvar terroristid -1
-  setvar counterterroristid -1
-  setvar bombtimer -1
-  setvar theend 0
-  setvar havegivenpoint 0*/
+  getactor[THISACTOR].htowner tempone
+  getactor[tempone].yvel temptwo
+  setplayervar[temptwo].hitmarker 15
+    
+  ifvarg hitmarker 0 subvar hitmarker 1
 
   ifaction 0
     action PSTAND
