@@ -207,7 +207,24 @@ state checkgameend
   }
 
   //Dead player
-  getplayervar[terroristid].isdead tempone
+
+  headspritestat tempone 10
+  setvarvar temptwo tempone
+  whilevarn tempone -1 {
+    getactor[tempone].yvel tempsix
+    getplayervar[tempsix].isdead tempthree
+    ifvare tempthree 1 {
+      setvar debugvalue 999
+      getplayervar[tempsix].isterrorist tempfour
+      ifvare tempfour 1 {
+        ifvare bombtimer -1 state givectpoint
+      } else state givetpoint
+    }
+    nextspritestat tempone tempone
+    ifvarvare tempone temptwo setvar tempone -1
+  }
+
+  /*getplayervar[terroristid].isdead tempone
   ifvare tempone 1 {
     ifvare bombtimer -1 {
       state givectpoint
@@ -216,7 +233,7 @@ state checkgameend
   getplayervar[counterterroristid].isdead tempone
   ifvare tempone 1 {
     state givetpoint
-  }
+  }*/
   
   //Bomb counter
   ifvare bombtimer 0 {
@@ -297,7 +314,7 @@ ends
 ////////////////////EVENTS/////////////////
 onevent EVENT_DISPLAYREST
 	//Debuggg
-	// digitalnumberz 2837 0 40 tempone 0 0 0 0 0 xdim ydim 58000
+	digitalnumberz 2837 0 40 debugvalue 0 0 0 0 0 xdim ydim 58000
 	// digitalnumberz 2837 0 60 tempone 0 0 0 0 0 xdim ydim 58000
 	// digitalnumberz 2837 0 80 isterrorist 0 0 0 0 0 xdim ydim 58000
 	// digitalnumberz 2837 0 100 isdead 0 0 0 0 0 xdim ydim 58000
