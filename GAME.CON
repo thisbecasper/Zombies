@@ -3700,9 +3700,12 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
   }
   
   getactor[THISACTOR].htowner tempone
+  getactor[THISACTOR].htextra tempthree
   getactor[tempone].yvel temptwo
-  setplayervar[temptwo].hitmarker 15
-    
+  ifvarn tempthree -1 {
+    setplayervar[temptwo].hitmarker 15
+  }
+  
   ifvarg hitmarker 0 subvar hitmarker 1
 
   ifaction 0
