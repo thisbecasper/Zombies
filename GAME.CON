@@ -297,10 +297,10 @@ ends
 ////////////////////EVENTS/////////////////
 onevent EVENT_DISPLAYREST
 	//Debuggg
-	digitalnumberz 2837 0 40 theend 0 0 0 0 0 xdim ydim 58000
-	digitalnumberz 2837 0 60 ending 0 0 0 0 0 xdim ydim 58000
-	digitalnumberz 2837 0 80 isdead 0 0 0 0 0 xdim ydim 58000
-	digitalnumberz 2837 0 100 isdead 0 0 0 0 0 xdim ydim 58000
+	// digitalnumberz 2837 0 40 tempone 0 0 0 0 0 xdim ydim 58000
+	// digitalnumberz 2837 0 60 tempone 0 0 0 0 0 xdim ydim 58000
+	// digitalnumberz 2837 0 80 isterrorist 0 0 0 0 0 xdim ydim 58000
+	// digitalnumberz 2837 0 100 isdead 0 0 0 0 0 xdim ydim 58000
 
   ifvarg intermission 0 {
     setvarvar tempone intermission
@@ -3678,24 +3678,49 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
       action PSTAND
     }
   } else ifvare ending 2 {
-    ifvare isterrorist 1 {
-      getplayer[THISACTOR].i tempone
-      setactor[tempone].extra MAXPLAYERHEALTH
-      updatesectorz tposx tposy tposz tsectnum
-      setplayer[THISACTOR].posx tposx
-      setplayer[THISACTOR].posy tposy
-      setplayer[THISACTOR].posz tposz
-      setplayer[THISACTOR].ang tang
-      setactor[THISACTOR].sectnum tsectnum
+    setvarvar tempone ctwins
+    addvarvar ctwins twins
+    modvar tempone 3
+    ifvare tempone 0 {
+      ifvare isterrorist 1 {
+        getplayer[THISACTOR].i tempone
+        setactor[tempone].extra MAXPLAYERHEALTH
+        updatesectorz ctposx ctposy ctposz ctsectnum
+        setplayer[THISACTOR].posx ctposx
+        setplayer[THISACTOR].posy ctposy
+        setplayer[THISACTOR].posz ctposz
+        setplayer[THISACTOR].ang ctang
+        setactor[THISACTOR].sectnum ctsectnum
+      } else {
+        getplayer[THISACTOR].i tempone
+        setactor[tempone].extra MAXPLAYERHEALTH
+        updatesectorz tposx tposy tposz tsectnum
+        setplayer[THISACTOR].posx tposx
+        setplayer[THISACTOR].posy tposy
+        setplayer[THISACTOR].posz tposz
+        setplayer[THISACTOR].ang tang
+        setactor[THISACTOR].sectnum tsectnum
+      }
     } else {
-      getplayer[THISACTOR].i tempone
-      setactor[tempone].extra MAXPLAYERHEALTH
-      updatesectorz ctposx ctposy ctposz ctsectnum
-      setplayer[THISACTOR].posx ctposx
-      setplayer[THISACTOR].posy ctposy
-      setplayer[THISACTOR].posz ctposz
-      setplayer[THISACTOR].ang ctang
-      setactor[THISACTOR].sectnum ctsectnum
+      ifvare isterrorist 1 {
+        getplayer[THISACTOR].i tempone
+        setactor[tempone].extra MAXPLAYERHEALTH
+        updatesectorz tposx tposy tposz tsectnum
+        setplayer[THISACTOR].posx tposx
+        setplayer[THISACTOR].posy tposy
+        setplayer[THISACTOR].posz tposz
+        setplayer[THISACTOR].ang tang
+        setactor[THISACTOR].sectnum tsectnum
+      } else {
+        getplayer[THISACTOR].i tempone
+        setactor[tempone].extra MAXPLAYERHEALTH
+        updatesectorz ctposx ctposy ctposz ctsectnum
+        setplayer[THISACTOR].posx ctposx
+        setplayer[THISACTOR].posy ctposy
+        setplayer[THISACTOR].posz ctposz
+        setplayer[THISACTOR].ang ctang
+        setactor[THISACTOR].sectnum ctsectnum
+      }
     }
   }
   
@@ -3798,7 +3823,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
           guts JIBS6 20
           move PGROWINGPOP
           //cstat 32768
-          tossweapon
+          //tossweapon
 
           hitradius 2048 60 70 80 90
 
@@ -3913,7 +3938,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
       }
     }
 
-    tossweapon
+    //tossweapon
 
     break
   }
@@ -4105,7 +4130,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
     ifdead
     {
       action PTHROWNBACK
-      tossweapon
+      //tossweapon
     }
 
     state random_wall_jibs
