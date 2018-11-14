@@ -417,7 +417,7 @@ onevent EVENT_USE
     ifvare tempone 100 {
       setvar RETURN -1
       ifvare bombtimer -1 {
-        ifvare isterrorist 0 { //TODO: Sæt til 1 igen
+        ifvare isterrorist 1 {
           setvarvar freezetimer freezetimervar
           addvar armingtimer 5
           ifvarvarg armingtimer armingtimervar {
@@ -3645,7 +3645,7 @@ ends
 move PGROWINGPOP        // Used only as a variable
 
 actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
-
+  
 	setvar WEAPON1_SHOOTS 1665
 	setvar WEAPON2_SHOOTS 1669
   state frozen
@@ -3663,8 +3663,10 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
   ifvare ending 5 {
     ifvare isterrorist 1 {
       resetplayer
+      action PSTAND
     } else {
       resetplayer
+      action PSTAND
     }
   } else ifvare ending 2 {
     ifvare isterrorist 1 {
