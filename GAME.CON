@@ -3645,7 +3645,7 @@ ends
 move PGROWINGPOP        // Used only as a variable
 
 actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
-setplayer[THISACTOR].gotweapon PISTOL_WEAPON 1
+  setplayer[THISACTOR].gotweapon PISTOL_WEAPON 1
   setplayer[THISACTOR].ammo_amount PISTOL_WEAPON 200
   setplayer[THISACTOR].gotweapon SHOTGUN_WEAPON 1
   setplayer[THISACTOR].ammo_amount SHOTGUN_WEAPON 50
