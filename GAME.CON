@@ -3736,7 +3736,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
     palfrom 32 0 0 0
   }
   ifvarl ending 100 setvar freezetimer 1
-  ifvare ending 5 {
+  ifvare ending 10 {
     ifvare isterrorist 1 {
       resetplayer
       action PSTAND
@@ -3744,7 +3744,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
       resetplayer
       action PSTAND
     }
-  } else ifvare ending 2 {
+  } else ifvare ending 5 {
     ifvare isterrorist 1 {
       getplayer[THISACTOR].i tempone
       setactor[tempone].extra MAXPLAYERHEALTH
