@@ -68,8 +68,8 @@ gamevar isdead 0 1
 
 gamevar ctwins 0 131072
 gamevar twins 0 131072
-gamevar armingtimer 0 0
-gamevar disarmingtimer 0 0 
+gamevar armingtimer 0 1
+gamevar disarmingtimer 0 1 
 gamevar freezetimer 0 1
 gamevar hitmarker 0 1
 gamevar bombid 0 0
