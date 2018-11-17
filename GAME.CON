@@ -488,7 +488,8 @@ onevent EVENT_USE
     ifvare bombtimer -1 {
       getsector[THISACTOR].floorpal tempone
       ifvare tempone 100 {
-        ifvare isterrorist 1 { //TODO sæt tilbage til 1
+        //TODO ifvare isterrorist 1 bla bla
+         
           setvarvar freezetimer freezetimervar
           addvar armingtimer 5
           ifvarvarg armingtimer armingtimervar {
@@ -497,10 +498,11 @@ onevent EVENT_USE
             getactor[RETURN].yvel bombid
             setvar armingtimer 0
           } 
-        }
+        
       } 
     } else ifvarg bombtimer 0 {
-      ifvare isterrorist 0 {
+      //TODO ifvare isterrorist 0 bla bla
+      
         ldist tempone HITSPRITE THISACTOR
         ifvarl tempone 800 {
           getactor[HITSPRITE].picnum tempone
@@ -514,7 +516,7 @@ onevent EVENT_USE
             } 
           }
         }  
-      }
+      
     }
   }
 endevent
