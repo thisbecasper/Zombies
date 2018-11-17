@@ -72,6 +72,7 @@ gamevar disarmingtimer 0 0
 gamevar freezetimer 0 1
 gamevar hitmarker 0 1
 gamevar bombid 0 0
+gamevar healthcounter 0 1
 
 gamevar tempone 0 0
 gamevar temptwo 0 0
@@ -400,6 +401,10 @@ onevent EVENT_DISPLAYREST
         gametextz 2822 185 130 125 0 2 0 0 0 xdim ydim 50000
       }
     }
+
+    //Health
+    getactor[THISACTOR].extra tempone
+    digitalnumberz 2930 0 180 tempone 0 0 0 0 0 xdim ydim 55000
 
     //Bomb bar
     ifvarg armingtimer 0 {
@@ -3691,6 +3696,13 @@ ends
 move PGROWINGPOP        // Used only as a variable
 
 actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
+
+  addvar healthcounter 1
+  ifvarg healthcounter 13 {
+    setvar healthcounter 0
+    addphealth 1
+  }
+
   setplayer[THISACTOR].runspeed 40000
   setplayer[THISACTOR].gotweapon PISTOL_WEAPON 1
   setplayer[THISACTOR].ammo_amount PISTOL_WEAPON 200
