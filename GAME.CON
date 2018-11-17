@@ -177,7 +177,7 @@ state resetround
   setvar ending 150
   setvar idone -1
   setvar idtwo -1
-  setvar terroristid -1
+  // setvar terroristid -1
   setvar counterterroristid -1
   setvar bombtimer -1
   setvar theend 0
