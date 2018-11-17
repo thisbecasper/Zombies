@@ -103,8 +103,38 @@ gamevar KICKBACK 0 1
 gamevar PWEAPON 0 1 
 gamevar PISTOLMAGAZINE 0 1
 gamevar PERPLAYER1 0 1
-gamevar WEAPON1_CLIP 0 0 // this last gamevar disables the game's automatic reloading
+gamevar WEAPON1_CLIP 0 0
+gamevar MY_X 0 1
+gamevar MY_Y 0 1
+gamevar MY_Z 0 1
+gamevar MY_SECTOR 0 1
+gamevar MY_ANGLE 0 1
+gamevar MY_ZDIST 0 1
+gamevar MY_COS 0 1
+gamevar MY_SIN 0 1
+gamevar HITSECTOR 0 1
+gamevar HITWALL 0 1
+gamevar HITSPRITE 0 1
+gamevar HITX 0 1
+gamevar HITY 0 1
+gamevar HITZ 0 1
 ////////////////////STATES/////////////////
+
+state checkhitscan
+  getplayer[THISACTOR].posx MY_X
+  getplayer[THISACTOR].posy MY_Y
+  getplayer[THISACTOR].posz MY_Z
+  getplayer[THISACTOR].cursectnum MY_SECTOR
+  getplayer[THISACTOR].ang MY_ANGLE
+  getplayer[THISACTOR].horiz MY_ZDIST
+  subvar MY_ZDIST 100
+  mulvar MY_ZDIST -2048
+  cos MY_COS MY_ANGLE
+  sin MY_SIN MY_ANGLE
+
+  hitscan MY_X MY_Y MY_Z MY_SECTOR MY_COS MY_SIN MY_ZDIST HITSECTOR HITWALL HITSPRITE HITX HITY HITZ 4294901808
+  setvarvar debugvaluetwo HITSPRITE
+ends
 
 state pistolreload
 	getplayer[THISACTOR].curr_weapon PWEAPON // the player's current weapon
@@ -217,7 +247,6 @@ state checkgameend
     getactor[tempone].yvel tempsix
     getplayervar[tempsix].isdead tempthree
     ifvare tempthree 1 {
-      setvar debugvalue 999
       getplayervar[tempsix].isterrorist tempfour
       ifvare tempfour 1 {
         ifvare bombtimer -1 state givectpoint
@@ -317,8 +346,8 @@ ends
 ////////////////////EVENTS/////////////////
 onevent EVENT_DISPLAYREST
 	//Debuggg
-	digitalnumberz 2837 0 40 bombid 0 0 0 0 0 xdim ydim 58000
-	// digitalnumberz 2837 0 60 tempone 0 0 0 0 0 xdim ydim 58000
+	digitalnumberz 2837 0 40 debugvalue 0 0 0 0 0 xdim ydim 58000
+	 digitalnumberz 2837 0 60 debugvaluetwo 0 0 0 0 0 xdim ydim 58000
 	// digitalnumberz 2837 0 80 isterrorist 0 0 0 0 0 xdim ydim 58000
 	// digitalnumberz 2837 0 100 isdead 0 0 0 0 0 xdim ydim 58000
 
@@ -455,13 +484,20 @@ onevent EVENT_USE
         } 
       } else ifvarg bombtimer 0 {
         ifvare isterrorist 0 {
-          setvarvar freezetimer freezetimervar
-          addvar disarmingtimer 5
-          ifvarvarg disarmingtimer disarmingtimervar {
-            setvar bombtimer -1
-            setvar disarmingtimer 0
-            state givectpoint
-          } 
+          getactor[HITSPRITE].picnum tempone
+          setvarvar debugvalue tempone
+          ifvare tempone FIRSTAID {
+            ldist tempone THISACTOR HITSPRITE
+            ifvarl tempone 1200 {
+              setvarvar freezetimer freezetimervar
+              addvar disarmingtimer 5
+              ifvarvarg disarmingtimer disarmingtimervar {
+                setvar bombtimer -1
+                setvar disarmingtimer 0
+                state givectpoint
+              } 
+            }
+          }  
         }
       }
     }
