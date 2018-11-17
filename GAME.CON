@@ -47,7 +47,7 @@ definegamefuncname 13 Sprint
 
 ////////////////////GAMEVARS/////////////////
 
-gamevar bombtimervar 600 4096
+gamevar bombtimervar 900 4096
 gamevar armingtimervar 150 4096
 gamevar disarmingtimervar 150 4096
 gamevar freezetimervar 20 4096
