@@ -177,7 +177,7 @@ state resetround
   setvar ending 150
   setvar idone -1
   setvar idtwo -1
-  // setvar terroristid -1
+  setvar terroristid -1
   setvar counterterroristid -1
   setvar bombtimer -1
   setvar theend 0
@@ -285,7 +285,10 @@ state doonce
     getactor[tempone].yvel temptwo
     setvarvar idone temptwo
     setvarvar counterterroristid temptwo
-    setvar isterrorist 0
+
+    getsector[THISACTOR].pal tempone
+    ifvare tempone 200 setvar isterrorist 0
+    else setvar isterrorist 1
 
     getplayer[THISACTOR].posx ctposx
     getplayer[THISACTOR].posy ctposy
@@ -297,7 +300,10 @@ state doonce
     getactor[tempone].yvel temptwo
     setvarvar idtwo temptwo
     setvarvar terroristid temptwo
-    setvar isterrorist 1
+
+    getsector[THISACTOR].pal tempone
+    ifvare tempone 200 setvar isterrorist 0
+    else setvar isterrorist 1
 
     getplayer[THISACTOR].posx tposx
     getplayer[THISACTOR].posy tposy
