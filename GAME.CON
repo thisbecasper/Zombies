@@ -68,8 +68,8 @@ gamevar isdead 0 1
 
 gamevar ctwins 0 131072
 gamevar twins 0 131072
-gamevar armingtimer 0 1
-gamevar disarmingtimer 0 1 
+gamevar armingtimer 0 0
+gamevar disarmingtimer 0 0 
 gamevar freezetimer 0 1
 gamevar hitmarker 0 1
 gamevar bombid 0 0
@@ -354,7 +354,7 @@ ends
 ////////////////////EVENTS/////////////////
 onevent EVENT_DISPLAYREST
 	//Debuggg
-	 digitalnumberz 2837 0 40 isterrorist 0 0 0 0 0 xdim ydim 58000
+	// digitalnumberz 2837 0 40 isterrorist 0 0 0 0 0 xdim ydim 58000
 	// digitalnumberz 2837 0 60 debugvaluetwo 0 0 0 0 0 xdim ydim 58000
 	// digitalnumberz 2837 0 80 isterrorist 0 0 0 0 0 xdim ydim 58000
 	// digitalnumberz 2837 0 100 isdead 0 0 0 0 0 xdim ydim 58000
@@ -414,42 +414,46 @@ onevent EVENT_DISPLAYREST
     digitalnumberz 2930 0 180 tempone 0 0 0 0 0 xdim ydim 55000
 
     //Bomb bar
-    ifvarg armingtimer 0 {
-      setvar tempone 133
-      setvar temptwo 50
-      whilevarn temptwo 0 {
-        rotatesprite tempone 120 65000 0 3021 0 2 49 0 0 xdim ydim //3021 3163
-        addvar tempone 1
-        subvar temptwo 1
-      }
-
-      setvar tempone 133
-      setvarvar temptwo armingtimer
-      divvar temptwo 3
-      whilevarn temptwo 0 {
-        rotatesprite tempone 120 65000 0 3021 0 2 17 0 0 xdim ydim
+    ifvare isterrorist 1 {
+      ifvarg armingtimer 0 {
+        setvar tempone 133
+        setvar temptwo 50
+        whilevarn temptwo 0 {
+          rotatesprite tempone 120 65000 0 3021 0 2 49 0 0 xdim ydim //3021 3163
           addvar tempone 1
           subvar temptwo 1
-      }
-    }
-    ifvarg disarmingtimer 0 {
-      setvar tempone 133
-      setvar temptwo 50
-      whilevarn temptwo 0 {
-        rotatesprite tempone 120 65000 0 3021 0 2 49 0 0 xdim ydim //3021 3163
-        addvar tempone 1
-        subvar temptwo 1
-      }
+        }
 
-      setvar tempone 133
-      setvarvar temptwo disarmingtimer
-      divvar temptwo 3
-      whilevarn temptwo 0 {
-        rotatesprite tempone 120 65000 0 3021 0 2 17 0 0 xdim ydim
+        setvar tempone 133
+        setvarvar temptwo armingtimer
+        divvar temptwo 3
+        whilevarn temptwo 0 {
+          rotatesprite tempone 120 65000 0 3021 0 2 17 0 0 xdim ydim
+            addvar tempone 1
+            subvar temptwo 1
+        }
+      }
+    } else {
+      ifvarg disarmingtimer 0 {
+        setvar tempone 133
+        setvar temptwo 50
+        whilevarn temptwo 0 {
+          rotatesprite tempone 120 65000 0 3021 0 2 49 0 0 xdim ydim //3021 3163
           addvar tempone 1
           subvar temptwo 1
+        }
+
+        setvar tempone 133
+        setvarvar temptwo disarmingtimer
+        divvar temptwo 3
+        whilevarn temptwo 0 {
+          rotatesprite tempone 120 65000 0 3021 0 2 17 0 0 xdim ydim
+            addvar tempone 1
+            subvar temptwo 1
+        }
       }
     }
+      
     //Score
     digitalnumberz 2472 0 20 twins 0 2 16 0 0 xdim ydim 70000
     digitalnumberz 2472 20 20 ctwins 0 1 16 0 0 xdim ydim 70000
@@ -484,7 +488,7 @@ onevent EVENT_USE
     ifvare bombtimer -1 {
       getsector[THISACTOR].floorpal tempone
       ifvare tempone 100 {
-        ifvare isterrorist 0 { //TODO sæt tilbage til 1
+        ifvare isterrorist 1 { //TODO sæt tilbage til 1
           setvarvar freezetimer freezetimervar
           addvar armingtimer 5
           ifvarvarg armingtimer armingtimervar {
