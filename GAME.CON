@@ -3698,7 +3698,8 @@ ends
 move PGROWINGPOP        // Used only as a variable
 
 actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
-
+  setvar WEAPON1_SELECTSOUND 0
+  setvar WEAPON2_SELECTSOUND 0
   addvar healthcounter 1
   ifvarg healthcounter 13 {
     setvar healthcounter 0
