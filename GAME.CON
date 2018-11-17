@@ -286,7 +286,7 @@ state doonce
     setvarvar idone temptwo
     setvarvar counterterroristid temptwo
 
-    getsector[THISACTOR].pal tempone
+    getsector[THISACTOR].floorpal tempone
     ifvare tempone 200 setvar isterrorist 0
     else setvar isterrorist 1
 
@@ -301,7 +301,7 @@ state doonce
     setvarvar idtwo temptwo
     setvarvar terroristid temptwo
 
-    getsector[THISACTOR].pal tempone
+    getsector[THISACTOR].floorpal tempone
     ifvare tempone 200 setvar isterrorist 0
     else setvar isterrorist 1
 
