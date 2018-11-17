@@ -478,7 +478,7 @@ onevent EVENT_USE
     ifvare bombtimer -1 {
       getsector[THISACTOR].floorpal tempone
       ifvare tempone 100 {
-        ifvare isterrorist 1 { //Set to 1 again
+        ifvare isterrorist 1 {
           setvarvar freezetimer freezetimervar
           addvar armingtimer 5
           ifvarvarg armingtimer armingtimervar {
@@ -3759,6 +3759,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
   getactor[tempone].yvel temptwo
   ifvarn tempthree -1 {
     setplayervar[temptwo].hitmarker 15
+    palfrom 20 255 0 0
   }
   
   ifvarg hitmarker 0 subvar hitmarker 1
