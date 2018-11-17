@@ -478,7 +478,7 @@ onevent EVENT_USE
     ifvare bombtimer -1 {
       getsector[THISACTOR].floorpal tempone
       ifvare tempone 100 {
-        ifvare isterrorist 1 {
+        ifvare isterrorist 0 { //TODO sæt tilbage til 1
           setvarvar freezetimer freezetimervar
           addvar armingtimer 5
           ifvarvarg armingtimer armingtimervar {
