@@ -51,6 +51,7 @@ gamevar bombtimervar 600 4096
 gamevar armingtimervar 150 4096
 gamevar disarmingtimervar 150 4096
 gamevar freezetimervar 20 4096
+gamevar roundtimevar 2700 4096
 
 gamevar roundtime 2700 0
 gamevar intermission 90 0
@@ -171,7 +172,7 @@ ends
 state resetround
   setplayervar[terroristid].isdead 0
   setplayervar[counterterroristid].isdead 0
-  setvar roundtime 300
+  setvarvar roundtime roundtimevar
   setvar intermission 90
   setvar ending 150
   setvar idone -1
