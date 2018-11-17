@@ -346,8 +346,8 @@ ends
 ////////////////////EVENTS/////////////////
 onevent EVENT_DISPLAYREST
 	//Debuggg
-	digitalnumberz 2837 0 40 debugvalue 0 0 0 0 0 xdim ydim 58000
-	 digitalnumberz 2837 0 60 debugvaluetwo 0 0 0 0 0 xdim ydim 58000
+	digitalnumberz 2837 0 40 //debugvalue 0 0 0 0 0 xdim ydim 58000
+	 digitalnumberz 2837 0 60 //debugvaluetwo 0 0 0 0 0 xdim ydim 58000
 	// digitalnumberz 2837 0 80 isterrorist 0 0 0 0 0 xdim ydim 58000
 	// digitalnumberz 2837 0 100 isdead 0 0 0 0 0 xdim ydim 58000
 
@@ -468,11 +468,11 @@ endevent
 
 onevent EVENT_USE
   ifvarn theend 1 {
-    getsector[THISACTOR].floorpal tempone
-    ifvare tempone 100 {
-      setvar RETURN -1
-      ifvare bombtimer -1 {
-        ifvare isterrorist 0 { //Set to 1 again
+    setvar RETURN -1
+    ifvare bombtimer -1 {
+      getsector[THISACTOR].floorpal tempone
+      ifvare tempone 100 {
+        ifvare isterrorist 1 { //Set to 1 again
           setvarvar freezetimer freezetimervar
           addvar armingtimer 5
           ifvarvarg armingtimer armingtimervar {
@@ -481,24 +481,23 @@ onevent EVENT_USE
             getactor[RETURN].yvel bombid
             setvar armingtimer 0
           } 
-        } 
-      } else ifvarg bombtimer 0 {
-        ifvare isterrorist 0 {
-          getactor[HITSPRITE].picnum tempone
-          setvarvar debugvalue tempone
-          ifvare tempone FIRSTAID {
-            ldist tempone THISACTOR HITSPRITE
-            ifvarl tempone 1200 {
-              setvarvar freezetimer freezetimervar
-              addvar disarmingtimer 5
-              ifvarvarg disarmingtimer disarmingtimervar {
-                setvar bombtimer -1
-                setvar disarmingtimer 0
-                state givectpoint
-              } 
-            }
-          }  
         }
+      } 
+    } else ifvarg bombtimer 0 {
+      ifvare isterrorist 0 {
+        ldist tempone HITSPRITE THISACTOR
+        ifvarl tempone 800 {
+          getactor[HITSPRITE].picnum tempone
+          ifvare tempone FIRSTAID {
+            setvarvar freezetimer freezetimervar
+            addvar disarmingtimer 5
+            ifvarvarg disarmingtimer disarmingtimervar {
+              setvar bombtimer -1
+              setvar disarmingtimer 0
+              state givectpoint
+            } 
+          }
+        }  
       }
     }
   }
@@ -3703,6 +3702,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 	state pistolreload
   state doonce
   state popisdead
+  state checkhitscan
   ifvarg intermission 0 {
     palfrom 32 0 0 0
     setvar freezetimer 1
