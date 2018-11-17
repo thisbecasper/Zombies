@@ -2668,6 +2668,7 @@ enda
 actor FIRSTAID
   fall
   cstat 1
+  ifvarg intermission 0 killit
 enda
 
 
