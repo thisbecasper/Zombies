@@ -346,8 +346,8 @@ ends
 ////////////////////EVENTS/////////////////
 onevent EVENT_DISPLAYREST
 	//Debuggg
-	digitalnumberz 2837 0 40 //debugvalue 0 0 0 0 0 xdim ydim 58000
-	 digitalnumberz 2837 0 60 //debugvaluetwo 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 40 debugvalue 0 0 0 0 0 xdim ydim 58000
+	// digitalnumberz 2837 0 60 debugvaluetwo 0 0 0 0 0 xdim ydim 58000
 	// digitalnumberz 2837 0 80 isterrorist 0 0 0 0 0 xdim ydim 58000
 	// digitalnumberz 2837 0 100 isdead 0 0 0 0 0 xdim ydim 58000
 
