@@ -26,6 +26,8 @@ gamevar hitmarkercounter 0 1
 gamevar damagedonecounter 0 1
 gamevar damagedonesum 0 1
 gamevar damagedoneboost 0 1
+gamevar maxscore 0 1
+gamevar maxscoreplayer 0 1
 
 ////////////////////STATES/////////////////
 
@@ -34,9 +36,7 @@ gamevar damagedoneboost 0 1
 onevent EVENT_DISPLAYREST
 	//Debuggg
 	//getactor[THISACTOR].extra tempone
-	setvar tempone 1
-	getactor[tempone].extra temptwo
-	//digitalnumberz 2837 0 40 maxhealth 0 0 0 0 0 xdim ydim 58000
+	digitalnumberz 2837 0 40 maxscoreplayer 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 60 temptwo 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 80 totalearnedxp 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 100 skillpoints 0 0 0 0 0 xdim ydim 58000
@@ -93,7 +93,6 @@ onevent EVENT_DISPLAYREST
   }
 
   //Dmg done bar
-  
 	digitalnumberz DIGITALNUM 315 180 damagedoneboost 0 0 0 0 0 xdim ydim 80000
 	rotatesprite 333 174 35000 0 3008 0 0 16 0 0 xdim ydim 
 	digitalnumberz DIGITALNUM 348 180 1000 0 0 0 0 0 xdim ydim 40000
@@ -115,12 +114,67 @@ onevent EVENT_DISPLAYREST
     subvar tempone 1
   }
 
-endevent
+  //Score
+  headspritestat tempone 10
+  setvarvar temptwo tempone
+  setvarvar tempthree -1
+  whilevarn tempone -1 {
+  	
+  	getactor[tempone].yvel tempfour
+  	getplayer[tempfour].frag tempfive
+  	getplayer[tempfour].fraggedself tempsix
+  	subvarvar tempfive tempsix
+  	ifvarvarg tempfive tempthree {
+  		setvarvar tempthree tempfive
+  		setvarvar tempseven tempfour
+  	} 
 
-onevent EVENT_USE
-	getplayer[THISACTOR].max_player_health tempone
-	subvar tempone 5
-	setplayer[THISACTOR].max_player_health tempone
+  	nextspritestat tempone tempone
+  	ifvarvare tempone temptwo setvar tempone -1
+  }
+  setvarvar maxscore tempthree
+  setvarvar maxscoreplayer tempseven
+
+  headspritestat tempone 10
+  setvarvar temptwo tempone
+  setvarvar tempthree 5
+  whilevarn tempone -1 {
+  	
+  	setvar tempfour 60
+  	setvar tempfive 300
+  	getactor[tempone].yvel tempsix
+  	getplayer[tempsix].palookup tempseven
+  	getplayer[tempsix].frag tempeight
+  	getplayer[tempsix].fraggedself tempnine
+  	subvarvar tempeight tempnine
+  	
+  	digitalnumberz 2837 294 tempthree tempeight 0 tempseven 16 0 0 xdim ydim 45000
+
+  	mulvar tempeight 60 //amount of subbars in a bar
+  	divvar tempeight 30 //max kills
+
+  	whilevarn tempfour 0 {
+  		rotatesprite tempfive tempthree 65536 0 3163 0 tempseven 49 0 0 xdim ydim 
+    	addvar tempfive 1 
+    	subvar tempfour 1
+  	}
+
+  	setvar tempfive 300
+
+  	ifvarg tempeight 0 {
+  		whilevarn tempeight 0 {
+	  		rotatesprite tempfive tempthree 65536 0 3163 0 tempseven 16 0 0 xdim ydim 
+	    	addvar tempfive 1 
+	    	subvar tempeight 1
+	  	}
+  	}
+
+  	addvar tempthree 6
+
+  	nextspritestat tempone tempone
+  	ifvarvare tempone temptwo setvar tempone -1
+  }
+
 endevent
 
 //////////////////////////////////// D M /////////////////////////////////////////////////
@@ -3318,10 +3372,19 @@ move PGROWINGPOP        // Used only as a variable
 
 actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 
+	getplayer[THISACTOR].frag tempone
+	getplayer[THISACTOR].fraggedself temptwo
+	subvarvar tempone temptwo
+	setvarvar tempthree maxscore
+	subvarvar tempthree tempone
+	mulvar tempthree 5
+	addvar tempthree 100
+	setplayer[THISACTOR].max_player_health tempthree
+
 	getactor[THISACTOR].htowner tempone
 	getactor[THISACTOR].htextra temptwo
-	getactor[tempone].picnum tempone
-	ifvarn temptwo -1 ifvare tempone APLAYER {
+	getactor[tempone].picnum tempthree
+	ifvarn temptwo -1 ifvare tempthree APLAYER {
 		getactor[tempone].yvel tempone
 		getactor[THISACTOR].yvel tempfour
 		ifvarvarn tempone tempfour {
