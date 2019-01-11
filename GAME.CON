@@ -18,9 +18,9 @@ gamevar tempfour 0 0
 gamevar tempfive 0 0
 
 gamevar hitmarkercounter 0 1
-gamevar damagedone 0 1
 gamevar damagedonecounter 0 1
 gamevar damagedonesum 0 1
+gamevar damagedoneboost 0 1
 
 ////////////////////STATES/////////////////
 
@@ -28,9 +28,10 @@ gamevar damagedonesum 0 1
 
 onevent EVENT_DISPLAYREST
 	//Debuggg
-	getactor[THISACTOR].htowner tempone
-	digitalnumberz 2837 0 40 damagedonesum 0 0 0 0 0 xdim ydim 58000
-	//digitalnumberz 2837 0 60 tempone 0 0 0 0 0 xdim ydim 58000
+	getactor[THISACTOR].extra tempone
+	getplayer[THISACTOR].max_player_health temptwo
+	//digitalnumberz 2837 0 40 maxhealth 0 0 0 0 0 xdim ydim 58000
+	digitalnumberz 2837 0 60 temptwo 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 80 totalearnedxp 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 100 skillpoints 0 0 0 0 0 xdim ydim 58000
 
@@ -44,6 +45,76 @@ onevent EVENT_DISPLAYREST
 		else ifvarg damagedonesum 40 digitalnumberz 2837 163 80 damagedonesum 0 15 0 0 0 xdim ydim 50000
 		else digitalnumberz 2837 163 80 damagedonesum 0 0 0 0 0 xdim ydim 50000
 	}
+
+	//Healthbar armor
+	getactor[THISACTOR].extra tempone
+	getplayer[THISACTOR].max_player_health temptwo
+	digitalnumberz DIGITALNUM -25 180 tempone 0 0 0 0 0 xdim ydim 80000
+	rotatesprite -8 174 35000 0 3008 0 0 16 0 0 xdim ydim 
+	digitalnumberz DIGITALNUM 5 180 temptwo 0 0 0 0 0 xdim ydim 40000
+
+	setvar temptwo -40
+	getplayer[THISACTOR].max_player_health tempone
+	whilevarn tempone 0 {
+    rotatesprite temptwo 185 65536 0 3163 0 0 49 0 0 xdim ydim 
+    addvar temptwo 1 
+    subvar tempone 1
+  }
+  
+  setvar temptwo -40
+  getactor[THISACTOR].extra tempone
+ 	
+ 	ifvarg tempone 100 {
+ 		setvar tempfour 60
+ 		whilevarn tempone 100 {
+			rotatesprite tempfour 185 65536 0 3163 0 10 16 0 0 xdim ydim 
+	    addvar tempfour 1 
+	    subvar tempone 1
+	  }
+ 	}
+  whilevarn tempone 0 {
+		rotatesprite temptwo 185 65536 0 3163 0 0 16 0 0 xdim ydim 
+    addvar temptwo 1 
+    subvar tempone 1
+  }
+
+  getplayer[THISACTOR].SHIELD_AMOUNT tempone
+  setvar temptwo -40
+  whilevarn tempone 0 {
+    rotatesprite temptwo 183 65536 0 3135 0 2 0 0 0 xdim ydim 
+    addvar temptwo 1 
+    subvar tempone 1
+  }
+
+  //Dmg done bar
+  
+	digitalnumberz DIGITALNUM 315 180 damagedoneboost 0 0 0 0 0 xdim ydim 80000
+	rotatesprite 333 174 35000 0 3008 0 0 16 0 0 xdim ydim 
+	digitalnumberz DIGITALNUM 348 180 1000 0 0 0 0 0 xdim ydim 40000
+
+  setvar tempone 100
+  setvar temptwo 260
+  whilevarn tempone 0 {
+  	rotatesprite temptwo 185 65536 0 3163 0 12 49 0 0 xdim ydim 
+    addvar temptwo 1 
+    subvar tempone 1
+  }
+
+  setvarvar tempone damagedoneboost
+  setvar temptwo 260
+  divvar tempone 10
+  whilevarn tempone 0 {
+  	rotatesprite temptwo 185 65536 0 3163 0 12 16 0 0 xdim ydim 
+    addvar temptwo 1 
+    subvar tempone 1
+  }
+
+endevent
+
+onevent EVENT_USE
+	getplayer[THISACTOR].max_player_health tempone
+	subvar tempone 5
+	setplayer[THISACTOR].max_player_health tempone
 endevent
 
 //////////////////////////////////// D M /////////////////////////////////////////////////
@@ -1708,6 +1779,8 @@ actor HEATSENSOR
 enda
 
 actor SHIELD
+	getplayer[THISACTOR].max_player_health tempone
+	getplayer[THISACTOR].SHIELD_AMOUNT temptwo
   fall
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
@@ -1717,7 +1790,7 @@ actor SHIELD
       ifp palive
         ifcount 6
           ifpdistl RETRIEVEDISTANCE
-            ifpinventory GET_SHIELD SHIELD_AMOUNT
+          	ifvarvarl temptwo tempone
               ifcanseetarget
       {
         ifspawnedby PIGCOP
@@ -1731,8 +1804,13 @@ actor SHIELD
           palfrom 24 0 32
           killit
         }
-        else
-          addinventory GET_SHIELD SHIELD_AMOUNT
+        else {
+        	getplayer[THISACTOR].SHIELD_AMOUNT tempthree
+        	addvar tempthree 100
+        	ifvarvarg tempthree tempone
+        	setvarvar tempthree tempone
+        	setplayer[THISACTOR].SHIELD_AMOUNT tempthree
+        }
         quote 38
         ifspawnedby SHIELD
           state getcode
@@ -2108,6 +2186,9 @@ enda
 
 
 actor SIXPAK
+	getplayer[THISACTOR].max_player_health tempone
+	getplayer[THISACTOR].i temptwo
+	getactor[temptwo].extra temptwo
   fall
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
@@ -2117,19 +2198,23 @@ actor SIXPAK
       ifp palive
         ifpdistl RETRIEVEDISTANCE
           ifcount 6
-            ifphealthl MAXPLAYERHEALTH
-              ifcanseetarget
+            ifcanseetarget
       {
-        addphealth 30
-        quote 62
-        ifspawnedby SIXPAK
-          state getcode
-        else
-          state quikget
+        ifvarvarl temptwo tempone {
+        	addphealth 30
+	        quote 62
+	        ifspawnedby SIXPAK
+	          state getcode
+	        else
+	          state quikget
+        }
       }
 enda
 
 actor COLA
+	getplayer[THISACTOR].max_player_health tempone
+	getplayer[THISACTOR].i temptwo
+	getactor[temptwo].extra temptwo
   fall
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
@@ -2139,15 +2224,16 @@ actor COLA
       ifp palive
         ifpdistl RETRIEVEDISTANCE
           ifcount 6
-            ifphealthl MAXPLAYERHEALTH
-              ifcanseetarget
+            ifcanseetarget
       {
-        addphealth 10
-        quote 61
-        ifspawnedby COLA
-          state getcode
-        else
-          state quikget
+        ifvarvarl temptwo tempone {
+        	addphealth 10
+	        quote 61
+	        ifspawnedby COLA
+	          state getcode
+	        else
+	          state quikget
+        }
       }
 enda
 
@@ -3226,43 +3312,33 @@ move PGROWINGPOP        // Used only as a variable
 
 actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 
-
 	getactor[THISACTOR].htowner tempone
 	getactor[THISACTOR].htextra temptwo
 	getactor[tempone].picnum tempone
 	ifvarn temptwo -1 ifvare tempone APLAYER {
 		getactor[tempone].yvel tempone
-		setplayervar[tempone].hitmarkercounter 15
-		getplayervar[tempone].damagedonesum tempthree
-		addvarvar tempthree temptwo
-		setplayervar[tempone].damagedonesum tempthree
-		setplayervar[tempone].damagedonecounter 25
+		getactor[THISACTOR].yvel tempfour
+		ifvarvarn tempone tempfour {
+			setplayervar[tempone].hitmarkercounter 15
+			getplayervar[tempone].damagedonesum tempthree
+			addvarvar tempthree temptwo
+			setplayervar[tempone].damagedonesum tempthree
+			setplayervar[tempone].damagedonecounter 25
+			getplayervar[tempone].damagedoneboost tempthree
+			addvarvar tempthree temptwo
+			setplayervar[tempone].damagedoneboost tempthree
+		}
+	}
+
+	ifvarg damagedoneboost 999 {
+		subvar damagedoneboost 1000
+		palfrom 32 64 64 64
+		setplayer[THISACTOR].STEROIDS_AMOUNT 200
 	}
 
 	ifvarg hitmarkercounter 0 subvar hitmarkercounter 1
 	ifvarg damagedonecounter 0 subvar damagedonecounter 1
 	else setvar damagedonesum 0
-
-/*
-	getactor[THISACTOR].htowner temp
-	getactor[temp].yvel tempseven
-	getactor[temp].picnum temp
-	getactor[THISACTOR].htextra temptwo
-	getplayervar[tempseven].criticalhitskill tempfive
-	getplayervar[tempseven].totalbonusdmg tempeight
-	randvar tempsix 99
-	ifvarn temptwo -1	ifvare temp APLAYER {
-		ifvare tempfive 1 {
-			//Do nothing
-		} else ifvare tempfive 2 {
-			ifvarl tempsix 7 {
-				addvarvar tempeight temptwo
-				setplayervar[tempseven].totalbonusdmg tempeight
-				mulvar temptwo 2
-				guts JIBS2 1
-  			guts JIBS3 1
-  			guts JIBS6 1
-  			setplayervar[tempseven].criticalhitcounter 15*/
 		
   ifaction 0
     action PSTAND
