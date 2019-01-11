@@ -9,6 +9,8 @@ action ANULLACTION 0
 
 ////////////////////DEFINES/////////////////
 
+definegamefuncname 36 Reload // rename it, so it'll appear as Reload in the control settings menu
+
 ////////////////////GAMEVARS/////////////////
 
 gamevar tempone 0 0
@@ -28,6 +30,13 @@ gamevar damagedonesum 0 1
 gamevar damagedoneboost 0 1
 gamevar maxscore 0 1
 gamevar maxscoreplayer 0 1
+
+gamevar PISTOLAMMO 0 1 
+gamevar KICKBACK 0 1
+gamevar PWEAPON 0 1 
+gamevar PISTOLMAGAZINE 0 1
+gamevar PERPLAYER1 0 1
+gamevar WEAPON1_CLIP 0 0
 
 ////////////////////STATES/////////////////
 
@@ -174,6 +183,54 @@ onevent EVENT_DISPLAYREST
   	nextspritestat tempone tempone
   	ifvarvare tempone temptwo setvar tempone -1
   }
+
+endevent
+
+onevent EVENT_DOFIRE 
+
+  ifvare PWEAPON 1 // if the player has the pistol selected when he fires a projectile...
+    ifvarl PISTOLMAGAZINE 1
+      break
+    else
+      subvar PISTOLMAGAZINE 1 // subtract 1 from the magazine count, unless it's already at zero
+
+endevent
+
+onevent EVENT_TURNAROUND 
+
+  setvar RETURN -1 // disable the event
+  ifvare PWEAPON 1 // if the player has the pistol armed
+  {
+    ifvare PISTOLMAGAZINE 12 // and his magazine is full, break
+      break
+    else ifvarvare PISTOLMAGAZINE PISTOLAMMO // if his magazine is equal to his pistol ammo, break
+      break
+    else // otherwise, start the reloading sequence
+    {
+      setplayer[THISACTOR].reloading 1
+      setplayer[THISACTOR].kickback_pic 4
+    }
+  }
+
+endevent
+
+onevent EVENT_RESETPLAYER
+
+  setvar PISTOLMAGAZINE 0 // if the player was reset to his starting position (i.e, he died), reset the clip amount to zero.
+  
+  ifvare PWEAPON 1 // if he has the pistol selected when he loads into the map...
+  {
+    setplayer[THISACTOR].reloading 1 
+    setplayer[THISACTOR].kickback_pic 4 // start the reloading sequence.
+  }
+
+endevent
+
+onevent EVENT_PRESSEDFIRE // when the player presses the fire button...
+
+  ifvare PWEAPON 1 // and he has the pistol armed...
+    ifvarl PISTOLMAGAZINE 1
+      setvar RETURN -1 // if his magazine is at zero, disable the firing key
 
 endevent
 
@@ -3420,6 +3477,36 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
     }
   } else ifvarl tempone 35 {
   	palfrom 15 24 0 0
+  }
+
+  getplayer[THISACTOR].curr_weapon PWEAPON // the player's current weapon
+  getplayer[THISACTOR].kickback_pic KICKBACK // the frame of animation the player's weapon is at
+  getplayer[THISACTOR].ammo_amount 1 PISTOLAMMO // the player's pistol ammo
+  
+  ifvare PWEAPON 1 // if the player has the pistol selected...
+  {
+    ifvarl PISTOLMAGAZINE 1 // and his magazine count is at zero...
+    {
+      getplayer[THISACTOR].weapon_pos PERPLAYER1
+      
+      ifvarn PERPLAYER1 0
+        break // if he has a weapon that's lowering off screen, break
+      else ifvarl PISTOLAMMO 1
+        break
+      else // otherwise, if he has ammo for the pistol, start the reloading anim
+      {
+        setplayer[THISACTOR].reloading 1
+        setplayer[THISACTOR].kickback_pic 4
+      }
+    }
+      
+    ifvare KICKBACK 5 // if the reloading animation is on its second frame...
+    {
+      ifvarg PISTOLAMMO 11 // if the player has at least twelve pistol rounds left,
+        setvar PISTOLMAGAZINE 12 // then set his magazine counter to a full magazine
+      else
+        setvarvar PISTOLMAGAZINE PISTOLAMMO // otherwise set the magazine counter equal to his remaining ammo
+    }
   }
 		
   ifaction 0
