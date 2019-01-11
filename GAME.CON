@@ -64,11 +64,26 @@ onevent EVENT_DISPLAYREST
 	//Magazine
 	ifvare PWEAPON PISTOL_WEAPON {
   	ifvarg PISTOLMAGAZINE -1 {
-			digitalnumberz 2837 192 108 PISTOLMAGAZINE 0 0 0 0 0 xdim ydim 40000
+			digitalnumberz 2837 187 108 PISTOLMAGAZINE 0 0 0 0 0 xdim ydim 40000
   	} else {
-  		digitalnumberz 2837 192 108 0 0 0 0 0 0 xdim ydim 40000
+  		digitalnumberz 2837 187 108 0 0 0 0 0 0 xdim ydim 40000
   	} 
   }
+  ifvare PWEAPON PISTOL_WEAPON setvar tempone 25
+  ifvare PWEAPON SHOTGUN_WEAPON setvar tempone 6
+  ifvare PWEAPON CHAINGUN_WEAPON setvar tempone 31
+  ifvare PWEAPON RPG_WEAPON setvar tempone 4
+  ifvare PWEAPON HANDBOMB_WEAPON setvar tempone 4
+  ifvare PWEAPON HANDREMOTE_WEAPON setvar tempone 4
+  ifvare PWEAPON SHRINKER_WEAPON setvar tempone 6
+  ifvare PWEAPON GROW_WEAPON setvar tempone 11
+  ifvare PWEAPON DEVISTATOR_WEAPON setvar tempone 31
+  ifvare PWEAPON TRIPBOMB_WEAPON setvar tempone 3
+  ifvare PWEAPON FREEZE_WEAPON setvar tempone 31
+  getplayer[THISACTOR].ammo_amount PWEAPON tempthree
+  getplayer[THISACTOR].ammo_amount HANDBOMB_WEAPON temptwo
+  ifvare PWEAPON HANDREMOTE_WEAPON setvarvar tempthree temptwo
+  ifvarvarl tempthree tempone digitalnumberz 2837 175 108 tempthree 0 2 0 0 0 xdim ydim 40000
 
 	//Healthbar armor
 	getactor[THISACTOR].extra tempone
