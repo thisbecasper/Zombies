@@ -23,6 +23,15 @@ gamevar hitmarkercounter 0 1
 
 ////////////////////EVENTS/////////////////
 
+onevent EVENT_DISPLAYREST
+	//Debuggg
+	getactor[THISACTOR].htowner tempone
+	digitalnumberz 2837 0 40 hitmarkercounter 0 0 0 0 0 xdim ydim 58000
+	digitalnumberz 2837 0 60 tempone 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 80 totalearnedxp 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 100 skillpoints 0 0 0 0 0 xdim ydim 58000
+endevent
+
 //////////////////////////////////// D M /////////////////////////////////////////////////
 
 define SPACESHUTTLE 487
@@ -3204,10 +3213,13 @@ move PGROWINGPOP        // Used only as a variable
 actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 
 
-	getplayer[THISACTOR].htowner tempone
-	getactor[tempone].yvel tempone
-	setactorvar[tempone].hitmarkercounter 10
-
+	getactor[THISACTOR].htowner tempone
+	getactor[tempone].picnum tempone
+	ifvare tempone APLAYER {
+		getactor[tempone].yvel tempone
+		setplayervar[tempone].hitmarkercounter 10
+	}
+		
   ifaction 0
     action PSTAND
 
