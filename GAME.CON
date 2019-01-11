@@ -3214,11 +3214,33 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 
 
 	getactor[THISACTOR].htowner tempone
+	getactor[THISACTOR].htextra temptwo
 	getactor[tempone].picnum tempone
-	ifvare tempone APLAYER {
+	ifvarn temptwo -1 ifvare tempone APLAYER {
 		getactor[tempone].yvel tempone
-		setplayervar[tempone].hitmarkercounter 10
+		setplayervar[tempone].hitmarkercounter temptwo
 	}
+
+/*
+	getactor[THISACTOR].htowner temp
+	getactor[temp].yvel tempseven
+	getactor[temp].picnum temp
+	getactor[THISACTOR].htextra temptwo
+	getplayervar[tempseven].criticalhitskill tempfive
+	getplayervar[tempseven].totalbonusdmg tempeight
+	randvar tempsix 99
+	ifvarn temptwo -1	ifvare temp APLAYER {
+		ifvare tempfive 1 {
+			//Do nothing
+		} else ifvare tempfive 2 {
+			ifvarl tempsix 7 {
+				addvarvar tempeight temptwo
+				setplayervar[tempseven].totalbonusdmg tempeight
+				mulvar temptwo 2
+				guts JIBS2 1
+  			guts JIBS3 1
+  			guts JIBS6 1
+  			setplayervar[tempseven].criticalhitcounter 15*/
 		
   ifaction 0
     action PSTAND
