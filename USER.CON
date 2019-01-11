@@ -34,11 +34,11 @@ define SWEARFREQUENCY          100      // The lower, the less.
 define CAMERASDESTRUCTABLE      NO               // YES
 define FREEZERHURTOWNER         YES
 
-define MAXPLAYERHEALTH           30
-define MAXWATERFOUNTAINHEALTH     0
+define MAXPLAYERHEALTH          100
+define MAXWATERFOUNTAINHEALTH    50
 
-define YELLHURTSOUNDSTRENGTH     35
-define YELLHURTSOUNDSTRENGTHMP   30
+define YELLHURTSOUNDSTRENGTH     40
+define YELLHURTSOUNDSTRENGTHMP   50
 
 define MAXXSTRETCH 70
 define MAXYSTRETCH 70
@@ -46,7 +46,7 @@ define MAXYSTRETCH 70
 define MINXSTRETCH 9
 define MINYSTRETCH 8
 
-define MAXPLAYERATOMICHEALTH     8     // doubles as maxarmor.
+define MAXPLAYERATOMICHEALTH    200     // doubles as maxarmor.
 define DOUBLEMAXPLAYERHEALTH    MAXPLAYERATOMICHEALTH
 define STARTARMORHEALTH         0
 define RETRIEVEDISTANCE         844
@@ -56,16 +56,16 @@ define FROZENQUICKKICKDIST      980
 
 define GENERICIMPACTDAMAGE      10
 
-define MAXPISTOLAMMO           50
-define MAXSHOTGUNAMMO           8
-define MAXCHAINGUNAMMO         50 
-define MAXRPGAMMO               5 
-define MAXHANDBOMBAMMO          3
-define MAXSHRINKERAMMO         10 
-define MAXGROWAMMO             20 
-define MAXDEVISTATORAMMO       50 
-define MAXFREEZEAMMO           20
-define MAXTRIPBOMBAMMO          3 
+define MAXPISTOLAMMO           200
+define MAXSHOTGUNAMMO           50
+define MAXCHAINGUNAMMO         200
+define MAXRPGAMMO               50
+define MAXHANDBOMBAMMO          50
+define MAXSHRINKERAMMO          50
+define MAXGROWAMMO              50
+define MAXDEVISTATORAMMO        99
+define MAXFREEZEAMMO            99
+define MAXTRIPBOMBAMMO          10
 define TRIPBOMBLASERMODE        0     // 0 = always visable
                                       // 1 = transluscense
                                       // 2 = invisible w/o IR goggles
@@ -103,10 +103,10 @@ define THAWTIME 138
 
 // Various blast radius distances
 
-define RPGBLASTRADIUS           1400
+define RPGBLASTRADIUS           1780
 define PIPEBOMBRADIUS           2500
 define SHRINKERBLASTRADIUS      680
-define TRIPBOMBBLASTRADIUS      3000
+define TRIPBOMBBLASTRADIUS      3880
 define MORTERBLASTRADIUS        2500
 define BOUNCEMINEBLASTRADIUS    2500
 define SEENINEBLASTRADIUS       2048
@@ -124,9 +124,9 @@ gamestartup     DEFAULTVISIBILITY GENERICIMPACTDAMAGE MAXPLAYERHEALTH
 
 
 // Weapon Strengths
-define KNEE_WEAPON_STRENGTH             45
+define KNEE_WEAPON_STRENGTH             10
 define PISTOL_WEAPON_STRENGTH            6
-define HANDBOMB_WEAPON_STRENGTH        300
+define HANDBOMB_WEAPON_STRENGTH        140
 
 
 
@@ -135,16 +135,16 @@ define HANDBOMB_WEAPON_STRENGTH        300
 // damage values depend on distance. The
 // further, the weaker.
 
-define RPG_WEAPON_STRENGTH             140
+define RPG_WEAPON_STRENGTH              140
 
 
 define SHRINKER_WEAPON_STRENGTH          0
 define GROWSPARK_WEAPON_STRENGTH        15
 define SHOTGUN_WEAPON_STRENGTH          10
-define CHAINGUN_WEAPON_STRENGTH         30
-define FREEZETHROWER_WEAPON_STRENGTH    40
+define CHAINGUN_WEAPON_STRENGTH          9
+define FREEZETHROWER_WEAPON_STRENGTH    20
 define COOL_EXPLOSION_STRENGTH          38
-define TRIPBOMB_STRENGTH               400
+define TRIPBOMB_STRENGTH               100
 define FIRELASER_WEAPON_STRENGTH         7
 define MORTER_WEAPON_STRENGTH           50
 define BOUNCEMINE_WEAPON_STRENGTH      150
@@ -171,8 +171,8 @@ define CAPTSPINNINGPLAYER      -11
 define COMMANDERSTRENGTH        350
 define SHARKSTRENGTH            35
 define SHARKBITESTRENGTH        -9
-define NEWBEASTSTRENGTH         200
-define NEWBEASTSCRATCHAMOUNT   -10
+define NEWBEASTSTRENGTH         300
+define NEWBEASTSCRATCHAMOUNT   -22
 define DOLPHINSTRENGTH          50
 
 define PISTOLAMMOAMOUNT         12
@@ -234,7 +234,7 @@ definequote  6        BOOTS
 definequote  7        WASTED!
 definequote  8        UNLOCKED
 definequote  9        A SECRET PLACE!
-definequote 10        
+definequote 10        SQUISH!
 definequote 11        ALL DOORS UNLOCKED
 definequote 12        USED STEROIDS
 definequote 13        PRESS SPACE TO RESTART LEVEL
@@ -304,7 +304,7 @@ definequote 76        SCUBA GEAR ON
 definequote 77        SPACE SUIT ON
 definequote 78        AMMO FOR SHRINKER
 definequote 79        BUY MAJOR STRYKER
-definequote 80        
+definequote 80        MIGHTY FOOT ENGAGED
 definequote 81        WEAPON MODE ON
 definequote 82        WEAPON MODE OFF
 definequote 83        FOLLOW MODE OFF
@@ -350,115 +350,7 @@ definequote 122       <Please Leave Blank>
 definequote 123       AMMO FOR EXPANDER
 definequote 124       MAP HAS A DIFFERENT NUMBER OF PLAYERS
 
-definequote 125       INSTA KILL!
-definequote 126       MAX AMMO!
-definequote 127       NUCLEAR!
-definequote 128       ROUND COMPLETED
-definequote 129       ROUND
-definequote 130       BLUE GATE
-definequote 131       RED GATE
-definequote 132       YELLOW GATE
-definequote 133       BLUE KEYCARD
-definequote 134       RED KEYCARD
-definequote 135       YELLOW KEYCARD
-definequote 136       PISTOL
-definequote 137       SHOTGUN
-definequote 138       CHAINGUN
-definequote 139       RPG
-definequote 140       HANDBOMBS
-definequote 141       STINGER
-definequote 142       EXPANDER
-definequote 143       DEVASTATOR
-definequote 144       TRIPBOMBS
-definequote 145       FREEZER
-definequote 146       BACKPACK
-definequote 147       ARMOR
-definequote 148       SWIFT SHOES
-definequote 149       DONATE 100 POINTS
-definequote 150       PERK PROTECTER
-definequote 151       ALREADY EQUIPPED
-definequote 152       POWERSHOT
-definequote 153       MONEY MULTIPLIER
-definequote 154       INFINITY AMMO!
-definequote 155       ORB FOUND!
-definequote 156       EXPANDER
-definequote 157       AMMO
-definequote 158       DAMAGE DEALT:
-definequote 159       MONEY SPENT:
-definequote 160       GAME SCORE:
-definequote 161       BONUSES EARNED:
-definequote 162       SHOTS FIRED:
-definequote 163       HITS:
-definequote 164       ACCURACY:
-definequote 165       %
-definequote 166       TOTAL MONSTERS:
-definequote 167       LEFT TO SPAWN:
-definequote 168       MAX ALLOWED:
-definequote 169       CURRENTLY ALIVE:
-definequote 170       SPAWNRATE:
-definequote 171       SPAWNCOUNTER:
-definequote 172       ACTIVE SPAWNERS:
-definequote 173       X MONEY - C GOD MODE - L LOG
-definequote 174       --- INVALID GAME ---
-definequote 175       RUSH ROUND!
-definequote 176       AUTO REVIVE
-definequote 177       GAMEVARS LOGGED
-definequote 178       LAST ROUND!
-definequote 179       FREE
-definequote 180       MONEY DONATED:
-definequote 181       MONEY RECIVED:
-definequote 182       NO HIT BONUS!
-definequote 183       REVIVE
-definequote 184		  G A M E   O V E R
-definequote 185		  MONEY!
-definequote 186 	  MONEY FEST!
-definequote 187		  K
-definequote 188		  NO HIT
-definequote 189		  SKILL POINT
-definequote 190       MONSTERS KILLED:
-definequote 191		  SKILLS:
-definequote 192		  MOVEMENT SPEED
-definequote 193		  BASE HEALTH
-definequote 194       BONUS MONEY
-definequote 195 	  MAGAZINES
-definequote 196		  100 %
-definequote 197		  104 %
-definequote 198		  108 %
-definequote 199		  112 %
-definequote 200		  120 %
-definequote 201		  30 HP
-definequote 202		  40 HP
-definequote 203		  50 HP 
-definequote 204		  60 HP
-definequote 205		  70 HP
-definequote 206		  + 0 $
-definequote 207		  + 20 $
-definequote 208		  + 40 $
-definequote 209		  + 60 $
-definequote 210		  + 100 $
-definequote 211		  2 MG
-definequote 212		  3 MGS
-definequote 213		  4 MGS
-definequote 214		  6 MGS
-definequote 215		  10 MGS
-definequote 216		  LVL
-definequote 217		  SKILL POINTS:
-definequote 218		  RANDOM BONUS XP
-definequote 219       0 %
-definequote 220       75 %
-definequote 221       150 %
-definequote 222       225 %
-definequote 223       450 %
-definequote 224		  TOGGLED INFORMATION SHOWN
-definequote 225		  CRIT CHANCE
-definequote 226		  0 %
-definequote 227		  8 %
-definequote 228		  16 %
-definequote 229		  24 %
-definequote 230		  40 %
-definequote 231       TOTAL MONEY:
-definequote 232       TOTAL XP:
-definequote 233       TOTAL DMG:
+
 
 // Volume titles cannot excede 32 characters.
 
@@ -543,7 +435,7 @@ music 0 GRABBAG.MID BRIEFING.MID
 
 // Music for the individual levels
 music 1 stalker.mid dethtoll.mid streets.mid watrwld1.mid snake1.mid
-        thecall.mid ahgeez.mid layers.mid streets.mid watrwld1.mid snake1.mid
+        thecall.mid ahgeez.mid dethtoll.mid streets.mid watrwld1.mid snake1.mid
 
 music 2 futurmil.mid storm.mid gutwrnch.mid robocrep.mid stalag.mid 
        pizzed.mid alienz.mid xplasma.mid alfredh.mid gloomy.mid intents.mid
@@ -1016,6 +908,7 @@ definesound DTAG_GREENSCORE        GSCORE.VOC     -128 128 255 128 0
 definesound DTAG_BROWNSCORE        BSCORE.VOC     -128 128 255 128 0
 definesound SCREECH                skidcr1.voc    -128 128   4 0   0
 
+
 definesound INTRO4_1               intro4h1.voc    0   0   255 0   0
 definesound INTRO4_B               intro4h2.voc    0   0   255 0   0
 definesound INTRO4_2               typing.voc      0   0   255 0   0
@@ -1049,3 +942,4 @@ definesound HORNSND                shorn1.voc      0   0   255  2    0
 definesound BELLSND                sbell1a.voc     0   0   255  2    0
 definesound GOAWAY                 goaway.voc      0   0    4   0    0
 definesound JOKE                   joke.voc        0   0   128  0    0
+
