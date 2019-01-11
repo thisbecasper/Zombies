@@ -18,6 +18,9 @@ gamevar tempfour 0 0
 gamevar tempfive 0 0
 
 gamevar hitmarkercounter 0 1
+gamevar damagedone 0 1
+gamevar damagedonecounter 0 1
+gamevar damagedonesum 0 1
 
 ////////////////////STATES/////////////////
 
@@ -26,10 +29,21 @@ gamevar hitmarkercounter 0 1
 onevent EVENT_DISPLAYREST
 	//Debuggg
 	getactor[THISACTOR].htowner tempone
-	digitalnumberz 2837 0 40 hitmarkercounter 0 0 0 0 0 xdim ydim 58000
-	digitalnumberz 2837 0 60 tempone 0 0 0 0 0 xdim ydim 58000
+	digitalnumberz 2837 0 40 damagedonesum 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 60 tempone 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 80 totalearnedxp 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 100 skillpoints 0 0 0 0 0 xdim ydim 58000
+
+	//Hitmark visuals
+	ifvarg hitmarkercounter 6 rotatesprite 160 100 38000 256 2523 0 7 0 0 0 xdim ydim
+	else ifvarg hitmarkercounter 3 rotatesprite 160 100 38000 256 2523 0 7 1 0 0 xdim ydim
+	else ifvarg hitmarkercounter 0 rotatesprite 160 100 38000 256 2523 0 7 33 0 0 xdim ydim
+
+	ifvarg damagedonesum 0 {
+		ifvarg damagedonesum 70 digitalnumberz 2837 163 80 damagedonesum 0 10 0 0 0 xdim ydim 50000
+		else ifvarg damagedonesum 40 digitalnumberz 2837 163 80 damagedonesum 0 15 0 0 0 xdim ydim 50000
+		else digitalnumberz 2837 163 80 damagedonesum 0 0 0 0 0 xdim ydim 50000
+	}
 endevent
 
 //////////////////////////////////// D M /////////////////////////////////////////////////
@@ -3218,8 +3232,16 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 	getactor[tempone].picnum tempone
 	ifvarn temptwo -1 ifvare tempone APLAYER {
 		getactor[tempone].yvel tempone
-		setplayervar[tempone].hitmarkercounter temptwo
+		setplayervar[tempone].hitmarkercounter 15
+		getplayervar[tempone].damagedonesum tempthree
+		addvarvar tempthree temptwo
+		setplayervar[tempone].damagedonesum tempthree
+		setplayervar[tempone].damagedonecounter 25
 	}
+
+	ifvarg hitmarkercounter 0 subvar hitmarkercounter 1
+	ifvarg damagedonecounter 0 subvar damagedonecounter 1
+	else setvar damagedonesum 0
 
 /*
 	getactor[THISACTOR].htowner temp
