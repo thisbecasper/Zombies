@@ -16,6 +16,11 @@ gamevar temptwo 0 0
 gamevar tempthree 0 0
 gamevar tempfour 0 0
 gamevar tempfive 0 0
+gamevar tempsix 0 0
+gamevar tempseven 0 0
+gamevar tempeight 0 0
+gamevar tempnine 0 0
+gamevar tempten 0 0
 
 gamevar hitmarkercounter 0 1
 gamevar damagedonecounter 0 1
@@ -28,10 +33,11 @@ gamevar damagedoneboost 0 1
 
 onevent EVENT_DISPLAYREST
 	//Debuggg
-	getactor[THISACTOR].extra tempone
-	getplayer[THISACTOR].max_player_health temptwo
+	//getactor[THISACTOR].extra tempone
+	setvar tempone 1
+	getactor[tempone].extra temptwo
 	//digitalnumberz 2837 0 40 maxhealth 0 0 0 0 0 xdim ydim 58000
-	digitalnumberz 2837 0 60 temptwo 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 60 temptwo 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 80 totalearnedxp 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 100 skillpoints 0 0 0 0 0 xdim ydim 58000
 
@@ -3339,6 +3345,19 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 	ifvarg hitmarkercounter 0 subvar hitmarkercounter 1
 	ifvarg damagedonecounter 0 subvar damagedonecounter 1
 	else setvar damagedonesum 0
+
+	getactor[THISACTOR].extra tempone
+	ifvarl tempone 20 { //HP is 10 or less
+    ifvarn tempone 0 {
+      ifcount 20 {
+      	palfrom 43 30 0 0
+        sound 39
+        resetcount
+      }
+    }
+  } else ifvarl tempone 35 {
+  	palfrom 15 24 0 0
+  }
 		
   ifaction 0
     action PSTAND
