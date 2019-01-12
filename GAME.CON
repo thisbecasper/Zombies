@@ -41,6 +41,9 @@ gamevar maxscore 0 1
 gamevar maxscoreplayer 0 1
 gamevar boostactivationtimer 0 1
 gamevar boostlosscounter 0 1
+gamevar gameover 1 0
+gamevar damagetakentotal 0 1
+gamevar damagedonetotal 0 1
 
 gamevar PISTOLAMMO 0 1 
 gamevar KICKBACK 0 1
@@ -115,6 +118,10 @@ state regulatemaxhealth
 	setplayer[THISACTOR].max_player_health tempthree
 ends
 
+state gameoverslowmo
+	ifvare gameover 1 inittimer 90
+ends
+
 state gothit
 	getactor[THISACTOR].htowner tempone
 	getactor[THISACTOR].htextra temptwo
@@ -166,163 +173,168 @@ onevent EVENT_DISPLAYREST
 	//digitalnumberz 2837 0 80 totalearnedxp 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 100 skillpoints 0 0 0 0 0 xdim ydim 58000
 
-	//Hitmark visuals
-	ifvarg hitmarkercounter 6 rotatesprite 160 100 38000 256 2523 0 7 0 0 0 xdim ydim
-	else ifvarg hitmarkercounter 3 rotatesprite 160 100 38000 256 2523 0 7 1 0 0 xdim ydim
-	else ifvarg hitmarkercounter 0 rotatesprite 160 100 38000 256 2523 0 7 33 0 0 xdim ydim
+	//Game over
+	ifvare gameover 1 {
+		rotatesprite 160 100 500000 256 241 31 0 1 0 0 xdim ydim
+	} else {
+		//Hitmark visuals
+		ifvarg hitmarkercounter 6 rotatesprite 160 100 38000 256 2523 0 7 0 0 0 xdim ydim
+		else ifvarg hitmarkercounter 3 rotatesprite 160 100 38000 256 2523 0 7 1 0 0 xdim ydim
+		else ifvarg hitmarkercounter 0 rotatesprite 160 100 38000 256 2523 0 7 33 0 0 xdim ydim
 
-	ifvarg damagedonesum 0 {
-		ifvarg damagedonesum 70 digitalnumberz 2837 163 80 damagedonesum 0 10 0 0 0 xdim ydim 50000
-		else ifvarg damagedonesum 40 digitalnumberz 2837 163 80 damagedonesum 0 15 0 0 0 xdim ydim 50000
-		else digitalnumberz 2837 163 80 damagedonesum 0 0 0 0 0 xdim ydim 50000
-	}
+		ifvarg damagedonesum 0 {
+			ifvarg damagedonesum 70 digitalnumberz 2837 163 80 damagedonesum 0 10 0 0 0 xdim ydim 50000
+			else ifvarg damagedonesum 40 digitalnumberz 2837 163 80 damagedonesum 0 15 0 0 0 xdim ydim 50000
+			else digitalnumberz 2837 163 80 damagedonesum 0 0 0 0 0 xdim ydim 50000
+		}
 
-	//Magazine and ammo
-	getplayer[THISACTOR].ammo_amount PWEAPON tempone
-	digitalnumberz DIGITALNUM 40 180 tempone 0 0 0 0 0 xdim ydim 80000
+		//Magazine and ammo
+		getplayer[THISACTOR].ammo_amount PWEAPON tempone
+		digitalnumberz DIGITALNUM 40 180 tempone 0 0 0 0 0 xdim ydim 80000
 
-	ifvare PWEAPON PISTOL_WEAPON {
-  	ifvarg PISTOLMAGAZINE -1 {
-			digitalnumberz DIGITALNUM 173 110 PISTOLMAGAZINE 0 0 0 0 0 xdim ydim 40000
-  	} else {
-  		digitalnumberz DIGITALNUM 173 110 0 0 0 0 0 0 xdim ydim 40000
-  	} 
-  }
+		ifvare PWEAPON PISTOL_WEAPON {
+	  	ifvarg PISTOLMAGAZINE -1 {
+				digitalnumberz DIGITALNUM 173 110 PISTOLMAGAZINE 0 0 0 0 0 xdim ydim 40000
+	  	} else {
+	  		digitalnumberz DIGITALNUM 173 110 0 0 0 0 0 0 xdim ydim 40000
+	  	} 
+	  }
 
-	//Healthbar armor
-	getactor[THISACTOR].extra tempone
-	getplayer[THISACTOR].max_player_health temptwo
-	digitalnumberz DIGITALNUM -25 180 tempone 0 0 0 0 0 xdim ydim 80000
-	rotatesprite -8 174 35000 0 3008 0 0 16 0 0 xdim ydim 
-	digitalnumberz DIGITALNUM 5 180 temptwo 0 0 0 0 0 xdim ydim 40000
+		//Healthbar armor
+		getactor[THISACTOR].extra tempone
+		getplayer[THISACTOR].max_player_health temptwo
+		digitalnumberz DIGITALNUM -25 180 tempone 0 0 0 0 0 xdim ydim 80000
+		rotatesprite -8 174 35000 0 3008 0 0 16 0 0 xdim ydim 
+		digitalnumberz DIGITALNUM 5 180 temptwo 0 0 0 0 0 xdim ydim 40000
 
-	setvar temptwo -40
-	getplayer[THISACTOR].max_player_health tempone
-	whilevarn tempone 0 {
-    rotatesprite temptwo 185 65536 1024 3021 0 1 53 0 0 xdim ydim 
-    addvar temptwo 1 
-    subvar tempone 1
-  }
-  
-  setvar temptwo -40
-  getactor[THISACTOR].extra tempone
- 	
- 	ifvarg tempone 100 {
- 		setvar tempfour 60
- 		whilevarn tempone 100 {
-			rotatesprite tempfour 185 65536 1024 3021 0 2 21 0 0 xdim ydim 
-	    addvar tempfour 1 
+		setvar temptwo -40
+		getplayer[THISACTOR].max_player_health tempone
+		whilevarn tempone 0 {
+	    rotatesprite temptwo 185 65536 1024 3021 0 1 53 0 0 xdim ydim 
+	    addvar temptwo 1 
 	    subvar tempone 1
 	  }
- 	}
-  whilevarn tempone 0 {
-		rotatesprite temptwo 185 65536 1024 3021 0 1 21 0 0 xdim ydim 
-    addvar temptwo 1 
-    subvar tempone 1
-  }
+	  
+	  setvar temptwo -40
+	  getactor[THISACTOR].extra tempone
+	 	
+	 	ifvarg tempone 100 {
+	 		setvar tempfour 60
+	 		whilevarn tempone 100 {
+				rotatesprite tempfour 185 65536 1024 3021 0 2 21 0 0 xdim ydim 
+		    addvar tempfour 1 
+		    subvar tempone 1
+		  }
+	 	}
+	  whilevarn tempone 0 {
+			rotatesprite temptwo 185 65536 1024 3021 0 1 21 0 0 xdim ydim 
+	    addvar temptwo 1 
+	    subvar tempone 1
+	  }
 
-  getplayer[THISACTOR].SHIELD_AMOUNT tempone
-  setvar temptwo -44
-  whilevarn tempone 0 {
-    rotatesprite temptwo 183 65536 0 3135 0 2 0 0 0 xdim ydim 
-    addvar temptwo 1 
-    subvar tempone 1
-  }
+	  getplayer[THISACTOR].SHIELD_AMOUNT tempone
+	  setvar temptwo -44
+	  whilevarn tempone 0 {
+	    rotatesprite temptwo 183 65536 0 3135 0 2 0 0 0 xdim ydim 
+	    addvar temptwo 1 
+	    subvar tempone 1
+	  }
 
-  //Dmg done bar
-	digitalnumberz DIGITALNUM 315 180 damagedoneboost 0 24 0 0 0 xdim ydim 80000
-	rotatesprite 333 174 35000 0 3008 0 24 16 0 0 xdim ydim 
-	digitalnumberz DIGITALNUM 348 180 1000 0 24 0 0 0 xdim ydim 40000
+	  //Dmg done bar
+		digitalnumberz DIGITALNUM 315 180 damagedoneboost 0 24 0 0 0 xdim ydim 80000
+		rotatesprite 333 174 35000 0 3008 0 24 16 0 0 xdim ydim 
+		digitalnumberz DIGITALNUM 348 180 1000 0 24 0 0 0 xdim ydim 40000
 
-  setvar tempone 100
-  setvar temptwo 260
-  whilevarn tempone 0 {
-  	rotatesprite temptwo 185 65500 0 3021 0 1 49 0 0 xdim ydim 
-    addvar temptwo 1 
-    subvar tempone 1
-  }
+	  setvar tempone 100
+	  setvar temptwo 260
+	  whilevarn tempone 0 {
+	  	rotatesprite temptwo 185 65500 0 3021 0 1 49 0 0 xdim ydim 
+	    addvar temptwo 1 
+	    subvar tempone 1
+	  }
 
-  setvarvar tempone damagedoneboost
-  setvar temptwo 260
-  divvar tempone 10
-  whilevarn tempone 0 {
-  	rotatesprite temptwo 185 65500 0 3021 0 1 17 0 0 xdim ydim 
-    addvar temptwo 1 
-    subvar tempone 1
-  }
+	  setvarvar tempone damagedoneboost
+	  setvar temptwo 260
+	  divvar tempone 10
+	  whilevarn tempone 0 {
+	  	rotatesprite temptwo 185 65500 0 3021 0 1 17 0 0 xdim ydim 
+	    addvar temptwo 1 
+	    subvar tempone 1
+	  }
 
-  setvarvar tempone boostactivationtimer
-  setvar temptwo 263
-  divvar tempone 6
-  whilevarn tempone 0 {
-  	rotatesprite temptwo 181 65500 0 3135 0 6 16 0 0 xdim ydim 
-    addvar temptwo 1 
-    subvar tempone 1
-  }
+	  setvarvar tempone boostactivationtimer
+	  setvar temptwo 263
+	  divvar tempone 6
+	  whilevarn tempone 0 {
+	  	rotatesprite temptwo 181 65500 0 3135 0 6 16 0 0 xdim ydim 
+	    addvar temptwo 1 
+	    subvar tempone 1
+	  }
 
-  //Score
-  headspritestat tempone 10
-  setvarvar temptwo tempone
-  setvarvar tempthree -1
-  whilevarn tempone -1 {
-  	
-  	getactor[tempone].yvel tempfour
-  	getplayer[tempfour].frag tempfive
-  	getplayer[tempfour].fraggedself tempsix
-  	subvarvar tempfive tempsix
-  	ifvarvarg tempfive tempthree {
-  		setvarvar tempthree tempfive
-  		setvarvar tempseven tempfour
-  	} 
+	  //Score
+	  headspritestat tempone 10
+	  setvarvar temptwo tempone
+	  setvarvar tempthree -1
+	  whilevarn tempone -1 {
+	  	
+	  	getactor[tempone].yvel tempfour
+	  	getplayer[tempfour].frag tempfive
+	  	getplayer[tempfour].fraggedself tempsix
+	  	subvarvar tempfive tempsix
+	  	ifvarvarg tempfive tempthree {
+	  		setvarvar tempthree tempfive
+	  		setvarvar tempseven tempfour
+	  	} 
 
-  	nextspritestat tempone tempone
-  	ifvarvare tempone temptwo setvar tempone -1
-  }
-  setvarvar maxscore tempthree
-  setvarvar maxscoreplayer tempseven
+	  	nextspritestat tempone tempone
+	  	ifvarvare tempone temptwo setvar tempone -1
+	  }
+	  setvarvar maxscore tempthree
+	  setvarvar maxscoreplayer tempseven
 
-  headspritestat tempone 10
-  setvarvar temptwo tempone
-  setvarvar tempthree 5
-  whilevarn tempone -1 {
-  	
-  	setvar tempfour 60
-  	setvar tempfive 300
-  	getactor[tempone].yvel tempsix
-  	getplayer[tempsix].palookup tempseven
-  	getplayer[tempsix].frag tempeight
-  	getplayer[tempsix].fraggedself tempnine
-  	subvarvar tempeight tempnine
-  	
-  	digitalnumberz 2837 293 tempthree tempeight 0 tempseven 16 0 0 xdim ydim 45000
+	  headspritestat tempone 10
+	  setvarvar temptwo tempone
+	  setvarvar tempthree 5
+	  whilevarn tempone -1 {
+	  	
+	  	setvar tempfour 60
+	  	setvar tempfive 300
+	  	getactor[tempone].yvel tempsix
+	  	getplayer[tempsix].palookup tempseven
+	  	getplayer[tempsix].frag tempeight
+	  	getplayer[tempsix].fraggedself tempnine
+	  	subvarvar tempeight tempnine
+	  	
+	  	digitalnumberz 2837 293 tempthree tempeight 0 tempseven 16 0 0 xdim ydim 45000
 
-  	mulvar tempeight 60 //amount of subbars in a bar
-  	divvar tempeight 30 //max kills
+	  	mulvar tempeight 60 //amount of subbars in a bar
+	  	divvar tempeight 30 //max kills
 
-  	getactor[THISACTOR].yvel tempten
-  	ifvarvare tempsix tempten rotatesprite 362 tempthree 13000 0 2452 0 tempseven 16 0 0 xdim ydim
+	  	getactor[THISACTOR].yvel tempten
+	  	ifvarvare tempsix tempten rotatesprite 362 tempthree 13000 0 2452 0 tempseven 16 0 0 xdim ydim
 
-  	whilevarn tempfour 0 {
-  		rotatesprite tempfive tempthree 65536 0 3163 0 tempseven 49 0 0 xdim ydim
-    	addvar tempfive 1 
-    	subvar tempfour 1
-  	}
-
-  	setvar tempfive 300
-
-  	ifvarg tempeight 0 {
-  		whilevarn tempeight 0 {
-	  		rotatesprite tempfive tempthree 65536 0 3163 0 tempseven 17 0 0 xdim ydim 
+	  	whilevarn tempfour 0 {
+	  		rotatesprite tempfive tempthree 65536 0 3163 0 tempseven 49 0 0 xdim ydim
 	    	addvar tempfive 1 
-	    	subvar tempeight 1
+	    	subvar tempfour 1
 	  	}
-  	}
 
-  	addvar tempthree 6
+	  	setvar tempfive 300
 
-  	nextspritestat tempone tempone
-  	ifvarvare tempone temptwo setvar tempone -1
-  }
+	  	ifvarg tempeight 0 {
+	  		whilevarn tempeight 0 {
+		  		rotatesprite tempfive tempthree 65536 0 3163 0 tempseven 17 0 0 xdim ydim 
+		    	addvar tempfive 1 
+		    	subvar tempeight 1
+		  	}
+	  	}
+
+	  	addvar tempthree 6
+
+	  	nextspritestat tempone tempone
+	  	ifvarvare tempone temptwo setvar tempone -1
+	  }
+	}
 endevent
 
 onevent EVENT_DOFIRE 
@@ -332,7 +344,10 @@ onevent EVENT_DOFIRE
       break
     else
       subvar PISTOLMAGAZINE 1 // subtract 1 from the magazine count, unless it's already at zero
+endevent
 
+onevent EVENT_DISPLAYCROSSHAIR
+	ifvare gameover 1 setvar RETURN -1
 endevent
 
 onevent EVENT_TURNAROUND 
@@ -3584,6 +3599,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 	state hitmarkeranddmgdealt
 	state lowhealtheffects
   state reloadpistol
+  state gameoverslowmo
 		
   ifaction 0
     action PSTAND
