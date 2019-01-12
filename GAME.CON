@@ -41,9 +41,10 @@ gamevar maxscore 0 1
 gamevar maxscoreplayer 0 1
 gamevar boostactivationtimer 0 1
 gamevar boostlosscounter 0 1
-gamevar gameover 1 0
-gamevar damagetakentotal 0 1
+gamevar gameover 0 0
 gamevar damagedonetotal 0 1
+gamevar damagetakentotal 0 1
+gamevar winner 0 0
 
 gamevar PISTOLAMMO 0 1 
 gamevar KICKBACK 0 1
@@ -53,6 +54,17 @@ gamevar PERPLAYER1 0 1
 gamevar WEAPON1_CLIP 0 0
 
 ////////////////////STATES/////////////////
+
+state setwinner
+	getplayer[THISACTOR].frag tempone
+  getplayer[THISACTOR].fraggedself temptwo
+  subvarvar tempone temptwo
+  ifvarg tempone 2 ifvare gameover 0 {
+  	setvar gameover 1
+  	getactor[THISACTOR].yvel tempthree
+  	setvarvar winner tempthree
+  } 
+ends
 
 state lowhealtheffects
 	getactor[THISACTOR].extra tempone
@@ -119,7 +131,7 @@ state regulatemaxhealth
 ends
 
 state gameoverslowmo
-	ifvare gameover 1 inittimer 90
+	ifvare gameover 1 inittimer 75
 ends
 
 state gothit
@@ -138,6 +150,14 @@ state gothit
 			getplayervar[tempone].damagedoneboost tempthree
 			addvarvar tempthree temptwo
 			setplayervar[tempone].damagedoneboost tempthree
+			ifvarn gameover 1 {
+				getplayervar[tempone].damagedonetotal tempthree
+				addvarvar tempthree temptwo
+				setplayervar[tempone].damagedonetotal tempthree
+				addvarvar damagetakentotal temptwo
+			}
+		} else {
+			ifvarn gameover 1 addvarvar damagetakentotal temptwo
 		}
 	}
 	ifdead setactor[THISACTOR].htextra -1
@@ -176,6 +196,14 @@ onevent EVENT_DISPLAYREST
 	//Game over
 	ifvare gameover 1 {
 		rotatesprite 160 100 500000 256 241 31 0 1 0 0 xdim ydim
+		gametextz STARTALPHANUM 320 70 125 0 2 0 0 0 xdim ydim 80000
+		gametextz STARTALPHANUM 170 125 126 0 13 0 0 0 xdim ydim 60000
+		gametextz STARTALPHANUM 170 137 127 0 13 0 0 0 xdim ydim 60000
+		getactor[THISACTOR].yvel tempone
+		ifvarvare tempone winner gametextz STARTALPHANUM 320 100 128 0 0 0 0 0 xdim ydim 80000
+		else gametextz STARTALPHANUM 320 100 129 0 10 0 0 0 xdim ydim 80000
+		digitalnumberz 2837 205 125 damagedonetotal 0 13 0 0 0 xdim ydim 60000
+		digitalnumberz 2837 205 137 damagetakentotal 0 13 0 0 0 xdim ydim 60000
 	} else {
 		//Hitmark visuals
 		ifvarg hitmarkercounter 6 rotatesprite 160 100 38000 256 2523 0 7 0 0 0 xdim ydim
@@ -3600,7 +3628,8 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 	state lowhealtheffects
   state reloadpistol
   state gameoverslowmo
-		
+  state setwinner
+
   ifaction 0
     action PSTAND
 
