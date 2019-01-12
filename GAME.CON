@@ -188,16 +188,9 @@ ends
 ////////////////////EVENTS/////////////////
 
 onevent EVENT_RESETPLAYER
-	/*
-	getplayer[THISACTOR].frag tempone
-	getplayer[THISACTOR].fraggedself temptwo
-	subvarvar tempone temptwo
-	setvarvar tempthree maxscore
-	subvarvar tempthree tempone
-	mulvar tempthree 5
-	addvar tempthree 100
-	setplayer[THISACTOR].max_player_health tempthree
-	*/
+
+	setplayer[THISACTOR].max_player_health 100
+	
 endevent
 
 onevent EVENT_DISPLAYREST
