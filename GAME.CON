@@ -47,6 +47,7 @@ gamevar damagedonetotal 0 1
 gamevar damagetakentotal 0 1
 gamevar winner 0 0
 gamevar havestartedsong 0 0
+gamevar nomaxhpsettimer 0 1
 
 gamevar PISTOLAMMO 0 1 
 gamevar KICKBACK 0 1
@@ -129,7 +130,10 @@ state regulatemaxhealth
 	subvarvar tempthree tempone
 	mulvar tempthree 5
 	addvar tempthree 100
-	setplayer[THISACTOR].max_player_health tempthree
+	ifvare nomaxhpsettimer 30 {
+		setplayer[THISACTOR].max_player_health tempthree
+		addphealth 150
+	} 
 ends
 
 state gameoverslowmo
@@ -187,16 +191,10 @@ ends
 
 ////////////////////EVENTS/////////////////
 
-onevent EVENT_RESETPLAYER
-
-	setplayer[THISACTOR].max_player_health 100
-	
-endevent
-
 onevent EVENT_DISPLAYREST
 	//Debuggg
 	//getactor[THISACTOR].extra tempone
-	//digitalnumberz 2837 0 40 boostactivationtimer 0 0 0 0 0 xdim ydim 58000
+	digitalnumberz 2837 0 40 nomaxhpsettimer 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 60 temptwo 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 80 totalearnedxp 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 100 skillpoints 0 0 0 0 0 xdim ydim 58000
@@ -3742,6 +3740,9 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
   state reloadpistol
   state gameoverslowmo
   state setwinner
+
+  ifdead setvar nomaxhpsettimer 60
+  ifvarg nomaxhpsettimer 0 subvar nomaxhpsettimer 1
 
   ifvare gameover 1 {
   	getactor[THISACTOR].yvel tempone
