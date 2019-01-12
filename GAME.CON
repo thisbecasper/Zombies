@@ -219,6 +219,25 @@ onevent EVENT_DISPLAYREST
 			else digitalnumberz 2837 163 80 damagedonesum 0 0 0 0 0 xdim ydim 50000
 		}
 
+		//Display medkit
+   	getplayer[THISACTOR].FIRSTAID_AMOUNT tempone
+   	ifpinventory GET_FIRSTAID 0 {
+   		rotatesprite -31 152 15000 0 53 0 0 16 0 0 xdim ydim //Medkit icon
+   		ifvarg tempone 39 digitalnumberz THREEBYFIVE -25 165 tempone 0 1 0 0 0 xdim ydim 50000
+   		else digitalnumberz THREEBYFIVE -25 165 tempone 0 2 0 0 0 xdim ydim 50000
+   	}
+   	
+   	//Display jetpack
+   	getplayer[THISACTOR].JETPACK_AMOUNT tempone	
+   	ifpinventory GET_JETPACK 0 {
+   		rotatesprite -11 152 20000 0 57 0 0 16 0 0 xdim ydim //Jetpack icon
+   		divvar tempone 16
+   		addvar tempone 1
+   		ifvarg tempone 100 digitalnumberz THREEBYFIVE -6 165 100 0 1 0 0 0 xdim ydim 50000
+   		else ifvarg tempone 39 digitalnumberz THREEBYFIVE -6 165 tempone 0 1 0 0 0 xdim ydim 50000
+   		else digitalnumberz THREEBYFIVE -6 165 tempone 0 2 0 0 0 xdim ydim 50000
+   	}
+
 		//Magazine and ammo
 		getplayer[THISACTOR].ammo_amount PWEAPON tempone
 		digitalnumberz DIGITALNUM 40 180 tempone 0 0 0 0 0 xdim ydim 80000
