@@ -59,7 +59,7 @@ state setwinner
 	getplayer[THISACTOR].frag tempone
   getplayer[THISACTOR].fraggedself temptwo
   subvarvar tempone temptwo
-  ifvarg tempone 2 ifvare gameover 0 {
+  ifvarg tempone 29 ifvare gameover 0 { //Fraglimit
   	setvar gameover 1
   	getactor[THISACTOR].yvel tempthree
   	setvarvar winner tempthree
@@ -204,6 +204,8 @@ onevent EVENT_DISPLAYREST
 		else gametextz STARTALPHANUM 320 100 129 0 10 0 0 0 xdim ydim 80000
 		digitalnumberz 2837 205 125 damagedonetotal 0 13 0 0 0 xdim ydim 60000
 		digitalnumberz 2837 205 137 damagetakentotal 0 13 0 0 0 xdim ydim 60000
+		getplayer[winner].palookup tempone
+		rotatesprite 164 35 35000 0 1426 0 tempone 0 0 0 xdim ydim 
 	} else {
 		//Hitmark visuals
 		ifvarg hitmarkercounter 6 rotatesprite 160 100 38000 256 2523 0 7 0 0 0 xdim ydim
@@ -336,7 +338,7 @@ onevent EVENT_DISPLAYREST
 	  	digitalnumberz 2837 293 tempthree tempeight 0 tempseven 16 0 0 xdim ydim 45000
 
 	  	mulvar tempeight 60 //amount of subbars in a bar
-	  	divvar tempeight 30 //max kills
+	  	divvar tempeight 30 //max kills fraglimit
 
 	  	getactor[THISACTOR].yvel tempten
 	  	ifvarvare tempsix tempten rotatesprite 362 tempthree 13000 0 2452 0 tempseven 16 0 0 xdim ydim
