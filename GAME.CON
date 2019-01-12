@@ -9,7 +9,8 @@ action ANULLACTION 0
 
 ////////////////////DEFINES/////////////////
 
-definegamefuncname 36 Reload // rename it, so it'll appear as Reload in the control settings menu
+definegamefuncname 36 Reload
+definegamefuncname 14 Boost
 
 ////////////////////GAMEVARS/////////////////
 
@@ -30,6 +31,7 @@ gamevar damagedonesum 0 1
 gamevar damagedoneboost 0 1
 gamevar maxscore 0 1
 gamevar maxscoreplayer 0 1
+gamevar boostactivationtimer 0 1
 
 gamevar PISTOLAMMO 0 1 
 gamevar KICKBACK 0 1
@@ -40,12 +42,106 @@ gamevar WEAPON1_CLIP 0 0
 
 ////////////////////STATES/////////////////
 
+state lowhealtheffects
+	getactor[THISACTOR].extra tempone
+	ifvarl tempone 20 { //HP is 10 or less
+    ifvarn tempone 0 {
+      ifcount 20 {
+      	palfrom 43 30 0 0
+        sound 39
+        resetcount
+      }
+    }
+  } else ifvarl tempone 35 {
+  	palfrom 15 24 0 0
+  }
+ends
+
+state hitmarkeranddmgdealt
+	ifvarg hitmarkercounter 0 subvar hitmarkercounter 1
+	ifvarg damagedonecounter 0 subvar damagedonecounter 1
+	else setvar damagedonesum 0
+ends
+
+state reloadpistol
+	getplayer[THISACTOR].curr_weapon PWEAPON // the player's current weapon
+  getplayer[THISACTOR].kickback_pic KICKBACK // the frame of animation the player's weapon is at
+  getplayer[THISACTOR].ammo_amount 1 PISTOLAMMO // the player's pistol ammo
+  
+  ifvare PWEAPON 1 // if the player has the pistol selected...
+  {
+    ifvarl PISTOLMAGAZINE 1 // and his magazine count is at zero...
+    {
+      getplayer[THISACTOR].weapon_pos PERPLAYER1
+      
+      ifvarn PERPLAYER1 0
+        break // if he has a weapon that's lowering off screen, break
+      else ifvarl PISTOLAMMO 1
+        break
+      else // otherwise, if he has ammo for the pistol, start the reloading anim
+      {
+        setplayer[THISACTOR].reloading 1
+        setplayer[THISACTOR].kickback_pic 4
+      }
+    }
+      
+    ifvare KICKBACK 5 // if the reloading animation is on its second frame...
+    {
+      ifvarg PISTOLAMMO 11 // if the player has at least twelve pistol rounds left,
+        setvar PISTOLMAGAZINE 12 // then set his magazine counter to a full magazine
+      else
+        setvarvar PISTOLMAGAZINE PISTOLAMMO // otherwise set the magazine counter equal to his remaining ammo
+    }
+  }
+ends
+
+state regulatemaxhealth
+	getplayer[THISACTOR].frag tempone
+	getplayer[THISACTOR].fraggedself temptwo
+	subvarvar tempone temptwo
+	setvarvar tempthree maxscore
+	subvarvar tempthree tempone
+	mulvar tempthree 5
+	addvar tempthree 100
+	setplayer[THISACTOR].max_player_health tempthree
+ends
+
+state gothit
+	getactor[THISACTOR].htowner tempone
+	getactor[THISACTOR].htextra temptwo
+	getactor[tempone].picnum tempthree
+	ifvarn temptwo -1 ifvare tempthree APLAYER {
+		getactor[tempone].yvel tempone
+		getactor[THISACTOR].yvel tempfour
+		ifvarvarn tempone tempfour {
+			setplayervar[tempone].hitmarkercounter 15
+			getplayervar[tempone].damagedonesum tempthree
+			addvarvar tempthree temptwo
+			setplayervar[tempone].damagedonesum tempthree
+			setplayervar[tempone].damagedonecounter 25
+			getplayervar[tempone].damagedoneboost tempthree
+			addvarvar tempthree temptwo
+			setplayervar[tempone].damagedoneboost tempthree
+		}
+	}
+	ifdead setactor[THISACTOR].htextra -1
+ends
+
+state boost
+	ifvarg boostactivationtimer 0 subvar boostactivationtimer 1
+	ifvarg damagedoneboost 999 {
+		subvar damagedoneboost 1000
+		palfrom 32 64 64 64
+		setvar boostactivationtimer 600
+	}
+ends
+
 ////////////////////EVENTS/////////////////
 
 onevent EVENT_DISPLAYREST
 	//Debuggg
 	//getactor[THISACTOR].extra tempone
-	digitalnumberz 2837 0 40 maxscoreplayer 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 40 boostactivationtimer 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 60 temptwo 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 80 totalearnedxp 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 100 skillpoints 0 0 0 0 0 xdim ydim 58000
@@ -214,9 +310,9 @@ onevent EVENT_DISPLAYREST
   }
 
   //Dmg done bar
-	digitalnumberz DIGITALNUM 315 180 damagedoneboost 0 0 0 0 0 xdim ydim 80000
-	rotatesprite 333 174 35000 0 3008 0 0 16 0 0 xdim ydim 
-	digitalnumberz DIGITALNUM 348 180 1000 0 0 0 0 0 xdim ydim 40000
+	digitalnumberz DIGITALNUM 315 180 damagedoneboost 0 24 0 0 0 xdim ydim 80000
+	rotatesprite 333 174 35000 0 3008 0 24 16 0 0 xdim ydim 
+	digitalnumberz DIGITALNUM 348 180 1000 0 24 0 0 0 xdim ydim 40000
 
   setvar tempone 100
   setvar temptwo 260
@@ -231,6 +327,15 @@ onevent EVENT_DISPLAYREST
   divvar tempone 10
   whilevarn tempone 0 {
   	rotatesprite temptwo 185 65536 0 3163 0 12 16 0 0 xdim ydim 
+    addvar temptwo 1 
+    subvar tempone 1
+  }
+
+  setvarvar tempone boostactivationtimer
+  setvar temptwo 260
+  divvar tempone 6
+  whilevarn tempone 0 {
+  	rotatesprite temptwo 181 65536 0 3135 0 6 16 0 0 xdim ydim 
     addvar temptwo 1 
     subvar tempone 1
   }
@@ -269,7 +374,7 @@ onevent EVENT_DISPLAYREST
   	getplayer[tempsix].fraggedself tempnine
   	subvarvar tempeight tempnine
   	
-  	digitalnumberz 2837 294 tempthree tempeight 0 tempseven 16 0 0 xdim ydim 45000
+  	digitalnumberz 2837 293 tempthree tempeight 0 tempseven 16 0 0 xdim ydim 45000
 
   	mulvar tempeight 60 //amount of subbars in a bar
   	divvar tempeight 30 //max kills
@@ -343,6 +448,16 @@ onevent EVENT_PRESSEDFIRE // when the player presses the fire button...
     ifvarl PISTOLMAGAZINE 1
       setvar RETURN -1 // if his magazine is at zero, disable the firing key
 
+endevent
+
+onevent EVENT_LOOKRIGHT {
+	setvar RETURN -1
+	ifvarg boostactivationtimer 0 {
+		setplayer[THISACTOR].STEROIDS_AMOUNT 200
+		setvar boostactivationtimer 0
+	} 
+
+}
 endevent
 
 //////////////////////////////////// D M /////////////////////////////////////////////////
@@ -3540,85 +3655,12 @@ move PGROWINGPOP        // Used only as a variable
 
 actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 
-	getplayer[THISACTOR].frag tempone
-	getplayer[THISACTOR].fraggedself temptwo
-	subvarvar tempone temptwo
-	setvarvar tempthree maxscore
-	subvarvar tempthree tempone
-	mulvar tempthree 5
-	addvar tempthree 100
-	setplayer[THISACTOR].max_player_health tempthree
-
-	getactor[THISACTOR].htowner tempone
-	getactor[THISACTOR].htextra temptwo
-	getactor[tempone].picnum tempthree
-	ifvarn temptwo -1 ifvare tempthree APLAYER {
-		getactor[tempone].yvel tempone
-		getactor[THISACTOR].yvel tempfour
-		ifvarvarn tempone tempfour {
-			setplayervar[tempone].hitmarkercounter 15
-			getplayervar[tempone].damagedonesum tempthree
-			addvarvar tempthree temptwo
-			setplayervar[tempone].damagedonesum tempthree
-			setplayervar[tempone].damagedonecounter 25
-			getplayervar[tempone].damagedoneboost tempthree
-			addvarvar tempthree temptwo
-			setplayervar[tempone].damagedoneboost tempthree
-		}
-	}
-
-	ifvarg damagedoneboost 999 {
-		subvar damagedoneboost 1000
-		palfrom 32 64 64 64
-		setplayer[THISACTOR].STEROIDS_AMOUNT 200
-	}
-
-	ifvarg hitmarkercounter 0 subvar hitmarkercounter 1
-	ifvarg damagedonecounter 0 subvar damagedonecounter 1
-	else setvar damagedonesum 0
-
-	getactor[THISACTOR].extra tempone
-	ifvarl tempone 20 { //HP is 10 or less
-    ifvarn tempone 0 {
-      ifcount 20 {
-      	palfrom 43 30 0 0
-        sound 39
-        resetcount
-      }
-    }
-  } else ifvarl tempone 35 {
-  	palfrom 15 24 0 0
-  }
-
-  getplayer[THISACTOR].curr_weapon PWEAPON // the player's current weapon
-  getplayer[THISACTOR].kickback_pic KICKBACK // the frame of animation the player's weapon is at
-  getplayer[THISACTOR].ammo_amount 1 PISTOLAMMO // the player's pistol ammo
-  
-  ifvare PWEAPON 1 // if the player has the pistol selected...
-  {
-    ifvarl PISTOLMAGAZINE 1 // and his magazine count is at zero...
-    {
-      getplayer[THISACTOR].weapon_pos PERPLAYER1
-      
-      ifvarn PERPLAYER1 0
-        break // if he has a weapon that's lowering off screen, break
-      else ifvarl PISTOLAMMO 1
-        break
-      else // otherwise, if he has ammo for the pistol, start the reloading anim
-      {
-        setplayer[THISACTOR].reloading 1
-        setplayer[THISACTOR].kickback_pic 4
-      }
-    }
-      
-    ifvare KICKBACK 5 // if the reloading animation is on its second frame...
-    {
-      ifvarg PISTOLAMMO 11 // if the player has at least twelve pistol rounds left,
-        setvar PISTOLMAGAZINE 12 // then set his magazine counter to a full magazine
-      else
-        setvarvar PISTOLMAGAZINE PISTOLAMMO // otherwise set the magazine counter equal to his remaining ammo
-    }
-  }
+	state regulatemaxhealth
+	state gothit
+	state boost
+	state hitmarkeranddmgdealt
+	state lowhealtheffects
+  state reloadpistol
 		
   ifaction 0
     action PSTAND
