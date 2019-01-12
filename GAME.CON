@@ -3728,7 +3728,7 @@ move PGROWINGPOP        // Used only as a variable
 
 actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 
-	/*state regulatemaxhealth
+	state regulatemaxhealth
 	state gothit
 	state boost
 	state hitmarkeranddmgdealt
@@ -3745,7 +3745,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
   			setvar havestartedsong 1
   		}
   	} 
-  }*/
+  }
 
   ifaction 0
     action PSTAND
