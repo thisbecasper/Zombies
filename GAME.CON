@@ -166,8 +166,8 @@ ends
 
 state boost
 	ifvarg boostactivationtimer 0 subvar boostactivationtimer 1
-	ifvarg damagedoneboost 999 {
-		subvar damagedoneboost 1000
+	ifvarg damagedoneboost 99 {
+		subvar damagedoneboost 100
 		palfrom 32 64 64 64
 		sound GETATOMICHEALTH
 		setvar boostactivationtimer 600
@@ -526,6 +526,7 @@ onevent EVENT_LOOKRIGHT {
 	ifvarg boostactivationtimer 0 {
 		setplayer[THISACTOR].STEROIDS_AMOUNT 200
 		setvar boostactivationtimer 0
+		sound DUKE_TAKEPILLS
 	} 
 
 }
