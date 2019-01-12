@@ -386,8 +386,11 @@ onevent EVENT_DISPLAYREST
   	mulvar tempeight 60 //amount of subbars in a bar
   	divvar tempeight 30 //max kills
 
+  	getactor[THISACTOR].yvel tempten
+  	ifvarvare tempsix tempten rotatesprite 362 tempthree 13000 0 2452 0 tempseven 16 0 0 xdim ydim
+
   	whilevarn tempfour 0 {
-  		rotatesprite tempfive tempthree 65536 0 3163 0 tempseven 49 0 0 xdim ydim 
+  		rotatesprite tempfive tempthree 65536 0 3163 0 tempseven 49 0 0 xdim ydim
     	addvar tempfive 1 
     	subvar tempfour 1
   	}
@@ -396,7 +399,7 @@ onevent EVENT_DISPLAYREST
 
   	ifvarg tempeight 0 {
   		whilevarn tempeight 0 {
-	  		rotatesprite tempfive tempthree 65536 0 3163 0 tempseven 16 0 0 xdim ydim 
+	  		rotatesprite tempfive tempthree 65536 0 3163 0 tempseven 17 0 0 xdim ydim 
 	    	addvar tempfive 1 
 	    	subvar tempeight 1
 	  	}
