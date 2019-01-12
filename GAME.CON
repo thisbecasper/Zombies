@@ -132,7 +132,6 @@ state regulatemaxhealth
 	addvar tempthree 100
 	ifvare nomaxhpsettimer 30 {
 		setplayer[THISACTOR].max_player_health tempthree
-		addphealth 150
 	} 
 ends
 
