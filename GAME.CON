@@ -177,7 +177,7 @@ state boost
 	subvarvar tempone temptwo
 	ifvarvare tempone maxscore {
 		addvar boostlosscounter 1
-		ifvarg boostlosscounter 7 {
+		ifvarg boostlosscounter 5 {
 			ifvarg damagedoneboost 0 subvar damagedoneboost 1
 			setvar boostlosscounter 0
 		}
@@ -231,6 +231,80 @@ onevent EVENT_DISPLAYREST
 	  	} 
 	  }
 
+	  getplayer[THISACTOR].ammo_amount PISTOL_WEAPON tempten
+    getplayer[THISACTOR].gotweapon PISTOL_WEAPON tempnine
+    ifvare PWEAPON PISTOL_WEAPON digitalnumberz THREEBYFIVE 148 184 tempten 0 7 0 0 0 xdim ydim 50000
+    else {
+     	digitalnumberz THREEBYFIVE 148 184 tempten 0 1 0 0 0 xdim ydim 50000
+    } 
+    
+    getplayer[THISACTOR].ammo_amount SHOTGUN_WEAPON tempten
+    getplayer[THISACTOR].gotweapon SHOTGUN_WEAPON tempnine
+    ifvare PWEAPON SHOTGUN_WEAPON {
+      digitalnumberz THREEBYFIVE 148 189 tempten 0 7 0 0 0 xdim ydim 50000
+    } else {
+      ifvare tempnine 1 digitalnumberz THREEBYFIVE 148 189 tempten 0 1 0 0 0 xdim ydim 50000
+      else digitalnumberz THREEBYFIVE 148 189 tempten 0 2 0 0 0 xdim ydim 50000
+    }
+
+    getplayer[THISACTOR].ammo_amount CHAINGUN_WEAPON tempten
+    getplayer[THISACTOR].gotweapon CHAINGUN_WEAPON tempnine
+    ifvare PWEAPON CHAINGUN_WEAPON digitalnumberz THREEBYFIVE 148 194 tempten 0 7 0 0 0 xdim ydim 50000
+    else {
+      ifvare tempnine 1 digitalnumberz THREEBYFIVE 148 194 tempten 0 1 0 0 0 xdim ydim 50000
+      else digitalnumberz THREEBYFIVE 148 194 tempten 0 2 0 0 0 xdim ydim 50000
+    }
+
+    getplayer[THISACTOR].ammo_amount RPG_WEAPON tempten
+    getplayer[THISACTOR].gotweapon RPG_WEAPON tempnine
+    ifvare PWEAPON RPG_WEAPON
+      ifvare WEAPON4_SHOOTS RPG digitalnumberz THREEBYFIVE 160 184 tempten 0 7 0 0 0 xdim ydim 50000
+    else {
+      ifvare tempnine 1 digitalnumberz THREEBYFIVE 160 184 tempten 0 1 0 0 0 xdim ydim 50000
+      else digitalnumberz THREEBYFIVE 160 184 tempten 0 2 0 0 0 xdim ydim 50000
+    }
+
+    getplayer[THISACTOR].ammo_amount HANDBOMB_WEAPON tempten
+    getplayer[THISACTOR].gotweapon HANDBOMB_WEAPON tempnine
+    ifvare PWEAPON HANDBOMB_WEAPON digitalnumberz THREEBYFIVE 160 189 tempten 0 7 0 0 0 xdim ydim 50000
+    else ifvare PWEAPON HANDREMOTE_WEAPON digitalnumberz THREEBYFIVE 160 189 tempten 0 7 0 0 0 xdim ydim 50000
+    else {
+      ifvare tempnine 1 digitalnumberz THREEBYFIVE 160 189 tempten 0 1 0 0 0 xdim ydim 50000
+      else digitalnumberz THREEBYFIVE 160 189 tempten 0 2 0 0 0 xdim ydim 50000
+    }
+
+    getplayer[THISACTOR].ammo_amount SHRINKER_WEAPON tempten
+    getplayer[THISACTOR].gotweapon SHRINKER_WEAPON tempnine
+    ifvare PWEAPON SHRINKER_WEAPON digitalnumberz THREEBYFIVE 160 194 tempten 0 7 0 0 0 xdim ydim 50000
+    else {
+      ifvare tempnine 1 digitalnumberz THREEBYFIVE 160 194 tempten 0 1 0 0 0 xdim ydim 50000
+      else digitalnumberz THREEBYFIVE 160 194 tempten 0 2 0 0 0 xdim ydim 50000
+    } 
+      
+    getplayer[THISACTOR].ammo_amount DEVISTATOR_WEAPON tempten
+    getplayer[THISACTOR].gotweapon DEVISTATOR_WEAPON tempnine
+    ifvare PWEAPON DEVISTATOR_WEAPON digitalnumberz THREEBYFIVE 172 184 tempten 0 7 0 0 0 xdim ydim 50000
+    else {
+      ifvare tempnine 1 digitalnumberz THREEBYFIVE 172 184 tempten 0 1 0 0 0 xdim ydim 50000
+      else digitalnumberz THREEBYFIVE 172 184 tempten 0 2 0 0 0 xdim ydim 50000
+    }
+
+    getplayer[THISACTOR].ammo_amount TRIPBOMB_WEAPON tempten
+    getplayer[THISACTOR].gotweapon TRIPBOMB_WEAPON tempnine
+    ifvare PWEAPON TRIPBOMB_WEAPON digitalnumberz THREEBYFIVE 172 189 tempten 0 7 0 0 0 xdim ydim 50000
+    else {
+      ifvare tempnine 1 digitalnumberz THREEBYFIVE 172 189 tempten 0 1 0 0 0 xdim ydim 50000
+      else digitalnumberz THREEBYFIVE 172 189 tempten 0 2 0 0 0 xdim ydim 50000
+    }
+
+    getplayer[THISACTOR].ammo_amount FREEZE_WEAPON tempten
+    getplayer[THISACTOR].gotweapon FREEZE_WEAPON tempnine
+    ifvare PWEAPON FREEZE_WEAPON digitalnumberz THREEBYFIVE 172 194 tempten 0 7 0 0 0 xdim ydim 50000
+    else {
+      ifvare tempnine 1 digitalnumberz THREEBYFIVE 172 194 tempten 0 1 0 0 0 xdim ydim 50000
+      else digitalnumberz THREEBYFIVE 172 194 tempten 0 2 0 0 0 xdim ydim 50000
+    }
+
 		//Healthbar armor
 		getactor[THISACTOR].extra tempone
 		getplayer[THISACTOR].max_player_health temptwo
@@ -251,10 +325,9 @@ onevent EVENT_DISPLAYREST
 	  getplayer[THISACTOR].max_player_health tempthree
 
 	 	ifvarvarg tempone tempthree {
-	 		setvar tempfour -40
-	 		addvarvar tempfour tempthree
+	 		setvar tempfour -36
 	 		whilevarvarn tempone tempthree {
-	 			rotatesprite tempfour 185 65536 1024 3021 0 0 21 0 0 xdim ydim 
+	 			rotatesprite tempfour 189 65536 1024 3021 0 0 21 0 0 xdim ydim 
 		    addvar tempfour 1 
 		    subvar tempone 1
 	 		}
