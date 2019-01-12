@@ -187,6 +187,19 @@ ends
 
 ////////////////////EVENTS/////////////////
 
+onevent EVENT_RESETPLAYER
+	/*
+	getplayer[THISACTOR].frag tempone
+	getplayer[THISACTOR].fraggedself temptwo
+	subvarvar tempone temptwo
+	setvarvar tempthree maxscore
+	subvarvar tempthree tempone
+	mulvar tempthree 5
+	addvar tempthree 100
+	setplayer[THISACTOR].max_player_health tempthree
+	*/
+endevent
+
 onevent EVENT_DISPLAYREST
 	//Debuggg
 	//getactor[THISACTOR].extra tempone
