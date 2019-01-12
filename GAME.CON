@@ -3732,10 +3732,10 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 	state gothit
 	state boost
 	state hitmarkeranddmgdealt
-	state lowhealtheffects
+	/*state lowhealtheffects
   state reloadpistol
   state gameoverslowmo
-  state setwinner
+  state setwinner*/
 
   ifvare gameover 1 {
   	getactor[THISACTOR].yvel tempone
