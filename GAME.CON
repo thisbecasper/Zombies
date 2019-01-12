@@ -248,7 +248,17 @@ onevent EVENT_DISPLAYREST
 	  
 	  setvar temptwo -40
 	  getactor[THISACTOR].extra tempone
-	 	
+	  getplayer[THISACTOR].max_player_health tempthree
+
+	 	ifvarvarg tempone tempthree {
+	 		setvar tempfour -40
+	 		addvarvar tempfour tempthree
+	 		whilevarvarn tempone tempthree {
+	 			rotatesprite tempfour 185 65536 1024 3021 0 0 21 0 0 xdim ydim 
+		    addvar tempfour 1 
+		    subvar tempone 1
+	 		}
+	 	}
 	 	ifvarg tempone 100 {
 	 		setvar tempfour 60
 	 		whilevarn tempone 100 {
