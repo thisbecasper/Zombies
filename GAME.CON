@@ -46,6 +46,7 @@ gamevar gameover 0 0
 gamevar damagedonetotal 0 1
 gamevar damagetakentotal 0 1
 gamevar winner 0 0
+gamevar havestartedsong 0 0
 
 gamevar PISTOLAMMO 0 1 
 gamevar KICKBACK 0 1
@@ -60,7 +61,7 @@ state setwinner
 	getplayer[THISACTOR].frag tempone
   getplayer[THISACTOR].fraggedself temptwo
   subvarvar tempone temptwo
-  ifvarg tempone 29 ifvare gameover 0 { //Fraglimit
+  ifvarg tempone 1 ifvare gameover 0 { //Fraglimit
   	setvar gameover 1
   	getactor[THISACTOR].yvel tempthree
   	setvarvar winner tempthree
@@ -166,8 +167,8 @@ ends
 
 state boost
 	ifvarg boostactivationtimer 0 subvar boostactivationtimer 1
-	ifvarg damagedoneboost 99 {
-		subvar damagedoneboost 100
+	ifvarg damagedoneboost 999 {
+		subvar damagedoneboost 1000
 		palfrom 32 64 64 64
 		sound GETATOMICHEALTH
 		setvar boostactivationtimer 600
@@ -3735,6 +3736,16 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
   state reloadpistol
   state gameoverslowmo
   state setwinner
+
+  ifvare gameover 1 {
+  	getactor[THISACTOR].yvel tempone
+  	ifvarvare tempone winner {
+  		ifvare havestartedsong 0 {
+  			globalsound 249 //288 grabbag
+  			setvar havestartedsong 1
+  		}
+  	} 
+  }
 
   ifaction 0
     action PSTAND
