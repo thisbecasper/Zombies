@@ -129,7 +129,7 @@ state regulatemaxhealth
 	subvarvar tempthree tempone
 	mulvar tempthree 5
 	addvar tempthree 100
-	setplayer[THISACTOR].max_player_health tempthree
+	//setplayer[THISACTOR].max_player_health tempthree
 ends
 
 state gameoverslowmo
@@ -3728,7 +3728,7 @@ move PGROWINGPOP        // Used only as a variable
 
 actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 
-	//state regulatemaxhealth
+	state regulatemaxhealth
 	state gothit
 	state boost
 	state hitmarkeranddmgdealt
