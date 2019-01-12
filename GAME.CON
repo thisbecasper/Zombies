@@ -62,7 +62,7 @@ state setwinner
 	getplayer[THISACTOR].frag tempone
   getplayer[THISACTOR].fraggedself temptwo
   subvarvar tempone temptwo
-  ifvarg tempone 1 ifvare gameover 0 { //Fraglimit
+  ifvarg tempone 29 ifvare gameover 0 { //Fraglimit
   	setvar gameover 1
   	getactor[THISACTOR].yvel tempthree
   	setvarvar winner tempthree
