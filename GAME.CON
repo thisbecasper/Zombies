@@ -3731,7 +3731,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 
 	state populatemaxscore
 	state regulatemaxhealth
-	//state gothit
+	state gothit
 	state boost
 	state hitmarkeranddmgdealt
 	state lowhealtheffects
