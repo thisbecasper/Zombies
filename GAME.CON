@@ -209,7 +209,7 @@ state boost
 ends
 
 ////////////////////EVENTS/////////////////
-/*
+
 onevent EVENT_DISPLAYREST
 	//Debuggg
 	//getactor[THISACTOR].extra tempone
@@ -535,7 +535,7 @@ onevent EVENT_LOOKRIGHT {
 
 }
 endevent
-*/
+
 //////////////////////////////////// D M /////////////////////////////////////////////////
 
 define SPACESHUTTLE 487
