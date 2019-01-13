@@ -47,7 +47,7 @@ gamevar gameover 0 0
 gamevar damagedonetotal 0 1
 gamevar damagetakentotal 0 1
 gamevar winner 0 0
-gamevar havestartedsong 0 0
+gamevar havestartedsong 0 1
 
 gamevar PISTOLAMMO 0 1 
 gamevar KICKBACK 0 1
@@ -3740,13 +3740,10 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
   state setwinner
 
   ifvare gameover 1 {
-  	getactor[THISACTOR].yvel tempone
-  	ifvarvare tempone winner {
-  		ifvare havestartedsong 0 {
-  			globalsound 249 //288 grabbag
-  			setvar havestartedsong 1
-  		}
-  	} 
+		ifvare havestartedsong 0 {
+			globalsound 249 //288 grabbag
+			setvar havestartedsong 1
+		}
   }
 
   ifaction 0
