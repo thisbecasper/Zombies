@@ -59,25 +59,7 @@ gamevar WEAPON1_CLIP 0 0
 ////////////////////STATES/////////////////
 
 state populatemaxscore
-	headspritestat tempone 10
-  setvarvar temptwo tempone
-  setvarvar tempthree -1
-  whilevarn tempone -1 {
-  	
-  	getactor[tempone].yvel tempfour
-  	getplayer[tempfour].frag tempfive
-  	getplayer[tempfour].fraggedself tempsix
-  	subvarvar tempfive tempsix
-  	ifvarvarg tempfive tempthree {
-  		setvarvar tempthree tempfive
-  		setvarvar tempseven tempfour
-  	} 
-
-  	nextspritestat tempone tempone
-  	ifvarvare tempone temptwo setvar tempone -1
-  }
-  setvarvar maxscore tempthree
-  setvarvar maxscoreplayer tempseven
+	
 ends
 
 state setwinner
@@ -249,6 +231,26 @@ onevent EVENT_DISPLAYREST
    		ifvarg tempone 39 digitalnumberz THREEBYFIVE -25 165 tempone 0 1 0 0 0 xdim ydim 50000
    		else digitalnumberz THREEBYFIVE -25 165 tempone 0 2 0 0 0 xdim ydim 50000
    	}
+
+   headspritestat tempone 10
+  setvarvar temptwo tempone
+  setvarvar tempthree -1
+  whilevarn tempone -1 {
+  	
+  	getactor[tempone].yvel tempfour
+  	getplayer[tempfour].frag tempfive
+  	getplayer[tempfour].fraggedself tempsix
+  	subvarvar tempfive tempsix
+  	ifvarvarg tempfive tempthree {
+  		setvarvar tempthree tempfive
+  		setvarvar tempseven tempfour
+  	} 
+
+  	nextspritestat tempone tempone
+  	ifvarvare tempone temptwo setvar tempone -1
+  }
+  setvarvar maxscore tempthree
+  setvarvar maxscoreplayer tempseven
    	
    	//Display jetpack
    	getplayer[THISACTOR].JETPACK_AMOUNT tempone	
