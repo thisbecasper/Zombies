@@ -237,7 +237,7 @@ state gothit
 		} else {
 			ifvarn gameover 1 addvarvar damagetakentotal temptwo
 		}
-
+/*
 		ifvarvarg extrahealth temptwo {
 			subvarvar extrahealth temptwo
 			setactor[THISACTOR].htextra 0
@@ -246,7 +246,7 @@ state gothit
 			subvarvar tempthree extrahealth
 			setvar extrahealth 0
 			setactor[THISACTOR].htextra tempthree
-		}
+		}*/
 	}
 
 	
@@ -3784,7 +3784,7 @@ move PGROWINGPOP        // Used only as a variable
 actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 
 	state regulatemaxhealth
-	//state gothit
+	state gothit
 	state boost
 	state hitmarkeranddmgdealt
 	state lowhealtheffects
