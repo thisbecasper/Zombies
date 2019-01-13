@@ -12,9 +12,8 @@ action ANULLACTION 0
 // Spark skader 50 i stedet for 10
 // Shrinker skader 150 nu
 // Hvis man er den eller blandt dem der har flest kills så mister man boost over tid
-// No fall dmg
 // For at det ser bedst ud så skal i nok bruge min config, eduke-oldmp32
-// yeyey
+// ...
 
 //////////////////////////////////// D M /////////////////////////////////////////////////
 
@@ -49,8 +48,6 @@ gamevar damagedonetotal 0 1
 gamevar damagetakentotal 0 1
 gamevar winner 0 0
 gamevar havestartedsong 0 0
-gamevar maxextrahealth 0 1
-gamevar extrahealth 0 1
 
 gamevar PISTOLAMMO 0 1 
 gamevar KICKBACK 0 1
@@ -58,80 +55,14 @@ gamevar PWEAPON 0 1
 gamevar PISTOLMAGAZINE 0 1
 gamevar PERPLAYER1 0 1
 gamevar WEAPON1_CLIP 0 0
-gamevar CURRENTHEALTH 0 1
-gamevar MAXHEALTH 0 1
 
 ////////////////////STATES/////////////////
-
-state populatehealthvars
-	setvar tempone 100
-  addvarvar tempone maxextrahealth
-  setvarvar MAXHEALTH tempone
-  getactor[THISACTOR].extra tempone
-  addvarvar tempone extrahealth
-  setvarvar CURRENTHEALTH tempone
-ends
-
-state add1health
-	getplayer[THISACTOR].i tempone
-	getactor[tempone].extra temptwo
-	ifvarl temptwo 100 addphealth 1
-	else ifvarvarl extrahealth maxextrahealth addvar extrahealth 1
-ends
-
-state add1healthatomic
-	getplayer[THISACTOR].i tempone
-	getactor[tempone].extra temptwo
-	setvarvar tempfour maxextrahealth
-	mulvar tempfour 2
-	addvar tempfour 200
-	ifvarl temptwo 100 addphealth 1
-	else ifvarvarl extrahealth maxextrahealth addvar extrahealth 1
-	else ifvarvarl temptwo tempfour {
-		addvar temptwo 1
-		setactor[tempone].extra temptwo
-	}
-	
-ends
-
-state add10health
-	setvar tempthree 10
-	whilevarn tempthree 0 {
-		state add1health
-		subvar tempthree 1
-	}
-ends
-
-state add30health
-	setvar tempthree 30
-	whilevarn tempthree 0 {
-		state add1health
-		subvar tempthree 1
-	}
-ends
-
-state add50health
-	setvar tempthree 50
-	whilevarn tempthree 0 {
-		state add1healthatomic
-		subvar tempthree 1
-	}
-ends
-
-state nofalldamage
-	getplayer[THISACTOR].falling_counter tempone
-	ifvarg tempone 7 // not 8, because there's a slim chance the number won't set properly in time
-	{
-	  setvar tempone 7 // any value under 9 does no damage
-	  setplayer[THISACTOR].falling_counter tempone
-	}
-ends
 
 state setwinner
 	getplayer[THISACTOR].frag tempone
   getplayer[THISACTOR].fraggedself temptwo
   subvarvar tempone temptwo
-  ifvarg tempone 29 ifvare gameover 0 { //Fraglimit
+  ifvarg tempone 1 ifvare gameover 0 { //Fraglimit
   	setvar gameover 1
   	getactor[THISACTOR].yvel tempthree
   	setvarvar winner tempthree
@@ -192,21 +123,14 @@ state reloadpistol
 ends
 
 state regulatemaxhealth
-	/*getplayer[THISACTOR].frag tempone
-	getplayer[THISACTOR].fraggedself temptwo
-	subvarvar tempone temptwo
-	setvarvar tempthree maxscore
-	subvarvar tempthree tempone
-	mulvar tempthree 5
-	addvar tempthree 100
-	setplayer[THISACTOR].max_player_health tempthree*/
 	getplayer[THISACTOR].frag tempone
 	getplayer[THISACTOR].fraggedself temptwo
 	subvarvar tempone temptwo
 	setvarvar tempthree maxscore
 	subvarvar tempthree tempone
 	mulvar tempthree 5
-	setvarvar maxextrahealth tempthree
+	addvar tempthree 100
+	setplayer[THISACTOR].max_player_health tempthree
 ends
 
 state gameoverslowmo
@@ -238,19 +162,7 @@ state gothit
 		} else {
 			ifvarn gameover 1 addvarvar damagetakentotal temptwo
 		}
-		ifvarvarg extrahealth temptwo {
-			subvarvar extrahealth temptwo
-			setactor[THISACTOR].htextra -1
-		} else {
-			setvarvar tempthree temptwo
-			subvarvar tempthree extrahealth
-			setvar extrahealth 0
-			setactor[THISACTOR].htextra tempthree
-		}
 	}
-
-	
-
 	ifdead setactor[THISACTOR].htextra -1
 ends
 
@@ -279,9 +191,9 @@ ends
 onevent EVENT_DISPLAYREST
 	//Debuggg
 	//getactor[THISACTOR].extra tempone
-	//digitalnumberz 2837 0 40 CURRENTHEALTH 0 0 0 0 0 xdim ydim 58000
-	//digitalnumberz 2837 0 60 MAXHEALTH 0 0 0 0 0 xdim ydim 58000
-	//digitalnumberz 2837 0 80 MAXHEALTHATOMIC 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 40 boostactivationtimer 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 60 temptwo 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 80 totalearnedxp 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 100 skillpoints 0 0 0 0 0 xdim ydim 58000
 
 	//Game over
@@ -309,15 +221,34 @@ onevent EVENT_DISPLAYREST
 			else digitalnumberz 2837 163 80 damagedonesum 0 0 0 0 0 xdim ydim 50000
 		}
 
+		//Display medkit
+   	getplayer[THISACTOR].FIRSTAID_AMOUNT tempone
+   	ifpinventory GET_FIRSTAID 0 {
+   		rotatesprite -31 152 15000 0 53 0 0 16 0 0 xdim ydim //Medkit icon
+   		ifvarg tempone 39 digitalnumberz THREEBYFIVE -25 165 tempone 0 1 0 0 0 xdim ydim 50000
+   		else digitalnumberz THREEBYFIVE -25 165 tempone 0 2 0 0 0 xdim ydim 50000
+   	}
+   	
+   	//Display jetpack
+   	getplayer[THISACTOR].JETPACK_AMOUNT tempone	
+   	ifpinventory GET_JETPACK 0 {
+   		rotatesprite -11 152 20000 0 57 0 0 16 0 0 xdim ydim //Jetpack icon
+   		divvar tempone 16
+   		addvar tempone 1
+   		ifvarg tempone 100 digitalnumberz THREEBYFIVE -6 165 100 0 1 0 0 0 xdim ydim 50000
+   		else ifvarg tempone 39 digitalnumberz THREEBYFIVE -6 165 tempone 0 1 0 0 0 xdim ydim 50000
+   		else digitalnumberz THREEBYFIVE -6 165 tempone 0 2 0 0 0 xdim ydim 50000
+   	}
+
 		//Magazine and ammo
 		getplayer[THISACTOR].ammo_amount PWEAPON tempone
-		digitalnumberz DIGITALNUM 40 175 tempone 0 0 0 0 0 xdim ydim 80000
+		digitalnumberz DIGITALNUM 40 180 tempone 0 0 0 0 0 xdim ydim 80000
 
 		ifvare PWEAPON PISTOL_WEAPON {
 	  	ifvarg PISTOLMAGAZINE -1 {
-				digitalnumberz DIGITALNUM 178 110 PISTOLMAGAZINE 0 0 0 0 0 xdim ydim 40000
+				digitalnumberz DIGITALNUM 173 110 PISTOLMAGAZINE 0 0 0 0 0 xdim ydim 40000
 	  	} else {
-	  		digitalnumberz DIGITALNUM 178 110 0 0 0 0 0 0 xdim ydim 40000
+	  		digitalnumberz DIGITALNUM 173 110 0 0 0 0 0 0 xdim ydim 40000
 	  	} 
 	  }
 
@@ -396,32 +327,40 @@ onevent EVENT_DISPLAYREST
     }
 
 		//Healthbar armor
-		digitalnumberz DIGITALNUM -25 175 CURRENTHEALTH 0 0 0 0 0 xdim ydim 80000
-		rotatesprite -8 169 35000 0 3008 0 0 16 0 0 xdim ydim 
-		digitalnumberz DIGITALNUM 5 175 MAXHEALTH 0 0 0 0 0 xdim ydim 40000
+		getactor[THISACTOR].extra tempone
+		getplayer[THISACTOR].max_player_health temptwo
+		digitalnumberz DIGITALNUM -25 180 tempone 0 0 0 0 0 xdim ydim 80000
+		rotatesprite -8 174 35000 0 3008 0 0 16 0 0 xdim ydim 
+		digitalnumberz DIGITALNUM 5 180 temptwo 0 0 0 0 0 xdim ydim 40000
 
-		//Outline of max health
 		setvar temptwo -40
-		setvarvar tempone MAXHEALTH
+		getplayer[THISACTOR].max_player_health tempone
 		whilevarn tempone 0 {
 	    rotatesprite temptwo 185 65536 1024 3021 0 1 53 0 0 xdim ydim 
 	    addvar temptwo 1 
 	    subvar tempone 1
 	  }
-	 	//Extension over 100
-	 	ifvarg extrahealth 0 {
+	  
+	  setvar temptwo -40
+	  getactor[THISACTOR].extra tempone
+	  getplayer[THISACTOR].max_player_health tempthree
+
+	 	ifvarvarg tempone tempthree {
+	 		setvar tempfour -36
+	 		whilevarvarn tempone tempthree {
+	 			rotatesprite tempfour 189 65536 1024 3021 0 0 21 0 0 xdim ydim 
+		    addvar tempfour 1 
+		    subvar tempone 1
+	 		}
+	 	}
+	 	ifvarg tempone 100 {
 	 		setvar tempfour 60
-	 		setvarvar tempone extrahealth
-	 		whilevarn tempone 0 {
+	 		whilevarn tempone 100 {
 				rotatesprite tempfour 185 65536 1024 3021 0 2 21 0 0 xdim ydim 
 		    addvar tempfour 1 
 		    subvar tempone 1
 		  }
 	 	}
-	 	//Health
-	 	setvarvar tempone CURRENTHEALTH
-	 	ifvarg tempone 100 setvar tempone 100
-	 	setvar temptwo -40
 	  whilevarn tempone 0 {
 			rotatesprite temptwo 185 65536 1024 3021 0 1 21 0 0 xdim ydim 
 	    addvar temptwo 1 
@@ -429,12 +368,12 @@ onevent EVENT_DISPLAYREST
 	  }
 
 	  getplayer[THISACTOR].SHIELD_AMOUNT tempone
-	  setvar tempfour -44
- 		whilevarn tempone 0 {
- 			rotatesprite tempfour 181 65536 1024 3021 0 7 21 0 0 xdim ydim 
-	    addvar tempfour 1 
+	  setvar temptwo -44
+	  whilevarn tempone 0 {
+	    rotatesprite temptwo 183 65536 0 3135 0 2 0 0 0 xdim ydim 
+	    addvar temptwo 1 
 	    subvar tempone 1
- 		}
+	  }
 
 	  //Dmg done bar
 		digitalnumberz DIGITALNUM 315 180 damagedoneboost 0 24 0 0 0 xdim ydim 80000
@@ -574,7 +513,6 @@ onevent EVENT_RESETPLAYER
     setplayer[THISACTOR].kickback_pic 4 // start the reloading sequence.
   }
 
-  setvarvar extrahealth maxextrahealth
 endevent
 
 onevent EVENT_PRESSEDFIRE // when the player presses the fire button...
@@ -2202,7 +2140,12 @@ actor STEROIDS
             ifpinventory GET_STEROIDS STEROID_AMOUNT
               ifcanseetarget
       {
-        
+        addinventory GET_STEROIDS STEROID_AMOUNT
+        quote 37
+        ifspawnedby STEROIDS
+          state getcode
+        else
+          state quikget
       }
 enda
 
@@ -2352,7 +2295,12 @@ actor JETPACK
             ifpinventory GET_JETPACK JETPACK_AMOUNT
               ifcanseetarget
       {
-        
+        addinventory GET_JETPACK JETPACK_AMOUNT
+        quote 41
+        ifspawnedby JETPACK
+          state getcode
+        else
+          state quikget
       }
 enda
 
@@ -2670,16 +2618,9 @@ actor SIXPAK
             ifcanseetarget
       {
         ifvarvarl temptwo tempone {
-        	state add30health
+        	addphealth 30
 	        quote 62
 	        ifspawnedby SIXPAK
-	          state getcode
-	        else
-	          state quikget
-        } else ifvarvarl extrahealth maxextrahealth {
-        	state add30health
-	        quote 61
-	        ifspawnedby COLA
 	          state getcode
 	        else
 	          state quikget
@@ -2688,6 +2629,7 @@ actor SIXPAK
 enda
 
 actor COLA
+	getplayer[THISACTOR].max_player_health tempone
 	getplayer[THISACTOR].i temptwo
 	getactor[temptwo].extra temptwo
   fall
@@ -2701,15 +2643,8 @@ actor COLA
           ifcount 6
             ifcanseetarget
       {
-        ifvarl temptwo 100 {
-        	state add10health
-	        quote 61
-	        ifspawnedby COLA
-	          state getcode
-	        else
-	          state quikget
-        } else ifvarvarl extrahealth maxextrahealth {
-        	state add10health
+        ifvarvarl temptwo tempone {
+        	addphealth 10
 	        quote 61
 	        ifspawnedby COLA
 	          state getcode
@@ -2732,7 +2667,12 @@ actor ATOMICHEALTH
             ifphealthl MAXPLAYERATOMICHEALTH
               ifcanseetarget
       {
-        
+        addphealth 50
+        quote 19
+        ifspawnedby ATOMICHEALTH
+          state getcode
+        else
+          state quikget
       }
 enda
 
@@ -2751,7 +2691,13 @@ actor FIRSTAID
             ifpinventory GET_FIRSTAID FIRSTAID_AMOUNT
               ifcanseetarget
       {
-       
+        addinventory GET_FIRSTAID FIRSTAID_AMOUNT
+        quote 3
+
+        ifspawnedby FIRSTAID
+          state getcode
+        else
+          state quikget
       }
 enda
 
@@ -3791,8 +3737,6 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
   state reloadpistol
   state gameoverslowmo
   state setwinner
-  state nofalldamage
-  state populatehealthvars
 
   ifvare gameover 1 {
   	getactor[THISACTOR].yvel tempone
