@@ -3784,7 +3784,7 @@ move PGROWINGPOP        // Used only as a variable
 actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 
 	state regulatemaxhealth
-	state gothit
+	//state gothit
 	state boost
 	state hitmarkeranddmgdealt
 	state lowhealtheffects
