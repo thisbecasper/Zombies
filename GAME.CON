@@ -48,6 +48,8 @@ gamevar damagedonetotal 0 1
 gamevar damagetakentotal 0 1
 gamevar winner 0 0
 gamevar havestartedsong 0 1
+gamevar currentscore 0 1
+gamevar placement 0 1
 
 gamevar PISTOLAMMO 0 1 
 gamevar KICKBACK 0 1
@@ -58,6 +60,13 @@ gamevar WEAPON1_CLIP 0 0
 
 ////////////////////STATES/////////////////
 
+state populatecurrentscore
+	getplayer[THISACTOR].frag tempone
+	getplayer[THISACTOR].fraggedself temptwo
+	subvarvar tempone temptwo
+	setvarvar currentscore tempone
+ends
+
 state populatemaxscore
 	headspritestat tempone 10
   setvarvar temptwo tempone
@@ -65,9 +74,7 @@ state populatemaxscore
   whilevarn tempone -1 {
   	
   	getactor[tempone].yvel tempfour
-  	getplayer[tempfour].frag tempfive
-  	getplayer[tempfour].fraggedself tempsix
-  	subvarvar tempfive tempsix
+  	getplayervar[tempfour].currentscore tempfive
   	ifvarvarg tempfive tempthree {
   		setvarvar tempthree tempfive
   		setvarvar tempseven tempfour
@@ -81,10 +88,7 @@ state populatemaxscore
 ends
 
 state setwinner
-	getplayer[THISACTOR].frag tempone
-  getplayer[THISACTOR].fraggedself temptwo
-  subvarvar tempone temptwo
-  ifvarg tempone 1 ifvare gameover 0 { //Fraglimit
+  ifvarg currentscore 29 ifvare gameover 0 { //Fraglimit 
   	setvar gameover 1
   	getactor[THISACTOR].yvel tempthree
   	setvarvar winner tempthree
@@ -145,11 +149,8 @@ state reloadpistol
 ends
 
 state regulatemaxhealth
-	getplayer[THISACTOR].frag tempone
-	getplayer[THISACTOR].fraggedself temptwo
-	subvarvar tempone temptwo
 	setvarvar tempthree maxscore
-	subvarvar tempthree tempone
+	subvarvar tempthree currentscore
 	mulvar tempthree 5
 	addvar tempthree 100
 	setplayer[THISACTOR].max_player_health tempthree
@@ -196,10 +197,7 @@ state boost
 		sound GETATOMICHEALTH
 		setvar boostactivationtimer 600
 	}
-	getplayer[THISACTOR].frag tempone
-	getplayer[THISACTOR].fraggedself temptwo 
-	subvarvar tempone temptwo
-	ifvarvare tempone maxscore {
+	ifvarvare currentscore maxscore {
 		addvar boostlosscounter 1
 		ifvarg boostlosscounter 5 {
 			ifvarg damagedoneboost 0 subvar damagedoneboost 1
@@ -213,7 +211,7 @@ onevent EVENT_DISPLAYREST
 	//Debuggg
 	//getactor[THISACTOR].extra tempone
 	//digitalnumberz 2837 0 40 boostactivationtimer 0 0 0 0 0 xdim ydim 58000
-	//digitalnumberz 2837 0 60 temptwo 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 60 placement 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 80 totalearnedxp 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 100 skillpoints 0 0 0 0 0 xdim ydim 58000
 
@@ -223,9 +221,17 @@ onevent EVENT_DISPLAYREST
 		gametextz STARTALPHANUM 320 70 125 0 2 0 0 0 xdim ydim 80000
 		gametextz STARTALPHANUM 170 125 126 0 13 0 0 0 xdim ydim 60000
 		gametextz STARTALPHANUM 170 137 127 0 13 0 0 0 xdim ydim 60000
-		getactor[THISACTOR].yvel tempone
-		ifvarvare tempone winner gametextz STARTALPHANUM 320 100 128 0 0 0 0 0 xdim ydim 80000
-		else gametextz STARTALPHANUM 320 100 129 0 10 0 0 0 xdim ydim 80000
+		//getactor[THISACTOR].yvel tempone
+		//ifvarvare tempone winner gametextz STARTALPHANUM 320 100 128 0 0 0 0 0 xdim ydim 80000
+		//else gametextz STARTALPHANUM 320 100 129 0 10 0 0 0 xdim ydim 80000
+		ifvare placement 1 gametextz STARTALPHANUM 320 100 128 0 0 0 0 0 xdim ydim 80000
+		else ifvare placement 2 gametextz STARTALPHANUM 320 100 132 0 0 0 0 0 xdim ydim 80000
+		else ifvare placement 3 gametextz STARTALPHANUM 320 100 133 0 0 0 0 0 xdim ydim 80000
+		else ifvare placement 4 gametextz STARTALPHANUM 320 100 134 0 0 0 0 0 xdim ydim 80000
+		else ifvare placement 5 gametextz STARTALPHANUM 320 100 135 0 0 0 0 0 xdim ydim 80000
+		else ifvare placement 6 gametextz STARTALPHANUM 320 100 136 0 0 0 0 0 xdim ydim 80000
+		else ifvare placement 7 gametextz STARTALPHANUM 320 100 137 0 0 0 0 0 xdim ydim 80000
+		else ifvare placement 8 gametextz STARTALPHANUM 320 100 138 0 0 0 0 0 xdim ydim 80000
 		digitalnumberz 2837 205 125 damagedonetotal 0 13 0 0 0 xdim ydim 60000
 		digitalnumberz 2837 205 137 damagetakentotal 0 13 0 0 0 xdim ydim 60000
 		getplayer[winner].palookup tempone
@@ -437,9 +443,7 @@ onevent EVENT_DISPLAYREST
 	  	setvar tempfive 300
 	  	getactor[tempone].yvel tempsix
 	  	getplayer[tempsix].palookup tempseven
-	  	getplayer[tempsix].frag tempeight
-	  	getplayer[tempsix].fraggedself tempnine
-	  	subvarvar tempeight tempnine
+	  	getplayervar[tempsix].currentscore tempeight
 	  	
 	  	digitalnumberz 2837 293 tempthree tempeight 0 tempseven 16 0 0 xdim ydim 45000
 
@@ -3729,6 +3733,7 @@ move PGROWINGPOP        // Used only as a variable
 
 actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 
+	state populatecurrentscore
 	state populatemaxscore
 	state regulatemaxhealth
 	state gothit
@@ -3742,7 +3747,28 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
   ifvare gameover 1 {
 		ifvare havestartedsong 0 {
 			globalsound 249 //288 grabbag
-			setvar havestartedsong 1
+
+			setvar tempten 0
+
+			headspritestat tempone 10
+		  setvarvar temptwo tempone
+		  whilevarn tempone -1 {
+		  	
+		  	getactor[tempone].yvel tempfour
+		  	getplayervar[tempfour].currentscore tempfive
+
+		  	ifvarvarl tempfive currentscore {
+		  		nullop
+		  	} else {
+		  		addvar tempten 1
+		  	}
+
+		  	nextspritestat tempone tempone
+		  	ifvarvare tempone temptwo setvar tempone -1
+		  }
+		  setvarvar placement tempten
+
+		  setvar havestartedsong 1
 		}
   }
 

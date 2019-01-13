@@ -354,6 +354,14 @@ definequote 126       DAMAGE DEALT:
 definequote 127       DAMAGE TAKEN:
 definequote 128       YOU WIN!
 definequote 129       YOU LOSE
+definequote 131       1ST
+definequote 132       2ND
+definequote 133       3RD
+definequote 134       4TH
+definequote 135       5TH
+definequote 136       6TH
+definequote 137       7TH
+definequote 138       8TH
 
 
 
