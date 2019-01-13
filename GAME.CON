@@ -88,7 +88,7 @@ state populatemaxscore
 ends
 
 state setwinner
-  ifvarg currentscore 49 ifvare gameover 0 { //Fraglimit 
+  ifvarg currentscore 29 ifvare gameover 0 { //Fraglimit 
   	setvar gameover 1
   	getactor[THISACTOR].yvel tempthree
   	setvarvar winner tempthree
@@ -448,7 +448,7 @@ onevent EVENT_DISPLAYREST
 	  	digitalnumberz 2837 293 tempthree tempeight 0 tempseven 16 0 0 xdim ydim 45000
 
 	  	mulvar tempeight 60 //amount of subbars in a bar
-	  	divvar tempeight 49 //max kills fraglimit
+	  	divvar tempeight 29 //max kills fraglimit
 
 	  	getactor[THISACTOR].yvel tempten
 	  	ifvarvare tempsix tempten rotatesprite 362 tempthree 13000 0 2452 0 tempseven 16 0 0 xdim ydim
@@ -4140,9 +4140,6 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
     ifwasweapon SHRINKSPARK
     {
       palfrom 48 0 48
-      move PSHRINKING // used as a var only.
-      sound ACTOR_SHRINKING
-      cstat 0
       break
     }
     ifwasweapon SHOTSPARK1
