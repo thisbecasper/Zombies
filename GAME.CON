@@ -238,13 +238,13 @@ state gothit
 			ifvarn gameover 1 addvarvar damagetakentotal temptwo
 		}
 		ifvarvarg extrahealth temptwo {
-			subvarvar extrahealth temptwo
-			//setactor[THISACTOR].htextra 0
+			//subvarvar extrahealth temptwo
+			setactor[THISACTOR].htextra 0
 		} else {
 			//setvarvar tempthree temptwo
 			//subvarvar tempthree extrahealth
-			setvar extrahealth 0
-			//setactor[THISACTOR].htextra tempthree
+			//setvar extrahealth 0
+			setactor[THISACTOR].htextra tempthree
 		}
 	}
 
