@@ -239,7 +239,7 @@ state gothit
 		}
 		ifvarvarg extrahealth temptwo {
 			//subvarvar extrahealth temptwo
-			setactor[THISACTOR].htextra 0
+			setactor[THISACTOR].htextra -1
 		} else {
 			//setvarvar tempthree temptwo
 			//subvarvar tempthree extrahealth
