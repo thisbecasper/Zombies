@@ -355,8 +355,6 @@ definequote 127       DAMAGE TAKEN:
 definequote 128       YOU WIN!
 definequote 129       YOU LOSE
 
-
-
 // Volume titles cannot excede 32 characters.
 
 definevolumename 0 L.A. MELTDOWN
@@ -439,8 +437,8 @@ definelevelname 3 10 E4L11.map 04:20 02:10 AREA 51
 music 0 GRABBAG.MID BRIEFING.MID
 
 // Music for the individual levels
-music 1 stalker.mid dethtoll.mid streets.mid watrwld1.mid snake1.mid
-        thecall.mid ahgeez.mid dethtoll.mid streets.mid watrwld1.mid snake1.mid
+music 1 stalker.mid GRABBAG.mid streets.mid watrwld1.mid snake1.mid
+        thecall.mid ahgeez.mid GRABBAG.mid streets.mid watrwld1.mid snake1.mid
 
 music 2 futurmil.mid storm.mid gutwrnch.mid robocrep.mid stalag.mid 
        pizzed.mid alienz.mid xplasma.mid alfredh.mid gloomy.mid intents.mid
