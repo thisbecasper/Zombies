@@ -14,6 +14,7 @@ action ANULLACTION 0
 // Hvis man er den eller blandt dem der har flest kills så mister man boost over tid
 // No fall dmg
 // For at det ser bedst ud så skal i nok bruge min config, eduke-oldmp32
+// yeyey
 
 //////////////////////////////////// D M /////////////////////////////////////////////////
 
@@ -238,12 +239,12 @@ state gothit
 			ifvarn gameover 1 addvarvar damagetakentotal temptwo
 		}
 		ifvarvarg extrahealth temptwo {
-			//subvarvar extrahealth temptwo
+			subvarvar extrahealth temptwo
 			setactor[THISACTOR].htextra -1
 		} else {
-			//setvarvar tempthree temptwo
-			//subvarvar tempthree extrahealth
-			//setvar extrahealth 0
+			setvarvar tempthree temptwo
+			subvarvar tempthree extrahealth
+			setvar extrahealth 0
 			setactor[THISACTOR].htextra tempthree
 		}
 	}
