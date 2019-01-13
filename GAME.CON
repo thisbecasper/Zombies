@@ -209,7 +209,6 @@ state boost
 ends
 
 ////////////////////EVENTS/////////////////
-
 onevent EVENT_DISPLAYREST
 	//Debuggg
 	//getactor[THISACTOR].extra tempone
@@ -535,7 +534,6 @@ onevent EVENT_LOOKRIGHT {
 
 }
 endevent
-
 //////////////////////////////////// D M /////////////////////////////////////////////////
 
 define SPACESHUTTLE 487
@@ -3733,7 +3731,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 
 	state populatemaxscore
 	state regulatemaxhealth
-	/*state gothit
+	//state gothit
 	state boost
 	state hitmarkeranddmgdealt
 	state lowhealtheffects
@@ -3749,7 +3747,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
   			setvar havestartedsong 1
   		}
   	} 
-  }*/
+  }
 
   ifaction 0
     action PSTAND
