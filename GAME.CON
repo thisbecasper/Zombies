@@ -51,6 +51,7 @@ gamevar havestartedsong 0 1
 gamevar currentscore 0 1
 gamevar placement 0 1
 gamevar killsatgameover 0 1
+gamevar opponenthadarmorcounter 0 1
 
 gamevar PISTOLAMMO 0 1 
 gamevar KICKBACK 0 1
@@ -115,6 +116,8 @@ state hitmarkeranddmgdealt
 	ifvarg hitmarkercounter 0 subvar hitmarkercounter 1
 	ifvarg damagedonecounter 0 subvar damagedonecounter 1
 	else setvar damagedonesum 0
+
+	ifvarg opponenthadarmorcounter 0 subvar opponenthadarmorcounter 1
 ends
 
 state reloadpistol
@@ -183,6 +186,10 @@ state gothit
 				setplayervar[tempone].damagedonetotal tempthree
 				addvarvar damagetakentotal temptwo
 			}
+			//Armor icon
+			getplayer[THISACTOR].SHIELD_AMOUNT tempone
+			ifvarg tempone 0
+			setplayervar[THISACTOR].opponenthadarmorcounter 20
 		} else {
 			ifvarn gameover 1 addvarvar damagetakentotal temptwo
 		}
@@ -242,13 +249,15 @@ onevent EVENT_DISPLAYREST
 
 	} else {
 		//Hitmark visuals
+		ifvarg opponenthadarmorcounter 0 rotatesprite 172 78 17000 0 54 0 0 0 0 0 xdim ydim
+
 		ifvarg hitmarkercounter 6 rotatesprite 160 100 38000 256 2523 0 7 0 0 0 xdim ydim
 		else ifvarg hitmarkercounter 3 rotatesprite 160 100 38000 256 2523 0 7 1 0 0 xdim ydim
 		else ifvarg hitmarkercounter 0 rotatesprite 160 100 38000 256 2523 0 7 33 0 0 xdim ydim
 
 		ifvarg damagedonesum 0 {
-			ifvarg damagedonesum 70 digitalnumberz 2837 163 80 damagedonesum 0 10 0 0 0 xdim ydim 50000
-			else ifvarg damagedonesum 40 digitalnumberz 2837 163 80 damagedonesum 0 15 0 0 0 xdim ydim 50000
+			ifvarg damagedonesum 69 digitalnumberz 2837 163 80 damagedonesum 0 10 0 0 0 xdim ydim 50000
+			else ifvarg damagedonesum 39 digitalnumberz 2837 163 80 damagedonesum 0 15 0 0 0 xdim ydim 50000
 			else digitalnumberz 2837 163 80 damagedonesum 0 0 0 0 0 xdim ydim 50000
 		}
 
