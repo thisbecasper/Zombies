@@ -47,11 +47,14 @@ gamevar gameover 0 0
 gamevar damagedonetotal 0 1
 gamevar damagetakentotal 0 1
 gamevar winner 0 0
-gamevar havestartedsong 0 1
+gamevar havetriggeredgameover 0 1
 gamevar currentscore 0 1
 gamevar placement 0 1
 gamevar killsatgameover 0 1
+gamevar deathsatgameover 0 1
 gamevar opponenthadarmorcounter 0 1
+gamevar havecounteddeath 0 1
+gamevar totaldeaths 0 1
 
 gamevar PISTOLAMMO 0 1 
 gamevar KICKBACK 0 1
@@ -224,14 +227,26 @@ onevent EVENT_DISPLAYREST
 
 	//Game over
 	ifvare gameover 1 {
+		//Dark underlay
 		rotatesprite 160 100 500000 256 241 31 0 1 0 0 xdim ydim
+		//Winning duke
+		getplayer[winner].palookup tempone
+		rotatesprite 160 35 35000 0 1426 0 tempone 0 0 0 xdim ydim
+		//Game over
 		gametextz STARTALPHANUM 320 70 125 0 2 0 0 0 xdim ydim 80000
+		//Kills and deaths
+		gametextz STARTALPHANUM 320 113 139 0 13 0 0 0 xdim ydim 60000
+		digitalnumberz 2837 146 113 killsatgameover 0 13 0 0 0 xdim ydim 60000
+		digitalnumberz 2837 197 113 deathsatgameover 0 13 0 0 0 xdim ydim 60000
+
+		//Damage dealt
 		gametextz STARTALPHANUM 170 125 126 0 13 0 0 0 xdim ydim 60000
+		digitalnumberz 2837 205 125 damagedonetotal 0 13 0 0 0 xdim ydim 60000
+		//Damage taken:
 		gametextz STARTALPHANUM 170 137 127 0 13 0 0 0 xdim ydim 60000
-		//getactor[THISACTOR].yvel tempone
-		//ifvarvare tempone winner gametextz STARTALPHANUM 320 100 128 0 0 0 0 0 xdim ydim 80000
-		//else gametextz STARTALPHANUM 320 100 129 0 10 0 0 0 xdim ydim 80000
-		ifvare placement 1 gametextz STARTALPHANUM 320 95 128 0 0 0 0 0 xdim ydim 80000
+		digitalnumberz 2837 205 137 damagetakentotal 0 13 0 0 0 xdim ydim 60000
+		//Placement
+		ifvare placement 0 gametextz STARTALPHANUM 320 95 128 0 0 0 0 0 xdim ydim 80000
 		else ifvare placement 2 gametextz STARTALPHANUM 320 95 132 0 0 0 0 0 xdim ydim 80000
 		else ifvare placement 3 gametextz STARTALPHANUM 320 95 133 0 0 0 0 0 xdim ydim 80000
 		else ifvare placement 4 gametextz STARTALPHANUM 320 95 134 0 0 0 0 0 xdim ydim 80000
@@ -239,12 +254,7 @@ onevent EVENT_DISPLAYREST
 		else ifvare placement 6 gametextz STARTALPHANUM 320 95 136 0 0 0 0 0 xdim ydim 80000
 		else ifvare placement 7 gametextz STARTALPHANUM 320 95 137 0 0 0 0 0 xdim ydim 80000
 		else ifvare placement 8 gametextz STARTALPHANUM 320 95 138 0 0 0 0 0 xdim ydim 80000
-		digitalnumberz 2837 205 125 damagedonetotal 0 13 0 0 0 xdim ydim 60000
-		digitalnumberz 2837 205 137 damagetakentotal 0 13 0 0 0 xdim ydim 60000
-		getplayer[winner].palookup tempone
-		rotatesprite 164 35 35000 0 1426 0 tempone 0 0 0 xdim ydim
-		gametextz STARTALPHANUM 320 113 139 0 13 0 0 0 xdim ydim 60000
-		digitalnumberz 2837 205 113 killsatgameover 0 13 0 0 0 xdim ydim 60000
+		
 
 	} else {
 		//Hitmark visuals
@@ -561,7 +571,7 @@ onevent EVENT_RESETPLAYER
     setplayer[THISACTOR].reloading 1 
     setplayer[THISACTOR].kickback_pic 4 // start the reloading sequence.
   }
-
+  setvar havecounteddeath 0
 endevent
 
 onevent EVENT_PRESSEDFIRE // when the player presses the fire button...
@@ -3788,8 +3798,13 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
   state gameoverslowmo
   state setwinner
 
+  ifdead ifvare havecounteddeath 0 {
+  	setvar havecounteddeath 1
+  	addvar totaldeaths 1
+  }
+
   ifvare gameover 1 {
-		ifvare havestartedsong 0 {
+		ifvare havetriggeredgameover 0 {
 			globalsound 249 //288 grabbag
 
 			setvar tempten 0
@@ -3812,7 +3827,8 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 		  }
 		  setvarvar placement tempten
 		  setvarvar killsatgameover currentscore
-		  setvar havestartedsong 1
+		  setvarvar deathsatgameover totaldeaths
+		  setvar havetriggeredgameover 1
 		}
   }
 
