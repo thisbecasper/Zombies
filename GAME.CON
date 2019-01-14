@@ -50,6 +50,7 @@ gamevar winner 0 0
 gamevar havestartedsong 0 1
 gamevar currentscore 0 1
 gamevar placement 0 1
+gamevar killsatgameover 0 1
 
 gamevar PISTOLAMMO 0 1 
 gamevar KICKBACK 0 1
@@ -224,18 +225,21 @@ onevent EVENT_DISPLAYREST
 		//getactor[THISACTOR].yvel tempone
 		//ifvarvare tempone winner gametextz STARTALPHANUM 320 100 128 0 0 0 0 0 xdim ydim 80000
 		//else gametextz STARTALPHANUM 320 100 129 0 10 0 0 0 xdim ydim 80000
-		ifvare placement 1 gametextz STARTALPHANUM 320 100 128 0 0 0 0 0 xdim ydim 80000
-		else ifvare placement 2 gametextz STARTALPHANUM 320 100 132 0 0 0 0 0 xdim ydim 80000
-		else ifvare placement 3 gametextz STARTALPHANUM 320 100 133 0 0 0 0 0 xdim ydim 80000
-		else ifvare placement 4 gametextz STARTALPHANUM 320 100 134 0 0 0 0 0 xdim ydim 80000
-		else ifvare placement 5 gametextz STARTALPHANUM 320 100 135 0 0 0 0 0 xdim ydim 80000
-		else ifvare placement 6 gametextz STARTALPHANUM 320 100 136 0 0 0 0 0 xdim ydim 80000
-		else ifvare placement 7 gametextz STARTALPHANUM 320 100 137 0 0 0 0 0 xdim ydim 80000
-		else ifvare placement 8 gametextz STARTALPHANUM 320 100 138 0 0 0 0 0 xdim ydim 80000
+		ifvare placement 0 gametextz STARTALPHANUM 320 95 128 0 0 0 0 0 xdim ydim 80000
+		else ifvare placement 2 gametextz STARTALPHANUM 320 95 132 0 0 0 0 0 xdim ydim 80000
+		else ifvare placement 3 gametextz STARTALPHANUM 320 95 133 0 0 0 0 0 xdim ydim 80000
+		else ifvare placement 4 gametextz STARTALPHANUM 320 95 134 0 0 0 0 0 xdim ydim 80000
+		else ifvare placement 5 gametextz STARTALPHANUM 320 95 135 0 0 0 0 0 xdim ydim 80000
+		else ifvare placement 6 gametextz STARTALPHANUM 320 95 136 0 0 0 0 0 xdim ydim 80000
+		else ifvare placement 7 gametextz STARTALPHANUM 320 95 137 0 0 0 0 0 xdim ydim 80000
+		else ifvare placement 8 gametextz STARTALPHANUM 320 95 138 0 0 0 0 0 xdim ydim 80000
 		digitalnumberz 2837 205 125 damagedonetotal 0 13 0 0 0 xdim ydim 60000
 		digitalnumberz 2837 205 137 damagetakentotal 0 13 0 0 0 xdim ydim 60000
 		getplayer[winner].palookup tempone
-		rotatesprite 164 35 35000 0 1426 0 tempone 0 0 0 xdim ydim 
+		rotatesprite 164 35 35000 0 1426 0 tempone 0 0 0 xdim ydim
+		gametextz STARTALPHANUM 320 113 139 0 13 0 0 0 xdim ydim 60000
+		digitalnumberz 2837 205 113 killsatgameover 0 13 0 0 0 xdim ydim 60000
+
 	} else {
 		//Hitmark visuals
 		ifvarg hitmarkercounter 6 rotatesprite 160 100 38000 256 2523 0 7 0 0 0 xdim ydim
@@ -3767,7 +3771,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 		  	ifvarvare tempone temptwo setvar tempone -1
 		  }
 		  setvarvar placement tempten
-
+		  setvarvar killsatgameover currentscore
 		  setvar havestartedsong 1
 		}
   }
