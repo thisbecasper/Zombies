@@ -498,7 +498,7 @@ onevent EVENT_DOFIRE
     ifvarl PISTOLMAGAZINE 1
       break
     else
-      subvar PISTOLMAGAZINE 1 // subtract 1 from the magazine count, unless it's already at zero
+      ifvare PWEAPON 1 subvar PISTOLMAGAZINE 1 // subtract 1 from the magazine count, unless it's already at zero
 endevent
 
 onevent EVENT_DISPLAYCROSSHAIR
@@ -526,12 +526,10 @@ endevent
 onevent EVENT_RESETPLAYER
 
   setvar PISTOLMAGAZINE 0
-  setplayer[THISACTOR].curr_weapon PISTOL_WEAPON
   ifvare PWEAPON 1 // if he has the pistol selected when he loads into the map...
   {
     setplayer[THISACTOR].reloading 1 
     setplayer[THISACTOR].kickback_pic 4 // start the reloading sequence.
-
   }
 
 endevent
