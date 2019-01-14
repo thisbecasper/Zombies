@@ -188,8 +188,7 @@ state gothit
 			}
 			//Armor icon
 			getplayer[THISACTOR].SHIELD_AMOUNT tempone
-			ifvarg tempone 0
-			setplayervar[THISACTOR].opponenthadarmorcounter 20
+			ifvarg tempone 0 setplayervar[THISACTOR].opponenthadarmorcounter 20
 		} else {
 			ifvarn gameover 1 addvarvar damagetakentotal temptwo
 		}
