@@ -375,7 +375,7 @@ onevent EVENT_DISPLAYREST
 		setvar temptwo -40
 		getplayer[THISACTOR].max_player_health tempone
 		whilevarn tempone 0 {
-	    rotatesprite temptwo 185 65536 1024 3021 0 1 53 0 0 xdim ydim 
+	    rotatesprite temptwo 185 65536 1024 3021 0 2 53 0 0 xdim ydim 
 	    addvar temptwo 1 
 	    subvar tempone 1
 	  }
