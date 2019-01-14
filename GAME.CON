@@ -192,8 +192,8 @@ ends
 
 state boost
 	ifvarg boostactivationtimer 0 subvar boostactivationtimer 1
-	ifvarg damagedoneboost 999 {
-		subvar damagedoneboost 1000
+	ifvarg damagedoneboost 99 {
+		subvar damagedoneboost 100
 		palfrom 32 64 64 64
 		sound GETATOMICHEALTH
 		setvar boostactivationtimer 600
@@ -225,7 +225,7 @@ onevent EVENT_DISPLAYREST
 		//getactor[THISACTOR].yvel tempone
 		//ifvarvare tempone winner gametextz STARTALPHANUM 320 100 128 0 0 0 0 0 xdim ydim 80000
 		//else gametextz STARTALPHANUM 320 100 129 0 10 0 0 0 xdim ydim 80000
-		ifvare placement 0 gametextz STARTALPHANUM 320 95 128 0 0 0 0 0 xdim ydim 80000
+		ifvare placement 1 gametextz STARTALPHANUM 320 95 128 0 0 0 0 0 xdim ydim 80000
 		else ifvare placement 2 gametextz STARTALPHANUM 320 95 132 0 0 0 0 0 xdim ydim 80000
 		else ifvare placement 3 gametextz STARTALPHANUM 320 95 133 0 0 0 0 0 xdim ydim 80000
 		else ifvare placement 4 gametextz STARTALPHANUM 320 95 134 0 0 0 0 0 xdim ydim 80000
@@ -428,14 +428,36 @@ onevent EVENT_DISPLAYREST
 	    subvar tempone 1
 	  }
 
-	  setvarvar tempone boostactivationtimer
+	  //Boost activation timer
+	  setvar tempone 145 // set starting x coordinate
+    setvarvar temptwo boostactivationtimer
+    divvar temptwo 20
+    addvar temptwo 1
+    ifvarg boostactivationtimer 0 {
+    	ifvarg temptwo 14 {
+	      whilevarn temptwo 0 {
+	        rotatesprite tempone 120 65536 0 3135  0 1 17 0 0 xdim ydim //3163
+	        addvar tempone 1
+	        subvar temptwo 1
+	      }
+	    } else  {
+	      whilevarn temptwo 0 {
+	        rotatesprite tempone 120 65536 0 3135 0 2 17 0 0 xdim ydim
+	        addvar tempone 1
+	        subvar temptwo 1
+	      }
+	    }
+    }
+	    
+    
+	  /*setvarvar tempone boostactivationtimer
 	  setvar temptwo 263
 	  divvar tempone 6
 	  whilevarn tempone 0 {
 	  	rotatesprite temptwo 181 65500 0 3135 0 6 16 0 0 xdim ydim 
 	    addvar temptwo 1 
 	    subvar tempone 1
-	  }
+	  }*/
 
 	  //Score
 	  headspritestat tempone 10
