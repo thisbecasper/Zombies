@@ -526,7 +526,7 @@ endevent
 onevent EVENT_RESETPLAYER
 
   setvar PISTOLMAGAZINE 0
-  
+  setplayer[THISACTOR].curr_weapon PISTOL_WEAPON
   ifvare PWEAPON 1 // if he has the pistol selected when he loads into the map...
   {
     setplayer[THISACTOR].reloading 1 
