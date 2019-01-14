@@ -525,13 +525,13 @@ endevent
 
 onevent EVENT_RESETPLAYER
 
-  
+  setvar PISTOLMAGAZINE 0
   
   ifvare PWEAPON 1 // if he has the pistol selected when he loads into the map...
   {
     setplayer[THISACTOR].reloading 1 
     setplayer[THISACTOR].kickback_pic 4 // start the reloading sequence.
-    setvar PISTOLMAGAZINE 12
+
   }
 
 endevent
