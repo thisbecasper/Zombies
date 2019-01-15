@@ -18,7 +18,7 @@ action ANULLACTION 0
 //////////////////////////////////// D M /////////////////////////////////////////////////
 
 ////////////////////DEFINES/////////////////
-
+definegamefuncname 12 Flashbang
 definegamefuncname 13 Grenade
 definegamefuncname 14 Boost
 definegamefuncname 36 Reload
