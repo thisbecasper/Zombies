@@ -3905,7 +3905,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 
   ifvarg grenadethrowcd 0 subvar grenadethrowcd 1
   ifvarg flashedcounter 0 {
-  	palfrom 64 40 40 40
+  	palfrom 64 42 42 42
   	subvar flashedcounter 1
   } 
 
