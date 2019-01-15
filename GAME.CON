@@ -608,7 +608,7 @@ endevent
 
 onevent EVENT_LOOKLEFT
 	setvar RETURN -1
-	ifvare grenadethrowcd 0 /*ifvarg grenadeammo 0*/ {
+	ifvare grenadethrowcd 0 ifvarg grenadeammo 0 {
 		setvar grenadethrowcd 40
 		subvar grenadeammo 1
 		eshoot CANNONBALL
