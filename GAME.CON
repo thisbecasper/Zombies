@@ -238,8 +238,8 @@ ends
 
 state boost
 	ifvarg boostactivationtimer 0 subvar boostactivationtimer 1
-	ifvarg damagedoneboost 99 {
-		subvar damagedoneboost 100
+	ifvarg damagedoneboost 999 {
+		subvar damagedoneboost 1000
 		palfrom 32 64 64 64
 		sound GETATOMICHEALTH
 		setvar boostactivationtimer 600
