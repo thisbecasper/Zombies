@@ -19,8 +19,24 @@ action ANULLACTION 0
 
 ////////////////////DEFINES/////////////////
 
-definegamefuncname 36 Reload
+definegamefuncname 13 Grenade
 definegamefuncname 14 Boost
+definegamefuncname 36 Reload
+
+// Grenades
+defineprojectile CANNONBALL PROJ_WORKSLIKE 22734 //2 4 8 64 128 2048 4096 16384
+//defineprojectile CANNONBALL PROJ_SOUND 7
+defineprojectile CANNONBALL PROJ_ISOUND 9
+defineprojectile CANNONBALL PROJ_SPAWNS EXPLOSION2
+defineprojectile CANNONBALL PROJ_VEL 700
+defineprojectile CANNONBALL PROJ_DROP -600
+defineprojectile CANNONBALL PROJ_CLIPDIST 2
+defineprojectile CANNONBALL PROJ_XREPEAT 18
+defineprojectile CANNONBALL PROJ_YREPEAT 18
+defineprojectile CANNONBALL PROJ_BOUNCES 200
+defineprojectile CANNONBALL PROJ_RANGE 60
+defineprojectile CANNONBALL PROJ_HITRADIUS 4000
+defineprojectile CANNONBALL PROJ_EXTRA 150
 
 ////////////////////GAMEVARS/////////////////
 
@@ -55,6 +71,8 @@ gamevar deathsatgameover 0 1
 gamevar opponenthadarmorcounter 0 1
 gamevar havecounteddeath 0 1
 gamevar totaldeaths 0 1
+gamevar grenadethrowcd 0 1
+gamevar grenadeammo 0 1
 
 gamevar PISTOLAMMO 0 1 
 gamevar KICKBACK 0 1
@@ -290,6 +308,7 @@ onevent EVENT_DISPLAYREST
    	}
 
 		//Magazine and ammo
+  	ifvarg grenadeammo 0 rotatesprite 275 177 35000 0 CANNONBALL 0 0 0 0 0 xdim ydim
 		getplayer[THISACTOR].ammo_amount PWEAPON tempone
 		digitalnumberz DIGITALNUM 40 180 tempone 0 0 0 0 0 xdim ydim 80000
 
@@ -385,7 +404,7 @@ onevent EVENT_DISPLAYREST
 		setvar temptwo -40
 		getplayer[THISACTOR].max_player_health tempone
 		whilevarn tempone 0 {
-	    rotatesprite temptwo 185 65536 1024 3021 0 2 53 0 0 xdim ydim 
+	    rotatesprite temptwo 185 65536 1024 3021 5 1 53 0 0 xdim ydim 
 	    addvar temptwo 1 
 	    subvar tempone 1
 	  }
@@ -432,7 +451,7 @@ onevent EVENT_DISPLAYREST
 	  setvar tempone 100
 	  setvar temptwo 260
 	  whilevarn tempone 0 {
-	  	rotatesprite temptwo 185 65500 0 3021 0 1 49 0 0 xdim ydim 
+	  	rotatesprite temptwo 185 65500 0 3021 5 1 49 0 0 xdim ydim 
 	    addvar temptwo 1 
 	    subvar tempone 1
 	  }
@@ -572,6 +591,7 @@ onevent EVENT_RESETPLAYER
     setplayer[THISACTOR].kickback_pic 4 // start the reloading sequence.
   }
   setvar havecounteddeath 0
+  setvar grenadeammo 1
 endevent
 
 onevent EVENT_PRESSEDFIRE // when the player presses the fire button...
@@ -582,15 +602,22 @@ onevent EVENT_PRESSEDFIRE // when the player presses the fire button...
 
 endevent
 
-onevent EVENT_LOOKRIGHT {
+onevent EVENT_LOOKLEFT
+	setvar RETURN -1
+	ifvare grenadethrowcd 0 ifvarg grenadeammo 0 {
+		setvar grenadethrowcd 40
+		subvar grenadeammo 1
+		shoot CANNONBALL
+	}	
+endevent
+
+onevent EVENT_LOOKRIGHT 
 	setvar RETURN -1
 	ifvarg boostactivationtimer 0 {
 		setplayer[THISACTOR].STEROIDS_AMOUNT 200
 		setvar boostactivationtimer 0
 		sound DUKE_TAKEPILLS
 	} 
-
-}
 endevent
 //////////////////////////////////// D M /////////////////////////////////////////////////
 
@@ -3831,6 +3858,8 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 		  setvar havetriggeredgameover 1
 		}
   }
+
+  ifvarg grenadethrowcd 0 subvar grenadethrowcd 1
 
   ifaction 0
     action PSTAND
