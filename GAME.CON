@@ -38,6 +38,21 @@ defineprojectile CANNONBALL PROJ_RANGE 60
 defineprojectile CANNONBALL PROJ_HITRADIUS 4000
 defineprojectile CANNONBALL PROJ_EXTRA 150
 
+
+defineprojectile 1220 PROJ_WORKSLIKE 88270 //2 4 8 64 128 2048 4096 16384 65536
+//defineprojectile 1220 PROJ_SOUND 7
+defineprojectile 1220 PROJ_ISOUND 9
+defineprojectile 1220 PROJ_SPAWNS EXPLOSION2
+defineprojectile 1220 PROJ_VEL 500
+defineprojectile 1220 PROJ_DROP -500
+defineprojectile 1220 PROJ_CLIPDIST 2
+defineprojectile 1220 PROJ_XREPEAT 18
+defineprojectile 1220 PROJ_YREPEAT 18
+defineprojectile 1220 PROJ_BOUNCES 200
+defineprojectile 1220 PROJ_RANGE 60
+defineprojectile 1220 PROJ_HITRADIUS 10000
+defineprojectile 1220 PROJ_EXTRA 0
+
 ////////////////////GAMEVARS/////////////////
 
 gamevar tempone 0 0
@@ -73,6 +88,10 @@ gamevar havecounteddeath 0 1
 gamevar totaldeaths 0 1
 gamevar grenadethrowcd 0 1
 gamevar grenadeammo 0 1
+gamevar flashbangammo 0 1
+gamevar flashedcounter 0 1
+
+gamevar debugvalue 0 1
 
 gamevar PISTOLAMMO 0 1 
 gamevar KICKBACK 0 1
@@ -238,7 +257,7 @@ ends
 onevent EVENT_DISPLAYREST
 	//Debuggg
 	//getactor[THISACTOR].zvel tempone
-	//digitalnumberz 2837 0 40 tempone 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 40 debugvalue 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 60 placement 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 80 totalearnedxp 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 100 skillpoints 0 0 0 0 0 xdim ydim 58000
@@ -309,6 +328,7 @@ onevent EVENT_DISPLAYREST
 
 		//Magazine and ammo
   	ifvarg grenadeammo 0 rotatesprite 275 177 35000 0 CANNONBALL 0 0 0 0 0 xdim ydim
+  	ifvarg flashbangammo 0 rotatesprite 290 177 15000 0 1220 0 0 0 0 0 xdim ydim
 		getplayer[THISACTOR].ammo_amount PWEAPON tempone
 		digitalnumberz DIGITALNUM 40 180 tempone 0 0 0 0 0 xdim ydim 80000
 
@@ -596,6 +616,7 @@ onevent EVENT_RESETPLAYER
   }
   setvar havecounteddeath 0
   setvar grenadeammo 1
+  setvar flashbangammo 1
 endevent
 
 onevent EVENT_PRESSEDFIRE // when the player presses the fire button...
@@ -604,6 +625,18 @@ onevent EVENT_PRESSEDFIRE // when the player presses the fire button...
     ifvarl PISTOLMAGAZINE 1
       setvar RETURN -1 // if his magazine is at zero, disable the firing key
 
+endevent
+
+onevent EVENT_LOOKDOWN
+	setvar RETURN -1
+	ifvare grenadethrowcd 0 ifvarg flashbangammo 0 {
+		setvar grenadethrowcd 40
+		subvar flashbangammo 1
+		eshoot 1220
+		getactor[RETURN].zvel tempone
+		subvar tempone 3000
+		setactor[RETURN].zvel tempone
+	}	
 endevent
 
 onevent EVENT_LOOKLEFT
@@ -2146,7 +2179,7 @@ state getcode
     globalsound GETATOMICHEALTH
   else
     globalsound DUKE_GET
-  palfrom 16 0 32
+  ifvare flashedcounter 0 palfrom 16 0 32
   ifrespawn
   {
     move RESPAWN_ACTOR_FLAG
@@ -2177,7 +2210,7 @@ state getweaponcode
 
   state randgetweapsnds
 
-  palfrom 32 0 32
+  ifvare flashedcounter 0 palfrom 32 0 32
   ifgotweaponce 1
     break
   ifrespawn
@@ -2206,13 +2239,13 @@ state quikget
     globalsound GETATOMICHEALTH
   else
     globalsound DUKE_GET
-  palfrom 16 0 32
+  ifvare flashedcounter 0 palfrom 16 0 32
   killit
 ends
 
 state quikweaponget
   state randgetweapsnds
-  palfrom 32 0 32
+  ifvare flashedcounter 0 palfrom 32 0 32
   ifgotweaponce 1
     break
   killit
@@ -3832,6 +3865,8 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
   state gameoverslowmo
   state setwinner
 
+  setplayer[THISACTOR].auto_aim 2
+
   ifdead ifvare havecounteddeath 0 {
   	setvar havecounteddeath 1
   	addvar totaldeaths 1
@@ -3867,6 +3902,11 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
   }
 
   ifvarg grenadethrowcd 0 subvar grenadethrowcd 1
+  ifvarg flashedcounter 0 {
+  	palfrom 64 64 64 64
+  	subvar flashedcounter 1
+  } 
+
 
   ifaction 0
     action PSTAND
@@ -3877,7 +3917,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 
     fall
 
-    palfrom 16 0 0 24
+    ifvare flashedcounter 0 palfrom 16 0 0 24
 
     ifmove 0
     {
@@ -3950,7 +3990,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
         ifcount 32
         {
           sound SQUISHED
-          palfrom 48 64
+          ifvare flashedcounter 0 palfrom 48 64
 
           state standard_pjibs
 
@@ -3970,7 +4010,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
     }
 
     ifsquished
-      palfrom 32 63 63 63
+      ifvare flashedcounter 0 palfrom 32 63 63 63
     else
       fall
 
@@ -4110,7 +4150,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
         {
           strength 0
           sound SQUISHED
-          palfrom 48 64
+          ifvare flashedcounter 0 palfrom 48 64
           break
         }
       }
@@ -4138,7 +4178,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 
       ifwasweapon GROWSPARK
       {
-        palfrom 48 48
+        ifvare flashedcounter 0 palfrom 48 48
         action PGROWING
         count 0
         move 0
@@ -4199,6 +4239,10 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
       ifp pstanding
         action PFLINTCHING
     }
+    ifwasweapon 1220
+    {
+    	setvar flashedcounter 60
+    }
 
     ifwasweapon RPG
     {
@@ -4206,7 +4250,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
         spawn BLOOD
       ifdead
         state standard_pjibs
-      palfrom 48 52
+      ifvare flashedcounter 0 palfrom 48 52
       break
     }
     ifwasweapon RADIUSEXPLOSION
@@ -4215,7 +4259,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
         spawn BLOOD
       ifdead
         state standard_pjibs
-      palfrom 48 52
+      ifvare flashedcounter 0 palfrom 48 52
       break
     }
     ifwasweapon FIREEXT
@@ -4224,25 +4268,25 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
         spawn BLOOD
       ifdead
         state standard_pjibs
-      palfrom 48 52
+      ifvare flashedcounter 0 palfrom 48 52
       break
     }
     ifwasweapon GROWSPARK
     {
-      palfrom 48 52
+      ifvare flashedcounter 0 palfrom 48 52
       sound EXPANDERHIT
       break
     }
     ifwasweapon SHRINKSPARK
     {
-      palfrom 48 0 48
+      ifvare flashedcounter 0 palfrom 48 0 48
       break
     }
     ifwasweapon SHOTSPARK1
-      palfrom 24 48
+      ifvare flashedcounter 0 palfrom 24 48
     ifwasweapon FREEZEBLAST
     {
-      palfrom 48 0 0 48
+      ifvare flashedcounter 0 palfrom 48 0 0 48
       ifdead
       {
         sound SOMETHINGFROZE
@@ -4253,11 +4297,11 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
       }
     }
     ifwasweapon COOLEXPLOSION1
-      palfrom 48 48 0 48
+      ifvare flashedcounter 0 palfrom 48 48 0 48
     ifwasweapon KNEE
-      palfrom 16 32
+      ifvare flashedcounter 0 palfrom 16 32
     ifwasweapon FIRELASER
-      palfrom 32 32
+      ifvare flashedcounter 0 palfrom 32 32
 
     ifdead
     {
