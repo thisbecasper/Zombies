@@ -24,7 +24,7 @@ definegamefuncname 14 Boost
 definegamefuncname 36 Reload
 
 // Grenades
-defineprojectile CANNONBALL PROJ_WORKSLIKE 22734 //2 4 8 64 128 2048 4096 16384
+defineprojectile CANNONBALL PROJ_WORKSLIKE 88270 //2 4 8 64 128 2048 4096 16384
 //defineprojectile CANNONBALL PROJ_SOUND 7
 defineprojectile CANNONBALL PROJ_ISOUND 9
 defineprojectile CANNONBALL PROJ_SPAWNS EXPLOSION2
@@ -35,23 +35,23 @@ defineprojectile CANNONBALL PROJ_XREPEAT 18
 defineprojectile CANNONBALL PROJ_YREPEAT 18
 defineprojectile CANNONBALL PROJ_BOUNCES 200
 defineprojectile CANNONBALL PROJ_RANGE 60
-defineprojectile CANNONBALL PROJ_HITRADIUS 4000
-defineprojectile CANNONBALL PROJ_EXTRA 150
+defineprojectile CANNONBALL PROJ_HITRADIUS 8000
+defineprojectile CANNONBALL PROJ_EXTRA 100
 
-
-defineprojectile 1220 PROJ_WORKSLIKE 88270 //2 4 8 64 128 2048 4096 16384 65536
-//defineprojectile 1220 PROJ_SOUND 7
-defineprojectile 1220 PROJ_ISOUND 9
-defineprojectile 1220 PROJ_SPAWNS EXPLOSION2
-defineprojectile 1220 PROJ_VEL 500
-defineprojectile 1220 PROJ_DROP -500
-defineprojectile 1220 PROJ_CLIPDIST 2
-defineprojectile 1220 PROJ_XREPEAT 18
-defineprojectile 1220 PROJ_YREPEAT 18
-defineprojectile 1220 PROJ_BOUNCES 200
-defineprojectile 1220 PROJ_RANGE 60
-defineprojectile 1220 PROJ_HITRADIUS 10000
-defineprojectile 1220 PROJ_EXTRA 0
+/*
+defineprojectile MORTER PROJ_WORKSLIKE 88270 //2 4 8 64 128 2048 4096 16384 65536
+//defineprojectile MORTER PROJ_SOUND 7
+defineprojectile MORTER PROJ_ISOUND 9
+defineprojectile MORTER PROJ_SPAWNS EXPLOSION2
+defineprojectile MORTER PROJ_VEL 500
+defineprojectile MORTER PROJ_DROP -500
+defineprojectile MORTER PROJ_CLIPDIST 2
+defineprojectile MORTER PROJ_XREPEAT 18
+defineprojectile MORTER PROJ_YREPEAT 18
+defineprojectile MORTER PROJ_BOUNCES 200
+defineprojectile MORTER PROJ_RANGE 60
+defineprojectile MORTER PROJ_HITRADIUS 10000
+defineprojectile 1220 PROJ_EXTRA 0*/
 
 ////////////////////GAMEVARS/////////////////
 
@@ -307,6 +307,7 @@ onevent EVENT_DISPLAYREST
 			else digitalnumberz 2837 163 80 damagedonesum 0 0 0 0 0 xdim ydim 50000
 		}
 
+/*
 		//Display medkit
    	getplayer[THISACTOR].FIRSTAID_AMOUNT tempone
    	ifpinventory GET_FIRSTAID 0 {
@@ -324,11 +325,11 @@ onevent EVENT_DISPLAYREST
    		ifvarg tempone 100 digitalnumberz THREEBYFIVE -6 165 100 0 1 0 0 0 xdim ydim 50000
    		else ifvarg tempone 39 digitalnumberz THREEBYFIVE -6 165 tempone 0 1 0 0 0 xdim ydim 50000
    		else digitalnumberz THREEBYFIVE -6 165 tempone 0 2 0 0 0 xdim ydim 50000
-   	}
+   	}*/
 
 		//Magazine and ammo
   	ifvarg grenadeammo 0 rotatesprite 275 177 35000 0 CANNONBALL 0 0 0 0 0 xdim ydim
-  	ifvarg flashbangammo 0 rotatesprite 290 177 15000 0 1220 0 0 0 0 0 xdim ydim
+  	//ifvarg flashbangammo 0 rotatesprite 290 177 15000 0 1220 0 0 0 0 0 xdim ydim
 		getplayer[THISACTOR].ammo_amount PWEAPON tempone
 		digitalnumberz DIGITALNUM 40 180 tempone 0 0 0 0 0 xdim ydim 80000
 
@@ -627,6 +628,7 @@ onevent EVENT_PRESSEDFIRE // when the player presses the fire button...
 
 endevent
 
+/*
 onevent EVENT_INVENTORYLEFT
 	setvar RETURN -1
 	ifvare grenadethrowcd 0 ifvarg flashbangammo 0 {
@@ -637,7 +639,7 @@ onevent EVENT_INVENTORYLEFT
 		subvar tempone 3000
 		setactor[RETURN].zvel tempone
 	}	
-endevent
+endevent*/
 
 onevent EVENT_LOOKLEFT
 	setvar RETURN -1
@@ -3907,6 +3909,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
   	subvar flashedcounter 1
   } 
 
+  ifdead setvar flashedcounter 0
 
   ifaction 0
     action PSTAND
@@ -4239,7 +4242,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
       ifp pstanding
         action PFLINTCHING
     }
-    ifwasweapon 1220
+    ifwasweapon CANNONBALL
     {
     	setvar flashedcounter 60
     }
