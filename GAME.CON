@@ -552,7 +552,7 @@ onevent EVENT_DISPLAYREST
 endevent
 
 onevent EVENT_GETLOADTILE
-	setvar RETURN 3290
+	setvar RETURN 3240
 endevent
 
 onevent EVENT_DOFIRE 
