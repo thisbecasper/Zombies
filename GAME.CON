@@ -18,7 +18,7 @@ action ANULLACTION 0
 //////////////////////////////////// D M /////////////////////////////////////////////////
 
 ////////////////////DEFINES/////////////////
-definegamefuncname 12 Flashbang
+definegamefuncname 30 Flashbang
 definegamefuncname 13 Grenade
 definegamefuncname 14 Boost
 definegamefuncname 36 Reload
@@ -639,7 +639,7 @@ onevent EVENT_LOOKDOWN
 	}	
 endevent
 
-onevent EVENT_LOOKLEFT
+onevent EVENT_INVENTORYLEFT
 	setvar RETURN -1
 	ifvare grenadethrowcd 0 ifvarg grenadeammo 0 {
 		setvar grenadethrowcd 40
