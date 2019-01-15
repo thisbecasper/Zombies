@@ -627,7 +627,7 @@ onevent EVENT_PRESSEDFIRE // when the player presses the fire button...
 
 endevent
 
-onevent EVENT_LOOKDOWN
+onevent EVENT_INVENTORYLEFT
 	setvar RETURN -1
 	ifvare grenadethrowcd 0 ifvarg flashbangammo 0 {
 		setvar grenadethrowcd 40
@@ -639,7 +639,7 @@ onevent EVENT_LOOKDOWN
 	}	
 endevent
 
-onevent EVENT_INVENTORYLEFT
+onevent EVENT_LOOKLEFT
 	setvar RETURN -1
 	ifvare grenadethrowcd 0 ifvarg grenadeammo 0 {
 		setvar grenadethrowcd 40
