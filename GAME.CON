@@ -28,8 +28,8 @@ defineprojectile CANNONBALL PROJ_WORKSLIKE 22734 //2 4 8 64 128 2048 4096 16384
 //defineprojectile CANNONBALL PROJ_SOUND 7
 defineprojectile CANNONBALL PROJ_ISOUND 9
 defineprojectile CANNONBALL PROJ_SPAWNS EXPLOSION2
-defineprojectile CANNONBALL PROJ_VEL 700
-defineprojectile CANNONBALL PROJ_DROP -600
+defineprojectile CANNONBALL PROJ_VEL 500
+defineprojectile CANNONBALL PROJ_DROP -500
 defineprojectile CANNONBALL PROJ_CLIPDIST 2
 defineprojectile CANNONBALL PROJ_XREPEAT 18
 defineprojectile CANNONBALL PROJ_YREPEAT 18
@@ -237,8 +237,8 @@ ends
 ////////////////////EVENTS/////////////////
 onevent EVENT_DISPLAYREST
 	//Debuggg
-	//getactor[THISACTOR].extra tempone
-	//digitalnumberz 2837 0 40 boostactivationtimer 0 0 0 0 0 xdim ydim 58000
+	//getactor[THISACTOR].zvel tempone
+	//digitalnumberz 2837 0 40 tempone 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 60 placement 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 80 totalearnedxp 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 100 skillpoints 0 0 0 0 0 xdim ydim 58000
@@ -608,10 +608,13 @@ endevent
 
 onevent EVENT_LOOKLEFT
 	setvar RETURN -1
-	ifvare grenadethrowcd 0 ifvarg grenadeammo 0 {
+	ifvare grenadethrowcd 0 /*ifvarg grenadeammo 0*/ {
 		setvar grenadethrowcd 40
 		subvar grenadeammo 1
-		shoot CANNONBALL
+		eshoot CANNONBALL
+		getactor[RETURN].zvel tempone
+		subvar tempone 3000
+		setactor[RETURN].zvel tempone
 	}	
 endevent
 
