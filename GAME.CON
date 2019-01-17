@@ -283,7 +283,7 @@ onevent EVENT_DISPLAYREST
 		gametextz STARTALPHANUM 170 137 127 0 13 0 0 0 xdim ydim 60000
 		digitalnumberz 2837 205 137 damagetakentotal 0 13 0 0 0 xdim ydim 60000
 		//Placement
-		ifvare placement 0 gametextz STARTALPHANUM 320 95 128 0 0 0 0 0 xdim ydim 80000
+		ifvare placement 1 gametextz STARTALPHANUM 320 95 128 0 0 0 0 0 xdim ydim 80000
 		else ifvare placement 2 gametextz STARTALPHANUM 320 95 132 0 0 0 0 0 xdim ydim 80000
 		else ifvare placement 3 gametextz STARTALPHANUM 320 95 133 0 0 0 0 0 xdim ydim 80000
 		else ifvare placement 4 gametextz STARTALPHANUM 320 95 134 0 0 0 0 0 xdim ydim 80000
