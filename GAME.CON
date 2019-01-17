@@ -3867,6 +3867,8 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
   state gameoverslowmo
   state setwinner
 
+  setplayer[THISACTOR].runspeed 27000
+
   setplayer[THISACTOR].auto_aim 2
 
   ifdead ifvare havecounteddeath 0 {
