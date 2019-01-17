@@ -3867,8 +3867,6 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
   state gameoverslowmo
   state setwinner
 
-  setplayer[THISACTOR].runspeed 45000
-
   setplayer[THISACTOR].auto_aim 2
 
   ifdead ifvare havecounteddeath 0 {
@@ -3909,7 +3907,8 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
   ifvarg flashedcounter 0 {
   	palfrom 64 42 42 42
   	subvar flashedcounter 1
-  } 
+  	setplayer[THISACTOR].runspeed 47000
+  } else setplayer[THISACTOR].runspeed 53200
 
   ifdead setvar flashedcounter 0
 
