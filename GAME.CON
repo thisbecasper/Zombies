@@ -655,11 +655,11 @@ endevent
 
 onevent EVENT_LOOKRIGHT 
 	setvar RETURN -1
-	//ifvarg boostactivationtimer 0 {
+	ifvarg boostactivationtimer 0 {
 		setplayer[THISACTOR].STEROIDS_AMOUNT 200
 		setvar boostactivationtimer 0
 		sound DUKE_TAKEPILLS
-	//} 
+	} 
 endevent
 //////////////////////////////////// D M /////////////////////////////////////////////////
 
