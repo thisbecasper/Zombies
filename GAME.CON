@@ -655,11 +655,11 @@ endevent
 
 onevent EVENT_LOOKRIGHT 
 	setvar RETURN -1
-	ifvarg boostactivationtimer 0 {
+	//ifvarg boostactivationtimer 0 {
 		setplayer[THISACTOR].STEROIDS_AMOUNT 200
 		setvar boostactivationtimer 0
 		sound DUKE_TAKEPILLS
-	} 
+	//} 
 endevent
 //////////////////////////////////// D M /////////////////////////////////////////////////
 
@@ -2267,12 +2267,13 @@ actor STEROIDS
             ifpinventory GET_STEROIDS STEROID_AMOUNT
               ifcanseetarget
       {
+      	/*
         addinventory GET_STEROIDS STEROID_AMOUNT
         quote 37
         ifspawnedby STEROIDS
           state getcode
         else
-          state quikget
+          state quikget*/
       }
 enda
 
@@ -2422,12 +2423,12 @@ actor JETPACK
             ifpinventory GET_JETPACK JETPACK_AMOUNT
               ifcanseetarget
       {
-        addinventory GET_JETPACK JETPACK_AMOUNT
+        /*addinventory GET_JETPACK JETPACK_AMOUNT
         quote 41
         ifspawnedby JETPACK
           state getcode
         else
-          state quikget
+          state quikget*/
       }
 enda
 
@@ -2818,13 +2819,13 @@ actor FIRSTAID
             ifpinventory GET_FIRSTAID FIRSTAID_AMOUNT
               ifcanseetarget
       {
-        addinventory GET_FIRSTAID FIRSTAID_AMOUNT
+        /*addinventory GET_FIRSTAID FIRSTAID_AMOUNT
         quote 3
 
         ifspawnedby FIRSTAID
           state getcode
         else
-          state quikget
+          state quikget*/
       }
 enda
 
