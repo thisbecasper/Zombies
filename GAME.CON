@@ -4247,10 +4247,6 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
     ifwasweapon CANNONBALL
     {
     	setvar flashedcounter 60
-    	ifrnd 170 {
-    		ifrnd 127 sound 274
-    		else sound 275
-    	} else sound 276
     	ifdead state standard_pjibs
     }
 
