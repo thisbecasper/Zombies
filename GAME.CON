@@ -53,6 +53,21 @@ defineprojectile MORTER PROJ_RANGE 60
 defineprojectile MORTER PROJ_HITRADIUS 10000
 defineprojectile 1220 PROJ_EXTRA 0*/
 
+defineprojectile RPG PROJ_WORKSLIKE 2 //2 4 8 64 128 2048 4096 16384
+defineprojectile RPG PROJ_SOUND 7
+defineprojectile RPG PROJ_ISOUND 9
+defineprojectile RPG PROJ_SPAWNS EXPLOSION2
+defineprojectile RPG PROJ_VEL 700
+defineprojectile RPG PROJ_VEL_MULT 2
+defineprojectile RPG PROJ_DROP -100
+defineprojectile RPG PROJ_CLIPDIST 2
+defineprojectile RPG PROJ_XREPEAT 18
+defineprojectile RPG PROJ_YREPEAT 18
+defineprojectile RPG PROJ_TRAIL SMALLSMOKE
+defineprojectile RPG PROJ_HITRADIUS 1780
+defineprojectile RPG PROJ_EXTRA 100
+
+
 ////////////////////GAMEVARS/////////////////
 
 gamevar tempone 0 0
