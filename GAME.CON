@@ -50,7 +50,7 @@ defineprojectile RPG PROJ_TRAIL SMALLSMOKE
 defineprojectile RPG PROJ_XREPEAT 18
 defineprojectile RPG PROJ_YREPEAT 18
 defineprojectile RPG PROJ_HITRADIUS 1780
-defineprojectile RPG PROJ_EXTRA 140
+defineprojectile RPG PROJ_EXTRA 120
 
 //Alternative rpg
 defineprojectile 1669 PROJ_WORKSLIKE 2 //2 4 8 64 128 2048 4096 16384
