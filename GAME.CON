@@ -21,7 +21,7 @@ action ANULLACTION 0
 definegamefuncname 30 Flashbang
 definegamefuncname 13 Grenade
 definegamefuncname 14 Boost
-definegamefuncname 36 Reload
+definegamefuncname 36 Alternative
 
 // Grenades
 defineprojectile CANNONBALL PROJ_WORKSLIKE 88270 //2 4 8 64 128 2048 4096 16384
@@ -38,6 +38,7 @@ defineprojectile CANNONBALL PROJ_RANGE 60
 defineprojectile CANNONBALL PROJ_HITRADIUS 8000
 defineprojectile CANNONBALL PROJ_EXTRA 120
 
+//Fast rpg
 defineprojectile RPG PROJ_WORKSLIKE 2 //2 4 8 64 128 2048 4096 16384
 defineprojectile RPG PROJ_SOUND 7
 defineprojectile RPG PROJ_ISOUND 9
@@ -51,20 +52,18 @@ defineprojectile RPG PROJ_YREPEAT 18
 defineprojectile RPG PROJ_HITRADIUS 1780
 defineprojectile RPG PROJ_EXTRA 140
 
-/*
-defineprojectile MORTER PROJ_WORKSLIKE 88270 //2 4 8 64 128 2048 4096 16384 65536
-//defineprojectile MORTER PROJ_SOUND 7
-defineprojectile MORTER PROJ_ISOUND 9
-defineprojectile MORTER PROJ_SPAWNS EXPLOSION2
-defineprojectile MORTER PROJ_VEL 500
-defineprojectile MORTER PROJ_DROP -500
-defineprojectile MORTER PROJ_CLIPDIST 2
-defineprojectile MORTER PROJ_XREPEAT 18
-defineprojectile MORTER PROJ_YREPEAT 18
-defineprojectile MORTER PROJ_BOUNCES 200
-defineprojectile MORTER PROJ_RANGE 60
-defineprojectile MORTER PROJ_HITRADIUS 10000
-defineprojectile 1220 PROJ_EXTRA 0*/
+//Alternative rpg
+defineprojectile 1669 PROJ_WORKSLIKE 2 //2 4 8 64 128 2048 4096 16384
+defineprojectile 1669 PROJ_SOUND 7
+defineprojectile 1669 PROJ_ISOUND 9
+defineprojectile 1669 PROJ_SPAWNS EXPLOSION2
+defineprojectile 1669 PROJ_VEL 400
+defineprojectile 1669 PROJ_DROP -70
+defineprojectile 1669 PROJ_CLIPDIST 2
+defineprojectile 1669 PROJ_XREPEAT 18
+defineprojectile 1669 PROJ_YREPEAT 18
+defineprojectile 1669 PROJ_HITRADIUS 3500
+defineprojectile 1669 PROJ_EXTRA 160
 
 ////////////////////GAMEVARS/////////////////
 
@@ -270,8 +269,8 @@ ends
 ////////////////////EVENTS/////////////////
 onevent EVENT_DISPLAYREST
 	//Debuggg
-	//getactor[THISACTOR].zvel tempone
-	//digitalnumberz 2837 0 40 debugvalue 0 0 0 0 0 xdim ydim 58000
+	getplayer[THISACTOR].kickback_pic tempone
+	digitalnumberz 2837 0 40 tempone 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 60 placement 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 80 totalearnedxp 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 100 skillpoints 0 0 0 0 0 xdim ydim 58000
@@ -384,7 +383,7 @@ onevent EVENT_DISPLAYREST
     getplayer[THISACTOR].ammo_amount RPG_WEAPON tempten
     getplayer[THISACTOR].gotweapon RPG_WEAPON tempnine
     ifvare PWEAPON RPG_WEAPON
-      ifvare WEAPON4_SHOOTS RPG digitalnumberz THREEBYFIVE 160 184 tempten 0 7 0 0 0 xdim ydim 50000
+    ifvare WEAPON4_SHOOTS RPG digitalnumberz THREEBYFIVE 160 184 tempten 0 7 0 0 0 xdim ydim 50000
     else {
       ifvare tempnine 1 digitalnumberz THREEBYFIVE 160 184 tempten 0 1 0 0 0 xdim ydim 50000
       else digitalnumberz THREEBYFIVE 160 184 tempten 0 2 0 0 0 xdim ydim 50000
@@ -638,6 +637,19 @@ onevent EVENT_TURNAROUND
       setplayer[THISACTOR].kickback_pic 4
     }
   }
+  //Alternate fire
+  ifvare PWEAPON 4 {
+  	ifvare weaponcount 0 {
+  		getplayer[THISACTOR].ammo_amount 4 tempone
+  		ifvarg tempone 4 {
+  			subvar tempone 4
+  			setplayer[THISACTOR].ammo_amount 4 tempone
+  			setplayer[THISACTOR].kickback_pic 1	
+		  	setvar WEAPON4_SHOOTS 1669
+  		}
+	  }
+  }
+	  
 
 endevent
 
@@ -655,9 +667,7 @@ endevent
 
 onevent EVENT_PRESSEDFIRE // when the player presses the fire button...
 
-  ifvare PWEAPON 1 // and he has the pistol armed...
-    ifvarl PISTOLMAGAZINE 1
-      setvar RETURN -1 // if his magazine is at zero, disable the firing key
+  ifvare PWEAPON 1 ifvarl PISTOLMAGAZINE 1 setvar RETURN -1 // if his magazine is at zero, disable the firing key
 
 endevent
 
@@ -3893,6 +3903,10 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
   ifdead ifvare havecounteddeath 0 {
   	setvar havecounteddeath 1
   	addvar totaldeaths 1
+  }
+
+  ifvare weaponcount 5 {
+  	setvar WEAPON4_SHOOTS RPG
   }
 
   ifvare gameover 1 {
