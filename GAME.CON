@@ -270,7 +270,7 @@ ends
 onevent EVENT_DISPLAYREST
 	//Debuggg
 	getplayer[THISACTOR].kickback_pic tempone
-	digitalnumberz 2837 0 40 tempone 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 40 tempone 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 60 placement 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 80 totalearnedxp 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 100 skillpoints 0 0 0 0 0 xdim ydim 58000
