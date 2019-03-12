@@ -669,6 +669,9 @@ endevent
 onevent EVENT_PRESSEDFIRE // when the player presses the fire button...
 
   ifvare PWEAPON 1 ifvarl PISTOLMAGAZINE 1 setvar RETURN -1 // if his magazine is at zero, disable the firing key
+  setvar WEAPON4_SHOOTS RPG
+
+
 
 endevent
 
@@ -3904,11 +3907,6 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
   ifdead ifvare havecounteddeath 0 {
   	setvar havecounteddeath 1
   	addvar totaldeaths 1
-  }
-
-  getplayer[THISACTOR].kickback_pic tempone
-  ifvare tempone 5 {
-  	setvar WEAPON4_SHOOTS RPG
   }
 
   ifvare gameover 1 {
