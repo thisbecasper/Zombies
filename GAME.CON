@@ -57,8 +57,8 @@ defineprojectile 1669 PROJ_WORKSLIKE 2 //2 4 8 64 128 2048 4096 16384
 defineprojectile 1669 PROJ_SOUND 7
 defineprojectile 1669 PROJ_ISOUND 9
 defineprojectile 1669 PROJ_SPAWNS EXPLOSION2
-defineprojectile 1669 PROJ_VEL 400
-defineprojectile 1669 PROJ_DROP -70
+defineprojectile 1669 PROJ_VEL 330
+defineprojectile 1669 PROJ_DROP -55
 defineprojectile 1669 PROJ_CLIPDIST 2
 defineprojectile 1669 PROJ_XREPEAT 18
 defineprojectile 1669 PROJ_YREPEAT 18
@@ -348,7 +348,7 @@ onevent EVENT_DISPLAYREST
 		getplayer[THISACTOR].ammo_amount PWEAPON tempone
 		digitalnumberz DIGITALNUM 40 180 tempone 0 0 0 0 0 xdim ydim 80000
 
-		ifvare PWEAPON PISTOL_WEAPON {
+		ifvare PWEAPON 1 {
 			ifvarg PISTOLMAGAZINE -1 {
 				digitalnumberz DIGITALNUM 173 110 PISTOLMAGAZINE 0 0 0 0 0 xdim ydim 40000
 			} else {
@@ -358,14 +358,14 @@ onevent EVENT_DISPLAYREST
 
 		getplayer[THISACTOR].ammo_amount PISTOL_WEAPON tempten
     getplayer[THISACTOR].gotweapon PISTOL_WEAPON tempnine
-    ifvare PWEAPON PISTOL_WEAPON digitalnumberz THREEBYFIVE 148 184 tempten 0 7 0 0 0 xdim ydim 50000
+    ifvare PWEAPON 1 digitalnumberz THREEBYFIVE 148 184 tempten 0 7 0 0 0 xdim ydim 50000
     else {
      	digitalnumberz THREEBYFIVE 148 184 tempten 0 1 0 0 0 xdim ydim 50000
     } 
     
     getplayer[THISACTOR].ammo_amount SHOTGUN_WEAPON tempten
     getplayer[THISACTOR].gotweapon SHOTGUN_WEAPON tempnine
-    ifvare PWEAPON SHOTGUN_WEAPON {
+    ifvare PWEAPON 2 {
       digitalnumberz THREEBYFIVE 148 189 tempten 0 7 0 0 0 xdim ydim 50000
     } else {
       ifvare tempnine 1 digitalnumberz THREEBYFIVE 148 189 tempten 0 1 0 0 0 xdim ydim 50000
@@ -374,7 +374,7 @@ onevent EVENT_DISPLAYREST
 
     getplayer[THISACTOR].ammo_amount CHAINGUN_WEAPON tempten
     getplayer[THISACTOR].gotweapon CHAINGUN_WEAPON tempnine
-    ifvare PWEAPON CHAINGUN_WEAPON digitalnumberz THREEBYFIVE 148 194 tempten 0 7 0 0 0 xdim ydim 50000
+    ifvare PWEAPON 3 digitalnumberz THREEBYFIVE 148 194 tempten 0 7 0 0 0 xdim ydim 50000
     else {
       ifvare tempnine 1 digitalnumberz THREEBYFIVE 148 194 tempten 0 1 0 0 0 xdim ydim 50000
       else digitalnumberz THREEBYFIVE 148 194 tempten 0 2 0 0 0 xdim ydim 50000
@@ -382,7 +382,7 @@ onevent EVENT_DISPLAYREST
 
     getplayer[THISACTOR].ammo_amount RPG_WEAPON tempten
     getplayer[THISACTOR].gotweapon RPG_WEAPON tempnine
-    ifvare PWEAPON RPG_WEAPON
+    ifvare PWEAPON 4
     ifvare WEAPON4_SHOOTS RPG digitalnumberz THREEBYFIVE 160 184 tempten 0 7 0 0 0 xdim ydim 50000
     else {
       ifvare tempnine 1 digitalnumberz THREEBYFIVE 160 184 tempten 0 1 0 0 0 xdim ydim 50000
@@ -391,7 +391,7 @@ onevent EVENT_DISPLAYREST
 
     getplayer[THISACTOR].ammo_amount HANDBOMB_WEAPON tempten
     getplayer[THISACTOR].gotweapon HANDBOMB_WEAPON tempnine
-    ifvare PWEAPON HANDBOMB_WEAPON digitalnumberz THREEBYFIVE 160 189 tempten 0 7 0 0 0 xdim ydim 50000
+    ifvare PWEAPON 5 digitalnumberz THREEBYFIVE 160 189 tempten 0 7 0 0 0 xdim ydim 50000
     else ifvare PWEAPON HANDREMOTE_WEAPON digitalnumberz THREEBYFIVE 160 189 tempten 0 7 0 0 0 xdim ydim 50000
     else {
       ifvare tempnine 1 digitalnumberz THREEBYFIVE 160 189 tempten 0 1 0 0 0 xdim ydim 50000
@@ -400,7 +400,7 @@ onevent EVENT_DISPLAYREST
 
     getplayer[THISACTOR].ammo_amount SHRINKER_WEAPON tempten
     getplayer[THISACTOR].gotweapon SHRINKER_WEAPON tempnine
-    ifvare PWEAPON SHRINKER_WEAPON digitalnumberz THREEBYFIVE 160 194 tempten 0 7 0 0 0 xdim ydim 50000
+    ifvare PWEAPON 6 digitalnumberz THREEBYFIVE 160 194 tempten 0 7 0 0 0 xdim ydim 50000
     else {
       ifvare tempnine 1 digitalnumberz THREEBYFIVE 160 194 tempten 0 1 0 0 0 xdim ydim 50000
       else digitalnumberz THREEBYFIVE 160 194 tempten 0 2 0 0 0 xdim ydim 50000
@@ -408,7 +408,7 @@ onevent EVENT_DISPLAYREST
       
     getplayer[THISACTOR].ammo_amount DEVISTATOR_WEAPON tempten
     getplayer[THISACTOR].gotweapon DEVISTATOR_WEAPON tempnine
-    ifvare PWEAPON DEVISTATOR_WEAPON digitalnumberz THREEBYFIVE 172 184 tempten 0 7 0 0 0 xdim ydim 50000
+    ifvare PWEAPON 7 digitalnumberz THREEBYFIVE 172 184 tempten 0 7 0 0 0 xdim ydim 50000
     else {
       ifvare tempnine 1 digitalnumberz THREEBYFIVE 172 184 tempten 0 1 0 0 0 xdim ydim 50000
       else digitalnumberz THREEBYFIVE 172 184 tempten 0 2 0 0 0 xdim ydim 50000
@@ -416,7 +416,7 @@ onevent EVENT_DISPLAYREST
 
     getplayer[THISACTOR].ammo_amount TRIPBOMB_WEAPON tempten
     getplayer[THISACTOR].gotweapon TRIPBOMB_WEAPON tempnine
-    ifvare PWEAPON TRIPBOMB_WEAPON digitalnumberz THREEBYFIVE 172 189 tempten 0 7 0 0 0 xdim ydim 50000
+    ifvare PWEAPON 8 digitalnumberz THREEBYFIVE 172 189 tempten 0 7 0 0 0 xdim ydim 50000
     else {
       ifvare tempnine 1 digitalnumberz THREEBYFIVE 172 189 tempten 0 1 0 0 0 xdim ydim 50000
       else digitalnumberz THREEBYFIVE 172 189 tempten 0 2 0 0 0 xdim ydim 50000
@@ -424,7 +424,7 @@ onevent EVENT_DISPLAYREST
 
     getplayer[THISACTOR].ammo_amount FREEZE_WEAPON tempten
     getplayer[THISACTOR].gotweapon FREEZE_WEAPON tempnine
-    ifvare PWEAPON FREEZE_WEAPON digitalnumberz THREEBYFIVE 172 194 tempten 0 7 0 0 0 xdim ydim 50000
+    ifvare PWEAPON 9 digitalnumberz THREEBYFIVE 172 194 tempten 0 7 0 0 0 xdim ydim 50000
     else {
       ifvare tempnine 1 digitalnumberz THREEBYFIVE 172 194 tempten 0 1 0 0 0 xdim ydim 50000
       else digitalnumberz THREEBYFIVE 172 194 tempten 0 2 0 0 0 xdim ydim 50000
@@ -647,6 +647,7 @@ onevent EVENT_TURNAROUND
   			setplayer[THISACTOR].ammo_amount 4 tempone
   			setplayer[THISACTOR].kickback_pic 1	
 		  	setvar WEAPON4_SHOOTS 1669
+		  	sound 10
   		}
 	  }
   }
@@ -663,7 +664,6 @@ onevent EVENT_RESETPLAYER
     setplayer[THISACTOR].kickback_pic 4 // start the reloading sequence.
   }
   setvar havecounteddeath 0
-  setvar flashbangammo 1
 endevent
 
 onevent EVENT_PRESSEDFIRE // when the player presses the fire button...
@@ -4290,7 +4290,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
     }
     ifwasweapon CANNONBALL
     {
-    	setvar flashedcounter 25
+    	setvar flashedcounter 40
     	ifdead state standard_pjibs
     }
 
