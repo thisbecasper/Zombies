@@ -88,6 +88,7 @@ gamevar havecounteddeath 0 1
 gamevar totaldeaths 0 1
 gamevar grenadethrowcd 0 1
 gamevar grenadeammo 1 1
+gamevar grenaderegencounter 0 1
 gamevar flashbangammo 1 1
 gamevar flashedcounter 0 1
 
@@ -329,19 +330,21 @@ onevent EVENT_DISPLAYREST
 
 		//Magazine and ammo
   	ifvarg grenadeammo 0 rotatesprite 275 177 35000 0 CANNONBALL 0 0 0 0 0 xdim ydim
+  	ifvarg grenadeammo 1 rotatesprite 284 177 35000 0 CANNONBALL 0 0 0 0 0 xdim ydim
+  	ifvarg grenadeammo 2 rotatesprite 293 177 35000 0 CANNONBALL 0 0 0 0 0 xdim ydim
   	//ifvarg flashbangammo 0 rotatesprite 290 177 15000 0 1220 0 0 0 0 0 xdim ydim
 		getplayer[THISACTOR].ammo_amount PWEAPON tempone
 		digitalnumberz DIGITALNUM 40 180 tempone 0 0 0 0 0 xdim ydim 80000
 
 		ifvare PWEAPON PISTOL_WEAPON {
-	  	ifvarg PISTOLMAGAZINE -1 {
+			ifvarg PISTOLMAGAZINE -1 {
 				digitalnumberz DIGITALNUM 173 110 PISTOLMAGAZINE 0 0 0 0 0 xdim ydim 40000
-	  	} else {
-	  		digitalnumberz DIGITALNUM 173 110 0 0 0 0 0 0 xdim ydim 40000
-	  	} 
+			} else {
+				digitalnumberz DIGITALNUM 173 110 0 0 0 0 0 0 xdim ydim 40000
+			} 
 	  }
 
-	  getplayer[THISACTOR].ammo_amount PISTOL_WEAPON tempten
+		getplayer[THISACTOR].ammo_amount PISTOL_WEAPON tempten
     getplayer[THISACTOR].gotweapon PISTOL_WEAPON tempnine
     ifvare PWEAPON PISTOL_WEAPON digitalnumberz THREEBYFIVE 148 184 tempten 0 7 0 0 0 xdim ydim 50000
     else {
@@ -486,6 +489,24 @@ onevent EVENT_DISPLAYREST
 	    subvar tempone 1
 	  }
 
+	  //Grenade counter bar
+	  setvar tempone 270
+	  setvar temptwo 30
+	  whilevarn temptwo 0 {
+      rotatesprite tempone 181 65536 0 3135 0 12 33 0 0 xdim ydim
+      addvar tempone 1
+      subvar temptwo 1
+    }
+
+	  setvar tempone 270
+	  setvarvar temptwo grenaderegencounter
+	  divvar temptwo 30
+	  whilevarn temptwo 0 {
+      rotatesprite tempone 181 65536 0 3135 0 12 0 0 0 xdim ydim
+      addvar tempone 1
+      subvar temptwo 1
+    }
+
 	  //Boost activation timer
 	  setvar tempone 145 // set starting x coordinate
     setvarvar temptwo boostactivationtimer
@@ -616,7 +637,6 @@ onevent EVENT_RESETPLAYER
     setplayer[THISACTOR].kickback_pic 4 // start the reloading sequence.
   }
   setvar havecounteddeath 0
-  setvar grenadeammo 1
   setvar flashbangammo 1
 endevent
 
@@ -628,23 +648,10 @@ onevent EVENT_PRESSEDFIRE // when the player presses the fire button...
 
 endevent
 
-/*
-onevent EVENT_INVENTORYLEFT
-	setvar RETURN -1
-	ifvare grenadethrowcd 0 ifvarg flashbangammo 0 {
-		setvar grenadethrowcd 40
-		subvar flashbangammo 1
-		eshoot 1220
-		getactor[RETURN].zvel tempone
-		subvar tempone 3000
-		setactor[RETURN].zvel tempone
-	}	
-endevent*/
-
 onevent EVENT_LOOKLEFT
 	setvar RETURN -1
 	ifvare grenadethrowcd 0 ifvarg grenadeammo 0 {
-		setvar grenadethrowcd 40
+		setvar grenadethrowcd 20
 		subvar grenadeammo 1
 		eshoot CANNONBALL
 		getactor[RETURN].zvel tempone
@@ -3905,6 +3912,14 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
   }
 
   ifvarg grenadethrowcd 0 subvar grenadethrowcd 1
+  
+  ifvarg grenaderegencounter 900 {
+  	ifvarl grenadeammo 3 addvar grenadeammo 1
+  	setvar grenaderegencounter 0
+  } else {
+  	ifvarl grenadeammo 3 addvar grenaderegencounter 1
+  }
+
   ifvarg flashedcounter 0 {
   	palfrom 64 42 42 42
   	subvar flashedcounter 1
@@ -4246,7 +4261,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
     }
     ifwasweapon CANNONBALL
     {
-    	setvar flashedcounter 60
+    	setvar flashedcounter 25
     	ifdead state standard_pjibs
     }
 
