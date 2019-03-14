@@ -60,6 +60,9 @@ defineprojectile 1669 PROJ_SPAWNS EXPLOSION2
 defineprojectile 1669 PROJ_VEL 330
 defineprojectile 1669 PROJ_DROP -55
 defineprojectile 1669 PROJ_CLIPDIST 2
+defineprojectile 1669 PROJ_TRAIL EXPLOSION2
+defineprojectile 1669 PROJ_TXREPEAT 5
+defineprojectile 1669 PROJ_TYREPEAT 5
 defineprojectile 1669 PROJ_XREPEAT 18
 defineprojectile 1669 PROJ_YREPEAT 18
 defineprojectile 1669 PROJ_HITRADIUS 3500
