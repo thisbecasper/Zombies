@@ -36,7 +36,7 @@ defineprojectile CANNONBALL PROJ_YREPEAT 18
 defineprojectile CANNONBALL PROJ_BOUNCES 200
 defineprojectile CANNONBALL PROJ_RANGE 60
 defineprojectile CANNONBALL PROJ_HITRADIUS 8000
-defineprojectile CANNONBALL PROJ_EXTRA 120
+defineprojectile CANNONBALL PROJ_EXTRA 30
 
 //Fast rpg
 defineprojectile RPG PROJ_WORKSLIKE 2 //2 4 8 64 128 2048 4096 16384
