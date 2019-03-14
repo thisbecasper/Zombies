@@ -3948,9 +3948,9 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
   }
 
   ifvarg flashedcounter 0 {
-  	palfrom 64 42 42 42
+  	palfrom 64 45 45 45
   	subvar flashedcounter 1
-  	setplayer[THISACTOR].runspeed 45000
+  	setplayer[THISACTOR].runspeed 44000
   } else setplayer[THISACTOR].runspeed 53200
 
   ifdead setvar flashedcounter 0
@@ -4288,7 +4288,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
     }
     ifwasweapon CANNONBALL
     {
-    	setvar flashedcounter 40
+    	setvar flashedcounter 100
     	ifdead state standard_pjibs
     }
 
