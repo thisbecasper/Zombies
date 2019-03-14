@@ -3907,6 +3907,9 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 
   setplayer[THISACTOR].auto_aim 2
 
+  getplayer[THISACTOR].curr_weapon tempone
+  ifvare tempone GROW_WEAPON setplayer[THISACTOR].curr_weapon SHRINKER_WEAPON
+
   ifdead ifvare havecounteddeath 0 {
   	setvar havecounteddeath 1
   	addvar totaldeaths 1
