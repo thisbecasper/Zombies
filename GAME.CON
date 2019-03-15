@@ -39,7 +39,7 @@ defineprojectile CANNONBALL PROJ_HITRADIUS 8000
 defineprojectile CANNONBALL PROJ_EXTRA 30
 
 //Power shotgun
-defineprojectile FIRELASER PROJ_WORKSLIKE 36870
+defineprojectile FIRELASER PROJ_WORKSLIKE 36866
 defineprojectile FIRELASER PROJ_SPAWNS SMALLSMOKE
 defineprojectile FIRELASER PROJ_SOUND SHOTGUN_FIRE
 defineprojectile FIRELASER PROJ_VEL 840
@@ -50,8 +50,8 @@ defineprojectile FIRELASER PROJ_TXREPEAT 6
 defineprojectile FIRELASER PROJ_TYREPEAT 6
 defineprojectile FIRELASER PROJ_CLIPDIST 4
 defineprojectile FIRELASER PROJ_HITRADIUS 0
-defineprojectile FIRELASER PROJ_EXTRA 20
-defineprojectile FIRELASER PROJ_BOUNCES 2
+defineprojectile FIRELASER PROJ_EXTRA 8
+//defineprojectile FIRELASER PROJ_BOUNCES 2
 defineprojectile FIRELASER PROJ_BSOUND 500
 defineprojectile FIRELASER PROJ_TRAIL SMALLSMOKE //2567
 
@@ -241,8 +241,8 @@ state shootshotgun
   eshoot FIRELASER
   
   getplayer[THISACTOR].ang tempone
-  randvar temptwo 50 // max height
-  subvar temptwo 25 // half of above
+  randvar temptwo 100 // max height
+  subvar temptwo 50 // half of above
   addvarvar tempone temptwo
   setactor[RETURN].ang tempone
 
@@ -250,8 +250,8 @@ state shootshotgun
   subvar tempone 100
   mulvar tempone -2048
   divvar tempone 20
-  randvar temptwo 2000 // max width
-  subvar temptwo 1000 // half of above
+  randvar temptwo 4000 // max width
+  subvar temptwo 2000 // half of above
   addvarvar tempone temptwo
   setactor[RETURN].zvel tempone
 ends
@@ -703,6 +703,16 @@ onevent EVENT_TURNAROUND
   			setplayer[THISACTOR].kickback_pic 3	
 		  	
 		  	state shootshotgun
+		    state shootshotgun
+		    state shootshotgun
+		    state shootshotgun
+		    state shootshotgun
+		    state shootshotgun
+		    state shootshotgun
+		    state shootshotgun
+		    state shootshotgun
+		    state shootshotgun
+		    state shootshotgun
 		    state shootshotgun
 		    state shootshotgun
 		    state shootshotgun
