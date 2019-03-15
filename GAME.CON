@@ -102,9 +102,8 @@ gamevar opponenthadarmorcounter 0 1
 gamevar havecounteddeath 0 1
 gamevar totaldeaths 0 1
 gamevar grenadethrowcd 0 1
-gamevar grenadeammo 1 1
+gamevar grenadeammo 2 1
 gamevar grenaderegencounter 0 1
-gamevar flashbangammo 1 1
 gamevar flashedcounter 0 1
 
 gamevar debugvalue 0 1
