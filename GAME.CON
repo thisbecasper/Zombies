@@ -740,7 +740,7 @@ endevent
 onevent EVENT_PRESSEDFIRE // when the player presses the fire button...
   ifvare PWEAPON 1 ifvarl PISTOLMAGAZINE 1 setvar RETURN -1 // if his magazine is at zero, disable the firing key
   setvar WEAPON2_SHOOTS SHOTGUN
-  setvar WEAPON2_SHOTSPERBURST 8
+  setvar WEAPON2_SHOTSPERBURST 7
   setvar WEAPON4_SHOOTS RPG
 endevent
 
