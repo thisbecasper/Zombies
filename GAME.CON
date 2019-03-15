@@ -52,6 +52,7 @@ defineprojectile FIRELASER PROJ_CLIPDIST 4
 defineprojectile FIRELASER PROJ_HITRADIUS 0
 defineprojectile FIRELASER PROJ_EXTRA 4
 defineprojectile FIRELASER PROJ_BOUNCES 3
+defineprojectile FIRELASER PROJ_BSOUND 500
 defineprojectile FIRELASER PROJ_TRAIL SMALLSMOKE //2567
 
 //Fast rpg
