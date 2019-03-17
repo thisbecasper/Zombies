@@ -50,7 +50,7 @@ defineprojectile FIRELASER PROJ_TXREPEAT 6
 defineprojectile FIRELASER PROJ_TYREPEAT 6
 defineprojectile FIRELASER PROJ_CLIPDIST 4
 defineprojectile FIRELASER PROJ_HITRADIUS 0
-defineprojectile FIRELASER PROJ_EXTRA 3
+defineprojectile FIRELASER PROJ_EXTRA 2
 defineprojectile FIRELASER PROJ_BOUNCES 3
 defineprojectile FIRELASER PROJ_BSOUND 500
 defineprojectile FIRELASER PROJ_TRAIL SMALLSMOKE //2567
