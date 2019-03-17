@@ -4047,6 +4047,15 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 
   ifdead setvar flashedcounter 0
 
+  getactor[THISACTOR].htpicnum tempthree
+  ifvare tempthree FIRELASER {
+  	getactor[THISACTOR].htowner tempone
+	  getplayer[THISACTOR].i temptwo
+	  ifvarvare tempone temptwo setactor[THISACTOR].htextra -1
+  }
+	  
+	
+
   ifaction 0
     action PSTAND
 
@@ -4383,7 +4392,6 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
     	setvar flashedcounter 100
     	ifdead state standard_pjibs
     }
-
     ifwasweapon RPG
     {
       ifrnd 32
@@ -4424,6 +4432,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
     }
     ifwasweapon SHOTSPARK1
       ifvare flashedcounter 0 palfrom 24 48
+    ifwasweapon FIRELASER ifvare flashedcounter 0 palfrom 24 48
     ifwasweapon FREEZEBLAST
     {
       ifvare flashedcounter 0 palfrom 48 0 0 48
