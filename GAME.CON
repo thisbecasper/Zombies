@@ -138,6 +138,7 @@ state populatecurrentscore
 	getplayer[THISACTOR].frag tempone
 	getplayer[THISACTOR].fraggedself temptwo
 	subvarvar tempone temptwo
+	subvarvar tempone temptwo
 	setvarvar currentscore tempone
 ends
 
@@ -308,7 +309,7 @@ ends
 ////////////////////EVENTS/////////////////
 onevent EVENT_DISPLAYREST
 	//Debuggg
-	getplayer[THISACTOR].kickback_pic tempone
+	getplayer[THISACTOR].wackedbyactor tempone
 	//digitalnumberz 2837 0 40 tempone 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 60 placement 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 80 totalearnedxp 0 0 0 0 0 xdim ydim 58000
