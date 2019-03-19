@@ -691,7 +691,31 @@ onevent EVENT_TURNAROUND
 		  	sound 10
   		}
 	  }
-  } else ifvare PWEAPON SHOTGUN_WEAPON {
+  } /*else ifvare PWEAPON SHRINKER_WEAPON {
+  	getplayer[THISACTOR].kickback_pic tempone
+  	ifvare tempone 0 {
+  		getplayer[THISACTOR].ammo_amount 6 tempone
+  		ifvarg tempone 2 {
+  			subvar tempone 2
+  			setplayer[THISACTOR].ammo_amount 6 tempone
+  			setplayer[THISACTOR].kickback_pic 1	
+		  	
+		  	getactor[THISACTOR].ang temptwo
+		  	setvarvar tempone temptwo
+		  	
+		  	eshoot SHRINKSPARK
+		  	setactor[RETURN].ang tempone
+
+		  	addvar tempone 50
+		  	eshoot SHRINKSPARK
+		  	setactor[RETURN].ang tempone
+
+		  	eshoot SHRINKSPARK
+		  	subvar tempone 100
+		  	setactor[RETURN].ang tempone
+  		}
+ 		}
+  } */ else ifvare PWEAPON SHOTGUN_WEAPON {
   	getplayer[THISACTOR].kickback_pic tempone
   	ifvare tempone 0 {
   		getplayer[THISACTOR].ammo_amount 2 tempone
@@ -701,7 +725,6 @@ onevent EVENT_TURNAROUND
   			setvar WEAPON2_SHOOTS FIRELASER
   			setvar WEAPON2_SHOTSPERBURST 1
   			setplayer[THISACTOR].kickback_pic 3	
-		  	
 		  	state shootshotgun
 		    state shootshotgun
 		    state shootshotgun
