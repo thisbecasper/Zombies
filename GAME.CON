@@ -713,7 +713,7 @@ onevent EVENT_TURNAROUND
 	  			setplayer[THISACTOR].ammo_amount 6 tempone
 	  			setvar WEAPON6_SHOOTS 2449
 	  			sound SHRINKER_FIRE
-	  			setplayer[THISACTOR].kickback_pic 1
+	  			setplayer[THISACTOR].kickback_pic 8
 
 				  /*eshoot 2449
 
