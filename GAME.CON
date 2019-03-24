@@ -713,9 +713,9 @@ onevent EVENT_TURNAROUND
 	  			setplayer[THISACTOR].ammo_amount 6 tempone
 	  			setvar WEAPON6_SHOOTS 2449
 	  			sound SHRINKER_FIRE
-	  			setplayer[THISACTOR].kickback_pic 8
+	  			setplayer[THISACTOR].kickback_pic 1
 
-				  eshoot 2449
+				  /*eshoot 2449
 
 				  getplayer[THISACTOR].ang tempone
 				  addvar tempone 20
@@ -725,7 +725,7 @@ onevent EVENT_TURNAROUND
 
 				  getplayer[THISACTOR].ang tempone
 				  subvar tempone 20
-				  setactor[RETURN].ang tempone
+				  setactor[RETURN].ang tempone*/
 	  		}
 	  	}
 	  } else ifvare PWEAPON SHOTGUN_WEAPON {
