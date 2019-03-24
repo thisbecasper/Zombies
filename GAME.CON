@@ -637,7 +637,7 @@ onevent EVENT_DISPLAYREST
 	  	}
 
 	  	//Boost bar
-	  	setvar tempfive 300
+	  	/*setvar tempfive 300
 	  	getplayervar[tempsix].damagedoneboost tempnine
 	  	mulvar tempnine 60
 	  	divvar tempnine 1000
@@ -645,7 +645,7 @@ onevent EVENT_DISPLAYREST
 	  		rotatesprite tempfive tempthree 65536 0 3135 0 6 16 0 0 xdim ydim 
 	  		addvar tempfive 1
 	  		subvar tempnine 1
-	  	}
+	  	}*/
 
 	  	addvar tempthree 6
 
