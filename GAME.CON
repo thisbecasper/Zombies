@@ -145,6 +145,7 @@ gamevar tempfraglimit 20 1
 gamevar changecooldown 0 1
 gamevar gameison 0 1
 gamevar hasdroppedboostpoints 0 1
+gamevar itemcounter 0 2
 
 gamevar debugvalue 0 1
 
@@ -4144,6 +4145,14 @@ move PGROWINGPOP        // Used only as a variable
 
 actor 127 {
 	sizeat 32 32
+
+	addvar itemcounter 1
+	ifvare itemcounter 90 {
+		getactor[THISACTOR].cstat tempone
+		addvar tempone 2
+		setactor[THISACTOR].cstat tempone
+	}
+	ifvare itemcounter 150 killit
 	
 	fall
     ifp pshrunk nullop
