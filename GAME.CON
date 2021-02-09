@@ -49,7 +49,8 @@ defineprojectile FIRELASER PROJ_TXREPEAT 6
 defineprojectile FIRELASER PROJ_TYREPEAT 6
 defineprojectile FIRELASER PROJ_CLIPDIST 4
 defineprojectile FIRELASER PROJ_HITRADIUS 0
-defineprojectile FIRELASER PROJ_EXTRA 2
+defineprojectile FIRELASER PROJ_EXTRA 0
+defineprojectile FIRELASER PROJ_EXTRA_RAND 0
 defineprojectile FIRELASER PROJ_BOUNCES 3
 defineprojectile FIRELASER PROJ_BSOUND 500
 defineprojectile FIRELASER PROJ_TRAIL SMALLSMOKE //2567
@@ -132,7 +133,7 @@ gamevar flashbangthrowcd 0 1
 gamevar flashbangammo 2 1
 gamevar flashbangregencounter 0 1
 gamevar flashedcounter 0 1
-gamevar freezetimer 150 1
+gamevar freezetimer 0 1
 
 gamevar debugvalue 0 1
 
@@ -182,16 +183,21 @@ state setwinner
 ends
 
 state lowhealtheffects
+	getplayer[THISACTOR].max_player_health temptwo
+	setvarvar tempthree temptwo
+	mulvar temptwo 4
+	divvar temptwo 10 // 40% max health threshold
+	divvar tempthree 4 // 25% max healt threshold
 	getactor[THISACTOR].extra tempone
-	ifvarl tempone 20 { //HP is 10 or less
+	ifvarvarl tempone tempthree { //HP is 10 or less
     ifvarn tempone 0 {
       ifcount 20 {
       	palfrom 43 30 0 0
-        sound 39
+        globalsound 39
         resetcount
       }
     }
-  } else ifvarl tempone 35 {
+  } else ifvarvarl tempone temptwo {
   	palfrom 15 24 0 0
   }
 ends
@@ -305,8 +311,8 @@ state boost
 	ifvarg damagedoneboost 999 {
 		subvar damagedoneboost 1000
 		palfrom 32 64 64 64
-		sound GETATOMICHEALTH
-		setvar boostactivationtimer 600
+		globalsound GETATOMICHEALTH
+		setvar boostactivationtimer 1800
 	}
 	ifvarvare currentscore maxscore {
 		addvar boostlosscounter 1
@@ -322,7 +328,7 @@ state frozen
     subvar freezetimer 1
     lockplayer 4
   }
-  ifvarg freezetimer 90 {
+  ifvarg freezetimer 75 {
   	palfrom 48 0 0 0
   }
 ends
@@ -401,7 +407,14 @@ onevent EVENT_DISPLAYREST
    		else digitalnumberz THREEBYFIVE -6 165 tempone 0 2 0 0 0 xdim ydim 50000
    	}*/
 
-   	ifvarl freezetimer 45 {
+   	ifvarg freezetimer 0 {
+   		setvarvar tempone freezetimer
+   		divvar tempone 30
+   		addvar tempone 1
+   		digitalnumberz 2930 165 90 tempone 0 0 0 0 0 xdim ydim 50000
+   	}
+
+   	ifvarl freezetimer 30 {
    		//Magazine and ammo
 	  	ifvarg flashbangammo 0 rotatesprite 275 177 35000 0 CANNONBALL 0 0 0 0 0 xdim ydim
 	  	ifvarg flashbangammo 1 rotatesprite 284 177 35000 0 CANNONBALL 0 0 0 0 0 xdim ydim
@@ -682,6 +695,7 @@ endevent
 
 onevent EVENT_DISPLAYCROSSHAIR
 	ifvare gameover 1 setvar RETURN -1
+	ifvarg freezetimer 30 setvar RETURN -1
 endevent
 
 //Alternative fire
@@ -714,6 +728,8 @@ onevent EVENT_TURNAROUND
 	  			setplayer[THISACTOR].kickback_pic 1	
 			  	setvar WEAPON4_SHOOTS 1669
 			  	sound 10
+	  		} else {
+	  			globalsound 213
 	  		}
 		  }
 	  } else ifvare PWEAPON SHRINKER_WEAPON {
@@ -738,6 +754,8 @@ onevent EVENT_TURNAROUND
 				  getplayer[THISACTOR].ang tempone
 				  subvar tempone 20
 				  setactor[RETURN].ang tempone*/
+	  		} else {
+	  			globalsound 213
 	  		}
 	  	}
 	  } else ifvare PWEAPON SHOTGUN_WEAPON {
@@ -790,6 +808,8 @@ onevent EVENT_TURNAROUND
 			    state shootshotgun
 			    state shootshotgun
 			    state shootshotgun
+	  		} else {
+	  			globalsound 213
 	  		}
 	  	}
 	  }
@@ -809,6 +829,7 @@ endevent
 
 onevent EVENT_PRESSEDFIRE // when the player presses the fire button...
   ifvare PWEAPON 1 ifvarl PISTOLMAGAZINE 1 setvar RETURN -1 // if his magazine is at zero, disable the firing key
+  ifvarg freezetimer 0 setvar RETURN -1
   setvar WEAPON2_SHOOTS SHOTGUN
   setvar WEAPON2_SHOTSPERBURST 7
   setvar WEAPON4_SHOOTS RPG
@@ -817,7 +838,7 @@ endevent
 
 onevent EVENT_LOOKLEFT
 	setvar RETURN -1
-	ifvare flashbangthrowcd 0 ifvarg flashbangammo 0 {
+	ifvare flashbangthrowcd 0 ifvarg flashbangammo 0 ifvare freezetimer 0 {
 		setvar flashbangthrowcd 20
 		subvar flashbangammo 1
 		eshoot CANNONBALL
@@ -834,6 +855,10 @@ onevent EVENT_LOOKRIGHT
 		setvar boostactivationtimer 0
 		sound DUKE_TAKEPILLS
 	} 
+endevent
+
+onevent EVENT_JUMP
+  ifvarg freezetimer 0 setvar RETURN -1
 endevent
 //////////////////////////////////// D M /////////////////////////////////////////////////
 
