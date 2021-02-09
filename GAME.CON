@@ -18,6 +18,9 @@ action ANULLACTION 0
 //////////////////////////////////// D M /////////////////////////////////////////////////
 
 ////////////////////DEFINES/////////////////
+
+definegamefuncname 11 Up
+definegamefuncname 12 Down
 definegamefuncname 13 Flashbang
 definegamefuncname 14 Boost
 definegamefuncname 36 Alternative
@@ -133,7 +136,12 @@ gamevar flashbangthrowcd 0 1
 gamevar flashbangammo 2 1
 gamevar flashbangregencounter 0 1
 gamevar flashedcounter 0 1
-gamevar freezetimer 0 1
+gamevar freezetimer 100 1
+gamevar allfraglimitshasbeenset 0 0
+gamevar gametimecounter 0 1
+gamevar fraglimit -1 1
+gamevar tempfraglimit 20 1
+gamevar changecooldown 0 1
 
 gamevar debugvalue 0 1
 
@@ -175,7 +183,7 @@ state populatemaxscore
 ends
 
 state setwinner
-  ifvarg currentscore 29 ifvare gameover 0 { //Fraglimit 
+  ifvarvare currentscore fraglimit ifvare gameover 0 { //Fraglimit 
   	setvar gameover 1
   	getactor[THISACTOR].yvel tempthree
   	setvarvar winner tempthree
@@ -324,11 +332,13 @@ state boost
 ends
 
 state frozen
-  ifvarg freezetimer 0 {
+  ifvarg freezetimer 0 ifvare allfraglimitshasbeenset 1 {
     subvar freezetimer 1
-    lockplayer 4
   }
-  ifvarg freezetimer 75 {
+  ifvarg freezetimer 0 {
+  	lockplayer 4
+  }
+  ifvarg freezetimer 75 ifvarn fraglimit -1 {
   	palfrom 48 0 0 0
   }
 ends
@@ -337,10 +347,19 @@ ends
 onevent EVENT_DISPLAYREST
 	//Debuggg
 	
-	digitalnumberz 2837 0 40 freezetimer 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 40 changecooldown 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 60 placement 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 80 totalearnedxp 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 100 skillpoints 0 0 0 0 0 xdim ydim 58000
+
+	//Set frag limit
+	ifvare fraglimit -1 {
+		//Dark underlay
+		rotatesprite 160 100 500000 256 241 31 0 1 0 0 xdim ydim
+		gametextz STARTALPHANUM 320 95 124 0 0 0 0 0 xdim ydim 60000
+		digitalnumberz 2837 160 105 tempfraglimit 0 0 0 0 0 xdim ydim 60000
+	}
+	
 
 	//Game over
 	ifvare gameover 1 {
@@ -407,7 +426,7 @@ onevent EVENT_DISPLAYREST
    		else digitalnumberz THREEBYFIVE -6 165 tempone 0 2 0 0 0 xdim ydim 50000
    	}*/
 
-   	ifvarg freezetimer 0 {
+   	ifvarg freezetimer 0 ifvare allfraglimitshasbeenset 1 {
    		setvarvar tempone freezetimer
    		divvar tempone 30
    		addvar tempone 1
@@ -635,11 +654,15 @@ onevent EVENT_DISPLAYREST
 		  	getactor[tempone].yvel tempsix
 		  	getplayer[tempsix].palookup tempseven
 		  	getplayervar[tempsix].currentscore tempeight
+		  	getplayervar[tempsix].fraglimit tempnine
+
 		  	
-		  	digitalnumberz 2837 293 tempthree tempeight 0 tempseven 16 0 0 xdim ydim 45000
+		  	digitalnumberz 2837 273 tempthree tempeight 0 tempseven 16 0 0 xdim ydim 45000
+		  	rotatesprite 280 tempthree 45000 0 2836 0 tempseven 16 0 0 xdim ydim
+		  	digitalnumberz 2837 293 tempthree tempnine 0 tempseven 16 0 0 xdim ydim 45000
 
 		  	mulvar tempeight 60 //amount of subbars in a bar
-		  	divvar tempeight 30 //max kills fraglimit
+		  	divvarvar tempeight tempnine //max kills fraglimit
 
 		  	getactor[THISACTOR].yvel tempten
 		  	ifvarvare tempsix tempten rotatesprite 362 tempthree 13000 0 2452 0 tempseven 16 0 0 xdim ydim
@@ -652,13 +675,12 @@ onevent EVENT_DISPLAYREST
 
 		  	setvar tempfive 300
 
-		  	ifvarg tempeight 0 {
-		  		whilevarn tempeight 0 {
-			  		rotatesprite tempfive tempthree 65536 0 3163 0 tempseven 17 0 0 xdim ydim 
-			    	addvar tempfive 1 
-			    	subvar tempeight 1
-			  	}
+	  		whilevarn tempeight 0 {
+		  		rotatesprite tempfive tempthree 65536 0 3163 0 tempseven 17 0 0 xdim ydim 
+		    	addvar tempfive 1 
+		    	subvar tempeight 1
 		  	}
+		  	
 
 		  	//Boost bar
 		  	/*setvar tempfive 300
@@ -676,7 +698,49 @@ onevent EVENT_DISPLAYREST
 		  	nextspritestat tempone tempone
 		  	ifvarvare tempone temptwo setvar tempone -1
 		  }
-   	}
+   		}
+	}
+
+	ifvarl freezetimer 30 {
+		//Clock
+	    setvarvar tempone gametimecounter
+	    divvar tempone 30
+	    modvar tempone 60 //rest seconds
+	    setvarvar temptwo gametimecounter
+	    divvar temptwo 30
+	    divvar temptwo 60 //minutes
+
+	    setvar tempfour 156 //x
+	    setvar tempfive 8 //y
+
+	    digitalnumberz 2837 tempfour tempfive temptwo 0 1 0 0 0 xdim ydim 60000
+	    addvar tempfour 3
+	    subvar tempfive 4  
+		digitalnumberz 2847 tempfour tempfive 0 0 1 16 0 0 xdim ydim 50000
+		addvar tempfour 16
+		addvar tempfive 4
+		ifvarl tempone 10 addvar tempfour 4
+		digitalnumberz 2837 tempfour tempfive tempone 0 1 0 0 0 xdim ydim 60000
+		ifvarl tempone 10 subvar tempfour 9
+		ifvarl tempone 10 digitalnumberz 2837 tempfour tempfive 0 0 1 0 0 0 xdim ydim 60000
+	}
+endevent
+
+onevent EVENT_LOOKUP
+	setvar RETURN -1
+	ifvare fraglimit -1 ifvare changecooldown 0 {
+		addvar tempfraglimit 1
+		setvar changecooldown 4
+		globalsound 0
+	}
+endevent
+
+onevent EVENT_LOOKDOWN
+	setvar RETURN -1
+	ifvare fraglimit -1 ifvare changecooldown 0 {
+		subvar tempfraglimit 1
+		setvar changecooldown 4
+		globalsound 0
 	}
 endevent
 
@@ -4063,10 +4127,17 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 	state boost
 	state hitmarkeranddmgdealt
 	state lowhealtheffects
-  state reloadpistol
-  state gameoverslowmo
-  state setwinner
-  state frozen
+  	state reloadpistol
+  	state gameoverslowmo
+  	state setwinner
+  	state frozen
+
+  	ifvare freezetimer 0 ifvare gameover 0 {
+  		addvar gametimecounter 1
+  	}
+  	ifvarg changecooldown 0 {
+  		subvar changecooldown 1
+  	}
 
   setplayer[THISACTOR].auto_aim 2
 
