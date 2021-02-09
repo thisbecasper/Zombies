@@ -18,12 +18,11 @@ action ANULLACTION 0
 //////////////////////////////////// D M /////////////////////////////////////////////////
 
 ////////////////////DEFINES/////////////////
-definegamefuncname 30 Flashbang
-definegamefuncname 13 Grenade
+definegamefuncname 13 Flashbang
 definegamefuncname 14 Boost
 definegamefuncname 36 Alternative
 
-// Grenades
+// Flashbangs
 defineprojectile CANNONBALL PROJ_WORKSLIKE 88270 //2 4 8 64 128 2048 4096 16384
 //defineprojectile CANNONBALL PROJ_SOUND 7
 defineprojectile CANNONBALL PROJ_ISOUND 9
@@ -129,10 +128,11 @@ gamevar deathsatgameover 0 1
 gamevar opponenthadarmorcounter 0 1
 gamevar havecounteddeath 0 1
 gamevar totaldeaths 0 1
-gamevar grenadethrowcd 0 1
-gamevar grenadeammo 2 1
-gamevar grenaderegencounter 0 1
+gamevar flashbangthrowcd 0 1
+gamevar flashbangammo 2 1
+gamevar flashbangregencounter 0 1
 gamevar flashedcounter 0 1
+gamevar freezetimer 150 1
 
 gamevar debugvalue 0 1
 
@@ -320,8 +320,8 @@ ends
 ////////////////////EVENTS/////////////////
 onevent EVENT_DISPLAYREST
 	//Debuggg
-	getplayer[THISACTOR].weapon_pos tempone
-	//digitalnumberz 2837 0 40 tempone 0 0 0 0 0 xdim ydim 58000
+	
+	digitalnumberz 2837 0 40 freezetimer 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 60 placement 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 80 totalearnedxp 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 100 skillpoints 0 0 0 0 0 xdim ydim 58000
@@ -392,10 +392,10 @@ onevent EVENT_DISPLAYREST
    	}*/
 
 		//Magazine and ammo
-  	ifvarg grenadeammo 0 rotatesprite 275 177 35000 0 CANNONBALL 0 0 0 0 0 xdim ydim
-  	ifvarg grenadeammo 1 rotatesprite 284 177 35000 0 CANNONBALL 0 0 0 0 0 xdim ydim
-  	ifvarg grenadeammo 2 rotatesprite 293 177 35000 0 CANNONBALL 0 0 0 0 0 xdim ydim
-  	//ifvarg flashbangammo 0 rotatesprite 290 177 15000 0 1220 0 0 0 0 0 xdim ydim
+  	ifvarg flashbangammo 0 rotatesprite 275 177 35000 0 CANNONBALL 0 0 0 0 0 xdim ydim
+  	ifvarg flashbangammo 1 rotatesprite 284 177 35000 0 CANNONBALL 0 0 0 0 0 xdim ydim
+  	ifvarg flashbangammo 2 rotatesprite 293 177 35000 0 CANNONBALL 0 0 0 0 0 xdim ydim
+  	
 		getplayer[THISACTOR].ammo_amount PWEAPON tempone
 		digitalnumberz DIGITALNUM 40 180 tempone 0 0 0 0 0 xdim ydim 80000
 
@@ -551,7 +551,7 @@ onevent EVENT_DISPLAYREST
 	    subvar tempone 1
 	  }
 
-	  //Grenade counter bar
+	  //Flashbang counter bar
 	  setvar tempone 270
 	  setvar temptwo 30
 	  whilevarn temptwo 0 {
@@ -561,7 +561,7 @@ onevent EVENT_DISPLAYREST
     }
 
 	  setvar tempone 270
-	  setvarvar temptwo grenaderegencounter
+	  setvarvar temptwo flashbangregencounter
 	  divvar temptwo 30
 	  whilevarn temptwo 0 {
       rotatesprite tempone 181 65536 0 3135 0 12 0 0 0 xdim ydim
@@ -805,9 +805,9 @@ endevent
 
 onevent EVENT_LOOKLEFT
 	setvar RETURN -1
-	ifvare grenadethrowcd 0 ifvarg grenadeammo 0 {
-		setvar grenadethrowcd 20
-		subvar grenadeammo 1
+	ifvare flashbangthrowcd 0 ifvarg flashbangammo 0 {
+		setvar flashbangthrowcd 20
+		subvar flashbangammo 1
 		eshoot CANNONBALL
 		getactor[RETURN].zvel tempone
 		subvar tempone 3000
@@ -4069,17 +4069,17 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 		}
   }
 
-  ifvarg grenadethrowcd 0 subvar grenadethrowcd 1
+  ifvarg flashbangthrowcd 0 subvar flashbangthrowcd 1
   
-  ifvarg grenaderegencounter 900 {
-  	ifvarl grenadeammo 3 addvar grenadeammo 1
-  	setvar grenaderegencounter 0
+  ifvarg flashbangregencounter 900 {
+  	ifvarl flashbangammo 3 addvar flashbangammo 1
+  	setvar flashbangregencounter 0
   } else {
-  	ifvarl grenadeammo 3 addvar grenaderegencounter 1
+  	ifvarl flashbangammo 3 addvar flashbangregencounter 1
   }
 
   ifvarg flashedcounter 0 {
-  	palfrom 64 45 45 45
+  	palfrom 63 50 50 50
   	subvar flashedcounter 1
   	setplayer[THISACTOR].runspeed 44000
   } else setplayer[THISACTOR].runspeed 53200
@@ -4093,6 +4093,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 	  ifvarvare tempone temptwo setactor[THISACTOR].htextra -1
   }
 	  
+//////////////////////// END OF USER CODE ///////////////////
 	
 
   ifaction 0
