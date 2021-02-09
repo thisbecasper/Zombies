@@ -23,6 +23,7 @@ definegamefuncname 11 Up
 definegamefuncname 12 Down
 definegamefuncname 13 Flashbang
 definegamefuncname 14 Boost
+definegamefuncname 17 Confirm
 definegamefuncname 36 Alternative
 
 // Flashbangs
@@ -339,7 +340,7 @@ state frozen
   	lockplayer 4
   }
   ifvarg freezetimer 75 ifvarn fraglimit -1 {
-  	palfrom 48 0 0 0
+  	palfrom 42 0 0 0
   }
 ends
 
@@ -426,7 +427,7 @@ onevent EVENT_DISPLAYREST
    		else digitalnumberz THREEBYFIVE -6 165 tempone 0 2 0 0 0 xdim ydim 50000
    	}*/
 
-   	ifvarg freezetimer 0 ifvare allfraglimitshasbeenset 1 {
+   	ifvarg freezetimer 0 ifvarn fraglimit -1 {
    		setvarvar tempone freezetimer
    		divvar tempone 30
    		addvar tempone 1
@@ -923,6 +924,25 @@ endevent
 
 onevent EVENT_JUMP
   ifvarg freezetimer 0 setvar RETURN -1
+endevent
+
+onevent EVENT_PROCESSINPUT
+	ifvarg freezetimer 0 {
+		getinput[THISACTOR].avel tempone
+		getinput[THISACTOR].horz temptwo
+
+		ifvarn tempone 0 setinput[THISACTOR].avel 0
+		ifvarn temptwo 0 setinput[THISACTOR].horz 0
+	}
+endevent
+
+onevent EVENT_AIMUP {
+	setvar RETURN -1
+	ifvare fraglimit -1 {
+		setvarvar fraglimit tempfraglimit
+		sound 243
+	}
+}
 endevent
 //////////////////////////////////// D M /////////////////////////////////////////////////
 
