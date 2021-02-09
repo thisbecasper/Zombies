@@ -1,0 +1,9 @@
+duke.rts
+*.rts
+duke3d.grp
+*.cfg
+*.log
+eduke32.exe
+textures
+*.cache
+*.tga
