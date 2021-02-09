@@ -138,11 +138,13 @@ gamevar flashbangammo 2 1
 gamevar flashbangregencounter 0 1
 gamevar flashedcounter 0 1
 gamevar freezetimer 100 1
-gamevar allfraglimitshasbeenset 0 0
+gamevar nooffraglimitsset 0 0
 gamevar gametimecounter 0 1
 gamevar fraglimit -1 1
 gamevar tempfraglimit 20 1
 gamevar changecooldown 0 1
+gamevar gameison 0 1
+gamevar hasdroppedboostpoints 0 1
 
 gamevar debugvalue 0 1
 
@@ -333,7 +335,7 @@ state boost
 ends
 
 state frozen
-  ifvarg freezetimer 0 ifvare allfraglimitshasbeenset 1 {
+  ifvarg freezetimer 0 ifvare gameison 1 {
     subvar freezetimer 1
   }
   ifvarg freezetimer 0 {
@@ -890,6 +892,7 @@ onevent EVENT_RESETPLAYER
     setplayer[THISACTOR].kickback_pic 4 // start the reloading sequence.
   }
   setvar havecounteddeath 0
+  setvar hasdroppedboostpoints 0 
 endevent
 
 onevent EVENT_PRESSEDFIRE // when the player presses the fire button...
@@ -941,6 +944,7 @@ onevent EVENT_AIMUP {
 	ifvare fraglimit -1 {
 		setvarvar fraglimit tempfraglimit
 		sound 243
+		addvar nooffraglimitsset 1
 	}
 }
 endevent
@@ -4138,6 +4142,23 @@ ends
 
 move PGROWINGPOP        // Used only as a variable
 
+actor 127 {
+	sizeat 32 32
+	
+	fall
+    ifp pshrunk nullop
+    else
+      ifp palive
+        ifcount 6
+          ifpdistl RETRIEVEDISTANCE
+            ifcanseetarget
+      {
+        addvar damagedoneboost 50
+        state quikget
+      }
+}  
+enda
+
 actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 
 	state populatecurrentscore
@@ -4157,6 +4178,9 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
   	}
   	ifvarg changecooldown 0 {
   		subvar changecooldown 1
+  	}
+  	ifvarvare nooffraglimitsset numplayers {
+  		setvar gameison 1
   	}
 
   setplayer[THISACTOR].auto_aim 2
@@ -4290,6 +4314,12 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 
   ifdead
   {
+    ifvare hasdroppedboostpoints 0 {
+    	setvar hasdroppedboostpoints 1
+    	spawn 127
+
+    }
+
     ifaction PGROWING
     {
       ifmove PGROWINGPOP
@@ -4315,7 +4345,6 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
           guts JIBS6 20
           move PGROWINGPOP
           cstat 32768
-          tossweapon
 
           hitradius 2048 60 70 80 90
 
@@ -4429,8 +4458,6 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
         sound DUKE_DEAD
       }
     }
-
-    tossweapon
 
     break
   }
@@ -4624,7 +4651,6 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
     ifdead
     {
       action PTHROWNBACK
-      tossweapon
     }
 
     state random_wall_jibs
