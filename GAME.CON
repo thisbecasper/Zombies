@@ -150,6 +150,8 @@ gamevar currentkillstreak 0 1
 gamevar longestkillstreak 0 1
 gamevar havegivenkilltostreak 0 1
 gamevar ksannouncementcounter 0 1
+gamevar hasoverheated 0 1
+gamevar chaingunheat 0 1
 
 gamevar debugvalue 0 1
 
@@ -528,6 +530,42 @@ onevent EVENT_DISPLAYREST
 	      ifvare tempnine 1 digitalnumberz THREEBYFIVE 172 194 tempten 0 1 0 0 0 xdim ydim 50000
 	      else digitalnumberz THREEBYFIVE 172 194 tempten 0 2 0 0 0 xdim ydim 50000
 	    }
+
+		//Overheat bar
+		getplayer[THISACTOR].curr_weapon tempone
+		ifvare tempone CHAINGUN_WEAPON {
+			setvar temptwo 135
+			setvar tempthree 50
+			whilevarn tempthree 0 {
+		      rotatesprite temptwo 130 65500 0 3021 0 1 49 0 0 xdim ydim 
+		      addvar temptwo 1 
+		      subvar tempthree 1
+	    	}
+	   		setvar temptwo 135
+			setvarvar tempthree chaingunheat
+			ifvare hasoverheated 1 {
+				divvar tempthree 5
+				whilevarn tempthree 0 {
+			        rotatesprite temptwo 130 65500 0 3021 0 2 16 0 0 xdim ydim 
+			        addvar temptwo 1 
+			        subvar tempthree 1
+		    	}
+			} else ifvarg chaingunheat 150 {
+				divvar tempthree 5
+				whilevarn tempthree 0 {
+			        rotatesprite temptwo 130 65500 0 3021 0 2 16 0 0 xdim ydim 
+			        addvar temptwo 1 
+			        subvar tempthree 1
+	      		}
+			} else {
+				divvar tempthree 5
+				whilevarn tempthree 0 {
+			        rotatesprite temptwo 130 65500 0 3021 0 1 16 0 0 xdim ydim 
+			        addvar temptwo 1 
+			        subvar tempthree 1
+		      	}
+		    }
+		}
 
 
 		//Killstreak
@@ -962,6 +1000,14 @@ onevent EVENT_PRESSEDFIRE // when the player presses the fire button...
   setvar WEAPON2_SHOTSPERBURST 7
   setvar WEAPON4_SHOOTS RPG
   setvar WEAPON6_SHOOTS SHRINKER
+
+	getplayer[THISACTOR].curr_weapon tempone
+	getplayer[THISACTOR].ammo_amount tempone temptwo
+	ifvare tempone CHAINGUN_WEAPON {
+		ifvare hasoverheated 0 ifvarg temptwo 1 addvar chaingunheat 6
+		else setvar RETURN -1
+	}
+
 endevent
 
 onevent EVENT_LOOKLEFT
@@ -1015,6 +1061,18 @@ onevent EVENT_AIMUP {
 		addvar nooffraglimitsset 1
 	}
 }
+endevent
+
+onevent EVENT_NEXTWEAPON
+	ifvare hasoverheated 1 {
+		setvar RETURN -1
+	}
+endevent
+
+onevent EVENT_PREVIOUSWEAPON
+	ifvare hasoverheated 1 {
+		setvar RETURN -1
+	} 
 endevent
 //////////////////////////////////// D M /////////////////////////////////////////////////
 
@@ -4277,6 +4335,15 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
   	ifvarg ksannouncementcounter 0 {
   		subvar ksannouncementcounter 1
   	}
+
+  	ifvarg chaingunheat 0 {
+		ifvarg chaingunheat 250 {
+			sound STEAM_HISSING
+			setvar hasoverheated 1
+		} 
+		ifvarg chaingunheat 150 subvar chaingunheat 1
+		else subvar chaingunheat 2
+	} else setvar hasoverheated 0
 
 
   setplayer[THISACTOR].auto_aim 2
