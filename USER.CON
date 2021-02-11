@@ -56,17 +56,17 @@ define FROZENQUICKKICKDIST      980
 
 define GENERICIMPACTDAMAGE      10
 
-define MAXPISTOLAMMO           200
-define MAXSHOTGUNAMMO           50
-define MAXCHAINGUNAMMO         200
-define MAXRPGAMMO               50
-define MAXHANDBOMBAMMO          50
-define MAXSHRINKERAMMO          50
-define MAXGROWAMMO              50
-define MAXDEVISTATORAMMO        99
-define MAXFREEZEAMMO            99
-define MAXTRIPBOMBAMMO          10
-define TRIPBOMBLASERMODE        0     // 0 = always visable
+define MAXPISTOLAMMO           999
+define MAXSHOTGUNAMMO          999
+define MAXCHAINGUNAMMO         999
+define MAXRPGAMMO              999
+define MAXHANDBOMBAMMO         999
+define MAXSHRINKERAMMO         999
+define MAXGROWAMMO             999
+define MAXDEVISTATORAMMO       999
+define MAXFREEZEAMMO           999
+define MAXTRIPBOMBAMMO         999
+define TRIPBOMBLASERMODE        2    // 0 = always visable
                                       // 1 = transluscense
                                       // 2 = invisible w/o IR goggles
                                       // 3 = totally invisable
@@ -135,7 +135,7 @@ define HANDBOMB_WEAPON_STRENGTH        140
 // damage values depend on distance. The
 // further, the weaker.
 
-define RPG_WEAPON_STRENGTH              140
+define RPG_WEAPON_STRENGTH              0
 
 
 define SHRINKER_WEAPON_STRENGTH        201
@@ -144,7 +144,7 @@ define SHOTGUN_WEAPON_STRENGTH          10
 define CHAINGUN_WEAPON_STRENGTH          9
 define FREEZETHROWER_WEAPON_STRENGTH    20
 define COOL_EXPLOSION_STRENGTH          38
-define TRIPBOMB_STRENGTH               100
+define TRIPBOMB_STRENGTH                50
 define FIRELASER_WEAPON_STRENGTH         7
 define MORTER_WEAPON_STRENGTH           50
 define BOUNCEMINE_WEAPON_STRENGTH      150
@@ -224,6 +224,16 @@ define SPAWNAMMOODDS             96
 // Maximum quotes is 192 slots.
 
 
+
+definequote 103       3 KILL STREAK
+definequote 104       4 KILL STREAK
+definequote 105       5 KILL STREAK
+definequote 106       6 KILL STREAK
+definequote 107       7 KILL STREAK
+definequote 108       8 KILL STREAK
+definequote 109       9 KILL STREAK
+definequote 110       10 KILL STREAK
+definequote 111       10+ KILL STREAK
 
 definequote 124       SET FRAG LIMIT
 definequote 125       G A M E  O V E R 

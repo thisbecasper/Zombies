@@ -57,10 +57,10 @@ defineprojectile FIRELASER PROJ_EXTRA 0
 defineprojectile FIRELASER PROJ_EXTRA_RAND 0
 defineprojectile FIRELASER PROJ_BOUNCES 3
 defineprojectile FIRELASER PROJ_BSOUND 500
-defineprojectile FIRELASER PROJ_TRAIL SMALLSMOKE //2567
+defineprojectile FIRELASER PROJ_TRAIL SMALLSMOKE
 
 //Fast rpg
-defineprojectile RPG PROJ_WORKSLIKE 2 //2 4 8 64 128 2048 4096 16384
+defineprojectile RPG PROJ_WORKSLIKE 32770 //2 4 8 64 128 2048 4096 16384 32768
 defineprojectile RPG PROJ_SOUND 7
 defineprojectile RPG PROJ_ISOUND 9
 defineprojectile RPG PROJ_SPAWNS EXPLOSION2
@@ -71,7 +71,7 @@ defineprojectile RPG PROJ_TRAIL SMALLSMOKE
 defineprojectile RPG PROJ_XREPEAT 18
 defineprojectile RPG PROJ_YREPEAT 18
 defineprojectile RPG PROJ_HITRADIUS 1780
-defineprojectile RPG PROJ_EXTRA 110
+defineprojectile RPG PROJ_EXTRA 1010
 
 //Alternative rpg
 defineprojectile 1669 PROJ_WORKSLIKE 2 //2 4 8 64 128 2048 4096 16384
@@ -137,7 +137,7 @@ gamevar flashbangthrowcd 0 1
 gamevar flashbangammo 2 1
 gamevar flashbangregencounter 0 1
 gamevar flashedcounter 0 1
-gamevar freezetimer 100 1
+gamevar freezetimer 0 1
 gamevar nooffraglimitsset 0 0
 gamevar gametimecounter 0 1
 gamevar fraglimit -1 1
@@ -146,6 +146,10 @@ gamevar changecooldown 0 1
 gamevar gameison 0 1
 gamevar hasdroppedboostpoints 0 1
 gamevar itemcounter 0 2
+gamevar currentkillstreak 0 1
+gamevar longestkillstreak 0 1
+gamevar havegivenkilltostreak 0 1
+gamevar ksannouncementcounter 0 1
 
 gamevar debugvalue 0 1
 
@@ -351,7 +355,7 @@ ends
 onevent EVENT_DISPLAYREST
 	//Debuggg
 	
-	//digitalnumberz 2837 0 40 changecooldown 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 40 currentkillstreak 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 60 placement 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 80 totalearnedxp 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 100 skillpoints 0 0 0 0 0 xdim ydim 58000
@@ -517,15 +521,30 @@ onevent EVENT_DISPLAYREST
 	    else {
 	      ifvare tempnine 1 digitalnumberz THREEBYFIVE 172 189 tempten 0 1 0 0 0 xdim ydim 50000
 	      else digitalnumberz THREEBYFIVE 172 189 tempten 0 2 0 0 0 xdim ydim 50000
-	    }
-
-	    getplayer[THISACTOR].ammo_amount FREEZE_WEAPON tempten
+	    } getplayer[THISACTOR].ammo_amount FREEZE_WEAPON tempten
 	    getplayer[THISACTOR].gotweapon FREEZE_WEAPON tempnine
 	    ifvare PWEAPON 9 digitalnumberz THREEBYFIVE 172 194 tempten 0 7 0 0 0 xdim ydim 50000
 	    else {
 	      ifvare tempnine 1 digitalnumberz THREEBYFIVE 172 194 tempten 0 1 0 0 0 xdim ydim 50000
 	      else digitalnumberz THREEBYFIVE 172 194 tempten 0 2 0 0 0 xdim ydim 50000
 	    }
+
+
+		//Killstreak
+		ifvarg ksannouncementcounter 0 {
+			ifvarg currentkillstreak 10 {
+				gametextz STARTALPHANUM 320 65 11 0 2 0 0 0 xdim ydim 60000
+			} else ifvare currentkillstreak 3 {
+				gametextz STARTALPHANUM 320 65 103 0 0 0 0 0 xdim ydim 60000
+			} else ifvare currentkillstreak 4  {
+				gametextz STARTALPHANUM 320 65 104 0 15 0 0 0 xdim ydim 60000
+			} else ifvarg currentkillstreak 0  {
+				setvar tempone 100
+				addvarvar tempone currentkillstreak
+				gametextz STARTALPHANUM 320 65 tempone 0 2 0 0 0 xdim ydim 60000
+			}
+		}
+		
 
 			//Healthbar armor
 			getactor[THISACTOR].extra tempone
@@ -550,20 +569,20 @@ onevent EVENT_DISPLAYREST
 		 		setvar tempfour -36
 		 		whilevarvarn tempone tempthree {
 		 			rotatesprite tempfour 189 65536 1024 3021 0 0 21 0 0 xdim ydim 
-			    addvar tempfour 1 
-			    subvar tempone 1
+				    addvar tempfour 1 
+				    subvar tempone 1
 		 		}
 		 	}
 		 	ifvarg tempone 100 {
 		 		setvar tempfour 60
 		 		whilevarn tempone 100 {
 					rotatesprite tempfour 185 65536 1024 3021 0 2 21 0 0 xdim ydim 
-			    addvar tempfour 1 
-			    subvar tempone 1
+				    addvar tempfour 1 
+				    subvar tempone 1
 			  }
 		 	}
 		  whilevarn tempone 0 {
-				rotatesprite temptwo 185 65536 1024 3021 0 1 21 0 0 xdim ydim 
+			rotatesprite temptwo 185 65536 1024 3021 0 1 21 0 0 xdim ydim 
 		    addvar temptwo 1 
 		    subvar tempone 1
 		  }
@@ -575,6 +594,13 @@ onevent EVENT_DISPLAYREST
 		    addvar temptwo 1 
 		    subvar tempone 1
 		  }
+		  getplayer[THISACTOR].SHIELD_AMOUNT tempone
+		  setvar temptwo -41
+		  whilevarn tempone 0 {
+		    rotatesprite temptwo 187 65536 0 3135 0 2 0 0 0 xdim ydim 
+		    addvar temptwo 1 
+		    subvar tempone 1
+		  }
 
 		  //Dmg done bar
 			digitalnumberz DIGITALNUM 315 180 damagedoneboost 0 24 0 0 0 xdim ydim 80000
@@ -583,8 +609,11 @@ onevent EVENT_DISPLAYREST
 
 		  setvar tempone 100
 		  setvar temptwo 260
+		  setvar tempthree 1
+		  ifvarg damagedoneboost 700 setvar tempthree 2
+
 		  whilevarn tempone 0 {
-		  	rotatesprite temptwo 185 65500 0 3021 5 1 49 0 0 xdim ydim 
+		  	rotatesprite temptwo 185 65500 0 3021 5 tempthree 49 0 0 xdim ydim 
 		    addvar temptwo 1 
 		    subvar tempone 1
 		  }
@@ -593,7 +622,7 @@ onevent EVENT_DISPLAYREST
 		  setvar temptwo 260
 		  divvar tempone 10
 		  whilevarn tempone 0 {
-		  	rotatesprite temptwo 185 65500 0 3021 0 1 17 0 0 xdim ydim 
+		  	rotatesprite temptwo 185 65500 0 3021 0 tempthree 17 0 0 xdim ydim 
 		    addvar temptwo 1 
 		    subvar tempone 1
 		  }
@@ -616,10 +645,21 @@ onevent EVENT_DISPLAYREST
 	      subvar temptwo 1
 	    }
 
-		  //Boost activation timer
-		  setvar tempone 145 // set starting x coordinate
+	    //Nightvision goggles
+	    getplayer[THISACTOR].heat_amount tempone
+	    ifvarg tempone 0 {
+	    	rotatesprite 280 160 35000 0 HEATSENSOR 0 0 0 0 0 xdim ydim
+	    	getplayer[THISACTOR].heat_on temptwo
+	    	divvar tempone 30
+	    	ifvare temptwo 1 digitalnumberz 2837 305 163 tempone 0 2 0 0 0 xdim ydim 60000
+	    	else digitalnumberz 2837 305 163 tempone 0 0 0 0 0 xdim ydim 60000
+	    	
+	    }
+
+	  	//Boost activation timer
+	  	setvar tempone 145 // set starting x coordinate
 	    setvarvar temptwo boostactivationtimer
-	    divvar temptwo 20
+	    divvar temptwo 60
 	    addvar temptwo 1
 	    ifvarg boostactivationtimer 0 {
 	    	ifvarg temptwo 14 {
@@ -636,7 +676,23 @@ onevent EVENT_DISPLAYREST
 		      }
 		    }
 	    }
+
+	    //Steroids
+	  	setvar tempone 135 // set starting x coordinate
+	  	getplayer[THISACTOR].STEROIDS_AMOUNT temptwo
+	    divvar temptwo 6
+	    setvarvar tempthree temptwo
+	    addvar temptwo 1
+	    ifvarg tempthree 0 {
+	      	whilevarn temptwo 0 {
+	        	rotatesprite tempone 120 65536 0 3163 0 2 17 0 0 xdim ydim
+	        	addvar tempone 1
+	        	subvar temptwo 1
+	      	}
+
+	    }
 		    
+
 	    
 		  /*setvarvar tempone boostactivationtimer
 		  setvar temptwo 263
@@ -679,10 +735,12 @@ onevent EVENT_DISPLAYREST
 
 		  	setvar tempfive 300
 
-	  		whilevarn tempeight 0 {
-		  		rotatesprite tempfive tempthree 65536 0 3163 0 tempseven 17 0 0 xdim ydim 
-		    	addvar tempfive 1 
-		    	subvar tempeight 1
+		  	ifvarg tempeight 0 {
+		  		whilevarn tempeight 0 {
+			  		rotatesprite tempfive tempthree 65536 0 3163 0 tempseven 17 0 0 xdim ydim 
+			    	addvar tempfive 1 
+			    	subvar tempeight 1
+			  	}
 		  	}
 		  	
 
@@ -893,7 +951,8 @@ onevent EVENT_RESETPLAYER
     setplayer[THISACTOR].kickback_pic 4 // start the reloading sequence.
   }
   setvar havecounteddeath 0
-  setvar hasdroppedboostpoints 0 
+  setvar hasdroppedboostpoints 0
+  setvar havegivenkilltostreak 0
 endevent
 
 onevent EVENT_PRESSEDFIRE // when the player presses the fire button...
@@ -920,9 +979,17 @@ endevent
 onevent EVENT_LOOKRIGHT 
 	setvar RETURN -1
 	ifvarg boostactivationtimer 0 {
-		setplayer[THISACTOR].STEROIDS_AMOUNT 200
+		setplayer[THISACTOR].STEROIDS_AMOUNT 300
+		getplayer[THISACTOR].i tempone
+		getactor[tempone].extra temptwo
+		getplayer[THISACTOR].max_player_health tempthree
+		ifvarvarl temptwo tempthree {
+			setactor[tempone].extra tempthree
+		}
+		setplayer[THISACTOR].SHIELD_AMOUNT 100
 		setvar boostactivationtimer 0
 		sound DUKE_TAKEPILLS
+		sound 216
 	} 
 endevent
 
@@ -2602,7 +2669,9 @@ actor HEATSENSOR
           ifpinventory GET_HEATS HEAT_AMOUNT
             ifcanseetarget
       {
-        addinventory GET_HEATS HEAT_AMOUNT
+      	getplayer[THISACTOR].heat_amount tempone
+      	addvar tempone HEAT_AMOUNT
+      	setplayer[THISACTOR].heat_amount tempone
         quote 101
         ifspawnedby HEATSENSOR
           state getcode
@@ -3019,9 +3088,6 @@ enda
 
 
 actor SIXPAK
-	getplayer[THISACTOR].max_player_health tempone
-	getplayer[THISACTOR].i temptwo
-	getactor[temptwo].extra temptwo
   fall
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
@@ -3045,9 +3111,6 @@ actor SIXPAK
 enda
 
 actor COLA
-	getplayer[THISACTOR].max_player_health tempone
-	getplayer[THISACTOR].i temptwo
-	getactor[temptwo].extra temptwo
   fall
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
@@ -3139,7 +3202,6 @@ actor FIRSTGUNSPRITE
           state quikweaponget
       }
 enda
-
 
 actor TRIPBOMBSPRITE
   fall
@@ -4191,6 +4253,31 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
   	ifvarvare nooffraglimitsset numplayers {
   		setvar gameison 1
   	}
+  	getplayer[THISACTOR].heat_on tempone
+  	ifvare tempone 1 {
+  		setgamepalette 0
+  	}
+  	ifdead {
+  		setvar currentkillstreak 0
+  		ifvare havegivenkilltostreak 0 { 
+  			setvar havegivenkilltostreak 1
+
+	  		getplayer[THISACTOR].wackedbyactor temptwo
+	  		getactor[temptwo].yvel tempthree
+	  		getactor[THISACTOR].yvel tempfive
+
+	  		ifvarvarn tempthree tempfive {
+		  		getplayervar[tempthree].currentkillstreak tempfour
+		  		addvar tempfour 1
+		  		setplayervar[tempthree].currentkillstreak tempfour
+		  		setplayervar[tempthree].ksannouncementcounter 60
+	  		}
+  		}
+  	}
+  	ifvarg ksannouncementcounter 0 {
+  		subvar ksannouncementcounter 1
+  	}
+
 
   setplayer[THISACTOR].auto_aim 2
 
