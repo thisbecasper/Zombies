@@ -7,3 +7,11 @@ eduke32.exe
 textures
 *.cache
 *.tga
+mods/
+usermaps/
+*.exe
+*.dll
+*.dat
+*.txt
+texturecache
+*.index
