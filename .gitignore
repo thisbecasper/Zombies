@@ -1,9 +1,6 @@
 mods/
 usermaps/
 
-duke.rts
-duke3d.grp
-
 *.tga
 
 eduke32-oldmp.cfg
