@@ -125,7 +125,7 @@ gamestartup     DEFAULTVISIBILITY GENERICIMPACTDAMAGE MAXPLAYERHEALTH
 
 // Weapon Strengths
 define KNEE_WEAPON_STRENGTH             50
-define PISTOL_WEAPON_STRENGTH            6000
+define PISTOL_WEAPON_STRENGTH            6
 define HANDBOMB_WEAPON_STRENGTH        140
 
 
@@ -149,7 +149,7 @@ define FIRELASER_WEAPON_STRENGTH         0
 define MORTER_WEAPON_STRENGTH           50
 define BOUNCEMINE_WEAPON_STRENGTH      150
 define SPIT_WEAPON_STRENGTH              8
-define BULLET_WEAPON_STRENGTH           3000
+define BULLET_WEAPON_STRENGTH           30
 
 // Enemy strengths (hit points).
 
