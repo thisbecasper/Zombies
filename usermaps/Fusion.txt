@@ -1,0 +1,40 @@
+=======================================================================
+Title                  		: Fusion
+Filename                		: Fusion.map
+Author                  		: Dani J Swanson
+Email Address           	: Dani.j@ddsdesign.co.uk
+Description            		 : 
+			  Deathmatch in an old Nuclear Fusion Facility.
+Additional Credit to    :
+			  Friends old and new.
+                                                     
+=======================================================================
+
+* Play Information *
+
+Single Player           		: No
+Cooperative 2-4 Player  	: No
+Deathmatch 2-4 Player   	: Ooooohhhh Yeah
+Difficulty Settings     	: Not implemented.
+New Sounds/music		: No
+New Graphics:		: No
+
+* Construction *
+
+Base                    		: New from scratch
+Editor used             		: BUILD.EXE
+Build Time              		: About 60+ hrs.
+Known Bugs             		: Unless you count disapearing sprites from some angles. No.
+
+* Copyright / Permissions *
+
+You can freely distribute this level and put it on your page. 
+Don't distribute this level under your own name.
+Include this Text file always.
+
+
+* Where to get this MAP *
+
+Somewhere in the deep beyond...
+
+=======================================================================

@@ -19,16 +19,12 @@ action ANULLACTION 0
 
 ////////////////////DEFINES/////////////////
 
-//definegamefuncname 2 LIMIT_UP
-//definegamefuncname 3 LIMIT_DOWN
-//definegamefuncname 4 CONFIRM
-
-definegamefuncname 11 Up
-definegamefuncname 12 Down
 definegamefuncname 13 Flashbang
 definegamefuncname 14 Boost
-definegamefuncname 17 Confirm
-definegamefuncname 36 Alternative
+definegamefuncname 29 Frag_Limit_Up
+definegamefuncname 30 Frag_Limit_Down
+definegamefuncname 31 Confirm_Frag_Limit
+definegamefuncname 36 Alternative_fire
 
 // Flashbangs
 defineprojectile CANNONBALL PROJ_WORKSLIKE 88270 //2 4 8 64 128 2048 4096 16384
@@ -857,16 +853,26 @@ onevent EVENT_DISPLAYREST
 	}
 endevent
 
-onevent EVENT_LOOKUP
+onevent EVENT_INVENTORY {
 	setvar RETURN -1
 	ifvare fraglimit -1 ifvare changecooldown 0 {
 		addvar tempfraglimit 1
 		setvar changecooldown 4
 		globalsound 0
 	}
+}
 endevent
 
-onevent EVENT_LOOKDOWN
+onevent EVENT_INVENTORYRIGHT
+	setvar RETURN -1
+	ifvare fraglimit -1 {
+		setvarvar fraglimit tempfraglimit
+		sound 243
+		addvar nooffraglimitsset 1
+	}
+endevent
+
+onevent EVENT_INVENTORYLEFT
 	setvar RETURN -1
 	ifvare fraglimit -1 ifvare changecooldown 0 {
 		subvar tempfraglimit 1
@@ -1078,16 +1084,6 @@ onevent EVENT_PROCESSINPUT
 		ifvarn tempone 0 setinput[THISACTOR].avel 0
 		ifvarn temptwo 0 setinput[THISACTOR].horz 0
 	}
-endevent
-
-onevent EVENT_AIMUP {
-	setvar RETURN -1
-	ifvare fraglimit -1 {
-		setvarvar fraglimit tempfraglimit
-		sound 243
-		addvar nooffraglimitsset 1
-	}
-}
 endevent
 
 onevent EVENT_NEXTWEAPON

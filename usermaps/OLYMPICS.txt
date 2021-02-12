@@ -1,0 +1,53 @@
+----------------------------------------------------------------------
+OLYMPICS.map
+version 1.0 shareware
+----------------------------------------------------------------------
+THE DUKE NUKEM 3D SUMMER OLYMPICS
+SINGLE 
+DUKEMATCH 2 to 10 
+=====================================================================
+THE MOST BEAUTIFUL OLYMPIC STADIUM OF THE WORLD 
+=====================================================================
+Title                 : OLYMPIC.map
+			VERSION 1.01 shaweware
+Author                : JEROME ASSELIN
+			QUEBEC CITY CANADA			
+=====================================================================
+THIS MAP ARE VERY BIG, PENTIUM IS RECOMMENDED
+---------------------------------------------------------------------
+E-mail                : tod1@quebectel.com
+---------------------------------------------------------------------
+BY THE SAME CREATOR OF ICE.MAP ICEPALACE.MAP SEXYTOWN.MAP BALLPARK.MAP 
+---------------------------------------------------------------------
+
+Description           : 
+
+WELCOME to the first Duke Nukem 3d Summer Olympics. The have a 65000
+spectators olympic stadium. A olympic pool, 3 courts of tennis, 1 of 
+badminton, 1 volleyball, 1 basketball, 2 ping pong tables, 1 ring of
+boxing, wrestling, karate,  high dive, football field, Weightlifting 
+auditorium. You can make 20 competition. 
+
+AND MORE...
+
+VIP sections, journalism press room, ticket sale, 4 bar, 3 Dukai Sushi,
+1 McGarett Burger, 3 dressing room, etc.
+
+                       
+* TIP *. PLAY DUKEMATCH ON THE GRASS 
+-----------------------------------------------------------------------
+======================================================================
+
+* Play Information *
+
+Single Player         : .
+DukeMatch Level       : Yes 2 or more
+Difficulty Settings   : Not implemented
+
+* Construction *
+
+Took me 75 hours, but God it was fun!
+
+Base                  :   
+Known Bugs            : 
+===========================================================================
