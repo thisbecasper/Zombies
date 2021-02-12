@@ -125,7 +125,7 @@ gamestartup     DEFAULTVISIBILITY GENERICIMPACTDAMAGE MAXPLAYERHEALTH
 
 // Weapon Strengths
 define KNEE_WEAPON_STRENGTH             50
-define PISTOL_WEAPON_STRENGTH            6
+define PISTOL_WEAPON_STRENGTH            6000
 define HANDBOMB_WEAPON_STRENGTH        140
 
 
@@ -141,15 +141,15 @@ define RPG_WEAPON_STRENGTH              0
 define SHRINKER_WEAPON_STRENGTH        201
 define GROWSPARK_WEAPON_STRENGTH        15
 define SHOTGUN_WEAPON_STRENGTH          10
-define CHAINGUN_WEAPON_STRENGTH          9
+define CHAINGUN_WEAPON_STRENGTH         11
 define FREEZETHROWER_WEAPON_STRENGTH    20
 define COOL_EXPLOSION_STRENGTH          38
 define TRIPBOMB_STRENGTH                50
-define FIRELASER_WEAPON_STRENGTH         7
+define FIRELASER_WEAPON_STRENGTH         0
 define MORTER_WEAPON_STRENGTH           50
 define BOUNCEMINE_WEAPON_STRENGTH      150
 define SPIT_WEAPON_STRENGTH              8
-define BULLET_WEAPON_STRENGTH           30
+define BULLET_WEAPON_STRENGTH           3000
 
 // Enemy strengths (hit points).
 
@@ -235,6 +235,7 @@ definequote 109       9 KILL STREAK
 definequote 110       10 KILL STREAK
 definequote 111       10+ KILL STREAK
 
+definequote 123       LONGEST KILL STREAK:
 definequote 124       SET FRAG LIMIT
 definequote 125       G A M E  O V E R 
 definequote 126       DAMAGE DEALT:

@@ -41,6 +41,26 @@ defineprojectile CANNONBALL PROJ_RANGE 60
 defineprojectile CANNONBALL PROJ_HITRADIUS 8000
 defineprojectile CANNONBALL PROJ_EXTRA 30
 
+//Pistol
+defineprojectile SHOTSPARK1 PROJ_WORKSLIKE 131073
+defineprojectile SHOTSPARK1 PROJ_EXTRA_RAND 0
+defineprojectile SHOTSPARK1 PROJ_EXTRA 9
+defineprojectile SHOTSPARK1 PROJ_SXREPEAT 24
+defineprojectile SHOTSPARK1 PROJ_SYREPEAT 24
+defineprojectile SHOTSPARK1 PROJ_XREPEAT 7
+defineprojectile SHOTSPARK1 PROJ_YREPEAT 7
+defineprojectile SHOTSPARK1 PROJ_DECAL BULLETHOLE
+
+//Chaingun
+defineprojectile CHAINGUN PROJ_WORKSLIKE 1
+defineprojectile CHAINGUN PROJ_EXTRA_RAND 0
+defineprojectile CHAINGUN PROJ_EXTRA 11
+defineprojectile CHAINGUN PROJ_SXREPEAT 24
+defineprojectile CHAINGUN PROJ_SYREPEAT 24
+defineprojectile CHAINGUN PROJ_XREPEAT 7
+defineprojectile CHAINGUN PROJ_YREPEAT 7
+defineprojectile CHAINGUN PROJ_DECAL BULLETHOLE
+
 //Power shotgun
 defineprojectile FIRELASER PROJ_WORKSLIKE 36870
 defineprojectile FIRELASER PROJ_SPAWNS SMALLSMOKE
@@ -53,7 +73,7 @@ defineprojectile FIRELASER PROJ_TXREPEAT 6
 defineprojectile FIRELASER PROJ_TYREPEAT 6
 defineprojectile FIRELASER PROJ_CLIPDIST 4
 defineprojectile FIRELASER PROJ_HITRADIUS 0
-defineprojectile FIRELASER PROJ_EXTRA 0
+defineprojectile FIRELASER PROJ_EXTRA 7
 defineprojectile FIRELASER PROJ_EXTRA_RAND 0
 defineprojectile FIRELASER PROJ_BOUNCES 3
 defineprojectile FIRELASER PROJ_BSOUND 500
@@ -71,7 +91,7 @@ defineprojectile RPG PROJ_TRAIL SMALLSMOKE
 defineprojectile RPG PROJ_XREPEAT 18
 defineprojectile RPG PROJ_YREPEAT 18
 defineprojectile RPG PROJ_HITRADIUS 1780
-defineprojectile RPG PROJ_EXTRA 1010
+defineprojectile RPG PROJ_EXTRA 101
 
 //Alternative rpg
 defineprojectile 1669 PROJ_WORKSLIKE 2 //2 4 8 64 128 2048 4096 16384
@@ -137,7 +157,7 @@ gamevar flashbangthrowcd 0 1
 gamevar flashbangammo 2 1
 gamevar flashbangregencounter 0 1
 gamevar flashedcounter 0 1
-gamevar freezetimer 0 1
+gamevar freezetimer 150 1
 gamevar nooffraglimitsset 0 0
 gamevar gametimecounter 0 1
 gamevar fraglimit -1 1
@@ -152,6 +172,7 @@ gamevar havegivenkilltostreak 0 1
 gamevar ksannouncementcounter 0 1
 gamevar hasoverheated 0 1
 gamevar chaingunheat 0 1
+gamevar lastchaingunammo 0 1
 
 gamevar debugvalue 0 1
 
@@ -391,6 +412,11 @@ onevent EVENT_DISPLAYREST
 		//Damage taken:
 		gametextz STARTALPHANUM 170 137 127 0 13 0 0 0 xdim ydim 60000
 		digitalnumberz 2837 205 137 damagetakentotal 0 13 0 0 0 xdim ydim 60000
+
+		//Longest killstreak
+		gametextz STARTALPHANUM 75 149 123 0 13 0 0 0 xdim ydim 60000
+		digitalnumberz 2837 205 149 longestkillstreak 0 13 0 0 0 xdim ydim 60000
+
 		//Placement
 		ifvare placement 1 gametextz STARTALPHANUM 320 95 128 0 0 0 0 0 xdim ydim 80000
 		else ifvare placement 2 gametextz STARTALPHANUM 320 95 132 0 0 0 0 0 xdim ydim 80000
@@ -1001,13 +1027,9 @@ onevent EVENT_PRESSEDFIRE // when the player presses the fire button...
   setvar WEAPON4_SHOOTS RPG
   setvar WEAPON6_SHOOTS SHRINKER
 
-	getplayer[THISACTOR].curr_weapon tempone
-	getplayer[THISACTOR].ammo_amount tempone temptwo
-	ifvare tempone CHAINGUN_WEAPON {
-		ifvare hasoverheated 0 ifvarg temptwo 1 addvar chaingunheat 6
-		else setvar RETURN -1
-	}
+  getplayer[THISACTOR].curr_weapon tempone
 
+	ifvare tempone CHAINGUN_WEAPON ifvare hasoverheated 1 setvar RETURN -1
 endevent
 
 onevent EVENT_LOOKLEFT
@@ -4344,7 +4366,14 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 		ifvarg chaingunheat 150 subvar chaingunheat 1
 		else subvar chaingunheat 2
 	} else setvar hasoverheated 0
+	ifvarvarg currentkillstreak longestkillstreak setvarvar longestkillstreak currentkillstreak
 
+	
+	getplayer[THISACTOR].ammo_amount 3 temptwo
+	ifvarvarl temptwo lastchaingunammo {
+		addvar chaingunheat 14
+	}
+	setvarvar lastchaingunammo temptwo
 
   setplayer[THISACTOR].auto_aim 2
 
