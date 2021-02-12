@@ -879,7 +879,7 @@ endevent
 
 onevent EVENT_INVENTORYLEFT
 	setvar RETURN -1
-	ifvare fraglimit -1 ifvare changecooldown 0 {
+	ifvare fraglimit -1 ifvare changecooldown 0 ifvarg tempfraglimit 1 {
 		subvar tempfraglimit 1
 		setvar changecooldown 4
 		globalsound 0
@@ -4423,29 +4423,16 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
   ifvare gameover 1 {
 		ifvare havetriggeredgameover 0 {
 			globalsound 249 //288 grabbag
-
-			setvar tempten 0
-
-			headspritestat tempone 10
-		  setvarvar temptwo tempone
-		  whilevarn tempone -1 {
-		  	
-		  	getactor[tempone].yvel tempfour
-		  	getplayervar[tempfour].currentscore tempfive
-
-		  	ifvarvarl tempfive currentscore {
-		  		nullop
-		  	} else {
-		  		addvar tempten 1
-		  	}
-
-		  	nextspritestat tempone tempone
-		  	ifvarvare tempone temptwo setvar tempone -1
-		  }
-		  setvarvar placement tempten
-		  setvarvar killsatgameover currentscore
-		  setvarvar deathsatgameover totaldeaths
-		  setvar havetriggeredgameover 1
+			setvarvar killsatgameover currentscore
+			setvarvar deathsatgameover totaldeaths
+			setvar havetriggeredgameover 1
+			
+			addlogvar placement
+			addlogvar currentscore
+			addlogvar totaldeaths
+			addlogvar longestkillstreak
+			addlogvar damagedonetotal
+			addlogvar damagetakentotal
 		}
   }
 
