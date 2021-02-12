@@ -45,6 +45,7 @@ defineprojectile CANNONBALL PROJ_RANGE 60
 defineprojectile CANNONBALL PROJ_HITRADIUS 8000
 defineprojectile CANNONBALL PROJ_EXTRA 30
 
+/*
 //Pistol
 defineprojectile SHOTSPARK1 PROJ_WORKSLIKE 131073
 defineprojectile SHOTSPARK1 PROJ_EXTRA_RAND 0
@@ -63,7 +64,7 @@ defineprojectile CHAINGUN PROJ_SXREPEAT 24
 defineprojectile CHAINGUN PROJ_SYREPEAT 24
 defineprojectile CHAINGUN PROJ_XREPEAT 7
 defineprojectile CHAINGUN PROJ_YREPEAT 7
-defineprojectile CHAINGUN PROJ_DECAL BULLETHOLE
+defineprojectile CHAINGUN PROJ_DECAL BULLETHOLE*/
 
 //Power shotgun
 defineprojectile FIRELASER PROJ_WORKSLIKE 36870
