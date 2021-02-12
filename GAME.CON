@@ -107,6 +107,8 @@ defineprojectile 1669 PROJ_TXREPEAT 5
 defineprojectile 1669 PROJ_TYREPEAT 5
 defineprojectile 1669 PROJ_XREPEAT 18
 defineprojectile 1669 PROJ_YREPEAT 18
+defineprojectile 1669 PROJ_SXREPEAT 92
+defineprojectile 1669 PROJ_SYREPEAT 92
 defineprojectile 1669 PROJ_HITRADIUS 3500
 defineprojectile 1669 PROJ_EXTRA 160
 
