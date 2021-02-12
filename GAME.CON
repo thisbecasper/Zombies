@@ -19,6 +19,10 @@ action ANULLACTION 0
 
 ////////////////////DEFINES/////////////////
 
+//definegamefuncname 2 LIMIT_UP
+//definegamefuncname 3 LIMIT_DOWN
+//definegamefuncname 4 CONFIRM
+
 definegamefuncname 11 Up
 definegamefuncname 12 Down
 definegamefuncname 13 Flashbang
@@ -3168,6 +3172,9 @@ enda
 
 
 actor SIXPAK
+	getplayer[THISACTOR].max_player_health tempone
+	getplayer[THISACTOR].i temptwo
+	getactor[temptwo].extra temptwo
   fall
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
@@ -3191,6 +3198,10 @@ actor SIXPAK
 enda
 
 actor COLA
+	getplayer[THISACTOR].max_player_health tempone
+	getplayer[THISACTOR].i temptwo
+	getactor[temptwo].extra temptwo
+
   fall
   ifmove RESPAWN_ACTOR_FLAG
     state respawnit
