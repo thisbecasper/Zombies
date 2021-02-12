@@ -4295,16 +4295,9 @@ ends
 
 move PGROWINGPOP        // Used only as a variable
 
-actor 1079 {
-	sizeat 24 18
+actor 1080 {
 
-	addvar itemcounter 1
-	ifvare itemcounter 90 {
-		getactor[THISACTOR].cstat tempone
-		addvar tempone 2
-		setactor[THISACTOR].cstat tempone
-	}
-	ifvare itemcounter 150 killit
+	sizeat 28 24
 	
 	fall
     ifp pshrunk nullop
@@ -4314,8 +4307,19 @@ actor 1079 {
           ifpdistl RETRIEVEDISTANCE
             ifcanseetarget
       {
-        addvar damagedoneboost 50
-        state quikget
+        
+        ifspritepal 17 {
+        	ifvare flashedcounter 0 palfrom 24 0 0 32
+        	addvar damagedoneboost 100
+        } else ifspritepal 19 {
+        	ifvare flashedcounter 0 palfrom 24 48 0 0
+        	addvar damagedoneboost 400
+        } else {
+        	ifvare flashedcounter 0 palfrom 24 0 48 0
+        	addvar damagedoneboost 200
+        }
+        globalsound DUKE_GET
+ 		killit
       }
 }  
 enda
@@ -4373,6 +4377,21 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
   		setgamepalette 0
   	}
   	ifdead {
+  		// Drop boost capsule
+  		ifvarg currentkillstreak 2 ifvare hasdroppedboostpoints 0 {
+    		setvar hasdroppedboostpoints 1
+    		espawn 1080
+    		ifvare currentkillstreak 3 {
+    			setactor[RETURN].pal 17	
+    		} else ifvare currentkillstreak 4 {
+    			nullop // already have this pal
+    		} else {
+    			setactor[RETURN].pal 19
+    		}
+    		
+    	}
+
+    	// Give other player kill
   		setvar currentkillstreak 0
   		ifvare havegivenkilltostreak 0 { 
   			setvar havegivenkilltostreak 1
@@ -4528,11 +4547,6 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 
   ifdead
   {
-    ifvare hasdroppedboostpoints 0 {
-    	setvar hasdroppedboostpoints 1
-    	spawn 1079
-
-    }
 
     ifaction PGROWING
     {
