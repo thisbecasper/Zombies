@@ -225,18 +225,9 @@ define SPAWNAMMOODDS             96
 
 
 
-definequote 103       3 KILL STREAK
-definequote 104       4 KILL STREAK
-definequote 105       5 KILL STREAK
-definequote 106       6 KILL STREAK
-definequote 107       7 KILL STREAK
-definequote 108       8 KILL STREAK
-definequote 109       9 KILL STREAK
-definequote 110       10 KILL STREAK
-definequote 111       10+ KILL STREAK
 
-definequote 123       LONGEST KILL STREAK:
-definequote 124       SET FRAG LIMIT
+
+
 definequote 125       G A M E  O V E R 
 definequote 126       DAMAGE DEALT:
 definequote 127       DAMAGE TAKEN:
@@ -251,7 +242,17 @@ definequote 136       6TH
 definequote 137       7TH
 definequote 138       8TH
 definequote 139       K:          D:    
-
+definequote 143       3 KILL STREAK
+definequote 144       4 KILL STREAK
+definequote 145       5 KILL STREAK
+definequote 146       6 KILL STREAK
+definequote 147       7 KILL STREAK
+definequote 148       8 KILL STREAK
+definequote 149       9 KILL STREAK
+definequote 150       10 KILL STREAK
+definequote 151       10+ KILL STREAK
+definequote 152       LONGEST KILL STREAK:
+definequote 153       SET FRAG LIMIT
 
 
 // Volume titles cannot excede 32 characters.

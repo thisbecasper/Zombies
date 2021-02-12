@@ -388,7 +388,7 @@ onevent EVENT_DISPLAYREST
 	ifvare fraglimit -1 {
 		//Dark underlay
 		rotatesprite 160 100 500000 256 241 31 0 1 0 0 xdim ydim
-		gametextz STARTALPHANUM 320 95 124 0 0 0 0 0 xdim ydim 60000
+		gametextz STARTALPHANUM 320 95 153 0 0 0 0 0 xdim ydim 60000
 		digitalnumberz 2837 160 105 tempfraglimit 0 0 0 0 0 xdim ydim 60000
 	}
 	
@@ -415,7 +415,7 @@ onevent EVENT_DISPLAYREST
 		digitalnumberz 2837 205 137 damagetakentotal 0 13 0 0 0 xdim ydim 60000
 
 		//Longest killstreak
-		gametextz STARTALPHANUM 75 149 123 0 13 0 0 0 xdim ydim 60000
+		gametextz STARTALPHANUM 75 149 152 0 13 0 0 0 xdim ydim 60000
 		digitalnumberz 2837 205 149 longestkillstreak 0 13 0 0 0 xdim ydim 60000
 
 		//Placement
@@ -598,13 +598,13 @@ onevent EVENT_DISPLAYREST
 		//Killstreak
 		ifvarg ksannouncementcounter 0 {
 			ifvarg currentkillstreak 10 {
-				gametextz STARTALPHANUM 320 65 11 0 2 0 0 0 xdim ydim 60000
+				gametextz STARTALPHANUM 320 65 151 0 2 0 0 0 xdim ydim 60000
 			} else ifvare currentkillstreak 3 {
-				gametextz STARTALPHANUM 320 65 103 0 0 0 0 0 xdim ydim 60000
+				gametextz STARTALPHANUM 320 65 143 0 0 0 0 0 xdim ydim 60000
 			} else ifvare currentkillstreak 4  {
-				gametextz STARTALPHANUM 320 65 104 0 15 0 0 0 xdim ydim 60000
+				gametextz STARTALPHANUM 320 65 144 0 15 0 0 0 xdim ydim 60000
 			} else ifvarg currentkillstreak 0  {
-				setvar tempone 100
+				setvar tempone 140
 				addvarvar tempone currentkillstreak
 				gametextz STARTALPHANUM 320 65 tempone 0 2 0 0 0 xdim ydim 60000
 			}
@@ -2788,11 +2788,8 @@ actor SHIELD
           killit
         }
         else {
-        	getplayer[THISACTOR].SHIELD_AMOUNT tempthree
-        	addvar tempthree 100
-        	ifvarvarg tempthree tempone
-        	setvarvar tempthree tempone
-        	setplayer[THISACTOR].SHIELD_AMOUNT tempthree
+        	addinventory GET_SHIELD 100
+
         }
         quote 38
         ifspawnedby SHIELD
@@ -4439,12 +4436,12 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 
   ifdead setvar flashedcounter 0
 
-  getactor[THISACTOR].htpicnum tempthree
+  /*getactor[THISACTOR].htpicnum tempthree
   ifvare tempthree FIRELASER {
   	getactor[THISACTOR].htowner tempone
 	  getplayer[THISACTOR].i temptwo
 	  ifvarvare tempone temptwo setactor[THISACTOR].htextra -1
-  }
+  }*/
 	  
 //////////////////////// END OF USER CODE ///////////////////
 	
