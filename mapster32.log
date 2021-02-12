@@ -1,0 +1,23 @@
+Mapster32 r6428
+Built Aug  6 2017 06:51:04, GCC 7.1.1, 32-bit 
+Running on Windows 10 (build 10.0.19041)
+Initializing SDL 2.0.5
+Using E:/Duke Nukem 3D/Eduke mod/ for game data
+Configuration file not found, using defaults.
+Searching for game data...
+Found no recognized game data!
+Using "DUKE3D.GRP" as main game data file.
+Loading "m32help.hlp"
+Error initializing integrated help: file "m32help.hlp" not found.
+Switching keyboard layout from 00000406 to 00000409
+0 joystick(s) found
+Initialized 24.0M cache
+Setting video mode 1600x900 (8-bpp windowed)
+Refresh rate: 59Hz
+Trying SDL_Renderer "direct3d"
+Loading sounds from "GAME.CON"
+warning: duplicate sound #261, overwriting
+warning: duplicate sound #323, overwriting
+Loaded 374 sound definitions.
+Wrote m32_settings.cfg
+Switching keyboard layout from 00000409 to 00000406
