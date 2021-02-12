@@ -3,7 +3,7 @@ Built Aug  6 2017 06:51:04, GCC 7.1.1, 32-bit
 Running on Windows 10 (build 10.0.19041)
 Initializing SDL 2.0.5
 Using E:/Duke Nukem 3D/Eduke mod/ for game data
-Configuration file not found, using defaults.
+Executing "m32_settings.cfg"
 Searching for game data...
 Found no recognized game data!
 Using "DUKE3D.GRP" as main game data file.
@@ -19,5 +19,11 @@ Loading sounds from "GAME.CON"
 warning: duplicate sound #261, overwriting
 warning: duplicate sound #323, overwriting
 Loaded 374 sound definitions.
+Setting video mode 1600x900 (32-bpp windowed)
+Switching keyboard layout from 00000409 to 00000406
+Refresh rate: 59Hz
+OpenGL information
+ NVIDIA Corporation GeForce GTX 1070/PCIe/SSE2 4.6.0 NVIDIA 456.71
+Opened "textures" as cache file
 Wrote m32_settings.cfg
 Switching keyboard layout from 00000409 to 00000406

@@ -4295,8 +4295,8 @@ ends
 
 move PGROWINGPOP        // Used only as a variable
 
-actor 127 {
-	sizeat 32 32
+actor 1079 {
+	sizeat 24 18
 
 	addvar itemcounter 1
 	ifvare itemcounter 90 {
@@ -4530,7 +4530,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
   {
     ifvare hasdroppedboostpoints 0 {
     	setvar hasdroppedboostpoints 1
-    	spawn 127
+    	spawn 1079
 
     }
 
