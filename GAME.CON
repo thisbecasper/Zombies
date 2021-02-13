@@ -19,12 +19,16 @@ action ANULLACTION 0
 
 ////////////////////DEFINES/////////////////
 
+//definegamefuncname 2 LIMIT_UP
+//definegamefuncname 3 LIMIT_DOWN
+//definegamefuncname 4 CONFIRM
+
+definegamefuncname 11 Up
+definegamefuncname 12 Down
 definegamefuncname 13 Flashbang
 definegamefuncname 14 Boost
-definegamefuncname 29 Frag_Limit_Up
-definegamefuncname 30 Frag_Limit_Down
-definegamefuncname 31 Confirm_Frag_Limit
-definegamefuncname 36 Alternative_fire
+definegamefuncname 17 Confirm
+definegamefuncname 36 Alternative
 
 // Flashbangs
 defineprojectile CANNONBALL PROJ_WORKSLIKE 88270 //2 4 8 64 128 2048 4096 16384
@@ -107,8 +111,6 @@ defineprojectile 1669 PROJ_TXREPEAT 5
 defineprojectile 1669 PROJ_TYREPEAT 5
 defineprojectile 1669 PROJ_XREPEAT 18
 defineprojectile 1669 PROJ_YREPEAT 18
-defineprojectile 1669 PROJ_SXREPEAT 92
-defineprojectile 1669 PROJ_SYREPEAT 92
 defineprojectile 1669 PROJ_HITRADIUS 3500
 defineprojectile 1669 PROJ_EXTRA 160
 
@@ -143,7 +145,7 @@ gamevar damagedoneboost 0 1
 gamevar maxscore 0 1
 gamevar maxscoreplayer 0 1
 gamevar boostactivationtimer 0 1
-gamevar boostgaincounter 0 1
+gamevar boostlosscounter 0 1
 gamevar gameover 0 0
 gamevar damagedonetotal 0 1
 gamevar damagetakentotal 0 1
@@ -356,16 +358,11 @@ state boost
 		globalsound GETATOMICHEALTH
 		setvar boostactivationtimer 1800
 	}
-	
-	ifvare freezetimer 0 {
-		ifvarvarn currentscore maxscore {
-			addvar boostgaincounter 1
-			ifvarg boostgaincounter 5 {
-				setvarvar tempone placement
-				subvar tempone 1
-				addvarvar damagedoneboost tempone
-				setvar boostgaincounter 0
-			}
+	ifvarvare currentscore maxscore {
+		addvar boostlosscounter 1
+		ifvarg boostlosscounter 5 {
+			ifvarg damagedoneboost 0 subvar damagedoneboost 1
+			setvar boostlosscounter 0
 		}
 	}
 ends
@@ -386,7 +383,7 @@ ends
 onevent EVENT_DISPLAYREST
 	//Debuggg
 	
-	//digitalnumberz 2837 0 40 placement 0 0 0 0 0 xdim ydim 58000
+	//digitalnumberz 2837 0 40 currentkillstreak 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 60 placement 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 80 totalearnedxp 0 0 0 0 0 xdim ydim 58000
 	//digitalnumberz 2837 0 100 skillpoints 0 0 0 0 0 xdim ydim 58000
@@ -395,7 +392,7 @@ onevent EVENT_DISPLAYREST
 	ifvare fraglimit -1 {
 		//Dark underlay
 		rotatesprite 160 100 500000 256 241 31 0 1 0 0 xdim ydim
-		gametextz STARTALPHANUM 320 95 153 0 0 0 0 0 xdim ydim 60000
+		gametextz STARTALPHANUM 320 95 124 0 0 0 0 0 xdim ydim 60000
 		digitalnumberz 2837 160 105 tempfraglimit 0 0 0 0 0 xdim ydim 60000
 	}
 	
@@ -422,7 +419,7 @@ onevent EVENT_DISPLAYREST
 		digitalnumberz 2837 205 137 damagetakentotal 0 13 0 0 0 xdim ydim 60000
 
 		//Longest killstreak
-		gametextz STARTALPHANUM 75 149 152 0 13 0 0 0 xdim ydim 60000
+		gametextz STARTALPHANUM 75 149 123 0 13 0 0 0 xdim ydim 60000
 		digitalnumberz 2837 205 149 longestkillstreak 0 13 0 0 0 xdim ydim 60000
 
 		//Placement
@@ -484,7 +481,7 @@ onevent EVENT_DISPLAYREST
 	  	ifvarg flashbangammo 2 rotatesprite 293 177 35000 0 CANNONBALL 0 0 0 0 0 xdim ydim
 	  	
 			getplayer[THISACTOR].ammo_amount PWEAPON tempone
-			digitalnumberz DIGITALNUM 40 180 tempone 0 24 0 0 0 xdim ydim 80000
+			digitalnumberz DIGITALNUM 40 180 tempone 0 0 0 0 0 xdim ydim 80000
 
 			ifvare PWEAPON 1 {
 				ifvarg PISTOLMAGAZINE -1 {
@@ -605,13 +602,13 @@ onevent EVENT_DISPLAYREST
 		//Killstreak
 		ifvarg ksannouncementcounter 0 {
 			ifvarg currentkillstreak 10 {
-				gametextz STARTALPHANUM 320 65 151 0 2 0 0 0 xdim ydim 60000
+				gametextz STARTALPHANUM 320 65 11 0 2 0 0 0 xdim ydim 60000
 			} else ifvare currentkillstreak 3 {
-				gametextz STARTALPHANUM 320 65 143 0 0 0 0 0 xdim ydim 60000
+				gametextz STARTALPHANUM 320 65 103 0 0 0 0 0 xdim ydim 60000
 			} else ifvare currentkillstreak 4  {
-				gametextz STARTALPHANUM 320 65 144 0 15 0 0 0 xdim ydim 60000
-			} else ifvarg currentkillstreak 4  {
-				setvar tempone 140
+				gametextz STARTALPHANUM 320 65 104 0 15 0 0 0 xdim ydim 60000
+			} else ifvarg currentkillstreak 0  {
+				setvar tempone 100
 				addvarvar tempone currentkillstreak
 				gametextz STARTALPHANUM 320 65 tempone 0 2 0 0 0 xdim ydim 60000
 			}
@@ -860,28 +857,18 @@ onevent EVENT_DISPLAYREST
 	}
 endevent
 
-onevent EVENT_INVENTORY {
+onevent EVENT_LOOKUP
 	setvar RETURN -1
 	ifvare fraglimit -1 ifvare changecooldown 0 {
 		addvar tempfraglimit 1
 		setvar changecooldown 4
 		globalsound 0
 	}
-}
 endevent
 
-onevent EVENT_INVENTORYRIGHT
+onevent EVENT_LOOKDOWN
 	setvar RETURN -1
-	ifvare fraglimit -1 {
-		setvarvar fraglimit tempfraglimit
-		sound 243
-		addvar nooffraglimitsset 1
-	}
-endevent
-
-onevent EVENT_INVENTORYLEFT
-	setvar RETURN -1
-	ifvare fraglimit -1 ifvare changecooldown 0 ifvarg tempfraglimit 1 {
+	ifvare fraglimit -1 ifvare changecooldown 0 {
 		subvar tempfraglimit 1
 		setvar changecooldown 4
 		globalsound 0
@@ -1091,6 +1078,16 @@ onevent EVENT_PROCESSINPUT
 		ifvarn tempone 0 setinput[THISACTOR].avel 0
 		ifvarn temptwo 0 setinput[THISACTOR].horz 0
 	}
+endevent
+
+onevent EVENT_AIMUP {
+	setvar RETURN -1
+	ifvare fraglimit -1 {
+		setvarvar fraglimit tempfraglimit
+		sound 243
+		addvar nooffraglimitsset 1
+	}
+}
 endevent
 
 onevent EVENT_NEXTWEAPON
@@ -2795,8 +2792,11 @@ actor SHIELD
           killit
         }
         else {
-        	addinventory GET_SHIELD 100
-
+        	getplayer[THISACTOR].SHIELD_AMOUNT tempthree
+        	addvar tempthree 100
+        	ifvarvarg tempthree tempone
+        	setvarvar tempthree tempone
+        	setplayer[THISACTOR].SHIELD_AMOUNT tempthree
         }
         quote 38
         ifspawnedby SHIELD
@@ -4297,9 +4297,16 @@ ends
 
 move PGROWINGPOP        // Used only as a variable
 
-actor 1080 {
+actor 127 {
+	sizeat 32 32
 
-	sizeat 28 24
+	addvar itemcounter 1
+	ifvare itemcounter 90 {
+		getactor[THISACTOR].cstat tempone
+		addvar tempone 2
+		setactor[THISACTOR].cstat tempone
+	}
+	ifvare itemcounter 150 killit
 	
 	fall
     ifp pshrunk nullop
@@ -4309,49 +4316,13 @@ actor 1080 {
           ifpdistl RETRIEVEDISTANCE
             ifcanseetarget
       {
-        
-        ifspritepal 17 {
-        	ifvare flashedcounter 0 palfrom 24 0 0 32
-        	addvar damagedoneboost 100
-        } else ifspritepal 19 {
-        	ifvare flashedcounter 0 palfrom 24 48 0 0
-        	addvar damagedoneboost 400
-        } else {
-        	ifvare flashedcounter 0 palfrom 24 0 48 0
-        	addvar damagedoneboost 200
-        }
-        globalsound DUKE_GET
- 		killit
+        addvar damagedoneboost 50
+        state quikget
       }
 }  
 enda
 
 actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
-
-	setvarvar tempseven currentscore
-	mulvar tempseven 1000
-	divvarvar tempseven fraglimit // own kill ratio
-		
-	// calculate placement
-	setvarvar tempten MULTIMODE
-	headspritestat tempone 10
-	setvarvar temptwo tempone
-	whilevarn tempone -1 {
-		getactor[tempone].yvel tempfour
-		getplayervar[tempfour].currentscore tempfive
-		getplayervar[tempfour].fraglimit tempsix
-		mulvar tempfive 1000
-		divvarvar tempfive tempsix //other's kill ratio
-		
-
-		ifvarvarl tempfive tempseven {
-			subvar tempten 1
-		}
-
-		nextspritestat tempone tempone
-		ifvarvare tempone temptwo setvar tempone -1
-	}
-	setvarvar placement tempten
 
 	state populatecurrentscore
 	state populatemaxscore
@@ -4379,21 +4350,6 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
   		setgamepalette 0
   	}
   	ifdead {
-  		// Drop boost capsule
-  		ifvarg currentkillstreak 2 ifvare hasdroppedboostpoints 0 {
-    		setvar hasdroppedboostpoints 1
-    		espawn 1080
-    		ifvare currentkillstreak 3 {
-    			setactor[RETURN].pal 17	
-    		} else ifvare currentkillstreak 4 {
-    			nullop // already have this pal
-    		} else {
-    			setactor[RETURN].pal 19
-    		}
-    		
-    	}
-
-    	// Give other player kill
   		setvar currentkillstreak 0
   		ifvare havegivenkilltostreak 0 { 
   			setvar havegivenkilltostreak 1
@@ -4444,16 +4400,29 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
   ifvare gameover 1 {
 		ifvare havetriggeredgameover 0 {
 			globalsound 249 //288 grabbag
-			setvarvar killsatgameover currentscore
-			setvarvar deathsatgameover totaldeaths
-			setvar havetriggeredgameover 1
-			
-			addlogvar placement
-			addlogvar currentscore
-			addlogvar totaldeaths
-			addlogvar longestkillstreak
-			addlogvar damagedonetotal
-			addlogvar damagetakentotal
+
+			setvar tempten 0
+
+			headspritestat tempone 10
+		  setvarvar temptwo tempone
+		  whilevarn tempone -1 {
+		  	
+		  	getactor[tempone].yvel tempfour
+		  	getplayervar[tempfour].currentscore tempfive
+
+		  	ifvarvarl tempfive currentscore {
+		  		nullop
+		  	} else {
+		  		addvar tempten 1
+		  	}
+
+		  	nextspritestat tempone tempone
+		  	ifvarvare tempone temptwo setvar tempone -1
+		  }
+		  setvarvar placement tempten
+		  setvarvar killsatgameover currentscore
+		  setvarvar deathsatgameover totaldeaths
+		  setvar havetriggeredgameover 1
 		}
   }
 
@@ -4474,12 +4443,12 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 
   ifdead setvar flashedcounter 0
 
-  /*getactor[THISACTOR].htpicnum tempthree
+  getactor[THISACTOR].htpicnum tempthree
   ifvare tempthree FIRELASER {
   	getactor[THISACTOR].htowner tempone
 	  getplayer[THISACTOR].i temptwo
 	  ifvarvare tempone temptwo setactor[THISACTOR].htextra -1
-  }*/
+  }
 	  
 //////////////////////// END OF USER CODE ///////////////////
 	
@@ -4549,6 +4518,11 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 
   ifdead
   {
+    ifvare hasdroppedboostpoints 0 {
+    	setvar hasdroppedboostpoints 1
+    	spawn 127
+
+    }
 
     ifaction PGROWING
     {
@@ -9709,4 +9683,3 @@ useractor enemy NEWBEAST NEWBEASTSTRENGTH
     getlastpal
   }
 enda
-
