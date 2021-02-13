@@ -484,7 +484,7 @@ onevent EVENT_DISPLAYREST
 	  	ifvarg flashbangammo 2 rotatesprite 293 177 35000 0 CANNONBALL 0 0 0 0 0 xdim ydim
 	  	
 			getplayer[THISACTOR].ammo_amount PWEAPON tempone
-			digitalnumberz DIGITALNUM 40 180 tempone 0 0 0 0 0 xdim ydim 80000
+			digitalnumberz DIGITALNUM 40 180 tempone 0 24 0 0 0 xdim ydim 80000
 
 			ifvare PWEAPON 1 {
 				ifvarg PISTOLMAGAZINE -1 {
