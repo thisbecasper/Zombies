@@ -1056,7 +1056,7 @@ onevent EVENT_LOOKLEFT
 	ifvare flashbangthrowcd 0 ifvarg flashbangammo 0 ifvare freezetimer 0 {
 		setvar flashbangthrowcd 20
 		subvar flashbangammo 1
-		eshoot CANNONBALL
+		//eshoot CANNONBALL
 		getactor[RETURN].zvel tempone
 		subvar tempone 3000
 		setactor[RETURN].zvel tempone
