@@ -4328,7 +4328,7 @@ enda
 
 actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 
-	/*setvarvar tempseven currentscore
+	setvarvar tempseven currentscore
 	mulvar tempseven 1000
 	divvarvar tempseven fraglimit // own kill ratio
 		
@@ -4351,7 +4351,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 		nextspritestat tempone tempone
 		ifvarvare tempone temptwo setvar tempone -1
 	}
-	setvarvar placement tempten*/
+	setvarvar placement tempten
 
 	state populatecurrentscore
 	state populatemaxscore
@@ -4378,7 +4378,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
   	ifvare tempone 1 {
   		setgamepalette 0
   	}
-  	/*ifdead {
+  	ifdead {
   		// Drop boost capsule
   		ifvarg currentkillstreak 2 ifvare hasdroppedboostpoints 0 {
     		setvar hasdroppedboostpoints 1
@@ -4409,7 +4409,7 @@ actor APLAYER MAXPLAYERHEALTH PSTAND 0 0
 		  		setplayervar[tempthree].ksannouncementcounter 60
 	  		}
   		}
-  	}*/
+  	}
   	ifvarg ksannouncementcounter 0 {
   		subvar ksannouncementcounter 1
   	}
